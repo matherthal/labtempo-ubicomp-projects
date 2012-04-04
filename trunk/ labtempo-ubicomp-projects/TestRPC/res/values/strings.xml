@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, TestRPC!</string>
+    <string name="app_name">TestRPC</string>
+    <string name="ip_ok">IP OK!</string>
+
+</resources>
