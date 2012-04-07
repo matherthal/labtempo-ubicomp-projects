@@ -2,7 +2,19 @@
 <resources>
 
     <string name="hello">Hello World, TestRPC!</string>
-    <string name="app_name">TestRPC</string>
+    <string name="app_name">MainListView</string>
     <string name="ip_ok">IP OK!</string>
-
+    <string name="button_stove">Fogão</string>
+	    
+    <string-array name="devices_array">
+        <item>Televisão</item>
+        <item>Celular</item>
+        <item>Lâmpada</item>
+        <item>Tablet</item>
+        <item>Fogão</item>
+        <item>Computador</item>
+        <item>Radio</item>
+        <item>Relógio</item>
+        <item>Cama</item>
+    </string-array>
 </resources>

@@ -2,30 +2,19 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/hello" />
+    android:orientation="vertical" >
 	<TextView
-        android:id="@+id/text"
-        android:layout_width="fill_parent"
+        android:id="@+id/textViewStatus"
+        android:layout_width="407dp"
         android:layout_height="wrap_content"
-        android:text="@string/hello" />
-
-	<EditText
-	    android:id="@+id/editText1"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content" >
-
-	    <requestFocus />
-	</EditText>
-
+        android:text="Criar dispositivo:" />
+	
 	<Button
-	    android:id="@+id/button1"
+	    android:id="@+id/buttonStove"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="@string/ip_ok" />
+	    android:text="@string/button_stove"
+	    android:clickable="true"
+     	android:onClick="buttonStove1_Clicked" />
 
 </LinearLayout>
