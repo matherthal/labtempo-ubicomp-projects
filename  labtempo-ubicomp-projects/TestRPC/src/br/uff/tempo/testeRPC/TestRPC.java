@@ -38,7 +38,7 @@ public class TestRPC extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+        setContentView(R.layout.testmain);
         tv = (TextView) findViewById(R.id.text);
         Button bt = (Button) findViewById(R.id.button1);
         et = (EditText) findViewById(R.id.editText1);
