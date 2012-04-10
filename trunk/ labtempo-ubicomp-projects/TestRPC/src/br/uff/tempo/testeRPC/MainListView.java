@@ -27,8 +27,8 @@ public class MainListView extends ListActivity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// When clicked, show a toast with the TextView text
-				String dev = ((TextView) view).getText().toString();
-				Toast.makeText(getApplicationContext(), dev, Toast.LENGTH_SHORT).show();
+				//String dev = ((TextView) view).getText().toString();
+				//Toast.makeText(getApplicationContext(), dev, Toast.LENGTH_SHORT).show();
 				
 				//Calling appropriate activity
 				Intent intent = new Intent(MainListView.this, StoveView.class);

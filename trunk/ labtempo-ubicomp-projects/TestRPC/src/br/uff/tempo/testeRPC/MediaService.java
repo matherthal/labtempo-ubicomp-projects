@@ -3,13 +3,17 @@ package br.uff.tempo.testeRPC;
 import android.app.Service;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.widget.Toast;
 
 public class MediaService extends Service {
 	private static final String TAG = "MediaAgent";
-	MediaPlayer player;
+	
+	protected MediaPlayer player;
+	
+	public static final String SOUND_ID = "SOUND_ID"; 
 	
 	@Override
 	public IBinder onBind(Intent intent) {
@@ -18,11 +22,11 @@ public class MediaService extends Service {
 	
 	@Override
 	public void onCreate() {
-		Toast.makeText(this, "Media Created", Toast.LENGTH_LONG).show();
-		Log.d(TAG, "onCreate");
+		//Toast.makeText(this, "Media Created", Toast.LENGTH_LONG).show();
+		Log.d(TAG, "onCreate -- commented");
 		
-		player = MediaPlayer.create(this, R.raw.braincandy);
-		player.setLooping(false); // Set looping
+		//player = MediaPlayer.create(this, R.raw.braincandy);
+		//player.setLooping(false); // Set looping
 	}
 
 	@Override
@@ -34,8 +38,15 @@ public class MediaService extends Service {
 	
 	@Override
 	public void onStart(Intent intent, int startid) {
-		Toast.makeText(this, "Media Started", Toast.LENGTH_LONG).show();
+		//Toast.makeText(this, "Media Started", Toast.LENGTH_LONG).show();
 		Log.d(TAG, "onStart");
+		
+		Bundle b = intent.getExtras(); //Get parameter
+		int soundId = b.getInt(SOUND_ID); //Get sound
+		
+		//player = MediaPlayer.create(this, soundId);  //Create player
+		player = MediaPlayer.create(this, soundId);  //Create player
+		//player.setLooping(false); // Set looping
 		player.start();
 	}
 }

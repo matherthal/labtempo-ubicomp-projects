@@ -19,7 +19,7 @@ public class AgentBase extends Service {
 	private static final String TAG = "AgentBase";
 	private static AgentBase instance = null;
 	
-	private static final String TCP_SERVER_IP = "localhost";
+	private static final String TCP_SERVER_IP = "192.168.1.70";
 	private static final int TCP_SERVER_PORT = 21111;
 	
 	public static AgentBase getInstance() {
