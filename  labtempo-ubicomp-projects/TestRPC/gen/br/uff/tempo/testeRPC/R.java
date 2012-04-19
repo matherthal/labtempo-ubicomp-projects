@@ -18,7 +18,7 @@ public final class R {
     }
     public static final class id {
         public static final int button1=0x7f070010;
-        public static final int buttonFinish=0x7f07000d;
+        public static final int buttonFinish=0x7f07000c;
         public static final int buttonOven=0x7f07000a;
         public static final int buttonStove=0x7f070001;
         public static final int buttonStove1=0x7f070002;
@@ -26,8 +26,8 @@ public final class R {
         public static final int buttonStove3=0x7f070006;
         public static final int buttonStove4=0x7f070008;
         public static final int editText1=0x7f07000f;
+        public static final int editTextLog=0x7f07000d;
         public static final int text=0x7f07000e;
-        public static final int textConnStatus=0x7f07000c;
         public static final int textOvenStatus=0x7f07000b;
         public static final int textStove1Status=0x7f070003;
         public static final int textStove2Status=0x7f070005;
