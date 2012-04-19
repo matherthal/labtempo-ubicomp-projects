@@ -39,30 +39,4 @@ public class AgentBase extends Service {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	public void sendMessage(String msg) {
-    	try {
-			Socket s = new Socket(TCP_SERVER_IP, TCP_SERVER_PORT);
-			BufferedReader in = new BufferedReader(new InputStreamReader(s.getInputStream()));
-			BufferedWriter out = new BufferedWriter(new OutputStreamWriter(s.getOutputStream()));
-			//send output msg
-			String outMsg = "TCP connecting to " + TCP_SERVER_PORT + System.getProperty("line.separator"); 
-			out.write(outMsg);
-			out.flush();
-			Log.i(TAG, "TcpClient sent: " + outMsg);
-			//accept server response
-			String inMsg = in.readLine() + System.getProperty("line.separator");
-			/*String str = "received: " + inMsg;
-			tv.setText(str);*/
-			Log.i(TAG, "TcpClient received: " + inMsg);
-			//close connection
-			s.close();
-		} catch (UnknownHostException e) {
-			//tv.setText("UnknownException "+ e.getMessage());
-			Log.i(TAG, "UnknownException " + e.getMessage());
-		} catch (IOException e) {
-			//tv.setText("IOException "+ e.getMessage());
-			Log.i(TAG, "IOException " + e.getMessage());
-		} 
-    }
 }

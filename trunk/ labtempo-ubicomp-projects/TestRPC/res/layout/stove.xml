@@ -75,12 +75,6 @@
         android:layout_width="407dp"
         android:layout_height="wrap_content"
         android:text="Forno desligado" />
-        
-	<TextView
-        android:id="@+id/textConnStatus"
-        android:layout_width="407dp"
-        android:layout_height="wrap_content"
-        android:text="Label de teste da comunicação" />
 
     <Button
         android:id="@+id/buttonFinish"
@@ -88,4 +82,16 @@
         android:layout_height="wrap_content"
         android:text="Finalizar" android:clickable="true"
      	android:onClick="buttonFinish_Clicked" />
+
+    <EditText
+        android:id="@+id/editTextLog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:singleLine="false" >
+
+        <requestFocus />
+    </EditText>
+
 </LinearLayout>

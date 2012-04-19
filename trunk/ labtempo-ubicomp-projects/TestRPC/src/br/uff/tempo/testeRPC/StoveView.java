@@ -8,7 +8,8 @@ import android.widget.TextView;
 
 public class StoveView extends Activity {
 	//public AgentBase agent = new StoveAgent();
-	public AgentBase agent = new AgentBase();
+	//public AgentBase agent = new AgentBase();
+	private SendingService sendServ = new SendingService();
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -18,6 +19,8 @@ public class StoveView extends Activity {
         //startService(new Intent(this, MediaService.class));  //Media service test
         //startService(new Intent(this, StoveAgent.class));
         startService(new Intent(this, AgentBase.class));
+        
+        sendServ.tv = (TextView) findViewById(R.id.editTextLog); //FIXME: remove this!
     }
 
     @Override
@@ -38,81 +41,89 @@ public class StoveView extends Activity {
     public void buttonStove1_Clicked(View view)
     {
 		final TextView tv = (TextView) findViewById(R.id.textStove1Status);
+		String msg = "empty";
 		if (tv != null)
 		{
 			//Toggle label
 			if (tv.getText().toString().equals("Boca 1 desligada"))
 			{
-	    		tv.setText("Boca 1 ligada");
+	    		msg = "Boca 1 ligada";
 				playSoundStove();
 			}
 			else
-				tv.setText("Boca 1 desligada");
+				msg = "Boca 1 desligada";
+			tv.setText(msg);
 		}
 		
 		//Call server
-		agent.sendMessage("");
+		//agent.sendMessage("");
+		sendServ.sendMessage(msg);
     }
     
     public void buttonStove2_Clicked(View view)
     {
-		final TextView tv = (TextView) findViewById(R.id.textStove2Status);
+    	final TextView tv = (TextView) findViewById(R.id.textStove2Status);
+		String msg = "empty";
 		if (tv != null)
 		{
-			if (tv.getText().toString().equals("Boca 12 desligada"))
+			//Toggle label
+			if (tv.getText().toString().equals("Boca 2 desligada"))
 			{
-	    		tv.setText("Boca 2 ligada");
+	    		msg = "Boca 2 ligada";
 				playSoundStove();
 			}
 			else
-				tv.setText("Boca 2 desligada");
-			//tv.setText(this.toggleState(tv.getText().toString()));
+				msg = "Boca 2 desligada";
+			tv.setText(msg);
 		}
 		
 		//Call server
-		agent.sendMessage("");
+		//agent.sendMessage("");
+		sendServ.sendMessage(msg);
     }
     
     public void buttonStove3_Clicked(View view)
     {
-		final TextView tv = (TextView) findViewById(R.id.textStove3Status);
+    	final TextView tv = (TextView) findViewById(R.id.textStove3Status);
+		String msg = "empty";
 		if (tv != null)
 		{
+			//Toggle label
 			if (tv.getText().toString().equals("Boca 3 desligada"))
 			{
-	    		tv.setText("Boca 3 ligada");
+	    		msg = "Boca 3 ligada";
 				playSoundStove();
 			}
 			else
-				tv.setText("Boca 3 desligada");
-			//tv.setText(this.toggleState(tv.getText().toString()));
+				msg = "Boca 3 desligada";
+			tv.setText(msg);
 		}
 		
-		playSoundStove();
-		
 		//Call server
-		agent.sendMessage("");
+		//agent.sendMessage("");
+		sendServ.sendMessage(msg);
     }
     
     public void buttonStove4_Clicked(View view)
     {
-		final TextView tv = (TextView) findViewById(R.id.textStove4Status);
+    	final TextView tv = (TextView) findViewById(R.id.textStove4Status);
+		String msg = "empty";
 		if (tv != null)
 		{
+			//Toggle label
 			if (tv.getText().toString().equals("Boca 4 desligada"))
 			{
-	    		tv.setText("Boca 4 ligada");
+	    		msg = "Boca 4 ligada";
 				playSoundStove();
 			}
 			else
-				tv.setText("Boca 4 desligada");
-			//tv.setText(this.toggleState(tv.getText().toString()));
+				msg = "Boca 4 desligada";
+			tv.setText(msg);
 		}
 		
-		playSoundStove();
-		
 		//Call server
-		agent.sendMessage("");
+		//agent.sendMessage("");
+		sendServ.sendMessage(msg);
     }
     
     public void buttonOven_Clicked(View view)
@@ -142,7 +153,7 @@ public class StoveView extends Activity {
 		startService(i);
 		
 		//Call server
-		agent.sendMessage("");
+		//agent.sendMessage("");
     }
     
     public String toggleState(String label)

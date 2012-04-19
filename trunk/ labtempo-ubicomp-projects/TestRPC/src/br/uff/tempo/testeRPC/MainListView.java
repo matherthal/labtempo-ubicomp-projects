@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 public class MainListView extends ListActivity {
 	
-	@Override
+	//@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
@@ -24,7 +24,7 @@ public class MainListView extends ListActivity {
 		lv.setTextFilterEnabled(true);
 		
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-			@Override
+			//@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				// When clicked, show a toast with the TextView text
 				//String dev = ((TextView) view).getText().toString();

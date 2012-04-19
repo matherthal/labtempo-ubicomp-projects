@@ -22,17 +22,7 @@
         
         <activity android:name=".StoveView" />
         <service android:enabled="true" android:name=".StoveAgent" />
-        
-        <activity
-            android:name=".TestRPC"
-            android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        
+       
         <service android:enabled="true" android:name=".MediaService" />
     </application>
     
