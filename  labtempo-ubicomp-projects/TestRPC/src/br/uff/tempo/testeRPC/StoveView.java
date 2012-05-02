@@ -1,15 +1,25 @@
 package br.uff.tempo.testeRPC;
 
 import android.app.Activity;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
+import br.uff.tempo.testeRPC.ResourceAgent.ResourceBinder;
+
 
 public class StoveView extends Activity {
-	//public AgentBase agent = new StoveAgent();
+    //public AgentBase agent = new StoveAgent();
 	//public AgentBase agent = new AgentBase();
-	private SendingService sendServ = new SendingService();
+	private final String serverIP = "192.168.1.70";
+	private Caller sendServ = new Caller(serverIP);
+	private StoveAgent stove;
+	//private ServiceConnection conn;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -17,10 +27,15 @@ public class StoveView extends Activity {
         setContentView(R.layout.stove);
         
         //startService(new Intent(this, MediaService.class));  //Media service test
-        //startService(new Intent(this, StoveAgent.class));
-        startService(new Intent(this, AgentBase.class));
+        //conn = new ServiceConnection();
+		/*Intent i = new Intent();
+		i.setClassName("br.uff.tempotesteRPC", "br.uff.tempotesteRPC.StoveAgent");
+		bindService(i, mConnection, Context.BIND_AUTO_CREATE);*/
+        Intent intent = new Intent(this, StoveAgent.class);
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+		//bindService(new Intent(StoveView.this, StoveAgent.class), mConnection, Context.BIND_AUTO_CREATE);
         
-        sendServ.tv = (TextView) findViewById(R.id.editTextLog); //FIXME: remove this!
+        //sendServ.tv = (TextView) findViewById(R.id.editTextLog); //FIXME: remove this!
     }
 
     @Override
@@ -36,6 +51,7 @@ public class StoveView extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    	stove.unbindService(mConnection);
     }
     
     public void buttonStove1_Clicked(View view)
@@ -57,7 +73,7 @@ public class StoveView extends Activity {
 		
 		//Call server
 		//agent.sendMessage("");
-		sendServ.sendMessage(msg);
+		//sendServ.sendMessage(msg);
     }
     
     public void buttonStove2_Clicked(View view)
@@ -79,7 +95,7 @@ public class StoveView extends Activity {
 		
 		//Call server
 		//agent.sendMessage("");
-		sendServ.sendMessage(msg);
+		//sendServ.sendMessage(msg);
     }
     
     public void buttonStove3_Clicked(View view)
@@ -101,7 +117,7 @@ public class StoveView extends Activity {
 		
 		//Call server
 		//agent.sendMessage("");
-		sendServ.sendMessage(msg);
+		//sendServ.sendMessage(msg);
     }
     
     public void buttonStove4_Clicked(View view)
@@ -123,7 +139,7 @@ public class StoveView extends Activity {
 		
 		//Call server
 		//agent.sendMessage("");
-		sendServ.sendMessage(msg);
+		//sendServ.sendMessage(msg);
     }
     
     public void buttonOven_Clicked(View view)
@@ -172,6 +188,12 @@ public class StoveView extends Activity {
 		finish();
     }
     
+    public void buttonRegister_Clicked(View view) {
+    	
+    	stove.register();
+    	//stove.startActivity(new Intent(StoveView.this, StoveAgent.class));
+	}
+    
     private void playSoundStove()
     {
     	//Play sound
@@ -182,4 +204,30 @@ public class StoveView extends Activity {
 		i.putExtras(b);
 		startService(i);
     }
+    
+    private ServiceConnection mConnection = new ServiceConnection() {
+        public void onServiceConnected(ComponentName className, IBinder service) {
+            // This is called when the connection with the service has been
+            // established, giving us the service object we can use to
+            // interact with the service.  Because we have bound to a explicit
+            // service that we know is running in our own process, we can
+            // cast its IBinder to a concrete class and directly access it.
+            //stove = ((StoveAgent.StoveBinder)service).getService();
+        	// We've bound to LocalService, cast the IBinder and get LocalService instance
+        	ResourceBinder binder = (ResourceBinder) service;
+            stove = (StoveAgent)binder.getService();
+
+            // Tell the user about this for our demo.
+            Toast.makeText(StoveView.this, "Agente conectado", Toast.LENGTH_SHORT).show();
+        }
+
+        public void onServiceDisconnected(ComponentName className) {
+            // This is called when the connection with the service has been
+            // unexpectedly disconnected -- that is, its process crashed.
+            // Because it is running in our same process, we should never
+            // see this happen.
+            stove = null;
+            Toast.makeText(StoveView.this, "Agente desconectado", Toast.LENGTH_SHORT).show();
+        }
+    };
 }

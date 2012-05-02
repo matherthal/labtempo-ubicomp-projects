@@ -3,10 +3,12 @@ package br.uff.tempo.testeRPC;
 import java.util.List;
 
 import android.content.Intent;
+import android.os.Binder;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 
-public class StoveAgent extends AgentBase {
+public class StoveAgent extends ResourceAgent {
 	private static final String TAG = "StoveAgent";
 	
 	private List<Object> components;
@@ -15,11 +17,27 @@ public class StoveAgent extends AgentBase {
 	private static final int SOUND_ID_OVEN_CLOSE = R.raw.ovenclose;
 	
 	@Override
-	public void onCreate()
-	{
+	public void onCreate() {
 		super.onCreate();
+		//register();
 	}
+
+    /*
+     * Class for clients to access.  Because we know this service always
+     * runs in the same process as its clients, we don't need to deal with
+     * IPC.
+     */
+    /*public class StoveBinder extends Binder {
+    	StoveAgent getService() {
+            return StoveAgent.this;
+        }
+    }*/
 	
+    /*    public StoveBinder mBinder = new StoveBinder();
+    public IBinder onBind()
+    {
+    	return mBinder;
+    }*/
 	public void addComponent(Object comp)
 	{
 		if (testComponent(comp))
