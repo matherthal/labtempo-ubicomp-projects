@@ -21,8 +21,11 @@
         </activity>
         
         <activity android:name=".StoveView" />
+        
+        <service android:enabled="true" android:name=".ResourceAgent" />
         <service android:enabled="true" android:name=".StoveAgent" />
-       
+
+		
         <service android:enabled="true" android:name=".MediaService" />
     </application>
     
