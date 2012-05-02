@@ -7,32 +7,48 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
-
 import android.os.Handler;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.TextView;
 
-public class SendingService {
+public class Caller {
     private String serverIP = "";
+    private int port = 8080;
     private Handler handler = new Handler();
-    public TextView tv;
     
-	SendingService() {
-		serverIP = "192.168.1.70";  //FIXME: IP shouldn't be hardcoded 
+	Caller(String serverIP) {
+		this.serverIP = serverIP;
+		//serverIP = "192.168.1.70";  //FIXME: IP shouldn't be hardcoded 
 	}
 	
-	public void sendMessage(String msg) {
+	public void sendMessage(String jsonString, ResultSetter setter) {
         if (!serverIP.equals("")) {
-            Thread cThread = new Thread(new ClientThread(msg));
+        	//Create thread passing informations concerning the method that will be executed
+        	ClientThread client = new ClientThread(jsonString);
+        	//Define callback method
+    		client.setResultSetter(setter);
+    		//Create thread
+            Thread cThread = new Thread(client);
+            //Start thread
             cThread.start();
         }
 	}	
 	
+	public interface ResultSetter {
+		public void setResult(String result);
+	}
+	
 	public class ClientThread implements Runnable {
-    	private String msg = "Mensagem Vazia";
+    	private String jsonString = "";
+		private ResultSetter setter;
     	
-		ClientThread(String msg) {
-			this.msg = msg;
+		ClientThread(String jsonString) {
+			this.jsonString = jsonString;
+		}
+		
+		public void setResultSetter(ResultSetter setter) {
+		    this.setter = setter;
 		}
 		
         public void run() {
@@ -45,7 +61,7 @@ public class SendingService {
                 	handler.post(new Runnable() {
                         //@Override
                         public void run() {
-                            tv.append("\nstart");
+                            //tv.append("\nstart");
                         }
                     });
                 	
@@ -54,13 +70,18 @@ public class SendingService {
                                 .getOutputStream())), true);
         			BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
                     
-                	out.println(this.msg);
+                	out.println(this.jsonString);
                 	
-                	final String inStr = in.readLine();    
+                	final String inStr = in.readLine();
+                	
+                	//Set answer
+                	setter.setResult(inStr);
+                	
+                	//Print answer
                 	handler.post(new Runnable() {
                         //@Override
                         public void run() {
-                            tv.append("\n" + inStr );
+                            //tv.append("\n" + inStr );
                         }
                     });
                 	
