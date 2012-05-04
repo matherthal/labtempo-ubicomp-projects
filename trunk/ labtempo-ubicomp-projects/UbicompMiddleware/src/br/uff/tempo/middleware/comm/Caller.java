@@ -17,7 +17,7 @@ public class Caller {
     private int port = 8080;
     private Handler handler = new Handler();
     
-	Caller(String serverIP) {
+	public Caller(String serverIP) {
 		this.serverIP = serverIP;
 		//serverIP = "192.168.1.70";  //FIXME: IP shouldn't be hardcoded 
 	}
