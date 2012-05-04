@@ -194,7 +194,7 @@ public class StoveView extends Activity {
     
     public void buttonRegister_Clicked(View view) {
     	
-    	stove.register();
+    	stove.identify();
     	//stove.startActivity(new Intent(StoveView.this, StoveAgent.class));
 	}
     

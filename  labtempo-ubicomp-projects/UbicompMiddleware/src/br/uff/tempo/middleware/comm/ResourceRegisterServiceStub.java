@@ -16,13 +16,15 @@ public class ResourceRegisterServiceStub {
 	 * instance = new ResourceRegisterServiceStub(); } return instance; }
 	 */
 	public ResourceRegisterServiceStub() {
+		result = null;
 		// TODO Auto-generated constructor stub
 	}
 
 	private final String serverIP = "192.168.1.70";
 	private Caller caller = new Caller(serverIP);
 	private final String RRS_ID = "regservice";
-
+	private String result;
+	
 	public void register(ResourceAgent ra) {
 		// The remote method to call
 		String method = "register";
@@ -49,11 +51,17 @@ public class ResourceRegisterServiceStub {
 			e.printStackTrace();
 		}
 	}
+	
+	public String getResult()
+	{
+		return result;
+	}
 
 	private void registerResult(String result) {
 		try {
 			JSONHelper.getMessage(result);
 			System.out.println(result.toString());
+			this.result = result;
 		} catch (JSONException e) {
 			System.out.println(e.getMessage());
 		}
