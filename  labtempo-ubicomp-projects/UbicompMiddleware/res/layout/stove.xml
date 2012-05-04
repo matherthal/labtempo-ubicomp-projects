@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:baselineAligned="false"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textViewStatus"
+        android:layout_width="407dp"
+        android:layout_height="wrap_content"
+        android:text="@string/button_stove" />
+
+    <Button
+        android:id="@+id/buttonRegister"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Registrar" android:clickable="true"
+     	android:onClick="buttonRegister_Clicked" />
+
+    <Button
+        android:id="@+id/buttonStove1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Boca 1" android:clickable="true"
+     	android:onClick="buttonStove1_Clicked" />
+
+    <TextView
+        android:id="@+id/textStove1Status"
+        android:layout_width="407dp"
+        android:layout_height="wrap_content"
+        android:text="Boca 1 desligada" />
+        
+    <Button
+        android:id="@+id/buttonStove2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Boca 2" android:clickable="true"
+     	android:onClick="buttonStove2_Clicked" />
+
+    <TextView
+        android:id="@+id/textStove2Status"
+        android:layout_width="407dp"
+        android:layout_height="wrap_content"
+        android:text="Boca 2 desligada" />
+        
+    <Button
+        android:id="@+id/buttonStove3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Boca 3" android:clickable="true"
+     	android:onClick="buttonStove3_Clicked" />
+
+    <TextView
+        android:id="@+id/textStove3Status"
+        android:layout_width="407dp"
+        android:layout_height="wrap_content"
+        android:text="Boca 3 desligada" />
+
+    <Button
+        android:id="@+id/buttonStove4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Boca 4" android:clickable="true"
+     	android:onClick="buttonStove4_Clicked" />
+
+    <TextView
+        android:id="@+id/textStove4Status"
+        android:layout_width="407dp"
+        android:layout_height="wrap_content"
+        android:text="Boca 4 desligada" />
+
+    <Button
+        android:id="@+id/buttonOven"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Forno" android:clickable="true"
+     	android:onClick="buttonOven_Clicked" />
+
+    <TextView
+        android:id="@+id/textOvenStatus"
+        android:layout_width="407dp"
+        android:layout_height="wrap_content"
+        android:text="Forno desligado" />
+
+    <Button
+        android:id="@+id/buttonFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finalizar" android:clickable="true"
+     	android:onClick="buttonFinish_Clicked" />
+
+    <EditText
+        android:id="@+id/editTextLog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:singleLine="false" >
+
+        <requestFocus />
+    </EditText>
+
+</LinearLayout>
