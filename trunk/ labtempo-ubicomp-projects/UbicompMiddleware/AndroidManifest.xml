@@ -20,7 +20,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name=".apps.StoveView" />
+        <activity android:name=".apps.stove.StoveView" />
         
         <service android:enabled="true" android:name=".middleware.management.ResourceAgent" />
         <service android:enabled="true" android:name=".middleware.resources.StoveAgent" />

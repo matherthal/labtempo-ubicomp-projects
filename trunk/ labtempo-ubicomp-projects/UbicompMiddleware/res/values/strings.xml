@@ -5,6 +5,8 @@
     <string name="app_name">MainListView</string>
     <string name="ip_ok">IP OK!</string>
     <string name="button_stove">Fogão</string>
+    <string name="regButton">Register this device</string>
+    <string name="information">"Choose the intensity (0 means off) of the burner "</string>
 	    
     <string-array name="devices_array">
         <item>Televisão</item>
