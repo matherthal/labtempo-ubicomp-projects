@@ -134,7 +134,7 @@ public class StoveView extends Activity implements Observer {
     };
 
     //Called when external representation of stove change its state
-	@Override
+	//@Override
 	public void update(Observable observable, Object data) {
 		
 		//received a change in the stove burners state from external stove
