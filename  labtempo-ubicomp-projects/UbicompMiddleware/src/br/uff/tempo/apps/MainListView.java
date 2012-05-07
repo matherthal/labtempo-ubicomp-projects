@@ -1,6 +1,7 @@
 package br.uff.tempo.apps;
 
 import br.uff.tempo.*;
+import br.uff.tempo.apps.stove.StoveView;
 
 import android.app.ListActivity;
 import android.content.Intent;
