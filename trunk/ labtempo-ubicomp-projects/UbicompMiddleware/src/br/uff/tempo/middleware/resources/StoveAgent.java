@@ -119,4 +119,25 @@ public class StoveAgent extends ResourceAgent {
 			this.temperatureC = temperatureC;
 		}
 	}
+
+	public void notifyStakeholders() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean registerStakeholder(ResourceAgent rA) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void notificationHandler(String change) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void notificationHandler(ResourceAgent rA) {
+		// TODO Auto-generated method stub
+		
+	}
 }
