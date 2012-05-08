@@ -54,4 +54,25 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		this.map = map;
 	}
 
+	public void notifyStakeholders() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean registerStakeholder(ResourceAgent rA) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void notificationHandler(ResourceAgent rA) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notificationHandler(String change) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

@@ -11,13 +11,13 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	private ResourceRepository()
 	{
 		repository = new HashMap<String,ResourceAgent>();
-		instance = this;
+
 	}
 	
 	public static ResourceRepository getInstance()
 	{
 		if (instance == null)
-			return new ResourceRepository();
+			instance = new ResourceRepository();
 		return instance;
 	}
 
@@ -36,6 +36,28 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	public void remove(String url) {
 		repository.remove(url);		
 	}
+
+	public void notifyStakeholders() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public boolean registerStakeholder(ResourceAgent rA) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public void notificationHandler(ResourceAgent rA) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notificationHandler(String change) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	
 	
 
