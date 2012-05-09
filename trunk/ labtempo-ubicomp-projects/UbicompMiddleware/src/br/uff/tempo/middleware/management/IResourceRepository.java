@@ -2,7 +2,7 @@ package br.uff.tempo.middleware.management;
 
 import java.util.ArrayList;
 
-public interface IResourceRepository extends IResourceAgent{
+public interface IResourceRepository{
 	
 	public ResourceAgent get(String url);
 	public void add(ResourceAgent rA);

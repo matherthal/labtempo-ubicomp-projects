@@ -8,7 +8,9 @@ public class ResourceDiscovery extends ResourceAgent implements
 	private static ResourceDiscovery instance;
 
 	private ResourceDiscovery() {
-
+		setId(2);
+		setName("ResourceDiscovery");
+		setType("management");
 	}
 
 	public ArrayList<ResourceAgent> search(String query) {

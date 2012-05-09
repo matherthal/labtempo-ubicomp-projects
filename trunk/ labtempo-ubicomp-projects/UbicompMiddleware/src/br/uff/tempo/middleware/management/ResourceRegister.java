@@ -8,7 +8,9 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	
 	private ResourceRegister ()
 	{
-		rR = ResourceRepository.getInstance();
+		setId(1);
+		setName("ResourceRegister");
+		setType("management");
 	}
 	
 	public static ResourceRegister getInstance()
@@ -19,23 +21,10 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	}
 	
 	public void register(ResourceAgent rA) {
+		rR = ResourceRepository.getInstance();
 		rR.add(rA);
 	}
 
-	public void notifyStakeholders() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public boolean registerStakeholder(ResourceAgent rA) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void notificationHandler(ResourceAgent rA) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void notificationHandler(String change) {
