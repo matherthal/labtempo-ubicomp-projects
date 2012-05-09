@@ -146,7 +146,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 		while (i < stakeholders.size()) {
 			String url = stakeholders.get(i).getUrl();
 			// stakeholderStub = new ResourceAgentStub(url);
-			rDS.search(url).get(0).notificationHandler(change);//change = id, method name and value
+			if (change.contains(stakeholders.get(i).getMethod()))
+				rDS.search(url).get(0).notificationHandler(change);//change = id, method name and value
 			// stakeholders.get(i) = stakeholderStub;
 			// query by url return a unique instance
 		}
@@ -162,6 +163,11 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	
 	public boolean registerStakeholder(String method, String url) {
 		stakeholders.add(new Stakeholder(method,url));
+		return true;
+	}
+	
+	public boolean registerStakeholder(String method, ResourceAgent rA) {
+		stakeholders.add(new Stakeholder(method,rA));
 		return true;
 	}
 }

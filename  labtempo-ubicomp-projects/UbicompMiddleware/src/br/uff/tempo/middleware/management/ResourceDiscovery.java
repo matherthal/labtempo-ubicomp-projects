@@ -14,7 +14,9 @@ public class ResourceDiscovery extends ResourceAgent implements
 	}
 
 	public ArrayList<ResourceAgent> search(String query) {
-		// TODO Auto-generated method stub
+		ResourceRepository rR = ResourceRepository.getInstance();
+		if (query == "")
+			return rR.getList();
 		return null;
 	}
 

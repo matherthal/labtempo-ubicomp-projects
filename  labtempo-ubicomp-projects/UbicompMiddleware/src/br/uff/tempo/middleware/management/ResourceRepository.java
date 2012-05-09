@@ -28,11 +28,12 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	}
 
 	public ArrayList<ResourceAgent> getList(){
-		return (ArrayList<ResourceAgent>) repository.values();
+		return  new ArrayList<ResourceAgent>(repository.values());
 	}
 	
 	public void add(ResourceAgent rA) {
-		repository.put(rA.getURL(), rA);		
+		repository.put(rA.getURL(), rA);
+		rA.registerStakeholder("all", this);//all methods of IAR are stakeholders
 	}
 
 	public void remove(String url) {
