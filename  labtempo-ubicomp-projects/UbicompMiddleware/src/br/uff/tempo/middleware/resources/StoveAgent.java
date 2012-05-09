@@ -21,6 +21,11 @@ public class StoveAgent extends ResourceAgent {
 	private static final int SOUND_ID_OVEN_OPEN = R.raw.ovenopen;
 	private static final int SOUND_ID_OVEN_CLOSE = R.raw.ovenclose;
 	
+	public StoveAgent()
+	{
+		super("fogao",5);
+		setType("stove");
+	}
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -32,17 +37,17 @@ public class StoveAgent extends ResourceAgent {
      * runs in the same process as its clients, we don't need to deal with
      * IPC.
      */
-    /*public class StoveBinder extends Binder {
+    public class StoveBinder extends Binder {
     	StoveAgent getService() {
             return StoveAgent.this;
-        }
-    }*/
+    	}
+    }
 	
-    /*    public StoveBinder mBinder = new StoveBinder();
+    public StoveBinder mBinder = new StoveBinder();
     public IBinder onBind()
     {
     	return mBinder;
-    }*/
+    }
 	public void addComponent(Object comp)
 	{
 		if (testComponent(comp))
@@ -120,24 +125,10 @@ public class StoveAgent extends ResourceAgent {
 		}
 	}
 
-	public void notifyStakeholders() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public boolean registerStakeholder(ResourceAgent rA) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
 	@Override
 	public void notificationHandler(String change) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	public void notificationHandler(ResourceAgent rA) {
-		// TODO Auto-generated method stub
-		
-	}
 }

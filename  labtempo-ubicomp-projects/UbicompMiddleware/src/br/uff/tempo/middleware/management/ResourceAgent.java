@@ -26,13 +26,22 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	private ArrayList<Stakeholder> stakeholders;
 	private ResourceRegister rRS;
 	private ResourceDiscovery rDS;
-
+	private ArrayList<ResourceAgent> registeredList;
+	
 	public int getId() {
 		return id;
 	}
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getURL() {
@@ -47,15 +56,23 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 		return type;
 	}
 
+	public void setType(String type) {
+		this.type = type;
+	}
+
 	public ArrayList<ResourceAgent> getInterests() {
 		return interests;
 	}
 
 	public void setInterests(ArrayList<ResourceAgent> interests) {
-		this.interests = interests;
+		this.interests.addAll(interests);
 	}
 
-	private ResourceRegisterServiceStub rrs;
+	public ArrayList<ResourceAgent> getRegisteredList() {
+		return registeredList;
+	}
+
+	private ResourceRegister rrs;
 	private Caller caller;
 
 	public class ResourceBinder extends Binder {
@@ -67,19 +84,30 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	public ResourceBinder mBinder = new ResourceBinder();
 
 	public ResourceAgent() {
-		rrs = new ResourceRegisterServiceStub();
-		caller = new Caller("localahost");// temporally
+		//rrs = new ResourceRegisterServiceStub();
+		//caller = new Caller("localahost");// temporally
 		stakeholders = new ArrayList<Stakeholder>();
 		registered = false;
 		URL = "";// addres+port
 		id = 0;
-		rDS = ResourceDiscovery.getInstance();
+	}
+
+	public ResourceAgent(String name, int id) {
+		stakeholders = new ArrayList<Stakeholder>();
+		ResourceRepository rR = ResourceRepository.getInstance();
+		stakeholders.add(new Stakeholder("update",rR));
+		registered = false;
+		URL = "";// addres+port
+		this.id = id;
+		this.name = name;
 	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		identify();
+		rDS = ResourceDiscovery.getInstance();
+		registeredList = rDS.search("");//search all rR.contains("") = all IAR
 		// Exists only to defeat instantiation.
 		// rrs = ResourceRegisterServiceStub.getInstance();
 	}
@@ -102,21 +130,19 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	}
 
 	public boolean identify() {
+		rrs = ResourceRegister.getInstance();
 		rrs.register(this);
 		String result = "";
-		int i = 0; // 5 tries
-		while (i++ < 5 && (result = rrs.getResult()) == null)
+		//int i = 0; // 5 tries
+		//while (i++ < 5 && (result = rrs.getResult()) == null)
 			/* sleep time */;// while not respond wait because doesn't exist RRS
-		if (result == null)// false
-		{
-			return false;
-		}
 		registered = true;
 		return true;
 	}
 
 	public void notifyStakeholders(String change) {
 		int i = 0;
+		rDS = ResourceDiscovery.getInstance();
 		while (i < stakeholders.size()) {
 			String url = stakeholders.get(i).getUrl();
 			// stakeholderStub = new ResourceAgentStub(url);

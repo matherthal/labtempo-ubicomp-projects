@@ -11,7 +11,9 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	
 	public ResourceLocation()
 	{
-		rR = ResourceRepository.getInstance();
+		setId(3);
+		setName("ResourceLocation");
+		setType("management");
 		map = new HashMap<String,Local>();
 	}
 	
@@ -54,20 +56,6 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		this.map = map;
 	}
 
-	public void notifyStakeholders() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	public boolean registerStakeholder(ResourceAgent rA) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public void notificationHandler(ResourceAgent rA) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void notificationHandler(String change) {
