@@ -8,5 +8,6 @@ public interface IResourceRepository{
 	public void add(ResourceAgent rA);
 	public void remove(String url);
 	public ArrayList<ResourceAgent> getList();
+	public void update(ResourceAgent rA);
 	
 }
