@@ -2,6 +2,10 @@ package br.uff.tempo.middleware.management;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import br.uff.tempo.middleware.comm.Caller;
 import br.uff.tempo.middleware.comm.ResourceRegisterServiceStub;
@@ -140,7 +144,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 		return true;
 	}
 
-	public void notifyStakeholders(String change) {
+	public void notifyStakeholders(String change) throws JSONException {
 		int i = 0;
 		rDS = ResourceDiscovery.getInstance();
 		while (i < stakeholders.size()) {
@@ -157,9 +161,10 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	 * Segura notificação vinda de outra IAR
 	 * 
 	 * @param rA
-	 *            Possui o novo estado da instância
+	 *            It has new status of instance
+	 * @throws JSONException 
 	 */
-	public abstract void notificationHandler(String change);
+	public abstract void notificationHandler(String change) throws JSONException;
 	
 	public boolean registerStakeholder(String method, String url) {
 		stakeholders.add(new Stakeholder(method,url));
@@ -169,5 +174,14 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	public boolean registerStakeholder(String method, ResourceAgent rA) {
 		stakeholders.add(new Stakeholder(method,rA));
 		return true;
+	}
+	
+	public String change(String id, String method, Object value) throws JSONException
+	{
+		JSONObject json = new JSONObject();
+		json.put("id", id);
+		json.put("method", method);
+		json.put("value", value);
+		return json.toString();
 	}
 }
