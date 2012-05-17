@@ -20,14 +20,16 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		return instance;
 	}
 	
-	public void register(ResourceAgent rA) {
+	public boolean register(ResourceAgent rA) {
 		rR = ResourceRepository.getInstance();
 		rR.add(rA);
+		return true;
 	}
 	
-	public void unregister(ResourceAgent rA) {
+	public boolean unregister(String url) {
 		//rR = ResourceRepository.getInstance(); //already instantiated
-		rR.remove(rA.getURL());
+		rR.remove(url);
+		return true;
 	}
 
 	@Override

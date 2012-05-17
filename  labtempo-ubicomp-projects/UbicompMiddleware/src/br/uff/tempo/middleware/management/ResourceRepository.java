@@ -34,24 +34,27 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		return  new ArrayList<ResourceAgent>(repository.values());
 	}
 	
-	public void add(ResourceAgent rA) {
+	public boolean add(ResourceAgent rA) {
 		repository.put(rA.getURL(), rA);
 		rA.registerStakeholder("all", this);//all methods of IAR are stakeholders
+		return true;
 	}
 
-	public void remove(String url) {
-		repository.remove(url);		
+	public boolean remove(String url) {
+		repository.remove(url);
+		return true;
 	}
 
-	public void update(ResourceAgent rA)
+	public boolean update(ResourceAgent rA)
 	{
 		repository.put(rA.getURL(),rA);
+		return true;
 	}
 
 	@Override
 	public void notificationHandler(String change) throws JSONException {
-		ResourceAgent rA = (ResourceAgent)new JSONObject(change).get("value");
-		update(rA);
+		//ResourceAgent rA = (ResourceAgent)new JSONObject(change).get("value");
+		//update(rA);
 	}
 
 	

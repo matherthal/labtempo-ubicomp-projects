@@ -8,7 +8,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.uff.tempo.middleware.comm.Caller;
-import br.uff.tempo.middleware.comm.ResourceRegisterServiceStub;
+import br.uff.tempo.middleware.comm.stubs.ResourceRegisterStub;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;

@@ -40,5 +40,4 @@ public class ResourceDiscovery extends ResourceAgent implements
 		
 	}
 
-
 }
