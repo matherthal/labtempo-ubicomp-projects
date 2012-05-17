@@ -21,7 +21,6 @@ public class JSONHelper {
 		}
 
 		json.put("jsonrpc", "2.0");
-		json.put("id", "0"); // we don't really use this so value is always zero
 		json.put("method", method);
 		json.put("params", jsonparams);
 
@@ -33,6 +32,7 @@ public class JSONHelper {
 		JSONObject respIn = new JSONObject(result);
 		return respIn.get("result");
 	}
+
 
 	public static String createReply(Object msg) throws JSONException {
 		String result = msg.toString(); // FIXME: Can I return anything?

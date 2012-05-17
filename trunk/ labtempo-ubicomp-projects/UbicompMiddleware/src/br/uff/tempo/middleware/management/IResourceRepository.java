@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public interface IResourceRepository{
 	
 	public ResourceAgent get(String url);
-	public void add(ResourceAgent rA);
-	public void remove(String url);
+	public boolean add(ResourceAgent rA);
+	public boolean remove(String url);
 	public ArrayList<ResourceAgent> getList();
-	public void update(ResourceAgent rA);
+	public boolean update(ResourceAgent rA);
 	
 }
