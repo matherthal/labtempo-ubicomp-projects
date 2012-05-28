@@ -7,16 +7,52 @@
     <string name="button_stove">Fogão</string>
     <string name="regButton">Register this device</string>
     <string name="information">"Choose the intensity (0 means off) of the burner "</string>
-	    
+	<string name="textView_log">Log: </string>
+	
     <string-array name="devices_array">
-        <item>Televisão</item>
-        <item>Celular</item>
-        <item>Lâmpada</item>
-        <item>Tablet</item>
-        <item>Fogão</item>
-        <item>Computador</item>
-        <item>Radio</item>
-        <item>Relógio</item>
-        <item>Cama</item>
+        <item name="item_Rule">Regra</item>
+        <item name="item_tv">Televisão</item>
+        <item name="item_Cel">Celular</item>
+        <item name="item_Lamp">Lâmpada</item>
+        <item name="item_">Tablet</item>
+        <item name="item_stove">Fogão</item>
+        <item name="item_pc">Computador</item>
+        <item name="item_radio">Radio</item>
+        <item name="item_clock">Relógio</item>
+        <item name="item_bed">Cama</item>
     </string-array>
+    
+    <!-- RuleActivity -->
+	<string name="rule_creation">Criar regra:</string>
+	
+	<string name="rule_name">Nome</string>
+    
+    <!-- <string-array name="rule_select_ra_class_array">
+        <item name="rule_select_ra_class">Escolha um tipo de dispositivo:</item>
+    </string-array>
+    
+	<string-array name="rule_select_ra_array">
+	    <item name="rule_select_ra">Escolha o recurso:</item>
+    </string-array>
+    
+    <string-array name="rule_select_ra_var_array">
+        <item name="rule_select_ra_var">Escolha um atributo:</item>
+    </string-array>
+    
+    <string-array name="rule_select_operation_array">
+        <item name="rule_select_operation">Escolha a operação de comparação:</item>
+    </string-array>-->
+    <string name="rule_select_ra_class">Escolha um tipo de dispositivo:</string>
+    <string name="rule_select_ra">Escolha o recurso:</string>
+    <string name="rule_select_ra_var">Escolha um atributo:</string>
+    <string name="rule_select_operation">Escolha a operação de comparação:</string>
+    <string name="rule_comparing_val">Valor</string>
+    <string name="button_runscript">Executar regra</string>
+    <string name="button_createrule">Criar</string>
+    <string name="button_createrulecond">Criar</string>
+    <string name="button_addCond">+</string>
+    <string name="button_rmCond">-</string>
+    <string name="button_addAction">+</string>
+    <string name="button_rmAction">-</string>
+    <!-- End RuleActivity -->
 </resources>
