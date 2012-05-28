@@ -1,7 +1,9 @@
 package br.uff.tempo.middleware.management;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONException;
@@ -13,6 +15,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import br.uff.tempo.middleware.comm.Tuple;
 
 public abstract class ResourceAgent extends Service implements IResourceAgent {
 	private static final String TAG = "AgentBase";
@@ -31,6 +34,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	private ResourceRegister rRS;
 	private ResourceDiscovery rDS;
 	private ArrayList<ResourceAgent> registeredList;
+	
+	public abstract List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException;
 	
 	public int getId() {
 		return id;
@@ -158,7 +163,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	}
 
 	/**
-	 * Segura notificação vinda de outra IAR
+	 * Segura notificacao vinda de outra IAR
 	 * 
 	 * @param rA
 	 *            It has new status of instance
