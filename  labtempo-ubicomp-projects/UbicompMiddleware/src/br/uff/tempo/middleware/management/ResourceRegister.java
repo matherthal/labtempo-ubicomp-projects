@@ -1,5 +1,11 @@
 package br.uff.tempo.middleware.management;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
+
+import br.uff.tempo.middleware.comm.Tuple;
+
 public class ResourceRegister extends ResourceAgent implements IResourceRegister{
 
 	ResourceRepository rR;
@@ -37,7 +43,13 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		// TODO Auto-generated method stub
 		
 	}
-	
-	
 
+	@Override
+	public List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException {
+		/*List<Tuple<String, Method>> attribs = new ArrayList<Tuple<String,Method>>();
+		attribs.add(new Tuple<String, Method>("Busca Agente de Recurso", this.getClass().getMethod("register", ResourceAgent.class)));
+		attribs.add(new Tuple<String, Method>("Desregistrar", this.getClass().getMethod("unregister", String.class)));
+		return attribs;*/
+		return null;
+	}
 }
