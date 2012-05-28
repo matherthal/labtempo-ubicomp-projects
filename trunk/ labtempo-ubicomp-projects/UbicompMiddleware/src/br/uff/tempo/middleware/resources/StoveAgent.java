@@ -2,10 +2,14 @@ package br.uff.tempo.middleware.resources;
 
 import br.uff.tempo.*;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.apps.MediaService;
+import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.resources.interfaces.IStove;
 
 import android.content.Intent;
 import android.os.Binder;
@@ -13,7 +17,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 
-public class StoveAgent extends ResourceAgent {
+public class StoveAgent extends ResourceAgent implements IStove {
 	private static final String TAG = "StoveAgent";
 	
 	private List<Object> components;
@@ -131,4 +135,19 @@ public class StoveAgent extends ResourceAgent {
 		
 	}
 
+	@Override
+	public List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException {
+		List<Tuple<String, Method>> attribs = new ArrayList<Tuple<String,Method>>();
+		//attribs.add(new Tuple<String, Method>("Obter Agente de Recurso", this.getClass().getMethod("get", String.class)));
+		//attribs.add(new Tuple<String, Method>("Obter lista de Agentes de Recurso", this.getClass().getMethod("getList")));
+		//attribs.add(new Tuple<String, Method>("Adicionar Agente de Recurso", this.getClass().getMethod("add", ResourceAgent.class)));
+		//attribs.add(new Tuple<String, Method>("Remover Agente de Recurso", this.getClass().getMethod("remove", String.class)));
+		//attribs.add(new Tuple<String, Method>("Atualizar Agente de Recurso", this.getClass().getMethod("update", ResourceAgent.class)));
+		return attribs;
+	}
+	
+	@Override
+	public boolean getIsOn() {
+		return true;
+	}
 }
