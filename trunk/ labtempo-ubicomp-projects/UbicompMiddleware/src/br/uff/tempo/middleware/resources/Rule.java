@@ -6,13 +6,18 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
+import jboolexpr.BooleanExpression;
+import jboolexpr.MalformedBooleanException;
+
+
+import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.IResourceAgent;
 import br.uff.tempo.middleware.management.ResourceAgent;
 
-import android.os.Handler;
 
 /**
  * Class Rule
@@ -30,7 +35,9 @@ public class Rule extends ResourceAgent {
 	private String FLAG_STOP_RUNNING = "FLAG_STOP_RUNNING";
 	private int pNextCondition = 0; 
 	
-	public void addCondition(IResourceAgent ra, Method method, String operator, Object value) {
+	public String expression = "";
+	
+	public void addCondition(ResourceAgent ra, Method method, String operator, Object value) throws Exception {
 		//Add new condition
 		conditions.add(new Condition(ra, method, operator, value));
 		//Order conditions by its timeouts
@@ -103,77 +110,24 @@ public class Rule extends ResourceAgent {
 		}
 	}*/
 	
-	/**
-	 * Class Condition
-	 * @author matheus
-	 * Stores the reference to the resource agent and the method used to get its context variable
-	 * Also stores the value to compare to the context variable and the logical operation to be realized between them
-	 * It implements the method to make the comparation, or test: the method test
-	 */
-	public class Condition implements InvocationHandler {
-		public IResourceAgent ra;
-		public Method method;
-		public String operator = "==";
-		public Object value;
-		public long timeout;
-		
-		/**
-		 * Constructor
-		 * @param ra
-		 * @param method
-		 * @param operator
-		 * @param value
-		 * It creates a condition
-		 */
-		public Condition(IResourceAgent ra, Method method, String operator, Object value) {
-			this.ra = ra;
-			this.method = method;
-			this.operator = operator;
-			this.value = value;
-			this.timeout = 0;
-		}
-
-		/**
-		 * Constructor
-		 * @param ra
-		 * @param method
-		 * @param operator
-		 * @param value
-		 * It creates a condition
-		 */
-		public Condition(IResourceAgent ra, Method method, String operator, Object value, long timeout) {
-			this.ra = ra;
-			this.method = method;
-			this.operator = operator;
-			this.value = value;
-			this.timeout = timeout;
-		}
-		
-		public boolean test() throws Throwable {
-			Object attrib = this.invoke(ra, method, new Object[0]);
-			if (operator.equals("==")) //Operator ==
-	            return attrib.equals(value); 
-			else if (operator.equals("!=")) //Operator !=
-	            return !attrib.equals(value);
-			else //Operator error
-				return false;
-		}
-		
-		public Object invoke(Object ra, Method method, Object[] args) throws Throwable {
-			return method.invoke(ra, args);
-		}
-	}
-	
-	class ConditionsComparator implements Comparator<Condition> {
-		public int compare(Condition condA, Condition condB) {				
-			return (int)(condA.timeout - condB.timeout);
-		}
-	}
-
-
 	@Override
 	public void notificationHandler(String change) {
 		// TODO Auto-generated method stub
+	}
+	
+	public boolean runScript(String script) throws MalformedBooleanException {
+		String strBoolExpr = "!true&&false||true";
+		BooleanExpression boolExpr = BooleanExpression.readLeftToRight(strBoolExpr);
+		boolean bool = boolExpr.booleanValue();
+		return bool;
+	}
+	
+	private class Script {
 		
+	}
+
+	@Override
+	public List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException {
+		return null;
 	}
 }
