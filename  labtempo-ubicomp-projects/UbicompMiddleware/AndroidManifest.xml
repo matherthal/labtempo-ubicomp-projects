@@ -21,9 +21,13 @@
         </activity>
         
         <activity android:name=".apps.stove.StoveView" />
+        <activity android:name=".apps.RuleActivity" />
+        <activity android:name=".apps.RuleConditionActivity" />
+        <activity android:name=".apps.RuleActionActivity" />
         
         <service android:enabled="true" android:name=".middleware.management.ResourceAgent" />
         <service android:enabled="true" android:name=".middleware.resources.StoveAgent" />
+        <service android:enabled="true" android:name=".middleware.resources.Rule" />
 		
         <service android:enabled="true" android:name=".apps.MediaService" />
     </application>
