@@ -1,7 +1,11 @@
 package br.uff.tempo.middleware.management;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+
+import br.uff.tempo.middleware.comm.Tuple;
 
 public class ResourceLocation extends ResourceAgent implements IResourceLocation{
 
@@ -61,6 +65,16 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	public void notificationHandler(String change) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException {
+		/*List<Tuple<String, Method>> attribs = new ArrayList<Tuple<String,Method>>();
+		attribs.add(new Tuple<String, Method>("Busca Agente de Recurso", this.getClass().getMethod("search", ResourceAgent.class)));
+		attribs.add(new Tuple<String, Method>("Busca de vizinhos", this.getClass().getMethod("getNeighbors", String.class)));
+		attribs.add(new Tuple<String, Method>("Busca por proximidade", this.getClass().getMethod("queryByProximity", Local.class, ArrayList.class, ArrayList.class)));
+		return attribs;*/
+		return null;
 	}
 
 }
