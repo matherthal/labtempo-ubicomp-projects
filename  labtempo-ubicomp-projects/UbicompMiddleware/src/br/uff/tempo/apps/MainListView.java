@@ -23,7 +23,7 @@ public class MainListView extends ListActivity {
 		String[] devices = getResources().getStringArray(R.array.devices_array);
 		setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, devices));
 		
-		ListView lv = getListView();
+		final ListView lv = getListView();
 		lv.setTextFilterEnabled(true);
 		
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -32,10 +32,21 @@ public class MainListView extends ListActivity {
 				// When clicked, show a toast with the TextView text
 				//String dev = ((TextView) view).getText().toString();
 				//Toast.makeText(getApplicationContext(), dev, Toast.LENGTH_SHORT).show();
+				String item = lv.getItemAtPosition(position).toString();
+				Toast.makeText(MainListView.this, "Item = " + item.toString(), Toast.LENGTH_SHORT).show();
 				
-				//Calling appropriate activity
-				Intent intent = new Intent(MainListView.this, StoveView.class);
-		        startActivity(intent);
+				// Calling appropriate activity
+				if (item.equals("Regra")) {
+					Intent intent = new Intent(MainListView.this,
+							RuleActivity.class);
+					startActivity(intent);
+				} else if (item.equals("Fogão")) {
+					Intent intent = new Intent(MainListView.this,
+							StoveView.class);
+					startActivity(intent);
+				} else {
+					Toast.makeText(MainListView.this, "Não existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();
+				}
 			}
 		});
 	}
