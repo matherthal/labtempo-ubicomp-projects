@@ -9,6 +9,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.uff.tempo.middleware.comm.Tuple;
+import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 
 public class ResourceRepository extends ResourceAgent implements IResourceRepository {
 	
@@ -19,15 +20,20 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	private ResourceRepository()
 	{
 		setId(0);
-
+		setURL("br.uff.tempo.middleware.management.ResourceRepository");
 		setName("ResourceRepository");
 		setType("management");	
-
+		
 		repository = new ArrayList<String>();
 		repository.add("br.uff.tempo.middleware.management.ResourceDiscovery");
 		repository.add("br.uff.tempo.middleware.management.ResourceRegister");
 		repository.add("br.uff.tempo.middleware.management.ResourceLocation");
 		repository.add("br.uff.tempo.middleware.management.ResourceRepository");
+		ResourceContainer container = ResourceContainer.getInstance();
+		container.add(this);
+		container.add(ResourceDiscovery.getInstance());
+		container.add(ResourceRegister.getInstance());
+		container.add(ResourceLocation.getInstance());
 	}
 	
 	public static ResourceRepository getInstance()

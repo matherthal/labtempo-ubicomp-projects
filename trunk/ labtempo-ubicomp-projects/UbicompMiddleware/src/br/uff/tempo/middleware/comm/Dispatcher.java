@@ -15,21 +15,22 @@ import org.json.JSONObject;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
-import br.uff.tempo.middleware.management.IResourceAgent;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.ResourceContainer;
 import br.uff.tempo.middleware.management.ResourceDiscovery;
 import br.uff.tempo.middleware.management.ResourceRegister;
 import br.uff.tempo.middleware.management.ResourceRepository;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public class Dispatcher  {
 	//Dispatcher is a Singleton
 	private static Dispatcher instance;
-	private Map<String,ResourceAgent> instances;
+	private ResourceContainer instances;
 	private Map<String,ArrayList<Method>> interfaces;//IAR and method list
 	
 	private Dispatcher()
 	{
-		instances = new HashMap<String, ResourceAgent>();
+		instances = ResourceContainer.getInstance();
 		interfaces = new HashMap<String,ArrayList<Method>>();
 	}
 	private void update() throws ClassNotFoundException
@@ -45,11 +46,7 @@ public class Dispatcher  {
 			for (Method method : methods)
 				methodsList.add(method);
 			interfaces.put(resource, methodsList);
-		}
-		instances.put("br.uff.tempo.middleware.management.ResourceDiscovery",ResourceDiscovery.getInstance());
-		instances.put("br.uff.tempo.middleware.management.ResourceRegister",ResourceRegister.getInstance());
-		instances.put("br.uff.tempo.middleware.management.ResourceRepository", ResourceRepository.getInstance());
-		
+		}		
 	}
 	
 	private Class getClassOf(String resource) throws ClassNotFoundException

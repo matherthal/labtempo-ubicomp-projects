@@ -18,6 +18,10 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import br.uff.tempo.middleware.comm.Tuple;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
+import br.uff.tempo.middleware.management.utils.Stakeholder;
 
 public abstract class ResourceAgent extends Service implements IResourceAgent {
 	private static final String TAG = "AgentBase";
@@ -100,7 +104,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 
 	public ResourceBinder mBinder = new ResourceBinder();
 
-	public ResourceAgent() {
+	public ResourceAgent() {//depreciated
 		//rrs = new ResourceRegisterServiceStub();
 		//caller = new Caller("localahost");// temporally
 		stakeholders = new ArrayList<Stakeholder>();
@@ -154,12 +158,12 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 		//while (i++ < 5 && (result = rrs.getResult()) == null)
 			/* sleep time */;// while not respond wait because doesn't exist RRS
 		registered = true;
+		ResourceContainer.getInstance().add(this);
 		return true;
 	}
 
 	public void notifyStakeholders(String change) throws JSONException {
 		int i = 0;
-		rDS = ResourceDiscovery.getInstance();
 		while (i < stakeholders.size()) {
 			String url = stakeholders.get(i).getUrl();
 			// stakeholderStub = new ResourceAgentStub(url);

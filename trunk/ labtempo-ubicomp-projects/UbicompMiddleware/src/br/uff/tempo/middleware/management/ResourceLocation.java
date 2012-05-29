@@ -6,19 +6,32 @@ import java.util.HashMap;
 import java.util.List;
 
 import br.uff.tempo.middleware.comm.Tuple;
+import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
+import br.uff.tempo.middleware.management.utils.Local;
 
 public class ResourceLocation extends ResourceAgent implements IResourceLocation{
 
 	private ResourceRepository rR;
 	
+	private static ResourceLocation instance;
+	
 	HashMap<String,Local> map;
 	
-	public ResourceLocation()
+	private ResourceLocation()
 	{
 		setId(3);
+		setURL("br.uff.tempo.middleware.management.ResourceLocation");
 		setName("ResourceLocation");
 		setType("management");
 		map = new HashMap<String,Local>();
+		ResourceContainer.getInstance().add(this);
+	}
+	
+	public static ResourceLocation getInstance()
+	{
+		if (instance == null)
+			instance = new ResourceLocation();
+		return instance;
 	}
 	
 	public ArrayList<Local> search(ResourceAgent rA) {

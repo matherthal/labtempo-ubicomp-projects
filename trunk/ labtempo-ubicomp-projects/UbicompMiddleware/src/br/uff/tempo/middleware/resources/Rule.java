@@ -15,8 +15,8 @@ import jboolexpr.MalformedBooleanException;
 */
 
 import br.uff.tempo.middleware.comm.Tuple;
-import br.uff.tempo.middleware.management.IResourceAgent;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 
 /**

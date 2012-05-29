@@ -7,8 +7,8 @@ import org.json.JSONException;
 
 import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.comm.Tuple;
-import br.uff.tempo.middleware.management.IResourceRepository;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 
 public class ResourceRepositoryStub extends Stub implements IResourceRepository{
 
