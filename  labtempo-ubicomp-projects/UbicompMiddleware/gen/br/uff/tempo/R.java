@@ -25,14 +25,31 @@ public final class R {
     }
     public static final class id {
         public static final int btn1=0x7f070005;
-        public static final int btnReg=0x7f070006;
-        public static final int button1=0x7f07000a;
+        public static final int btnReg=0x7f070017;
+        public static final int button1=0x7f07001b;
+        public static final int buttonAddAction=0x7f07000c;
+        public static final int buttonAddCond=0x7f070009;
+        public static final int buttonCreateRule=0x7f07000e;
+        public static final int buttonCreateRuleCond=0x7f070016;
+        public static final int buttonRmAction=0x7f07000d;
+        public static final int buttonRmCond=0x7f07000a;
+        public static final int buttonRunScript=0x7f07000f;
         public static final int buttonStove=0x7f070001;
-        public static final int editText1=0x7f070009;
-        public static final int panel=0x7f070007;
+        public static final int editText1=0x7f07001a;
+        public static final int editTextCreateRule=0x7f070007;
+        public static final int editTextValue=0x7f070015;
+        public static final int listViewActions=0x7f07000b;
+        public static final int listViewConds=0x7f070008;
+        public static final int panel=0x7f070018;
         public static final int popup_element=0x7f070002;
         public static final int seekBar1=0x7f070004;
-        public static final int text=0x7f070008;
+        public static final int spinnerClasseChoice=0x7f070011;
+        public static final int spinnerOperation=0x7f070014;
+        public static final int spinnerRAAttribChoice=0x7f070013;
+        public static final int spinnerRAChoice=0x7f070012;
+        public static final int text=0x7f070019;
+        public static final int textViewLog=0x7f070010;
+        public static final int textViewRule=0x7f070006;
         public static final int textViewStatus=0x7f070000;
         public static final int tv1=0x7f070003;
     }
@@ -40,8 +57,10 @@ public final class R {
         public static final int list_item=0x7f030000;
         public static final int main=0x7f030001;
         public static final int popup=0x7f030002;
-        public static final int stove=0x7f030003;
-        public static final int testmain=0x7f030004;
+        public static final int rule=0x7f030003;
+        public static final int rule_condition=0x7f030004;
+        public static final int stove=0x7f030005;
+        public static final int testmain=0x7f030006;
     }
     public static final class raw {
         public static final int ovenclose=0x7f040000;
@@ -50,10 +69,43 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f050001;
+        public static final int button_addAction=0x7f050013;
+        public static final int button_addCond=0x7f050011;
+        public static final int button_createrule=0x7f05000f;
+        public static final int button_createrulecond=0x7f050010;
+        public static final int button_rmAction=0x7f050014;
+        public static final int button_rmCond=0x7f050012;
+        public static final int button_runscript=0x7f05000e;
         public static final int button_stove=0x7f050003;
         public static final int hello=0x7f050000;
         public static final int information=0x7f050005;
         public static final int ip_ok=0x7f050002;
         public static final int regButton=0x7f050004;
+        public static final int rule_comparing_val=0x7f05000d;
+        /**  RuleActivity 
+         */
+        public static final int rule_creation=0x7f050007;
+        public static final int rule_name=0x7f050008;
+        public static final int rule_select_operation=0x7f05000c;
+        public static final int rule_select_ra=0x7f05000a;
+        /**  <string-array name="rule_select_ra_class_array">
+        <item name="rule_select_ra_class">Escolha um tipo de dispositivo:</item>
+    </string-array>
+    
+	<string-array name="rule_select_ra_array">
+	    <item name="rule_select_ra">Escolha o recurso:</item>
+    </string-array>
+    
+    <string-array name="rule_select_ra_var_array">
+        <item name="rule_select_ra_var">Escolha um atributo:</item>
+    </string-array>
+    
+    <string-array name="rule_select_operation_array">
+        <item name="rule_select_operation">Escolha a operação de comparação:</item>
+    </string-array>
+         */
+        public static final int rule_select_ra_class=0x7f050009;
+        public static final int rule_select_ra_var=0x7f05000b;
+        public static final int textView_log=0x7f050006;
     }
 }

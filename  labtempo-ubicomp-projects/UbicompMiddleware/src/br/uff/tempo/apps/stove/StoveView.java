@@ -98,8 +98,8 @@ public class StoveView extends Activity implements Observer {
     }
     
     public void onRegisterClick(View target) {
-    	
-    	stove.identify();
+    	if (stove !=null)
+    		stove.identify();
     	Toast.makeText(StoveView.this, "Register Called", Toast.LENGTH_LONG).show();
     }
     

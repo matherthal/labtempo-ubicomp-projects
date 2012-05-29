@@ -12,11 +12,11 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 
 public class ResourceRepositoryStub extends Stub implements IResourceRepository{
 
-	public ResourceRepositoryStub(String serverIP) {
-		super(serverIP);
+	public ResourceRepositoryStub(String calleeID) {
+		super(calleeID);
 	}
 
-	public ResourceAgent get(String url) {
+	public String get(String url) {
 		String method = "get";
 
 		try {
@@ -26,20 +26,20 @@ public class ResourceRepositoryStub extends Stub implements IResourceRepository{
 			// Create message
 			String msg = JSONHelper.createMethodCall(method, params);
 			// Get answer from remote method call
-			return (ResourceAgent)JSONHelper.getMessage(caller.sendMessage(msg));
+			return (String)JSONHelper.getMessage(caller.sendMessage(msg));
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
 		}
 	}
 
-	public boolean add(ResourceAgent rA) {
+	public boolean add(String url) {
 		String method = "add";
 
 		try {
 			// Set params
 			List<Tuple> params = new ArrayList<Tuple>();
-			params.add(new Tuple<String, Object>("rA", rA));
+			params.add(new Tuple<String, Object>("url", url));
 			// Create message
 			String msg = JSONHelper.createMethodCall(method, params);
 			// Get answer from remote method call
@@ -67,18 +67,18 @@ public class ResourceRepositoryStub extends Stub implements IResourceRepository{
 		}
 	}
 
-	public ArrayList<ResourceAgent> getList() {
+	public ArrayList<String> getList() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public boolean update(ResourceAgent rA) {
+	public boolean update(String url) {
 		String method = "update";
 
 		try {
 			// Set params
 			List<Tuple> params = new ArrayList<Tuple>();
-			params.add(new Tuple<String, Object>("rA", rA));
+			params.add(new Tuple<String, Object>("url", url));
 			// Create message
 			String msg = JSONHelper.createMethodCall(method, params);
 			// Get answer from remote method call
@@ -88,5 +88,23 @@ public class ResourceRepositoryStub extends Stub implements IResourceRepository{
 			return false;
 		}
 	}
+
+	public ArrayList<String> getSubList(String url) {
+		String method = "getSubList";
+
+		try {
+			// Set params
+			List<Tuple> params = new ArrayList<Tuple>();
+			params.add(new Tuple<String, Object>("url", url));
+			// Create message
+			String msg = JSONHelper.createMethodCall(method, params);
+			// Get answer from remote method call
+			return (ArrayList<String>)JSONHelper.getMessage(caller.sendMessage(msg));
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+
 
 }

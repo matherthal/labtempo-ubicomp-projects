@@ -4,10 +4,12 @@ import java.util.ArrayList;
 
 public interface IResourceRepository{
 	
-	public ResourceAgent get(String url);
-	public boolean add(ResourceAgent rA);
+	public String get(String url);
+	public boolean add(String url);
 	public boolean remove(String url);
-	public ArrayList<ResourceAgent> getList();
-	public boolean update(ResourceAgent rA);
+	public ArrayList<String> getList();
+	public ArrayList<String> getSubList(String url);
+	public boolean update(String url);
+	
 	
 }

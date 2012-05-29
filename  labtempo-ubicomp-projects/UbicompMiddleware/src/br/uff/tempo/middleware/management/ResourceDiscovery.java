@@ -17,11 +17,14 @@ public class ResourceDiscovery extends ResourceAgent implements
 		setType("management");
 	}
 
-	public ArrayList<ResourceAgent> search(String query) {
+
+	public ArrayList<String> search(String query) {
 		ResourceRepository rR = ResourceRepository.getInstance();
 		if (query == "")
 			return rR.getList();
-		return null;
+		else
+			return rR.getSubList(query);
+		
 	}
 
 	private ArrayList<ResourceAgent> queryByLocal(String query) {
@@ -31,6 +34,7 @@ public class ResourceDiscovery extends ResourceAgent implements
 	private ArrayList<ResourceAgent> queryByProximity(String query) {
 		return null;
 	}
+	
 
 	public static ResourceDiscovery getInstance() {
 		if (instance == null)
@@ -51,6 +55,12 @@ public class ResourceDiscovery extends ResourceAgent implements
 		attribs.add(new Tuple<String, Method>("Busca por local", this.getClass().getMethod("queryByLocal", String.class)));
 		attribs.add(new Tuple<String, Method>("Busca por proximidade", this.getClass().getMethod("queryByProximity", String.class)));
 		return attribs;*/
+		return null;
+	}
+
+
+	public ResourceAgent get(String url) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 

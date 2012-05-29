@@ -27,7 +27,8 @@ public class StoveAgent extends ResourceAgent implements IStove {
 	
 	public StoveAgent()
 	{
-		super("fogao",5);
+		super("br.uff.tempo.middleware.resources.StoveAgent",5);
+		
 		setType("stove");
 	}
 	@Override
@@ -146,7 +147,7 @@ public class StoveAgent extends ResourceAgent implements IStove {
 		return attribs;
 	}
 	
-	@Override
+	//@Override
 	public boolean getIsOn() {
 		return true;
 	}

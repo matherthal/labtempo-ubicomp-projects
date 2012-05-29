@@ -19,7 +19,6 @@ public class Person extends ResourceAgent implements IPerson{
 		
 	}
 
-	@Override
 	public Date getAge() {
 		return null;
 	}

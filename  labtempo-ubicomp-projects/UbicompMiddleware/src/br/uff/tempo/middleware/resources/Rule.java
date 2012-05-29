@@ -10,9 +10,9 @@ import java.io.Serializable;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import jboolexpr.BooleanExpression;
+/*import jboolexpr.BooleanExpression;
 import jboolexpr.MalformedBooleanException;
-
+*/
 
 import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.IResourceAgent;
@@ -37,6 +37,18 @@ public class Rule extends ResourceAgent {
 	
 	public String expression = "";
 	
+	public Rule()
+	{
+		super("br.uff.tempo.middleware.resources.Rule",6);//id hard coded
+		setType("rule");
+		
+	}
+	
+	@Override
+	public void onCreate() {
+		super.onCreate();
+		//register();
+	}
 	public void addCondition(ResourceAgent ra, Method method, String operator, Object value) throws Exception {
 		//Add new condition
 		conditions.add(new Condition(ra, method, operator, value));
@@ -115,12 +127,12 @@ public class Rule extends ResourceAgent {
 		// TODO Auto-generated method stub
 	}
 	
-	public boolean runScript(String script) throws MalformedBooleanException {
+	/*public boolean runScript(String script) throws MalformedBooleanException {
 		String strBoolExpr = "!true&&false||true";
 		BooleanExpression boolExpr = BooleanExpression.readLeftToRight(strBoolExpr);
 		boolean bool = boolExpr.booleanValue();
 		return bool;
-	}
+	}*/
 	
 	private class Script {
 		

@@ -142,7 +142,7 @@ public class RuleActivity extends Activity {
 
 			boolean result = false;
 			// result = rule.runScript(et.getText().toString());
-			result = rule.runScript("true||false&&true");
+			//result = rule.runScript("true||false&&true");
 			TextView tv = (TextView) view.findViewById(R.id.textViewLog);
 			tv.setText(result ? "ação disparada" : " ação não disparada");
 			tv.append("\nRegra <" + rule.expression + "> "
@@ -167,7 +167,7 @@ public class RuleActivity extends Activity {
 			boolean result = false;
 			try {
 				// FIXME: it's not this way that we run rules
-				result = rule.runScript(rule.expression);
+				//result = rule.runScript(rule.expression);
 				// } catch (EvalError e) {
 				// Toast.makeText(RuleActivity.this, "Erro ao Executar a regra",
 				// Toast.LENGTH_SHORT).show();
@@ -187,7 +187,7 @@ public class RuleActivity extends Activity {
 	}
 
 	private ServiceConnection mConnection = new ServiceConnection() {
-		@Override
+		
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			ResourceBinder binder = (ResourceBinder) service;
 			rule = (Rule) binder.getService();
@@ -197,7 +197,7 @@ public class RuleActivity extends Activity {
 					Toast.LENGTH_SHORT).show();
 		}
 
-		@Override
+		
 		public void onServiceDisconnected(ComponentName className) {
 			rule = null;
 			Toast.makeText(RuleActivity.this, "Agente de Regras Desconectado",

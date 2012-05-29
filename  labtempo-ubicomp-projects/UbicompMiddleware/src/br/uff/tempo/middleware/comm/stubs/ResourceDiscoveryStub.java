@@ -15,12 +15,12 @@ public class ResourceDiscoveryStub extends Stub implements IResourceDiscovery{
 	
 	
 
-	public ResourceDiscoveryStub(String serverIP) {
-		super(serverIP);
+	public ResourceDiscoveryStub(String calleeID) {
+		super(calleeID);
 		// TODO Auto-generated constructor stub
 	}
 
-	public ArrayList<ResourceAgent> search(String query) {
+	public ArrayList<String> search(String query) {
 		String method = "search";
 
 		try {
@@ -30,11 +30,18 @@ public class ResourceDiscoveryStub extends Stub implements IResourceDiscovery{
 			// Create message
 			String msg = JSONHelper.createMethodCall(method, params);
 			// Get answer from remote method call
-			return (ArrayList<ResourceAgent>)JSONHelper.getMessage(caller.sendMessage(msg));
+
+			ArrayList<String> result = (ArrayList<String>)JSONHelper.getMessage(caller.sendMessage(msg));
+			return result;
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;
 		}
+	}
+
+	public ResourceAgent get(String url) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

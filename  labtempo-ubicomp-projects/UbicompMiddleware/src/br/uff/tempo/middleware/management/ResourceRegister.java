@@ -26,9 +26,9 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		return instance;
 	}
 	
-	public boolean register(ResourceAgent rA) {
+	public boolean register(String url) {
 		rR = ResourceRepository.getInstance();
-		rR.add(rA);
+		rR.add(url);
 		return true;
 	}
 	
