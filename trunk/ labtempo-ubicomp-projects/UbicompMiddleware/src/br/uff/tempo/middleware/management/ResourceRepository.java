@@ -12,15 +12,22 @@ import br.uff.tempo.middleware.comm.Tuple;
 
 public class ResourceRepository extends ResourceAgent implements IResourceRepository {
 	
-	HashMap<String,ResourceAgent> repository;
+
+	ArrayList<String> repository;
 	private static ResourceRepository instance;
 	
 	private ResourceRepository()
 	{
 		setId(0);
-		setName("ResourceDiscovery");
+
+		setName("ResourceRepository");
 		setType("management");	
-		repository = new HashMap<String,ResourceAgent>();
+
+		repository = new ArrayList<String>();
+		repository.add("br.uff.tempo.middleware.management.ResourceDiscovery");
+		repository.add("br.uff.tempo.middleware.management.ResourceRegister");
+		repository.add("br.uff.tempo.middleware.management.ResourceLocation");
+		repository.add("br.uff.tempo.middleware.management.ResourceRepository");
 	}
 	
 	public static ResourceRepository getInstance()
@@ -30,17 +37,23 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		return instance;
 	}
 
-	public ResourceAgent get(String url) {
-		return repository.get(url);
+
+	public String get(String url) {
+		for (int i = 0; i< repository.size(); i++)
+			if (repository.get(i).contains(url))
+					return repository.get(i);
+		return null;	
 	}
 
-	public ArrayList<ResourceAgent> getList(){
-		return  new ArrayList<ResourceAgent>(repository.values());
+
+	public ArrayList<String> getList(){
+		return  repository;
 	}
 	
-	public boolean add(ResourceAgent rA) {
-		repository.put(rA.getURL(), rA);
-		rA.registerStakeholder("all", this);//all methods of IAR are stakeholders
+	
+	
+	public boolean add(String url) {
+		repository.add(url);
 		return true;
 	}
 
@@ -49,9 +62,11 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		return true;
 	}
 
-	public boolean update(ResourceAgent rA)
+
+	public boolean update(String url)
 	{
-		repository.put(rA.getURL(),rA);
+
+		repository.add(url);
 		return true;
 	}
 
@@ -60,6 +75,20 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		//ResourceAgent rA = (ResourceAgent)new JSONObject(change).get("value");
 		//update(rA);
 	}
+
+	public ArrayList<String> getSubList(String url) {
+		ArrayList<String> result = new ArrayList<String>();
+		for (int i = 0; i< repository.size(); i++)
+			if (repository.get(i).contains(url))
+					 result.add(repository.get(i));
+		if (result.size() == 0)
+			return null;
+		else
+			return result;
+	}
+
+	
+	
 
 	@Override
 	public List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException {

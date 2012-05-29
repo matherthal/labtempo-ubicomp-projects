@@ -97,7 +97,7 @@ public class Callee {
                         	System.out.println("\n" + msg);
                             //printOnScreen("\n" + outgoingMsg);
                         	//TODO: what to answer???
-                        	String outgoingMsg = JSONHelper.createReply("received");
+                        	Object outgoingMsg = JSONHelper.createReply("received");
                             out.println(outgoingMsg);
                     	}
                     	

@@ -1,45 +1,56 @@
 package br.uff.tempo.middleware.comm;
 
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 public class JSONHelper {
 	public static String createMethodCall(String method, List<Tuple> params)
 			throws JSONException {
-		JSONObject json = new JSONObject();
-		JSONArray jsonparams = new JSONArray();
-
+		Map<String, Object> methodCall = new HashMap<String, Object>();
+		Map<String, Object> jsonparams = new HashMap<String, Object>();
 		Iterator<Tuple> iterator = params.iterator();
 		Tuple<String, Object> tp;
 		while (iterator.hasNext()) {
 			tp = iterator.next();
-			jsonparams.put(new JSONObject().put(tp.key, tp.value));
+			jsonparams.put(tp.key, tp.value);
 		}
 
-		json.put("jsonrpc", "2.0");
-		json.put("method", method);
-		json.put("params", jsonparams);
+		methodCall.put("jsonrpc", "2.0");
+		methodCall.put("method", method);
+		methodCall.put("params", jsonparams);
 
-		return json.toString();
+		return (new Gson()).toJson(methodCall);
 	}
 
 	public static Object getMessage(String result) throws JSONException {
 		// Parse response string
-		JSONObject respIn = new JSONObject(result);
-		return respIn.get("result");
+		Type collectionType = new TypeToken<HashMap<String, Object>>(){}.getType();
+		Map<String,Object> response = (new Gson()).fromJson(result, collectionType);
+		Object obj = response.get("result");
+		return obj;
 	}
 
 
 	public static String createReply(Object msg) throws JSONException {
-		String result = msg.toString(); // FIXME: Can I return anything?
-		JSONObject respOut = new JSONObject();
-		respOut.put("result", result);
-		respOut.put("id", "0"); // we don't really use this so value is always zero
-		return respOut.toString();
+		 // FIXME: Can I return anything?
+		
+		Map<String, Object> response = new HashMap<String, Object>();
+		response.put("result", msg);
+		response.put("id", "0"); // we don't really use this so value is always zero
+		String resultMsg = (new Gson()).toJson(response);
+		
+		return resultMsg;
 		// Serialise response to JSON-encoded string
 		// The response string can now be sent back to the client...
 	}

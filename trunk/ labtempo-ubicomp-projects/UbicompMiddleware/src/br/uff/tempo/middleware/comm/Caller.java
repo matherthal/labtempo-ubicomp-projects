@@ -5,26 +5,54 @@ import java.io.BufferedWriter;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.lang.reflect.InvocationTargetException;
 import java.net.InetAddress;
 import java.net.Socket;
+
+import org.json.JSONException;
+
 import android.os.Handler;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class Caller {
-    private String serverIP = "";
+    private String calleeAgent;
+    
     private int port = 8080;
     private Handler handler = new Handler();
     
-	public Caller(String serverIP) {
-		this.serverIP = serverIP;
+	public Caller(String calleeAgent) {
+		this.calleeAgent = calleeAgent;
 		//serverIP = "192.168.1.70";  //FIXME: IP shouldn't be hardcoded 
 	}
 	
+	public String getAgentCaller() {
+		return calleeAgent;
+	}
+
 	public String sendMessage(String jsonString) {
+		//add callee + methodCaller to JSONObject
 		
-		return "";
+		try {
+			return Dispatcher.getInstance().dispatch(calleeAgent,jsonString);
+		} catch (IllegalArgumentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return "error";
 	}	
 	
 }

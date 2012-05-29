@@ -10,6 +10,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.uff.tempo.middleware.comm.Caller;
+import br.uff.tempo.middleware.comm.stubs.ResourceAgentStub;
+import br.uff.tempo.middleware.comm.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.comm.stubs.ResourceRegisterStub;
 import android.app.Service;
 import android.content.Intent;
@@ -32,8 +34,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	private ArrayList<ResourceAgent> interests;
 	private ArrayList<Stakeholder> stakeholders;
 	private ResourceRegister rRS;
-	private ResourceDiscovery rDS;
-	private ArrayList<ResourceAgent> registeredList;
+	private IResourceDiscovery rDS;
+	private ArrayList<String> registeredList;
+	private final static String RDS_URL = "br.uff.tempo.middleware.management.ResourceDiscovery";
 	
 	public abstract List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException;
 	
@@ -77,11 +80,16 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 		this.interests.addAll(interests);
 	}
 
-	public ArrayList<ResourceAgent> getRegisteredList() {
+	public ArrayList<String> getRegisteredList() {
 		return registeredList;
 	}
+	
+	public String getResourceClassName()
+	{
+		return this.getClass().getName();
+	}
 
-	private ResourceRegister rrs;
+	private IResourceRegister rrs;
 	private Caller caller;
 
 	public class ResourceBinder extends Binder {
@@ -103,10 +111,10 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 
 	public ResourceAgent(String name, int id) {
 		stakeholders = new ArrayList<Stakeholder>();
-		ResourceRepository rR = ResourceRepository.getInstance();
-		stakeholders.add(new Stakeholder("update",rR));
+
+		//stakeholders.add(new Stakeholder("update",rR));
 		registered = false;
-		URL = "";// addres+port
+		URL = name;// addres+port+type+name
 		this.id = id;
 		this.name = name;
 	}
@@ -114,8 +122,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		rDS = new ResourceDiscoveryStub(RDS_URL);
 		identify();
-		rDS = ResourceDiscovery.getInstance();
 		registeredList = rDS.search("");//search all rR.contains("") = all IAR
 		// Exists only to defeat instantiation.
 		// rrs = ResourceRegisterServiceStub.getInstance();
@@ -139,8 +147,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	}
 
 	public boolean identify() {
-		rrs = ResourceRegister.getInstance();
-		rrs.register(this);
+		rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
+		rrs.register(this.URL);
 		String result = "";
 		//int i = 0; // 5 tries
 		//while (i++ < 5 && (result = rrs.getResult()) == null)
@@ -156,7 +164,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 			String url = stakeholders.get(i).getUrl();
 			// stakeholderStub = new ResourceAgentStub(url);
 			if (change.contains(stakeholders.get(i).getMethod()))
-				rDS.search(url).get(0).notificationHandler(change);//change = id, method name and value
+				new ResourceAgentStub(rDS.search(url).get(0)).notificationHandler(change);//change = id, method name and value
 			// stakeholders.get(i) = stakeholderStub;
 			// query by url return a unique instance
 		}

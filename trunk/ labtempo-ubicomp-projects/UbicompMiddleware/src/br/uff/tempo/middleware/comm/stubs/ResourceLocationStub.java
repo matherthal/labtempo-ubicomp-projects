@@ -16,8 +16,8 @@ public class ResourceLocationStub extends Stub implements IResourceLocation{
 
 
 	
-	public ResourceLocationStub(String serverIP) {
-		super(serverIP);
+	public ResourceLocationStub(String calleeID) {
+		super(calleeID);
 	}
 
 	public ArrayList<Local> search(ResourceAgent rA) {

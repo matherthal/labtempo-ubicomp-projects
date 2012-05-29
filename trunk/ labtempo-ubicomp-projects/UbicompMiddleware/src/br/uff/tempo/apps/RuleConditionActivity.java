@@ -38,7 +38,7 @@ public class RuleConditionActivity extends Activity {
 		
 		final Spinner spinner = (Spinner) findViewById(R.id.spinnerClasseChoice);
 		spinner.setOnItemSelectedListener(new OnItemSelectedListener() {
-		    @Override
+		    //@Override
 		    public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {		    	
 		    	String type = spinner.getSelectedItem().toString();
 		    	//Populate other spinners after the selection
@@ -51,7 +51,7 @@ public class RuleConditionActivity extends Activity {
 		    	s.setClickable(true);
 		    }
 
-		    @Override
+		    //@Override
 		    public void onNothingSelected(AdapterView<?> parentView) {
 		        
 		    }
