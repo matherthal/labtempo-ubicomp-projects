@@ -7,7 +7,7 @@ import org.json.JSONException;
 
 import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.comm.Tuple;
-import br.uff.tempo.middleware.management.IResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public class ResourceAgentStub extends Stub implements IResourceAgent{
 

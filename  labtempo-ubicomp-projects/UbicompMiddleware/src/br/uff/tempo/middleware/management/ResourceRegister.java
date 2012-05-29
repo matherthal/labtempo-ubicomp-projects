@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.middleware.comm.Tuple;
+import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 
 public class ResourceRegister extends ResourceAgent implements IResourceRegister{
 
@@ -17,6 +18,8 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		setId(1);
 		setName("ResourceRegister");
 		setType("management");
+		setURL("br.uff.tempo.middleware.management.ResourceRegister");
+		ResourceContainer.getInstance().add(this);
 	}
 	
 	public static ResourceRegister getInstance()

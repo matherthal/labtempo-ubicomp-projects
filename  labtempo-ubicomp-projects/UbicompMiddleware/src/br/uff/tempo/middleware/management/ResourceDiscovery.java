@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.middleware.comm.Tuple;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
 public class ResourceDiscovery extends ResourceAgent implements
 		IResourceDiscovery {
@@ -15,6 +16,8 @@ public class ResourceDiscovery extends ResourceAgent implements
 		setId(2);
 		setName("ResourceDiscovery");
 		setType("management");
+		setURL("br.uff.tempo.middleware.management.ResourceDiscovery");
+		ResourceContainer.getInstance().add(this);
 	}
 
 

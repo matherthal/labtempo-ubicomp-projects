@@ -8,8 +8,8 @@ import org.json.JSONException;
 import br.uff.tempo.middleware.comm.Caller;
 import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.comm.Tuple;
-import br.uff.tempo.middleware.management.IResourceDiscovery;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
 public class ResourceDiscoveryStub extends Stub implements IResourceDiscovery{
 	

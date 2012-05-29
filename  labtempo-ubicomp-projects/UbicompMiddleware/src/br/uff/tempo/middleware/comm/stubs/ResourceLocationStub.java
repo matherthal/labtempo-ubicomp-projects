@@ -8,9 +8,9 @@ import org.json.JSONException;
 import br.uff.tempo.middleware.comm.Caller;
 import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.comm.Tuple;
-import br.uff.tempo.middleware.management.IResourceLocation;
-import br.uff.tempo.middleware.management.Local;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
+import br.uff.tempo.middleware.management.utils.Local;
 
 public class ResourceLocationStub extends Stub implements IResourceLocation{
 
