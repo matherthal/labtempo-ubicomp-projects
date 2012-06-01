@@ -1,6 +1,8 @@
 package br.uff.tempo.middleware.management;
 
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +23,7 @@ import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
+import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
 public abstract class ResourceAgent extends Service implements IResourceAgent {
@@ -40,9 +43,14 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	private ResourceRegister rRS;
 	private IResourceDiscovery rDS;
 	private ArrayList<String> registeredList;
-	private final static String RDS_URL = "br.uff.tempo.middleware.management.ResourceDiscovery";
+	private String RDS_URL;
 	
 	public abstract List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException;
+	
+	public IResourceDiscovery getRDS()
+	{
+		return rDS;
+	}
 	
 	public int getId() {
 		return id;
@@ -109,24 +117,38 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 		//caller = new Caller("localahost");// temporally
 		stakeholders = new ArrayList<Stakeholder>();
 		registered = false;
-		URL = "";// addres+port
+		InetAddress addr;
+		try {
+			addr = InetAddress.getLocalHost();
+			URL = ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), type, name);
+		} catch (UnknownHostException e) {	
+			e.printStackTrace();
+		}
+		// addres+port
 		id = 0;
 	}
 
-	public ResourceAgent(String name, int id) {
+	public ResourceAgent(String type, int id) {
 		stakeholders = new ArrayList<Stakeholder>();
-
+		
 		//stakeholders.add(new Stakeholder("update",rR));
 		registered = false;
-		URL = name;// addres+port+type+name
+		this.type = type;// addres+port+type+name
 		this.id = id;
-		this.name = name;
+		this.name = id+"";
+		URL = "";
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+			URL = ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), type, name);
+		} catch (UnknownHostException e) {	
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		rDS = new ResourceDiscoveryStub(RDS_URL);
+		rDS = new ResourceDiscoveryStub(ResourceDiscovery.getInstance().getURL());//temporaly local(can be user defined or received by hello message)
 		identify();
 		registeredList = rDS.search("");//search all rR.contains("") = all IAR
 		// Exists only to defeat instantiation.
@@ -158,6 +180,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 		//while (i++ < 5 && (result = rrs.getResult()) == null)
 			/* sleep time */;// while not respond wait because doesn't exist RRS
 		registered = true;
+		//adding local reference of this instance
 		ResourceContainer.getInstance().add(this);
 		return true;
 	}

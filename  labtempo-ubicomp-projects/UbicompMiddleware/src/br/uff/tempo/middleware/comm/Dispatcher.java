@@ -3,6 +3,8 @@ package br.uff.tempo.middleware.comm;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -21,6 +23,7 @@ import br.uff.tempo.middleware.management.ResourceDiscovery;
 import br.uff.tempo.middleware.management.ResourceRegister;
 import br.uff.tempo.middleware.management.ResourceRepository;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class Dispatcher  {
 	//Dispatcher is a Singleton
@@ -34,14 +37,23 @@ public class Dispatcher  {
 		interfaces = new HashMap<String,ArrayList<Method>>();
 	}
 	private void update() throws ClassNotFoundException
-	{
-		
-		ArrayList<String> resources = ResourceDiscovery.getInstance().search("");//only localhost
+	{		
+		ArrayList<String> resources = new ArrayList<String>(); 
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+			ResourceRepository rR = ResourceRepository.getInstance();
+			resources = ResourceDiscovery.getInstance().search(addr.getHostAddress());
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//only localhost
 		for (int i = 0; i< resources.size(); i++)
 		{
 			String resource = resources.get(i);
 			ArrayList<Method> methodsList = new ArrayList<Method>();
-			Class agent = getClassOf(resource);
+			ResourceAgentIdentifier rai = new ResourceAgentIdentifier(resource);
+			Class agent = getClassOf(rai.getType().get(0));
 			Method[] methods= agent.getMethods();
 			for (Method method : methods)
 				methodsList.add(method);

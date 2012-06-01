@@ -1,11 +1,14 @@
 package br.uff.tempo.middleware.management;
 
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
+import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceRegister extends ResourceAgent implements IResourceRegister{
 
@@ -19,6 +22,13 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		setName("ResourceRegister");
 		setType("management");
 		setURL("br.uff.tempo.middleware.management.ResourceRegister");
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+			setURL(ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), "br.uff.tempo.middleware.management.ResourceRegister", "ResourceRegister"));
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		ResourceContainer.getInstance().add(this);
 	}
 	

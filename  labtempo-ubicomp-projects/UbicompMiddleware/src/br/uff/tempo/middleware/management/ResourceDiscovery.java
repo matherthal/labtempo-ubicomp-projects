@@ -1,11 +1,14 @@
 package br.uff.tempo.middleware.management;
 
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceDiscovery extends ResourceAgent implements
 		IResourceDiscovery {
@@ -15,8 +18,16 @@ public class ResourceDiscovery extends ResourceAgent implements
 	private ResourceDiscovery() {
 		setId(2);
 		setName("ResourceDiscovery");
-		setType("management");
-		setURL("br.uff.tempo.middleware.management.ResourceDiscovery");
+		setType("br.uff.tempo.middleware.management.ResourceDiscovery");
+		
+		try {
+			InetAddress addr = InetAddress.getLocalHost();
+			setURL(ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), "br.uff.tempo.middleware.management.ResourceDiscovery", "ResourceDiscovery"));
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		ResourceContainer.getInstance().add(this);
 	}
 
