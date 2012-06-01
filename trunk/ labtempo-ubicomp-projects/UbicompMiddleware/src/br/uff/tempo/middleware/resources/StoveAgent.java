@@ -28,8 +28,6 @@ public class StoveAgent extends ResourceAgent implements IStove {
 	public StoveAgent()
 	{
 		super("br.uff.tempo.middleware.resources.StoveAgent",5);
-		
-		setType("stove");
 	}
 	@Override
 	public void onCreate() {

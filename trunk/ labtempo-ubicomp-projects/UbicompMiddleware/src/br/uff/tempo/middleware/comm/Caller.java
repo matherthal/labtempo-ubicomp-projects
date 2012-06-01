@@ -11,31 +11,33 @@ import java.net.Socket;
 
 import org.json.JSONException;
 
+import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
+
 import android.os.Handler;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class Caller {
-    private String calleeAgent;
+    private ResourceAgentIdentifier calleeAgent;
     
     private int port = 8080;
     private Handler handler = new Handler();
     
 	public Caller(String calleeAgent) {
-		this.calleeAgent = calleeAgent;
+		this.calleeAgent = new ResourceAgentIdentifier(calleeAgent);
 		//serverIP = "192.168.1.70";  //FIXME: IP shouldn't be hardcoded 
 	}
 	
 	public String getAgentCaller() {
-		return calleeAgent;
+		return calleeAgent.getType()+":"+calleeAgent.getName();
 	}
 
 	public String sendMessage(String jsonString) {
 		//add callee + methodCaller to JSONObject
 		
 		try {
-			return Dispatcher.getInstance().dispatch(calleeAgent,jsonString);
+			return Dispatcher.getInstance().dispatch(calleeAgent.getRai(),jsonString);
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

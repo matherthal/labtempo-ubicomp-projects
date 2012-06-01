@@ -22,6 +22,7 @@ import br.uff.tempo.R;
 import br.uff.tempo.middleware.comm.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceAgent.ResourceBinder;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Rule;
 import br.uff.tempo.middleware.resources.StoveAgent;
@@ -30,7 +31,7 @@ public class RuleActivity extends Activity {
 	private static final String TAG = "RuleActivity";
 	private Rule rule;
 	private final String serverIP = "192.168.1.70";
-	private ResourceDiscoveryStub discovery;
+	private IResourceDiscovery discovery;
 	private ArrayList<ResourceAgent> ras;
 	private ArrayList<Condition> conds = new ArrayList<Condition>();
 	private ArrayAdapter<String> lvAdapter;
@@ -50,9 +51,10 @@ public class RuleActivity extends Activity {
 		//Binding RuleAgent
 		Intent intent = new Intent(this, Rule.class);
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-		
+
 		//Get Discovery Service
-		discovery = new ResourceDiscoveryStub(serverIP);
+		if (rule != null)
+			discovery = rule.getRDS();
     }
 
 	/*

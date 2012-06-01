@@ -17,6 +17,7 @@ import jboolexpr.MalformedBooleanException;
 import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
 
 /**
@@ -40,8 +41,10 @@ public class Rule extends ResourceAgent {
 	public Rule()
 	{
 		super("br.uff.tempo.middleware.resources.Rule",6);//id hard coded
-		setType("rule");
 		
+		//IResourceDiscovery rds = getRDS();
+		//ArrayList<String> rAlist = rds.search("StoveAgent/stovekitchen");
+		//StoveStub stubStove = new StoveStub(rAlist.get(0)); 
 	}
 	
 	@Override

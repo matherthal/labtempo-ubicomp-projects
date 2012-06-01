@@ -1,6 +1,8 @@
 package br.uff.tempo.middleware.management;
 
 import java.lang.reflect.Method;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -10,6 +12,7 @@ import org.json.JSONObject;
 
 import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
+import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceRepository extends ResourceAgent implements IResourceRepository {
 	
@@ -20,20 +23,32 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	private ResourceRepository()
 	{
 		setId(0);
-		setURL("br.uff.tempo.middleware.management.ResourceRepository");
+		try{
+			InetAddress addr = InetAddress.getLocalHost();
+			setURL("rai:"+addr.getHostAddress()+"//br.uff.tempo.middleware.management.ResourceRepository:ResourceRepository");
+		}catch(UnknownHostException e)
+		{
+			e.printStackTrace();
+		}
+		
 		setName("ResourceRepository");
 		setType("management");	
 		
-		repository = new ArrayList<String>();
-		repository.add("br.uff.tempo.middleware.management.ResourceDiscovery");
-		repository.add("br.uff.tempo.middleware.management.ResourceRegister");
-		repository.add("br.uff.tempo.middleware.management.ResourceLocation");
-		repository.add("br.uff.tempo.middleware.management.ResourceRepository");
 		ResourceContainer container = ResourceContainer.getInstance();
-		container.add(this);
-		container.add(ResourceDiscovery.getInstance());
-		container.add(ResourceRegister.getInstance());
-		container.add(ResourceLocation.getInstance());
+		ResourceRepository rR = this;
+		ResourceDiscovery rDS = ResourceDiscovery.getInstance();
+		ResourceRegister rRS = ResourceRegister.getInstance();
+		ResourceLocation rLS = ResourceLocation.getInstance();
+		container.add(rR);
+		container.add(rDS);
+		container.add(rRS);
+		container.add(rLS);
+		
+		repository = new ArrayList<String>();
+		repository.add(rDS.getURL());
+		repository.add(rRS.getURL());
+		repository.add(rLS.getURL());
+		repository.add(rR.getURL());
 	}
 	
 	public static ResourceRepository getInstance()
