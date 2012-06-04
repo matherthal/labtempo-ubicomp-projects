@@ -23,10 +23,8 @@
     </string-array>
     
     <!-- RuleActivity -->
-	<string name="rule_creation">Criar regra:</string>
-	
+	<string name="rule_creation">Criar Regra</string>
 	<string name="rule_name">Nome</string>
-    
     <!-- <string-array name="rule_select_ra_class_array">
         <item name="rule_select_ra_class">Escolha um tipo de dispositivo:</item>
     </string-array>
@@ -46,13 +44,19 @@
     <string name="rule_select_ra">Escolha o recurso:</string>
     <string name="rule_select_ra_var">Escolha um atributo:</string>
     <string name="rule_select_operation">Escolha a operação de comparação:</string>
+    <string name="rule_select_ra_mtd">Escolha uma ação:</string>
     <string name="rule_comparing_val">Valor</string>
     <string name="button_runscript">Executar regra</string>
     <string name="button_createrule">Criar</string>
     <string name="button_createrulecond">Criar</string>
-    <string name="button_addCond">+</string>
-    <string name="button_rmCond">-</string>
-    <string name="button_addAction">+</string>
-    <string name="button_rmAction">-</string>
+    <string name="button_addCond">Nova Condição</string>
+    <string name="button_rmCond">Remover Condição</string>
+    <string name="button_addAction">Nova Ação</string>
+    <string name="button_rmAction">Remover Ação</string>
+    <string name="rule_cond">Criar Condição</string>
+    <string name="rule_action">Criar Ação</string>
+    <string name="button_condList">Condições</string>
+    <string name="button_actionList">Ações</string>
+    <string name="button_rule">Regra</string>
     <!-- End RuleActivity -->
 </resources>
