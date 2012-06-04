@@ -5,7 +5,7 @@ import java.util.Observer;
 
 import br.uff.tempo.*;
 import br.uff.tempo.middleware.management.ResourceAgent.ResourceBinder;
-import br.uff.tempo.middleware.resources.StoveAgent;
+import br.uff.tempo.middleware.resources.Stove;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -30,7 +30,7 @@ public class StoveView extends Activity implements Observer {
 	private PopupWindow m_pw;
 	private StoveData stoveData;
 	private View layout_popup;
-	private StoveAgent stove;
+	private Stove stove;
 	
     /** Called when the activity is first created. */
     @Override
@@ -44,7 +44,7 @@ public class StoveView extends Activity implements Observer {
         //setContentView(new Panel(this, stove));
         setContentView(R.layout.stove);
         
-        Intent intent = new Intent(this, StoveAgent.class);
+        Intent intent = new Intent(this, Stove.class);
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);  
     }
     
@@ -117,7 +117,7 @@ public class StoveView extends Activity implements Observer {
             //stove = ((StoveAgent.StoveBinder)service).getService();
         	// We've bound to LocalService, cast the IBinder and get LocalService instance
         	ResourceBinder binder = (ResourceBinder) service;
-            stove = (StoveAgent)binder.getService();
+            stove = (Stove)binder.getService();
 
             // Tell the user about this for our demo.
             Toast.makeText(StoveView.this, "Agente conectado", Toast.LENGTH_SHORT).show();
