@@ -26,16 +26,16 @@ public class Caller {
     
 	public Caller(String calleeAgent) {
 		this.calleeAgent = new ResourceAgentIdentifier(calleeAgent);
-		//serverIP = "192.168.1.70";  //FIXME: IP shouldn't be hardcoded 
+		// serverIP = "192.168.1.70"; //FIXME: IP shouldn't be hardcoded
 	}
-	
+
 	public String getAgentCaller() {
 		return calleeAgent.getType()+":"+calleeAgent.getName();
 	}
 
 	public String sendMessage(String jsonString) {
 		//add callee + methodCaller to JSONObject
-		
+
 		try {
 			return Dispatcher.getInstance().dispatch(calleeAgent.getRai(),jsonString);
 		} catch (IllegalArgumentException e) {
@@ -59,5 +59,4 @@ public class Caller {
 		}
 		return "error";
 	}	
-	
 }
