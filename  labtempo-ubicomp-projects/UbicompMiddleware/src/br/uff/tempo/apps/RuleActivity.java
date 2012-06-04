@@ -1,8 +1,6 @@
 package br.uff.tempo.apps;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.List;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -14,18 +12,16 @@ import android.os.IBinder;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
-import br.uff.tempo.middleware.comm.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceAgent.ResourceBinder;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Rule;
-import br.uff.tempo.middleware.resources.StoveAgent;
+import br.uff.tempo.middleware.resources.Stove;
 
 public class RuleActivity extends Activity {
 	private static final String TAG = "RuleActivity";
@@ -36,17 +32,18 @@ public class RuleActivity extends Activity {
 	private ArrayList<Condition> conds = new ArrayList<Condition>();
 	private ArrayAdapter<String> lvAdapter;
 	private ArrayList<String> listItems = new ArrayList<String>();
-
+	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rule);
         
         //Initialize Condition's ListView
-    	ListView lv = (ListView) findViewById(R.id.listViewConds);
-		lvAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, listItems);
-		lv.setAdapter(lvAdapter);
+    	//ListView lv = (ListView) findViewById(R.id.listViewConds);
+    	//listItems.add("Nenhuma condição");
+		//lvAdapter = new ArrayAdapter<String>(this,
+		//		android.R.layout.simple_list_item_1, listItems);
+		//lv.setAdapter(lvAdapter);
 
 		//Binding RuleAgent
 		Intent intent = new Intent(this, Rule.class);
@@ -58,12 +55,20 @@ public class RuleActivity extends Activity {
     }
 
 	/*
-	 * Button Add Condition
-	 * Calls the activity for creation of conditions 
+	 * Button call Condition List
 	 */
-	public void buttonAddCond_Clicked(View view) {
+	public void buttonConds_Clicked(View view) {
 		Intent intent = new Intent(RuleActivity.this,
-				RuleConditionActivity.class);
+				RuleCondListActivity.class);
+		startActivityForResult(intent, 1);
+	}
+
+	/*
+	 * Button call Action List
+	 */
+	public void buttonActions_Clicked(View view) {
+		Intent intent = new Intent(RuleActivity.this,
+				RuleActionListActivity.class);
 		startActivityForResult(intent, 1);
 	}
 
@@ -78,9 +83,13 @@ public class RuleActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				// Condition cond =
 				// (Condition)data.getSerializableExtra("COND");
-				String[] condStr = data.getStringArrayExtra("COND");
-				createCond(condStr[0], condStr[1], condStr[2], condStr[3]);
-				Toast.makeText(this, "Nova Condição", Toast.LENGTH_SHORT)
+				//String[] condStr = data.getStringArrayExtra("COND_LIST");
+				
+				//>>>>ArrayList<Condition> conds = (ArrayList<Condition>) Serialization.deserializeObject(data.getByteArrayExtra("COND_LIST"));
+				//Condition cond = (Condition) Serialization.deserializeObject(data.getByteArrayExtra("COND")); //DEBUG
+				
+				//createCond(condStr[0], condStr[1], condStr[2], condStr[3]);
+				Toast.makeText(this, "Novas Condições", Toast.LENGTH_SHORT)
 						.show();
 			} else if (resultCode == RESULT_CANCELED) {
 			}
@@ -92,20 +101,21 @@ public class RuleActivity extends Activity {
 	 */
 	public void createCond(String raID, String attrib, String operation, String value) {
 		//ResourceAgent ra = (ResourceAgent)discovery.search(s.getSelectedItem().toString()).get(0);
-		ResourceAgent ra = new StoveAgent();//FIXME: get it out of here, just for debug. The correct is above
+		ResourceAgent ra = new Stove();//FIXME: get it out of here, just for debug. The correct is above
     	
     	//Get attribute's acess method
-		Method mtd = null;
-		try {
+		//Method mtd = null;
+		//try {
 			//mtd = ra.getClass().getMethod("get" + attrib);
-			mtd = ra.getClass().getMethod("getIsOn");
-		} catch (SecurityException e) {
-			Toast.makeText(this, "Erro ao pegar atributo", Toast.LENGTH_LONG);
-			return;
-		} catch (NoSuchMethodException e) {
-			Toast.makeText(this, "Erro ao pegar atributo", Toast.LENGTH_LONG);
-			return;
-		}
+			//mtd = ra.getClass().getMethod("getIsOn");
+		//} catch (SecurityException e) {
+		//	Toast.makeText(this, "Erro ao pegar atributo", Toast.LENGTH_LONG);
+		//	return;
+		//} catch (NoSuchMethodException e) {
+		//	Toast.makeText(this, "Erro ao pegar atributo", Toast.LENGTH_LONG);
+		//	return;
+		//}
+		String mtd = "get" + attrib;
 		
     	Condition cond;
     	try {
@@ -121,19 +131,6 @@ public class RuleActivity extends Activity {
     	//Add condition to list in the view
     	listItems.add(cond.toString());
 		lvAdapter.notifyDataSetChanged();
-	}
-
-	public void buttonRmCond_Clicked(View view) {
-
-	}
-
-	public void buttonAddAction_Clicked(View view) {
-		Intent intent = new Intent(RuleActivity.this, RuleActionActivity.class);
-		startActivity(intent);
-	}
-
-	public void buttonRmAction_Clicked(View view) {
-
 	}
 
 	public void buttonCreateRule_Clicked(View view) {

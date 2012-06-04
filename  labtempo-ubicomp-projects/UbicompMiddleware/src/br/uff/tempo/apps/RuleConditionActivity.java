@@ -15,11 +15,11 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
-import br.uff.tempo.middleware.comm.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Rule;
 import br.uff.tempo.middleware.resources.Condition;
-import br.uff.tempo.middleware.resources.StoveAgent;
+import br.uff.tempo.middleware.resources.Stove;
 
 public class RuleConditionActivity extends Activity {
 	private static final String TAG = "RuleActivityCond";
@@ -163,29 +163,51 @@ public class RuleConditionActivity extends Activity {
     }
     
     public void buttonCreateCond_Clicked(View view) {
-    	String[] params = new String[4];
     	//Get RA
     	Spinner spn = (Spinner) findViewById(R.id.spinnerRAChoice);
-    	//params.add(discovery.search(s.getSelectedItem().toString()).get(0));
-    	//params.add(spn.getSelectedItem().toString());
-    	params[0] = "StoveAgent-01151561df";
-    	
-    	//Get attribute's acess method
+		// (ResourceAgent)discovery.search(s.getSelectedItem().toString()).get(0);
+		ResourceAgent ra = new Stove();// FIXME: get it out of here, just for debug. The correct is above
+
+		// Get attribute's acess method
 		spn = (Spinner) findViewById(R.id.spinnerRAAttribChoice);
-    	//params(s.getSelectedItem())
-		params[1] = "IsOn";	
-		
-    	//Get operation
+
+		ra.setId(1543);
+		// Get attribute's acess method
+		//Method mtd = null;
+		//try {
+			// mtd = ra.getClass().getMethod("get" + attrib);
+		//	mtd = ra.getClass().getMethod("getIsOn");
+		//} catch (SecurityException e) {
+			//Toast.makeText(this, "Erro ao pegar atributo", Toast.LENGTH_LONG);
+			//return;
+		//} catch (NoSuchMethodException e) {
+			//Toast.makeText(this, "Erro ao pegar atributo", Toast.LENGTH_LONG);
+			//return;
+		//}
+		String mtd = "getIsOn";
+
+		//Get operation
 		spn = (Spinner) findViewById(R.id.spinnerOperation);
-		params[2] = spn.getSelectedItem().toString();
+		String operation = spn.getSelectedItem().toString();
 		
     	//Get value to be compared
     	TextView tv = (TextView) findViewById(R.id.editTextValue);
-    	params[3] = tv.getText().toString();    	
+    	String value = tv.getText().toString();    	
+    	
+		Condition cond;
+		try {
+			// Initialize Condition
+			cond = new Condition(ra, mtd, operation, value);
+		} catch (Exception e) {
+			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);
+			return;
+		}
+		
+		byte[] condRaw = Serialization.serializeObject(cond);
     	
     	//Send Condition back
     	Intent data = this.getIntent();
-    	data.putExtra("COND", params);
+    	data.putExtra("COND", condRaw);
     	if (getParent() == null) {
     	    setResult(Activity.RESULT_OK, data);
     	} else {

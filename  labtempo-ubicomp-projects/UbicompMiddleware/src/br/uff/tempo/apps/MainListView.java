@@ -40,7 +40,7 @@ public class MainListView extends ListActivity {
 					Intent intent = new Intent(MainListView.this,
 							RuleActivity.class);
 					startActivity(intent);
-				} else if (item.equals("Fog„o")) {
+				} else if (item.equals("Fog√£o")) {
 					Intent intent = new Intent(MainListView.this,
 							StoveView.class);
 					startActivity(intent);
