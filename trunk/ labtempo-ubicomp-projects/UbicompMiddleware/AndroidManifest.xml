@@ -38,7 +38,7 @@
         
         <service android:enabled="true" android:name=".middleware.management.ResourceAgent" />
 		
-        <service android:enabled="true" android:name=".middleware.resources.StoveAgent" />
+        <service android:enabled="true" android:name=".middleware.resources.Stove" />
         
         <service android:enabled="true" android:name=".apps.MediaService" />
     </application>
