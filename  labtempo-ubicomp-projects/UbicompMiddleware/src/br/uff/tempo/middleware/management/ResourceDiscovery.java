@@ -62,17 +62,6 @@ public class ResourceDiscovery extends ResourceAgent implements
 		
 	}
 
-	@Override
-	public List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException {
-		/*List<Tuple<String, Method>> attribs = new ArrayList<Tuple<String,Method>>();
-		attribs.add(new Tuple<String, Method>("Busca", this.getClass().getMethod("search", String.class)));
-		attribs.add(new Tuple<String, Method>("Busca por local", this.getClass().getMethod("queryByLocal", String.class)));
-		attribs.add(new Tuple<String, Method>("Busca por proximidade", this.getClass().getMethod("queryByProximity", String.class)));
-		return attribs;*/
-		return null;
-	}
-
-
 	public ResourceAgent get(String url) {
 		// TODO Auto-generated method stub
 		return null;

@@ -92,7 +92,7 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	}
 
 	@Override
-	public void notificationHandler(String change) throws JSONException {
+	public void notificationHandler(String change) {
 		//ResourceAgent rA = (ResourceAgent)new JSONObject(change).get("value");
 		//update(rA);
 	}
@@ -106,20 +106,5 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 			return null;
 		else
 			return result;
-	}
-
-	
-	
-
-	@Override
-	public List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException {
-		/*List<Tuple<String, Method>> attribs = new ArrayList<Tuple<String,Method>>();
-		attribs.add(new Tuple<String, Method>("Obter Agente de Recurso", this.getClass().getMethod("get", String.class)));
-		attribs.add(new Tuple<String, Method>("Obter lista de Agentes de Recurso", this.getClass().getMethod("getList")));
-		attribs.add(new Tuple<String, Method>("Adicionar Agente de Recurso", this.getClass().getMethod("add", ResourceAgent.class)));
-		attribs.add(new Tuple<String, Method>("Remover Agente de Recurso", this.getClass().getMethod("remove", String.class)));
-		attribs.add(new Tuple<String, Method>("Atualizar Agente de Recurso", this.getClass().getMethod("update", ResourceAgent.class)));
-		return attribs;*/
-		return null;
 	}
 }

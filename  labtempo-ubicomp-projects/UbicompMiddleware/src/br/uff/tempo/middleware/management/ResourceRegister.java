@@ -56,13 +56,4 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException {
-		/*List<Tuple<String, Method>> attribs = new ArrayList<Tuple<String,Method>>();
-		attribs.add(new Tuple<String, Method>("Busca Agente de Recurso", this.getClass().getMethod("register", ResourceAgent.class)));
-		attribs.add(new Tuple<String, Method>("Desregistrar", this.getClass().getMethod("unregister", String.class)));
-		return attribs;*/
-		return null;
-	}
 }
