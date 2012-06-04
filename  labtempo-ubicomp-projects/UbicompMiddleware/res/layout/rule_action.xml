@@ -25,17 +25,11 @@
 	    android:clickable="false" />
 
 	<Spinner
-	    android:id="@+id/spinnerRAAttribChoice"
+	    android:id="@+id/spinnerRAMethodChoice"
 	    android:layout_width="fill_parent"
 	    android:layout_height="wrap_content"
-	    android:prompt="@string/rule_select_ra_var"
+	    android:prompt="@string/rule_select_ra_mtd"
 	    android:clickable="false" />
-
-	<Spinner
-	    android:id="@+id/spinnerOperation"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content"
-	    android:prompt="@string/rule_select_operation" />
 
 	<EditText
 	    android:id="@+id/editTextValue"
@@ -43,12 +37,18 @@
 	    android:layout_height="wrap_content"
 	    android:ems="10"
 	    android:hint="@string/rule_comparing_val" />
+
+	<Spinner
+	    android:id="@+id/spinnerParams"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" />
 	
 	<Button
-	    android:id="@+id/buttonCreateRuleCond"
+	    android:id="@+id/buttonCreateRuleAction"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:text="@string/button_createrulecond"
+	    android:text="@string/button_createrule"
 	    android:clickable="true"
-     	android:onClick="buttonCreateCond_Clicked" />
+     	android:onClick="buttonCreateAction_Clicked" /> 
+
 </LinearLayout>
