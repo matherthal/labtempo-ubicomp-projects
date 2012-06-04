@@ -1,8 +1,8 @@
 package br.uff.tempo.middleware.resources;
 
 import java.io.Serializable;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.Method;
+//import java.lang.reflect.InvocationHandler;
+//import java.lang.reflect.Method;
 import java.util.Comparator;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
@@ -16,9 +16,11 @@ import br.uff.tempo.middleware.management.ResourceAgent;
  *         them It implements the method to make the comparation, or test: the
  *         method test
  */
-public class Condition implements InvocationHandler, Serializable {
+//public class Condition implements InvocationHandler, Serializable {
+public class Condition implements Serializable {
 	public ResourceAgent ra;
-	public Method method;
+	//public Method method;
+	public String method;
 	public String operator = "==";
 	public Object value;
 	public long timeout;
@@ -33,16 +35,16 @@ public class Condition implements InvocationHandler, Serializable {
 	 *            It creates a condition
 	 * @throws Exception
 	 */
-	public Condition(ResourceAgent ra, Method method, String operator,
+	public Condition(ResourceAgent ra, String method, String operator,
 			Object value) throws Exception {
-		if (!method.getReturnType().equals(Void.TYPE)) {
+		//if (!method.getReturnType().equals(Void.TYPE)) {
 			this.ra = ra;
 			this.method = method;
 			this.operator = operator;
 			this.value = value;
 			this.timeout = 0;
-		} else
-			throw new Exception();
+		//} else
+		//	throw new Exception();
 	}
 
 	/**
@@ -55,40 +57,42 @@ public class Condition implements InvocationHandler, Serializable {
 	 *            It creates a condition
 	 * @throws Exception
 	 */
-	public Condition(ResourceAgent ra, Method method, String operator,
+	public Condition(ResourceAgent ra, String method, String operator,
 			Object value, long timeout) throws Exception {
-		if (!method.getReturnType().equals(Void.TYPE)) {
+		//if (!method.getReturnType().equals(Void.TYPE)) {
 			this.ra = ra;
 			this.method = method;
 			this.operator = operator;
 			this.value = value;
 			this.timeout = timeout;
-		} else
-			throw new Exception();
+		//} else
+		//	throw new Exception();
 	}
 
-	public boolean test() throws Throwable {
+	public boolean test() {
 		//Parse value to attribute's type
 		//ex., if it is boolean, so we parse the value to boolean before compare
 		
-		Object attrib = this.invoke(ra, method, new Object[0]);
-		if (operator.equals("==")) // Operator ==
-			return attrib.equals(value);
-		else if (operator.equals("!=")) // Operator !=
-			return !attrib.equals(value);
-		else
+		//Object attrib = this.invoke(ra, method, new Object[0]);
+		//if (operator.equals("==")) // Operator ==
+		//	return attrib.equals(value);
+		//else if (operator.equals("!=")) // Operator !=
+		//	return !attrib.equals(value);
+		//else
 			// Operator error
+		
 			return false;
 	}
 
-	public Object invoke(Object ra, Method method, Object[] args)
+	/*>>>>>>>public Object invoke(Object ra, Method method, Object[] args)
 			throws Throwable {
 		return method.invoke(ra, args);
-	}
+	}*/
 	
 	@Override
 	public String toString() {
-		return this.ra.getType() + "." + this.ra.getId() + "." + this.method.getName() + this.operator + this.value;
+		//return this.ra.getType() + "." + this.ra.getId() + "." + this.method.getName() + this.operator + this.value;
+		return this.ra.getType() + "." + this.ra.getId() + "." + this.method + this.operator + this.value;
 	}
 }
 
