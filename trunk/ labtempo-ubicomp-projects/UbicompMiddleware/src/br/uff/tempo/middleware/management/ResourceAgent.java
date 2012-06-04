@@ -1,6 +1,6 @@
 package br.uff.tempo.middleware.management;
 
-import java.lang.reflect.Method;
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -12,9 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import br.uff.tempo.middleware.comm.Caller;
-import br.uff.tempo.middleware.comm.stubs.ResourceAgentStub;
-import br.uff.tempo.middleware.comm.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.comm.stubs.ResourceRegisterStub;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -23,10 +20,13 @@ import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
+import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
-public abstract class ResourceAgent extends Service implements IResourceAgent {
+public abstract class ResourceAgent extends Service implements IResourceAgent, Serializable {
 	private static final String TAG = "AgentBase";
 
 	private static final String TCP_SERVER_IP = "192.168.1.70";
@@ -44,8 +44,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	private IResourceDiscovery rDS;
 	private ArrayList<String> registeredList;
 	private String RDS_URL;
-	
-	public abstract List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException;
 	
 	public IResourceDiscovery getRDS()
 	{
@@ -204,11 +202,10 @@ public abstract class ResourceAgent extends Service implements IResourceAgent {
 	 *            It has new status of instance
 	 * @throws JSONException 
 	 */
-	public abstract void notificationHandler(String change) throws JSONException;
+	public abstract void notificationHandler(String change);
 	
-	public boolean registerStakeholder(String method, String url) {
+	public void registerStakeholder(String method, String url) {
 		stakeholders.add(new Stakeholder(method,url));
-		return true;
 	}
 	
 	public boolean registerStakeholder(String method, ResourceAgent rA) {
