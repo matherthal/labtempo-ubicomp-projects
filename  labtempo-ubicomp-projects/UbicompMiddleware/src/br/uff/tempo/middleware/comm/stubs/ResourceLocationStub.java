@@ -1,4 +1,4 @@
-package br.uff.tempo.middleware.comm.stubs;
+package br.uff.tempo.middleware.management.stubs;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package br.uff.tempo.middleware.comm.stubs;
+package br.uff.tempo.middleware.management.stubs;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 
-public class ResourceRegisterStub extends Stub implements IResourceRegister{
+public class ResourceRegisterStub extends ResourceAgentStub implements IResourceRegister{
 	
 	public ResourceRegisterStub(String calleeID) {
 		super(calleeID);
