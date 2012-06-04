@@ -44,7 +44,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private IResourceDiscovery rDS;
 	private ArrayList<String> registeredList;
 	private String RDS_URL;
-	
+
 	public IResourceDiscovery getRDS()
 	{
 		return rDS;
@@ -111,8 +111,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public ResourceBinder mBinder = new ResourceBinder();
 
 	public ResourceAgent() {//depreciated
-		//rrs = new ResourceRegisterServiceStub();
-		//caller = new Caller("localahost");// temporally
+		// rrs = new ResourceRegisterServiceStub();
+		// caller = new Caller("localahost");// temporally
 		stakeholders = new ArrayList<Stakeholder>();
 		registered = false;
 		InetAddress addr;
@@ -148,7 +148,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		super.onCreate();
 		rDS = new ResourceDiscoveryStub(ResourceDiscovery.getInstance().getURL());//temporaly local(can be user defined or received by hello message)
 		identify();
-		registeredList = rDS.search("");//search all rR.contains("") = all IAR
+		registeredList = rDS.search("");// search all rR.contains("") = all IAR
 		// Exists only to defeat instantiation.
 		// rrs = ResourceRegisterServiceStub.getInstance();
 	}
@@ -174,9 +174,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
 		rrs.register(this.URL);
 		String result = "";
-		//int i = 0; // 5 tries
-		//while (i++ < 5 && (result = rrs.getResult()) == null)
-			/* sleep time */;// while not respond wait because doesn't exist RRS
+		// int i = 0; // 5 tries
+		// while (i++ < 5 && (result = rrs.getResult()) == null)
+		/* sleep time */;// while not respond wait because doesn't exist RRS
 		registered = true;
 		//adding local reference of this instance
 		ResourceContainer.getInstance().add(this);
@@ -200,21 +200,22 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	 * 
 	 * @param rA
 	 *            It has new status of instance
-	 * @throws JSONException 
+	 * @throws JSONException
 	 */
+
 	public abstract void notificationHandler(String change);
 	
 	public void registerStakeholder(String method, String url) {
-		stakeholders.add(new Stakeholder(method,url));
+		stakeholders.add(new Stakeholder(method, url));
 	}
-	
+
 	public boolean registerStakeholder(String method, ResourceAgent rA) {
-		stakeholders.add(new Stakeholder(method,rA));
+		stakeholders.add(new Stakeholder(method, rA));
 		return true;
 	}
-	
-	public String change(String id, String method, Object value) throws JSONException
-	{
+
+	public String change(String id, String method, Object value)
+			throws JSONException {
 		JSONObject json = new JSONObject();
 		json.put("id", id);
 		json.put("method", method);
