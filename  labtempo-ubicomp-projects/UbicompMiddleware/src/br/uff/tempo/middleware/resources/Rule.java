@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.io.Serializable;
-import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
 /*import jboolexpr.BooleanExpression;
@@ -38,6 +37,8 @@ public class Rule extends ResourceAgent {
 	
 	public String expression = "";
 	
+
+	
 	public Rule()
 	{
 		super("br.uff.tempo.middleware.resources.Rule",6);//id hard coded
@@ -52,7 +53,9 @@ public class Rule extends ResourceAgent {
 		super.onCreate();
 		//register();
 	}
-	public void addCondition(ResourceAgent ra, Method method, String operator, Object value) throws Exception {
+
+	/*public void addCondition(ResourceAgent ra, Method method, String operator, Object value) throws Exception {
+
 		//Add new condition
 		conditions.add(new Condition(ra, method, operator, value));
 		//Order conditions by its timeouts
@@ -61,9 +64,25 @@ public class Rule extends ResourceAgent {
 				return (condA.timeout - condB.timeout) > 0 ? 1 : -1;
 			}
 		});
+	}*/
+	
+	public void addCondition(ResourceAgent ra, Method method, String operator, Object value) throws Exception {
+		/*Class cl = ra.getClass();
+		for (Method m : cl.getMethods()) {
+			if (cl.isAnnotationPresent(ContextVariable.class)) //Verifying annotations
+				cl.
+
+		//Add new condition
+		conditions.add(new Condition(ra, method, operator, value));
+		//Order conditions by its timeouts
+		Collections.sort(conditions, new Comparator<Condition>() { //FIXME : TEST IF THIS WORKS
+			public int compare(Condition condA, Condition condB) {
+				return (condA.timeout - condB.timeout) > 0 ? 1 : -1;
+			}
+		});*/
 	}
 	
-	public synchronized void setTimeout(long timeout) {
+	/*public synchronized void setTimeout(long timeout) {
 		if (scheduler != null) {
 			scheduler.cancel();
 			scheduler = null;
@@ -116,7 +135,7 @@ public class Rule extends ResourceAgent {
 		
 		//Set the timeout to be the difference between the greater and the lesser timeouts
 		return timeoutGT - timeoutLS;
-	}
+	}*/
 	
 	/*class UpdateTimeTask extends TimerTask {
 		public void run() {
@@ -139,10 +158,5 @@ public class Rule extends ResourceAgent {
 	
 	private class Script {
 		
-	}
-
-	@Override
-	public List<Tuple<String, Method>> getAttribs() throws SecurityException, NoSuchMethodException {
-		return null;
 	}
 }
