@@ -22,7 +22,7 @@ public class Interpreter implements IInterpreter {
 	/* (non-Javadoc)
 	 * @see br.uff.tempo.middleware.management.IInterpreter#setContextVariable(java.lang.reflect.Method)
 	 */
-	@Override
+	//@Override
 	public boolean setContextVariable(Method cv) {
 		// Verifying if it's really a CV
 		if (cv.isAnnotationPresent(ContextVariable.class)) {
@@ -34,7 +34,7 @@ public class Interpreter implements IInterpreter {
 	/* (non-Javadoc)
 	 * @see br.uff.tempo.middleware.management.IInterpreter#setConditionalResult(br.uff.tempo.middleware.management.Interpreter.Operation, java.lang.Object, java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public boolean setConditionalResult(Operation op, Object constant, Object result) {
 		// Verify if the ConditionalResult's expression intersects any other
 		// ConditionalResult's expression domain
@@ -81,7 +81,7 @@ public class Interpreter implements IInterpreter {
 	/* (non-Javadoc)
 	 * @see br.uff.tempo.middleware.management.IInterpreter#setConditionalResult(br.uff.tempo.middleware.management.Interpreter.ConditionalResult)
 	 */
-	@Override
+	//@Override
 	public boolean setConditionalResult(ConditionalResult cr) {
 		if (cr.isDefault()) {
 			// Verify if there is another ConditionResult set as Default
@@ -133,7 +133,7 @@ public class Interpreter implements IInterpreter {
 	/* (non-Javadoc)
 	 * @see br.uff.tempo.middleware.management.IInterpreter#setConditionalResultDefault(java.lang.Object, java.lang.Object)
 	 */
-	@Override
+	//@Override
 	public boolean setConditionalResultDefault(Object constant, Object result) {
 		//Verify if there is another ConditionResult set as Default
 		//There must be only one Default
@@ -146,35 +146,35 @@ public class Interpreter implements IInterpreter {
 		return true;
 	}
 
-	@Override
+	//@Override
 	public Method getContextVariable() {
 		return this.cv;
 	}
 
-	@Override
+	//@Override
 	public int interpretToInt() {
 		int interpreted = Integer.parseInt(evaluate().toString());
 		return interpreted;
 	}
 
-	@Override
+	//@Override
 	public long interpretToLong() {
 		long interpreted = Long.parseLong(evaluate().toString());
 		return interpreted;
 	}
 
-	@Override
+	//@Override
 	public boolean interpretToBoolean() {
 		boolean interpreted = Boolean.parseBoolean(evaluate().toString());
 		return interpreted;
 	}
 
-	@Override
+	//@Override
 	public String interpretToString() {
 		return evaluate().toString();
 	}
 
-	@Override
+	//@Override
 	public Object interpretToObject() {
 		return evaluate();
 	}

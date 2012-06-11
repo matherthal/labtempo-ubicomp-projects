@@ -8,7 +8,7 @@ import br.uff.tempo.middleware.resources.interfaces.IStove;
 import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
 public class Aggregator extends ResourceAgent implements IAggregator {
-	@Override
+	//@Override
 	public boolean addContextVariable(Interpreter interpreter) {
 		this.contextVariables.add(interpreter);
 		

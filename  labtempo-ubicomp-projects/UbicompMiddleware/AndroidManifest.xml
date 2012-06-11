@@ -35,6 +35,7 @@
         <!-- End Rule -->
         
         <activity android:name=".apps.stove.StoveView" />
+        <activity android:name=".apps.baseview.BaseView" />
         
         <service android:enabled="true" android:name=".middleware.management.ResourceAgent" />
 		

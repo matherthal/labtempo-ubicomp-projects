@@ -1,6 +1,7 @@
 package br.uff.tempo.apps;
 
 import br.uff.tempo.*;
+import br.uff.tempo.apps.baseview.BaseView;
 import br.uff.tempo.apps.stove.StoveView;
 
 import android.app.ListActivity;
@@ -40,11 +41,17 @@ public class MainListView extends ListActivity {
 					Intent intent = new Intent(MainListView.this,
 							RuleActivity.class);
 					startActivity(intent);
-				} else if (item.equals("FogÃ£o")) {
+				} else if (item.equals("Fogão")) {
 					Intent intent = new Intent(MainListView.this,
 							StoveView.class);
 					startActivity(intent);
-				} else {
+				} else if(item.equals("Repositório de Recursos"))
+				{
+					Intent intent = new Intent(MainListView.this,
+							BaseView.class);
+					startActivity(intent);
+				}else
+				{
 					Toast.makeText(MainListView.this, "NÃ£o existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();
 				}
 			}

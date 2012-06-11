@@ -20,6 +20,7 @@
         <item name="item_radio">Radio</item>
         <item name="item_clock">Relógio</item>
         <item name="item_bed">Cama</item>
+        <item name="item_base">Repositório de Recursos</item>
     </string-array>
     
     <!-- RuleActivity -->
@@ -59,4 +60,5 @@
     <string name="button_actionList">Ações</string>
     <string name="button_rule">Regra</string>
     <!-- End RuleActivity -->
+    <string name="content">Base content</string>
 </resources>
