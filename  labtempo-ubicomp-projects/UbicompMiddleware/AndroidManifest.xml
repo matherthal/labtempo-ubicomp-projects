@@ -4,7 +4,8 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="7" />
+    <uses-sdk android:minSdkVersion="8" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
@@ -39,11 +40,10 @@
         <service android:enabled="true" android:name=".middleware.resources.Rule" />
         <!-- End Rule -->
         
-        <service android:enabled="true" android:name=".middleware.management.ResourceAgent" />
-		
-        <service android:enabled="true" android:name=".middleware.resources.Stove" />
-        
+        <service android:enabled="true" android:name=".middleware.management.ResourceAgent" />	
+        <service android:enabled="true" android:name=".middleware.resources.Stove" />       
         <service android:enabled="true" android:name=".apps.MediaService" />
+        
     </application>
     
 </manifest>
