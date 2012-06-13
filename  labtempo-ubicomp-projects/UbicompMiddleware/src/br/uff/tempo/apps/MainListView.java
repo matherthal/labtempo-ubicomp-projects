@@ -35,7 +35,7 @@ public class MainListView extends ListActivity {
 				//Toast.makeText(getApplicationContext(), dev, Toast.LENGTH_SHORT).show();
 				
 				String item = lv.getItemAtPosition(position).toString();
-				Toast.makeText(MainListView.this, "Item = " + id + " --> position: " + position + " id: ", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(MainListView.this, "Item = " + id + " --> position: " + position + " id: ", Toast.LENGTH_SHORT).show();
 				//Toast.makeText(MainListView.this, R.array.devices_array);
 				
 				//TODO: Change name to ID. There's a problem with some characters
