@@ -16,7 +16,7 @@
 <FrameLayout 
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
-<com.test.apps.bed.Panel
+<br.uff.tempo.apps.bed.Panel
     android:id="@+id/panel"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" />
