@@ -10,7 +10,7 @@
 	<string name="textView_log">Log: </string>
 	
     <string-array name="devices_array">
-        <item name="item_Rule">Regra</item>
+        <item name="item_rule">Regra</item>
         <item name="item_tv">Televisão</item>
         <item name="item_Cel">Celular</item>
         <item name="item_Lamp">Lâmpada</item>
@@ -21,6 +21,7 @@
         <item name="item_clock">Relógio</item>
         <item name="item_bed">Cama</item>
         <item name="item_base">Repositório de Recursos</item>
+        <item name="item_map">Mapa da casa</item>
     </string-array>
     
     <!-- RuleActivity -->
