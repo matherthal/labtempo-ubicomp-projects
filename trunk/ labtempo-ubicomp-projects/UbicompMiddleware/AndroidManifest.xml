@@ -20,22 +20,24 @@
             </intent-filter>
         </activity>
         
+        <activity android:name=".apps.stove.StoveView" />
+        <activity android:name=".apps.bed.BedView" />
+        <activity android:name=".apps.map.MapActivity" />
+        <activity android:name=".apps.baseview.BaseView" />
+        
         <!-- Rule -->
-        <activity android:name=".apps.RuleActivity"
+        <activity android:name=".apps.rule.RuleActivity"
             android:label="@string/rule_creation" />
-        <activity android:name=".apps.RuleConditionActivity"
+        <activity android:name=".apps.rule.RuleConditionActivityivity"
             android:label="@string/rule_cond" />
-        <activity android:name=".apps.RuleCondListActivity"
+        <activity android:name=".apps.rule.RuleCondListActivityivity"
             android:label="@string/rule_cond" />
-        <activity android:name=".apps.RuleActionListActivity"
+        <activity android:name=".apps.rule.RuleActionListActivityivity"
             android:label="@string/rule_action" />
-        <activity android:name=".apps.RuleActionActivity"
+        <activity android:name=".apps.rule.RuleActionActivityonActivity"
             android:label="@string/rule_action" />
         <service android:enabled="true" android:name=".middleware.resources.Rule" />
         <!-- End Rule -->
-        
-        <activity android:name=".apps.stove.StoveView" />
-        <activity android:name=".apps.baseview.BaseView" />
         
         <service android:enabled="true" android:name=".middleware.management.ResourceAgent" />
 		

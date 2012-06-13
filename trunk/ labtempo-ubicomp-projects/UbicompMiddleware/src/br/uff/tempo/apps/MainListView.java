@@ -1,9 +1,5 @@
 package br.uff.tempo.apps;
 
-import br.uff.tempo.*;
-import br.uff.tempo.apps.baseview.BaseView;
-import br.uff.tempo.apps.stove.StoveView;
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,8 +7,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+import br.uff.tempo.R;
+import br.uff.tempo.apps.baseview.BaseView;
+import br.uff.tempo.apps.map.MapActivity;
+import br.uff.tempo.apps.rule.RuleActivity;
+import br.uff.tempo.apps.stove.StoveView;
 
 public class MainListView extends ListActivity {
 	
@@ -33,24 +33,33 @@ public class MainListView extends ListActivity {
 				// When clicked, show a toast with the TextView text
 				//String dev = ((TextView) view).getText().toString();
 				//Toast.makeText(getApplicationContext(), dev, Toast.LENGTH_SHORT).show();
+				
 				String item = lv.getItemAtPosition(position).toString();
-				Toast.makeText(MainListView.this, "Item = " + item.toString(), Toast.LENGTH_SHORT).show();
+				Toast.makeText(MainListView.this, "Item = " + id + " --> position: " + position + " id: ", Toast.LENGTH_SHORT).show();
+				//Toast.makeText(MainListView.this, R.array.devices_array);
+				
+				//TODO: Change name to ID. There's a problem with some characters
 				
 				// Calling appropriate activity
 				if (item.equals("Regra")) {
 					Intent intent = new Intent(MainListView.this,
 							RuleActivity.class);
 					startActivity(intent);
-				} else if (item.equals("Fog„o")) {
+				} else if (item.equals("Fog√£o")) {
 					Intent intent = new Intent(MainListView.this,
 							StoveView.class);
 					startActivity(intent);
-				} else if(item.equals("RepositÛrio de Recursos"))
+				} else if(item.equals("Reposit√≥rio de Recursos"))
 				{
 					Intent intent = new Intent(MainListView.this,
 							BaseView.class);
 					startActivity(intent);
-				}else
+				} else if (item.equals("Mapa da casa"))
+				{
+					Intent intent = new Intent(MainListView.this,
+							MapActivity.class);
+					startActivity(intent);
+				} else
 				{
 					Toast.makeText(MainListView.this, "N√£o existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();
 				}
