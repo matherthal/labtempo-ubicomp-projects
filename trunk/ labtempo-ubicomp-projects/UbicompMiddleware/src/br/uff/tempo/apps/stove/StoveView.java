@@ -6,6 +6,7 @@ import java.util.Observer;
 import java.util.Vector;
 
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -42,7 +43,7 @@ public class StoveView extends FragmentActivity /*implements Observer*/ {
 		super.setContentView(R.layout.viewpager_layout);
 		
 		// create a 4-burner stove buffer
-		this.stoveData = new StoveData(4);
+		//this.stoveData = new StoveData(4);
 
 		List<Fragment> fragments = new Vector<Fragment>();
 		fragments.add(Fragment.instantiate(this, Burners.class.getName()));
