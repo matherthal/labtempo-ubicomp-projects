@@ -1,5 +1,7 @@
 package br.uff.tempo.middleware.resources;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import android.os.Binder;
@@ -10,31 +12,34 @@ import br.uff.tempo.middleware.resources.interfaces.IStove;
 public class Stove extends ResourceAgent implements IStove {
 	private static final String TAG = "Stove";
 
-	//Temperatures
+	// Temperatures
 	private float tempCooktop1 = 0.0f;
 	private float tempCooktop2 = 0.0f;
 	private float tempCooktop3 = 0.0f;
 	private float tempCooktop4 = 0.0f;
 	private float tempOven1 = 0.0f;
-	
-	//Gas Leak
-	private float gasLeak = 0.0f; //Measure of natural gas leaking
-	
-	//ON/OFF
+
+	// Gas Leak
+	private float gasLeak = 0.0f; // Measure of natural gas leaking
+
+	// ON/OFF
 	private boolean onCooktop1 = false;
 	private boolean onCooktop2 = false;
 	private boolean onCooktop3 = false;
 	private boolean onCooktop4 = false;
 	private boolean onOven1 = false;
-	
-	
-	//private List<Object> components;
-	//private static final int SOUND_ID_STOVE = R.raw.stove;
-	//private static final int SOUND_ID_OVEN_OPEN = R.raw.ovenopen;
-	//private static final int SOUND_ID_OVEN_CLOSE = R.raw.ovenclose;
+
+	// private List<Object> components;
+	// private static final int SOUND_ID_STOVE = R.raw.stove;
+	// private static final int SOUND_ID_OVEN_OPEN = R.raw.ovenopen;
+	// private static final int SOUND_ID_OVEN_CLOSE = R.raw.ovenclose;
+
+	private List<Float> burners;
 
 	public Stove() {
-		super("br.uff.tempo.middleware.resources.Stove", 5); //FIXME: get correct id
+		super("br.uff.tempo.middleware.resources.Stove", 5); // FIXME: get
+																// correct id
+		burners = new ArrayList<Float>();
 	}
 
 	@Override
@@ -109,7 +114,7 @@ public class Stove extends ResourceAgent implements IStove {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	/*
 	 * COOKTOP ELEMENT TEMPERATURES
 	 */
@@ -156,23 +161,22 @@ public class Stove extends ResourceAgent implements IStove {
 		}
 		return this.tempCooktop4;
 	}
-	
+
 	/*
 	 * OVEN TEMPERATURE
 	 */
-	@ContextVariable(name="Temperatura forno", type = CVType.Temperature)
+	@ContextVariable(name = "Temperatura forno", type = CVType.Temperature)
 	public float getTemperatureOven() {
 		Random r = new Random();
-		this.tempOven1 = 80 + r.nextFloat()*20; 
+		this.tempOven1 = 80 + r.nextFloat() * 20;
 		return this.tempOven1;
 	}
 
 	/*
 	 * STOVE ON/OFF
 	 */
-	@Override
-	@ContextVariable(name="Está Ligado", description="", type = CVType.On)
-	public boolean getIsOn() {
+	@ContextVariable(name = "Está Ligado", description = "", type = CVType.On)
+	public boolean getisOn() {
 		Random r = new Random();
 		return r.nextBoolean();
 	}
@@ -180,7 +184,7 @@ public class Stove extends ResourceAgent implements IStove {
 	/*
 	 * OVEN ON/OFF
 	 */
-	@ContextVariable(name="Está Ligado", description="", type = CVType.On)
+	@ContextVariable(name = "Está Ligado", description = "", type = CVType.On)
 	public boolean getOvenIsOn() {
 		Random r = new Random();
 		return r.nextBoolean();
@@ -189,25 +193,25 @@ public class Stove extends ResourceAgent implements IStove {
 	/*
 	 * COOKTOP ELEMENT ON/OFF
 	 */
-	@ContextVariable(name="Boca 1 Ligada", description="", type = CVType.On)
+	@ContextVariable(name = "Boca 1 Ligada", description = "", type = CVType.On)
 	public boolean getCooktop1IsOn() {
 		Random r = new Random();
 		return r.nextBoolean();
 	}
 
-	@ContextVariable(name="Boca 2 Ligada", description="", type = CVType.On)
+	@ContextVariable(name = "Boca 2 Ligada", description = "", type = CVType.On)
 	public boolean getCooktop2IsOn() {
 		Random r = new Random();
 		return r.nextBoolean();
 	}
 
-	@ContextVariable(name="Boca 3 Ligada", description="", type = CVType.On)
+	@ContextVariable(name = "Boca 3 Ligada", description = "", type = CVType.On)
 	public boolean getCooktop3IsOn() {
 		Random r = new Random();
 		return r.nextBoolean();
 	}
 
-	@ContextVariable(name="Boca 4 Ligada", description="", type = CVType.On)
+	@ContextVariable(name = "Boca 4 Ligada", description = "", type = CVType.On)
 	public boolean getCooktop4IsOn() {
 		Random r = new Random();
 		return r.nextBoolean();
@@ -216,9 +220,54 @@ public class Stove extends ResourceAgent implements IStove {
 	/*
 	 * GAS LEAK
 	 */
-	@ContextVariable(name="Vazamento de gás", description="", type = CVType.On)
+	@ContextVariable(name = "Vazamento de gás", description = "", type = CVType.On)
 	public boolean gasLeak() {
 		Random r = new Random();
 		return r.nextBoolean();
 	}
+
+	// These methods are from IStove. We have talk about the interface methods
+
+	@Override
+	public boolean isOn() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void turnOnBurner(int burnerIndex) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void turnOffBurner(int burnerIndex) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean isOnBurner(int burnerIndex) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void setOvenTemperature(float newTemperature) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public float getOvenTemperature() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void turnOffOven() {
+		// TODO Auto-generated method stub
+
+	}
+
 }

@@ -15,47 +15,32 @@ import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 
-public class ResourceRegisterStub extends ResourceAgentStub implements IResourceRegister{
-	
+public class ResourceRegisterStub extends ResourceAgentStub implements
+		IResourceRegister {
+
 	public ResourceRegisterStub(String calleeID) {
 		super(calleeID);
 	}
 
 	public boolean register(String url) {
-		// The remote method to call
-		String method = "register";
 
-		try {
-			// Set params
-			List<Tuple> params = new ArrayList<Tuple>();
-			Type rAType = new TypeToken<ResourceAgent>() {}.getType();
+		// Set params
+		List<Tuple> params = new ArrayList<Tuple>();
 
-			params.add(new Tuple<String, Object>("url", url));
-			// Create message
-			String msg = JSONHelper.createMethodCall(method, params);
-			// Get answer from remote method call
-			return (Boolean)JSONHelper.getMessage(caller.sendMessage(msg));
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return false;
-		}
+		Type rAType = new TypeToken<ResourceAgent>() {
+		}.getType();
+
+		params.add(new Tuple<String, Object>("url", url));
+
+		return (Boolean) makeCall("register", params);
 	}
 
 	public boolean unregister(String url) {
-		// The remote method to call
-		String method = "unregister";
-		try {
-			// Set params
-			List<Tuple> params = new ArrayList<Tuple>();
-			params.add(new Tuple<String, Object>("url", url));
-			// Create message
-			String msg = JSONHelper.createMethodCall(method, params);
-			// Get answer from remote method call
-			return (Boolean)JSONHelper.getMessage(caller.sendMessage(msg));
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return false;
-		}
+
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>("url", url));
+
+		return (Boolean) makeCall("register", params);
 	}
 
 }

@@ -11,9 +11,8 @@ import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
-public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourceDiscovery{
-	
-	
+public class ResourceDiscoveryStub extends ResourceAgentStub implements
+		IResourceDiscovery {
 
 	public ResourceDiscoveryStub(String calleeID) {
 		super(calleeID);
@@ -21,22 +20,11 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 	}
 
 	public ArrayList<String> search(String query) {
-		String method = "search";
 
-		try {
-			// Set params
-			List<Tuple> params = new ArrayList<Tuple>();
-			params.add(new Tuple<String, Object>("query", query));
-			// Create message
-			String msg = JSONHelper.createMethodCall(method, params);
-			// Get answer from remote method call
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>("query", query));
 
-			ArrayList<String> result = (ArrayList<String>)JSONHelper.getMessage(caller.sendMessage(msg));
-			return result;
-		} catch (JSONException e) {
-			e.printStackTrace();
-			return null;
-		}
+		return (ArrayList<String>) makeCall("search", params);
 	}
 
 	public ResourceAgent get(String url) {

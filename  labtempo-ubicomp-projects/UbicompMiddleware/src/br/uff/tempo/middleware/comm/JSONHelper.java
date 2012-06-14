@@ -15,12 +15,17 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class JSONHelper {
+
 	public static String createMethodCall(String method, List<Tuple> params)
 			throws JSONException {
+
 		Map<String, Object> methodCall = new HashMap<String, Object>();
 		Map<String, Object> jsonparams = new HashMap<String, Object>();
+
 		Iterator<Tuple> iterator = params.iterator();
+
 		Tuple<String, Object> tp;
+
 		while (iterator.hasNext()) {
 			tp = iterator.next();
 			jsonparams.put(tp.key, tp.value);
@@ -35,21 +40,23 @@ public class JSONHelper {
 
 	public static Object getMessage(String result) throws JSONException {
 		// Parse response string
-		Type collectionType = new TypeToken<HashMap<String, Object>>(){}.getType();
-		Map<String,Object> response = (new Gson()).fromJson(result, collectionType);
+		Type collectionType = new TypeToken<HashMap<String, Object>>() {
+		}.getType();
+		Map<String, Object> response = (new Gson()).fromJson(result,
+				collectionType);
 		Object obj = response.get("result");
 		return obj;
 	}
 
-
 	public static String createReply(Object msg) throws JSONException {
-		 // FIXME: Can I return anything?
-		
+		// FIXME: Can I return anything?
+
 		Map<String, Object> response = new HashMap<String, Object>();
 		response.put("result", msg);
-		response.put("id", "0"); // we don't really use this so value is always zero
+		response.put("id", "0"); // we don't really use this so value is always
+									// zero
 		String resultMsg = (new Gson()).toJson(response);
-		
+
 		return resultMsg;
 		// Serialise response to JSON-encoded string
 		// The response string can now be sent back to the client...
