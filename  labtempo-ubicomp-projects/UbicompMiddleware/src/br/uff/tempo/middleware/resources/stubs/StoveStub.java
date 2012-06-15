@@ -15,37 +15,50 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 
 	@Override
 	public boolean isOn() {
-		
+
 		List<Tuple> params = new ArrayList<Tuple>();
-		//params.add(new Tuple<String, Object>("query", query));
+		//params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
 
-		//return (ArrayList<String>) makeCall("isOn", params);	
-
-		return false;
+		return (Boolean) makeCall("turnOnBurner", params);
 	}
 
 	@Override
 	public void turnOnBurner(int burnerIndex) {
-		// TODO Auto-generated method stub
+		
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
+
+		makeCall("turnOnBurner", params);
 
 	}
 
 	@Override
 	public void turnOffBurner(int burnerIndex) {
-		// TODO Auto-generated method stub
+
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
+
+		makeCall("turnOffBurner", params);
 
 	}
 
 	@Override
 	public boolean isOnBurner(int burnerIndex) {
-		// TODO Auto-generated method stub
-		return false;
+		
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
+
+		return (Boolean) makeCall("isOnBurner", params);
+		
 	}
 
 	@Override
 	public void setOvenTemperature(float newTemperature) {
-		// TODO Auto-generated method stub
+		
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>("newTemperature", newTemperature));
 
+		makeCall("setOvenTemperature", params);
 	}
 
 	@Override

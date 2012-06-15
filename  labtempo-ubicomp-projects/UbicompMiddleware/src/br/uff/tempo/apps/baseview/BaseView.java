@@ -2,7 +2,6 @@ package br.uff.tempo.apps.baseview;
 
 import java.util.ArrayList;
 import java.util.Observable;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;

@@ -1,11 +1,11 @@
 package br.uff.tempo.apps.bed;
 
+import br.uff.tempo.R;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
-import br.uff.tempo.R;
 
 public class BedView extends Activity /*implements Observer*/ {
 	

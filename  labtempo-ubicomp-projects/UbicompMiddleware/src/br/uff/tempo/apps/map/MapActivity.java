@@ -3,6 +3,7 @@ package br.uff.tempo.apps.map;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
+import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -23,28 +24,32 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.ui.activity.SimpleLayoutGameActivity;
 
 import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
+import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
-
-import br.uff.tempo.apps.ResourceData;
 import br.uff.tempo.apps.stove.StoveData;
 
-public class MapActivity extends SimpleBaseGameActivity implements
-		IOnSceneTouchListener, IScrollDetectorListener,
-		IPinchZoomDetectorListener {
+public class MapActivity extends SimpleLayoutGameActivity
+/* SimpleBaseGameActivity */implements IOnSceneTouchListener,
+		IScrollDetectorListener, IPinchZoomDetectorListener {
 
 	// ===========================================================
 	// Constants
@@ -57,13 +62,14 @@ public class MapActivity extends SimpleBaseGameActivity implements
 	private static final long VIBRATE_TIME = 100;
 
 	// TODO: Put these constants in a separate file
-	private static final int STOVE = 0;
-	private static final int TV = 1;
-	private static final int AR_CONDITIONER = 2;
-	private static final int DVD = 3;
-	private static final int BED = 4;
-	private static final int TEMPERATURE = 5;
-	private static final int LUMINOSITY = 6;
+	private static final int GPR_RESOURCES = 10;
+	private static final int STOVE = GPR_RESOURCES + 1;
+	private static final int TV = STOVE + 1;
+	private static final int AR_CONDITIONER = TV + 1;
+	private static final int DVD = AR_CONDITIONER + 1;
+	private static final int BED = DVD + 1;
+	private static final int TEMPERATURE = BED + 1;
+	private static final int LUMINOSITY = TEMPERATURE + 1;
 
 	private static final int ID_UNREG = 1;
 	private static final int ID_REMOVE = 2;
@@ -78,10 +84,15 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 	private Scene mScene;
 
+	// Detectors to manage zoom and pan
 	private SurfaceScrollDetector mScrollDetector;
 	private PinchZoomDetector mPinchZoomDetector;
 	private float mPinchZoomStartedCameraZoomFactor;
+
+	// The tiled (pieces of images) map
 	private TMXTiledMap tiledMap;
+
+	// The image atlas (an object that "contains" every image)
 	private BitmapTextureAtlas mBitmapTextureAtlas;
 
 	// Texture Regions
@@ -95,9 +106,10 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 	// Quick action menu
 	private QuickAction mQuickAction;
-	
+
 	// Manages the Resources data
 	InterfaceApplicationManager mAppManager;
+	private MenuItem m;
 
 	// ===========================================================
 	// Constructors
@@ -132,8 +144,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		final EngineOptions engineOptions = new EngineOptions(true,
 				ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(
 						this.mCameraWidth, this.mCameraHeight), this.mCamera);
-		
-		//get an Interface Manager instance
+
+		// get an Interface Manager instance
 		mAppManager = InterfaceApplicationManager.getInstance();
 
 		return engineOptions;
@@ -152,20 +164,21 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		// onto the BitmapAtlas
 		// Be careful with these integers! They are the TerxtureRegion
 		// coordinates (pixels) in the atlas
+
 		this.mBitmapTextureAtlas = new BitmapTextureAtlas(
 				this.getTextureManager(), 127, 253, TextureOptions.BILINEAR);
 
-		//the stove image is in position (0,0) in the atlas
+		// the stove image is in position (0,0) in the atlas
 		this.mStoveTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(this.mBitmapTextureAtlas, this,
 						"stove_small.png", 0, 0);
 
-		//the tv image is at the position (0,52) in the atlas
+		// the tv image is at the position (0,52) in the atlas
 		this.mTVTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(this.mBitmapTextureAtlas, this,
 						"tv_small.png", 0, 52);
-		
-		//the bed image is at the position (0,75) in the atlas
+
+		// the bed image is at the position (0,75) in the atlas
 		this.mBedTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(this.mBitmapTextureAtlas, this,
 						"bed_small.png", 0, 75);
@@ -200,10 +213,10 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		final TMXLayer tmxLayer = this.tiledMap.getTMXLayers().get(0);
 
 		// Attach the map layers to the scene
-		
-		//wall layer
+
+		// wall layer
 		this.mScene.attachChild(tmxLayer);
-		//background layer (floor)
+		// background layer (floor)
 		this.mScene.attachChild(this.tiledMap.getTMXLayers().get(1));
 
 		// Set the maximum and minimum bound from Camera
@@ -224,16 +237,18 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		return this.mScene;
 	}
 
-	//TODO: Try to use Android layouts to implement a Quick action
-	// @Override protected int getLayoutID() {
-	//
-	// return R.layout.main;
-	// }
-	//
-	// @Override protected int getRenderSurfaceViewID() {
-	//
-	// return R.id.andengine_rederer;
-	// }
+	// TODO: Try to use Android layouts to implement a Quick action
+	@Override
+	protected int getLayoutID() {
+
+		return R.layout.andengine;
+	}
+
+	@Override
+	protected int getRenderSurfaceViewID() {
+
+		return R.id.xmllayoutexample_rendersurfaceview;
+	}
 
 	// Detectors
 	@Override
@@ -297,77 +312,103 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		return true;
 	}
 
-	//The main menu, accessed by menu button
+	// The main menu, accessed by menu button
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
-		// sub menu
-		SubMenu res = menu.addSubMenu(0, 30, 0, "Add Resource").setIcon(
+		// sub menu: simulated resources
+		SubMenu simulated = menu.addSubMenu("Add Simulated Resource").setIcon(
 				R.drawable.add);
-		res.add(0, TV, 0, "TV");
-		res.add(0, DVD, 0, "DVD");
-		res.add(0, STOVE, 0, "Smart Stove");
-		res.add(0, BED, 0, "Smart Bed");
-		res.add(0, AR_CONDITIONER, 0, "Ar-conditioner");
-		res.add(0, TEMPERATURE, 0, "Temperature Sensor");
-		res.add(0, LUMINOSITY, 0, "Luminosity Sensor");
 
-		menu.add(0, 31, 0, "Settings").setIcon(R.drawable.settings);
-		menu.add(0, 32, 0, "Load Map").setIcon(R.drawable.map);
-		menu.add(0, 33, 0, "Create rule").setIcon(R.drawable.thunder);
+		// Simulated resources to add
+		simulated.add(GPR_RESOURCES, TV, Menu.NONE, "TV");
+		simulated.add(GPR_RESOURCES, DVD, Menu.NONE, "DVD");
+		simulated.add(GPR_RESOURCES, STOVE, Menu.NONE, "Smart Stove");
+		simulated.add(GPR_RESOURCES, BED, Menu.NONE, "Smart Bed");
+		simulated.add(GPR_RESOURCES, AR_CONDITIONER, Menu.NONE,
+				"Ar-conditioner");
+		simulated.add(GPR_RESOURCES, TEMPERATURE, Menu.NONE,
+				"Temperature Sensor");
+		simulated
+				.add(GPR_RESOURCES, LUMINOSITY, Menu.NONE, "Luminosity Sensor");
+
+		menu.add("Connect to External Resource").setIcon(R.drawable.connect);
+		menu.add("Settings").setIcon(R.drawable.settings);
+		menu.add("Load Map").setIcon(R.drawable.map);
+		menu.add("Create rule").setIcon(R.drawable.thunder);
 
 		return super.onCreateOptionsMenu(menu);
 	}
 
-	//when user select an item from menu...
+	// when user select an item from menu...
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
 		Intent i;
+		RegistryData rd;
 
 		switch (item.getItemId()) {
 
-		// Smart Stove selected. Creates a new stove in the scene
+		// A simulated resource was selected
+		// Call a configuration activity and get some information about the
+		// resource.
+		case GPR_RESOURCES:
+
+			rd = callConfigActivity();
+
+			// Smart Stove selected. Creates a new stove in the scene
 		case STOVE:
+
 			i = new Intent(getApplicationContext(),
 					br.uff.tempo.apps.stove.StoveView.class);
 			i.putExtra("stoveData", new StoveData(4));
-			createSprite(this.mStoveTextureRegion, i, InterfaceApplicationManager.STOVE_DATA);
+			createSprite(this.mStoveTextureRegion, i,
+					InterfaceApplicationManager.STOVE_DATA);
 			break;
 
 		// Smart TV selected. Creates a new TV in the scene
 		case TV:
 			i = new Intent(getApplicationContext(),
 					br.uff.tempo.apps.stove.StoveView.class);
-			createSprite(this.mTVTextureRegion, i, InterfaceApplicationManager.TV_DATA);
+			createSprite(this.mTVTextureRegion, i,
+					InterfaceApplicationManager.TV_DATA);
 			break;
-			
+
 		// Smart Bed selected. Creates a new Bed in the scene
 		case BED:
 			i = new Intent(getApplicationContext(),
 					br.uff.tempo.apps.bed.BedView.class);
-			createSprite(this.mBedTextureRegion, i, InterfaceApplicationManager.BED_DATA);
-			break; 
+			createSprite(this.mBedTextureRegion, i,
+					InterfaceApplicationManager.BED_DATA);
+			break;
 
 		default:
+			Toast.makeText(this, "This resource is not supported yet",
+					Toast.LENGTH_LONG).show();
 			break;
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
+
 	/*
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
-		super.onActivityResult(requestCode, resultCode, data);
-		
-		
-		//mAppManager.addResourceData((ResourceData) data.getSerializableExtra("resourceData"));
-	}
-*/
+	 * @Override protected void onActivityResult(int requestCode, int
+	 * resultCode, Intent data) { // TODO Auto-generated method stub
+	 * super.onActivityResult(requestCode, resultCode, data);
+	 * 
+	 * 
+	 * //mAppManager.addResourceData((ResourceData)
+	 * data.getSerializableExtra("resourceData")); }
+	 */
 	// ===========================================================
 	// Methods
 	// ===========================================================
+
+	private RegistryData callConfigActivity() {
+		// TODO call an config activity and read the necessary
+		// information to register a resource, wrap it in an object and return it
+		return null;
+	}
 
 	private ResourceObject createSprite(final TextureRegion pTextureRegion,
 			final Intent intent, final int dataType) {
@@ -382,29 +423,29 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			@Override
 			public void onLongPress(TouchEvent pSceneTouchEvent) {
 
-				 this.setPosition(pSceneTouchEvent.getX() - this.getWidth() /
-				 2,
-				 pSceneTouchEvent.getY() - this.getHeight() / 2);
+				this.setPosition(pSceneTouchEvent.getX() - this.getWidth() / 2,
+						pSceneTouchEvent.getY() - this.getHeight() / 2);
 			}
 
 			@Override
 			public void onTap(TouchEvent pSceneTouchEvent) {
 
-				//Start the resource app (e.g. stove, tv)
+				// Start the resource app (e.g. stove, tv)
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				//TestMapActivity.this.startActivityForResult(intent, dataType);
+				// TestMapActivity.this.startActivityForResult(intent,
+				// dataType);
 				MapActivity.this.startActivity(intent);
 			}
 
 			@Override
 			public void onStartLongPress(TouchEvent pSceneTouchEvent) {
 
-				//when start the long press event, vibrate the device for VIBRATE_TIME ms
+				// when start the long press event, vibrate the device for
+				// VIBRATE_TIME ms
 				MapActivity.this.mEngine.vibrate(VIBRATE_TIME);
 			}
 		};
 
-		
 		this.mScene.attachChild(sprite);
 		this.mScene.registerTouchArea(sprite);
 

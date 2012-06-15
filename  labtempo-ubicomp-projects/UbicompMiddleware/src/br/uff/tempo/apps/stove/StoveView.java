@@ -42,7 +42,7 @@ public class StoveView extends FragmentActivity /*implements Observer*/ {
 		
 		super.setContentView(R.layout.viewpager_layout);
 		
-		// create a 4-burner stove buffer
+		//create a 4-burner stove buffer
 		//this.stoveData = new StoveData(4);
 
 		List<Fragment> fragments = new Vector<Fragment>();
