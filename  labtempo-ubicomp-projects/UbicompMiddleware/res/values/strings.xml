@@ -9,6 +9,12 @@
     <string name="information">"Choose the intensity (0 means off) of the burner "</string>
 	<string name="textView_log">Log: </string>
 	
+	<!-- From Layout resource_config.xml -->
+	<string name="title_config_res">Create new Resource</string>
+	<string name="tv_config_res_name">Resource Name: </string>
+	<string name="btn_config_res_ok">OK</string>
+	<string name="btn_config_res_cancel">Cancel</string>
+	
     <string-array name="devices_array">
         <item name="item_rule">Regra</item>
         <item name="item_tv">Televisão</item>
