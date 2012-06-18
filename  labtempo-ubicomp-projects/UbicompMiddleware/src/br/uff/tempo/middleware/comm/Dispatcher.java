@@ -25,7 +25,7 @@ import br.uff.tempo.middleware.management.ResourceRepository;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
-public class Dispatcher  {
+public class Dispatcher  extends Thread{
 	//Dispatcher is a Singleton
 	private static Dispatcher instance;
 	private ResourceContainer instances;
@@ -79,7 +79,6 @@ public class Dispatcher  {
 	public String dispatch(String calleeID, String msg) throws ClassNotFoundException, JSONException, IllegalArgumentException, IllegalAccessException, InvocationTargetException {
 		update();
 		
-		Type collectionType = new TypeToken<HashMap<String, Object>>(){}.getType();
 		Map methodCall = getMethodCall(msg);
 		String method = getMethodName(methodCall); 
 		
@@ -154,5 +153,40 @@ public class Dispatcher  {
     	
 		return jsonString;
     	// The response string can now be sent back to the client...
+    }
+    
+    public void run()
+    {
+    	while (true)
+    	{
+	    	String received = SocketService.receiveStatus(10006);
+	    	if (received != null)
+	    	{
+	    		//int i = 0;
+	    		//while (received.charAt(i++)!=';');
+	    		String [] call = received.split(";");
+	    		String calleeID = call[0];
+	    		String jsonstring = call[1];
+				try {
+					SocketService.sendStatus((new ResourceAgentIdentifier(calleeID)).getPath(), 8080, dispatch(calleeID,jsonstring));
+				} catch (IllegalArgumentException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (JSONException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalAccessException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (InvocationTargetException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+	    	}
+    	}
     }
 }
