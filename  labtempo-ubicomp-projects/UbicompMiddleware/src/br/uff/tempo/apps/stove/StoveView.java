@@ -1,26 +1,17 @@
 package br.uff.tempo.apps.stove;
 
 import java.util.List;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.Vector;
 
-import br.uff.tempo.R;
-import br.uff.tempo.middleware.resources.stubs.StoveStub;
-
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.view.Window;
 import android.widget.PopupWindow;
-import android.widget.TextView;
-import android.widget.Toast;
+import br.uff.tempo.R;
 
 public class StoveView extends FragmentActivity /*implements Observer*/ {
 
@@ -43,7 +34,7 @@ public class StoveView extends FragmentActivity /*implements Observer*/ {
 		super.setContentView(R.layout.viewpager_layout);
 		
 		//create a 4-burner stove buffer
-		//this.stoveData = new StoveData(4);
+		this.stoveData = new StoveData(4);
 
 		List<Fragment> fragments = new Vector<Fragment>();
 		fragments.add(Fragment.instantiate(this, Burners.class.getName()));

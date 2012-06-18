@@ -1,12 +1,9 @@
 package br.uff.tempo.middleware.management;
 
-import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.List;
 
-import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 

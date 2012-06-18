@@ -2,6 +2,12 @@ package br.uff.tempo.middleware.resources.interfaces;
 
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
+/**
+ * This interface contains the common operations of a Stove
+ * 
+ * @author dbarreto, dmareli, merthal
+ *
+ */
 public interface IStove extends IResourceAgent {
 
 	/**

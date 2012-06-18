@@ -43,6 +43,8 @@ import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
 import br.uff.tempo.apps.stove.StoveData;
+import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.resources.Stove;
 
 public class MapActivity extends SimpleLayoutGameActivity
 /* SimpleBaseGameActivity */implements IOnSceneTouchListener,
@@ -56,6 +58,8 @@ public class MapActivity extends SimpleLayoutGameActivity
 	// private static final int CAMERA_HEIGHT = 480;
 
 	private static final String TAG = "Test";
+
+	// Time to vibrate (ms)
 	private static final long VIBRATE_TIME = 100;
 
 	// TODO: Put these constants in a separate file
@@ -78,7 +82,6 @@ public class MapActivity extends SimpleLayoutGameActivity
 	// ===========================================================
 
 	private ZoomCamera mCamera;
-
 	private Scene mScene;
 
 	// Detectors to manage zoom and pan
@@ -106,8 +109,18 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 	// Manages the Resources data
 	InterfaceApplicationManager mAppManager;
-	private MenuItem m;
+	
+	//Dialog to configure a new resource
 	private ResourceConfig resConf;
+	
+	//Information about the resource that will be created
+	private RegistryData regData;
+
+	//flag to know if the user's already finished the Config Dialog
+	private boolean resConfigured;
+
+	//A helper variable, keeping the selected item from menu
+	private MenuItem itemSelected;
 
 	// ===========================================================
 	// Constructors
@@ -154,9 +167,9 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		Log.d(TAG, "Creating resources");
 
-		//Create the dialogs
+		// Create the dialogs
 		resConf = new ResourceConfig(this);
-		
+
 		this.mEngine.enableVibrator(this);
 
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -220,14 +233,14 @@ public class MapActivity extends SimpleLayoutGameActivity
 		// background layer (floor)
 		this.mScene.attachChild(this.tiledMap.getTMXLayers().get(1));
 
-		// Set the maximum and minimum bound from Camera
+		// Set the maximum and minimum bounds from Camera
 		this.mCamera.setBounds(0, 0, tmxLayer.getWidth(), tmxLayer.getHeight());
 		this.mCamera.setBoundsEnabled(true);
 
 		// Background is a kind of blue...
 		this.mScene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
 
-		// Instanciating detectors (to perform Pan and Zoom)
+		// Instantiating detectors (to perform Pan and Zoom)
 		this.mScrollDetector = new SurfaceScrollDetector(this);
 		this.mPinchZoomDetector = new PinchZoomDetector(this);
 
@@ -345,21 +358,38 @@ public class MapActivity extends SimpleLayoutGameActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		Intent i;
-		RegistryData rd;
-
-		switch (item.getItemId()) {
+		Intent i = null;
 
 		// A simulated resource was selected
-		// Call a configuration activity and get some information about the
-		// resource.
-		case GPR_RESOURCES:
+		// Call a configuration dialog and get some information about the
+		// resource. Pass only if the resource selected is not configured yet! (and if groupID == GPR_RESOURCES :D )
+		
+		if (item.getGroupId() == GPR_RESOURCES && !resConfigured) {
 
-			rd = callConfigActivity();
+			callConfigDialog();
+			itemSelected = item;
+			
+			// if the resource isn't already configured, exit the method
+			// probably it's not configured yet... just certifying,
+			// because the variable is modified in another thread too...
+			if (!resConfigured)
+				return false;
+		}
 
-			// Smart Stove selected. Creates a new stove in the scene
+		resConfigured = false;
+		
+		// Checks which item was selected
+		switch (item.getItemId()) {
+
+		// Smart Stove selected. Creates a new stove in the scene
 		case STOVE:
 
+			//Creates an agent for the stove (Stove Agent)
+			Stove agent = new Stove(regData.getResourceName());
+			//Stores this agent in the application manager
+			this.mAppManager.addResourceAgent(agent.getId(), agent);
+			
+			//Creates an intent, to pass data to StoveView
 			i = new Intent(getApplicationContext(),
 					br.uff.tempo.apps.stove.StoveView.class);
 			i.putExtra("stoveData", new StoveData(4));
@@ -369,6 +399,8 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		// Smart TV selected. Creates a new TV in the scene
 		case TV:
+			
+			//Creates an intent, to pass data to TvView
 			i = new Intent(getApplicationContext(),
 					br.uff.tempo.apps.stove.StoveView.class);
 			createSprite(this.mTVTextureRegion, i,
@@ -377,46 +409,49 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		// Smart Bed selected. Creates a new Bed in the scene
 		case BED:
+			
+			//Creates an intent, to pass data to BedView
 			i = new Intent(getApplicationContext(),
 					br.uff.tempo.apps.bed.BedView.class);
 			createSprite(this.mBedTextureRegion, i,
 					InterfaceApplicationManager.BED_DATA);
 			break;
-			
-		case DVD:
-			
-			callConfigActivity();
-			break;
 
 		default:
-			Toast.makeText(this, "This resource is not supported yet",
-					Toast.LENGTH_LONG).show();
 			break;
 		}
 
 		return super.onOptionsItemSelected(item);
 	}
 
-	/*
-	 * @Override protected void onActivityResult(int requestCode, int
-	 * resultCode, Intent data) { // TODO Auto-generated method stub
-	 * super.onActivityResult(requestCode, resultCode, data);
-	 * 
-	 * 
-	 * //mAppManager.addResourceData((ResourceData)
-	 * data.getSerializableExtra("resourceData")); }
-	 */
+	// @Override protected void onActivityResult(int requestCode, int
+	// resultCode, Intent data) {
+	//
+	// // TODO Auto-generated method stub
+	// super.onActivityResult(requestCode, resultCode, data);
+	//
+	// //mAppManager.addResourceData((ResourceData)
+	// data.getSerializableExtra("resourceData");
+	// }
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
 
-	private RegistryData callConfigActivity() {
-		
+	private void callConfigDialog() {
+
+		this.resConfigured = false;
 		resConf.showPopup();
-		
-		return null;
 	}
 	
+	public void onDialogFinished(Dialog dialog) {
+		
+		regData = new RegistryData(resConf.getName());
+		resConfigured = true;
+		
+		onOptionsItemSelected(itemSelected);
+	}
+
 	private ResourceObject createSprite(final TextureRegion pTextureRegion,
 			final Intent intent, final int dataType) {
 
@@ -430,6 +465,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 			@Override
 			public void onLongPress(TouchEvent pSceneTouchEvent) {
 
+				// Can freely move the resource in the screen
 				this.setPosition(pSceneTouchEvent.getX() - this.getWidth() / 2,
 						pSceneTouchEvent.getY() - this.getHeight() / 2);
 			}
@@ -447,8 +483,8 @@ public class MapActivity extends SimpleLayoutGameActivity
 			@Override
 			public void onStartLongPress(TouchEvent pSceneTouchEvent) {
 
-				// when start the long press event, vibrate the device for
-				// VIBRATE_TIME ms
+				// When start the long press event, vibrate the device for
+				// 'VIBRATE_TIME' ms
 				MapActivity.this.mEngine.vibrate(VIBRATE_TIME);
 			}
 		};

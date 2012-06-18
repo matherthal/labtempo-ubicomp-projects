@@ -26,7 +26,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
-public abstract class ResourceAgent extends Service implements IResourceAgent, Serializable {
+public abstract class ResourceAgent extends Service implements IResourceAgent,
+		Serializable {
 	private static final String TAG = "AgentBase";
 
 	private static final String TCP_SERVER_IP = "192.168.1.70";
@@ -45,11 +46,10 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private ArrayList<String> registeredList;
 	private String RDS_URL;
 
-	public IResourceDiscovery getRDS()
-	{
+	public IResourceDiscovery getRDS() {
 		return rDS;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
@@ -93,9 +93,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public ArrayList<String> getRegisteredList() {
 		return registeredList;
 	}
-	
-	public String getResourceClassName()
-	{
+
+	public String getResourceClassName() {
 		return this.getClass().getName();
 	}
 
@@ -110,35 +109,33 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 
 	public ResourceBinder mBinder = new ResourceBinder();
 
-	public ResourceAgent() {//depreciated
-		// rrs = new ResourceRegisterServiceStub();
-		// caller = new Caller("localahost");// temporally
-		stakeholders = new ArrayList<Stakeholder>();
-		registered = false;
-		InetAddress addr;
-		try {
-			addr = InetAddress.getLocalHost();
-			URL = ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), type, name);
-		} catch (UnknownHostException e) {	
-			e.printStackTrace();
-		}
-		// addres+port
-		id = 0;
+	public ResourceAgent() {// depreciated
+
+		this("", "", 0);
 	}
 
 	public ResourceAgent(String type, int id) {
+
+		this(id + "", type, id);
+	}
+
+	public ResourceAgent(String name, String type, int id) {
+
 		stakeholders = new ArrayList<Stakeholder>();
-		
-		//stakeholders.add(new Stakeholder("update",rR));
+
+		// stakeholders.add(new Stakeholder("update",rR));
 		registered = false;
+
 		this.type = type;// addres+port+type+name
 		this.id = id;
-		this.name = id+"";
+		this.name = name;
 		URL = "";
+
 		try {
 			InetAddress addr = InetAddress.getLocalHost();
-			URL = ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), type, name);
-		} catch (UnknownHostException e) {	
+			URL = ResourceAgentIdentifier.generateRAI(addr.getHostAddress(),
+					type, name);
+		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
 	}
@@ -146,7 +143,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		rDS = new ResourceDiscoveryStub(ResourceDiscovery.getInstance().getURL());//temporaly local(can be user defined or received by hello message)
+		rDS = new ResourceDiscoveryStub(ResourceDiscovery.getInstance()
+				.getURL());// temporaly local(can be user defined or received by
+							// hello message)
 		identify();
 		registeredList = rDS.search("");// search all rR.contains("") = all IAR
 		// Exists only to defeat instantiation.
@@ -171,16 +170,22 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 
 	public boolean identify() {
-		rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
-		rrs.register(this.URL);
-		String result = "";
-		// int i = 0; // 5 tries
-		// while (i++ < 5 && (result = rrs.getResult()) == null)
-		/* sleep time */;// while not respond wait because doesn't exist RRS
-		registered = true;
-		//adding local reference of this instance
-		ResourceContainer.getInstance().add(this);
-		return true;
+
+		if (!registered) {
+			rrs = new ResourceRegisterStub(rDS.search(
+					"br.uff.tempo.middleware.management.ResourceRegister").get(
+					0));
+			
+			registered = rrs.register(this.URL);
+			String result = "";
+			// int i = 0; // 5 tries
+			// while (i++ < 5 && (result = rrs.getResult()) == null)
+			/* sleep time */// while not respond wait because doesn't exist RRS
+			// adding local reference of this instance
+			ResourceContainer.getInstance().add(this);
+		}
+		
+		return registered;
 	}
 
 	public void notifyStakeholders(String change) throws JSONException {
@@ -189,7 +194,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			String url = stakeholders.get(i).getUrl();
 			// stakeholderStub = new ResourceAgentStub(url);
 			if (change.contains(stakeholders.get(i).getMethod()))
-				new ResourceAgentStub(rDS.search(url).get(0)).notificationHandler(change);//change = id, method name and value
+				new ResourceAgentStub(rDS.search(url).get(0))
+						.notificationHandler(change);// change = id, method name
+														// and value
 			// stakeholders.get(i) = stakeholderStub;
 			// query by url return a unique instance
 		}
@@ -204,7 +211,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	 */
 
 	public abstract void notificationHandler(String change);
-	
+
 	public void registerStakeholder(String method, String url) {
 		stakeholders.add(new Stakeholder(method, url));
 	}
