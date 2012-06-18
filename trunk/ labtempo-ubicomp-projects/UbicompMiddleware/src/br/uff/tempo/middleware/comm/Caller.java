@@ -37,22 +37,28 @@ public class Caller {
 		//add callee + methodCaller to JSONObject
 
 		try {
-			return Dispatcher.getInstance().dispatch(calleeAgent.getRai(),jsonString);
+//			if (calleeAgent.getPath().contains("127.0.0.1"))
+//				return Dispatcher.getInstance().dispatch(calleeAgent.getRai(),jsonString);
+//			else
+//				{
+					SocketService.sendStatus(calleeAgent.getPath(),10006 ,calleeAgent.getRai()+";"+jsonString);
+					return SocketService.receiveStatus(port);
+//				}
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (JSONException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IllegalAccessException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (InvocationTargetException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
 		} catch (Exception e)
 		{
 			e.printStackTrace();

@@ -13,13 +13,14 @@ import br.uff.tempo.apps.baseview.BaseView;
 import br.uff.tempo.apps.map.MapActivity;
 import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.stove.StoveView;
+import br.uff.tempo.middleware.comm.Dispatcher;
 
 public class MainListView extends ListActivity {
 	
 	//@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		Dispatcher.getInstance().start();//start listener
 		//Print devices list
 		String[] devices = getResources().getStringArray(R.array.devices_array);
 		setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, devices));
@@ -45,11 +46,11 @@ public class MainListView extends ListActivity {
 					Intent intent = new Intent(MainListView.this,
 							RuleActivity.class);
 					startActivity(intent);
-				} else if (item.equals("Fog√£o")) {
+				} else if (item.equals("Fog„o")) {
 					Intent intent = new Intent(MainListView.this,
 							StoveView.class);
 					startActivity(intent);
-				} else if(item.equals("Reposit√≥rio de Recursos"))
+				} else if(item.equals("RepositÛrio de Recursos"))
 				{
 					Intent intent = new Intent(MainListView.this,
 							BaseView.class);
