@@ -3,7 +3,6 @@ package br.uff.tempo.apps.map;
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
-import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
@@ -23,23 +22,21 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.ui.activity.SimpleLayoutGameActivity;
 
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.apps.map.config.ResourceConfig;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
 import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.map.objects.ResourceObject;
@@ -110,6 +107,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 	// Manages the Resources data
 	InterfaceApplicationManager mAppManager;
 	private MenuItem m;
+	private ResourceConfig resConf;
 
 	// ===========================================================
 	// Constructors
@@ -156,6 +154,9 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		Log.d(TAG, "Creating resources");
 
+		//Create the dialogs
+		resConf = new ResourceConfig(this);
+		
 		this.mEngine.enableVibrator(this);
 
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
@@ -381,6 +382,11 @@ public class MapActivity extends SimpleLayoutGameActivity
 			createSprite(this.mBedTextureRegion, i,
 					InterfaceApplicationManager.BED_DATA);
 			break;
+			
+		case DVD:
+			
+			callConfigActivity();
+			break;
 
 		default:
 			Toast.makeText(this, "This resource is not supported yet",
@@ -405,11 +411,12 @@ public class MapActivity extends SimpleLayoutGameActivity
 	// ===========================================================
 
 	private RegistryData callConfigActivity() {
-		// TODO call an config activity and read the necessary
-		// information to register a resource, wrap it in an object and return it
+		
+		resConf.showPopup();
+		
 		return null;
 	}
-
+	
 	private ResourceObject createSprite(final TextureRegion pTextureRegion,
 			final Intent intent, final int dataType) {
 
