@@ -11,15 +11,26 @@ public class RegistryData {
 
 	private String resName;
 
-	public RegistryData() {
+	public RegistryData(String name) {
 
+		this.resName = name;
 	}
 
+	/**
+	 * Get the name that will be the resource name
+	 * 
+	 * @return The user-defined resource name
+	 */
 	public String getResourceName() {
 
 		return this.resName;
 	}
 
+	/**
+	 * Set the name the will be used as resource name (user-defined)
+	 * 
+	 * @param name The user-defined resource name
+	 */
 	public void setResourceName(String name) {
 		this.resName = name;
 	}
