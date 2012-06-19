@@ -46,11 +46,11 @@ public class MainListView extends ListActivity {
 					Intent intent = new Intent(MainListView.this,
 							RuleActivity.class);
 					startActivity(intent);
-				} else if (item.equals("Fogão")) {
+				} else if (item.equals("Fogao")) {
 					Intent intent = new Intent(MainListView.this,
 							StoveView.class);
 					startActivity(intent);
-				} else if(item.equals("Repositório de Recursos"))
+				} else if(item.equals("Repositorio de Recursos"))
 				{
 					Intent intent = new Intent(MainListView.this,
 							BaseView.class);

@@ -22,7 +22,7 @@ public class Caller {
     private ResourceAgentIdentifier calleeAgent;
     
     private int port = 8080;
-    private Handler handler = new Handler();
+    //private Handler handler = new Handler();
     
 	public Caller(String calleeAgent) {
 		this.calleeAgent = new ResourceAgentIdentifier(calleeAgent);

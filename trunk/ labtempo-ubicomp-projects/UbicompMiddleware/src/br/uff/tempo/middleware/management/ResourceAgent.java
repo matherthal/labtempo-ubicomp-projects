@@ -135,21 +135,29 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 			InetAddress addr = InetAddress.getLocalHost();
 			URL = ResourceAgentIdentifier.generateRAI(addr.getHostAddress(),
 					type, name);
+			
+			 rDS = new ResourceDiscoveryStub(ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), "br.uff.tempo.middleware.management.ResourceDiscovery", "ResourceDiscovery"));
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
+		
+		//initResource();
 	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		rDS = new ResourceDiscoveryStub(ResourceDiscovery.getInstance()
-				.getURL());// temporaly local(can be user defined or received by
-							// hello message)
-		identify();
+
+		initResource();
 		registeredList = rDS.search("");// search all rR.contains("") = all IAR
 		// Exists only to defeat instantiation.
 		// rrs = ResourceRegisterServiceStub.getInstance();
+	}
+	
+	private void initResource() {
+		//rDS = new ResourceDiscoveryStub("rai:127.0.0.1//br.uff.tempo.middleware.management.ResourceDiscovery:ResourceDiscovery");
+		rDS = new ResourceDiscoveryStub(ResourceDiscovery.getInstance().getURL());
+		identify();
 	}
 
 	@Override

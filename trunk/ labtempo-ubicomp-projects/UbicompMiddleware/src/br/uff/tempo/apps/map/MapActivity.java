@@ -387,14 +387,14 @@ public class MapActivity extends SimpleLayoutGameActivity
 		case STOVE:
 
 			//Creates an agent for the stove (Stove Agent)
-			Stove agent = new Stove(regData.getResourceName());
+			//Stove agent = new Stove(regData.getResourceName());
 			//Stores this agent in the application manager
-			this.mAppManager.addResourceAgent(agent.getId(), agent);
+			//this.mAppManager.addResourceAgent(agent.getId(), agent);
 			
 			//Creates an intent, to pass data to StoveView
 			i = new Intent(getApplicationContext(),
 					br.uff.tempo.apps.stove.StoveView.class);
-			i.putExtra("stoveData", new StoveData(4));
+			//i.putExtra("stoveData", new StoveData(4));
 			createSprite(this.mStoveTextureRegion, i,
 					InterfaceApplicationManager.STOVE_DATA);
 			break;
@@ -449,7 +449,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 	private void callConfigDialog() {
 
 		this.resConfigured = false;
-		resConf.showPopup();
+		resConf.showDialog();
 	}
 	
 	public void onDialogFinished(Dialog dialog) {
@@ -489,8 +489,8 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 				// Start the resource app (e.g. stove, tv)
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				// TestMapActivity.this.startActivityForResult(intent,
-				// dataType);
+				intent.putExtra("name", regData.getResourceName());
+				
 				MapActivity.this.startActivity(intent);
 			}
 
