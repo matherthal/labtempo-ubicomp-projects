@@ -53,7 +53,7 @@ public class Dispatcher  extends Thread{
 			String resource = resources.get(i);
 			ArrayList<Method> methodsList = new ArrayList<Method>();
 			ResourceAgentIdentifier rai = new ResourceAgentIdentifier(resource);
-			Class agent = getClassOf(rai.getType().get(0));
+			Class agent = getClassOf(rai.getType().get(rai.getType().size() - 1));
 			Method[] methods= agent.getMethods();
 			for (Method method : methods)
 				methodsList.add(method);
