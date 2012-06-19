@@ -1,4 +1,4 @@
-package br.uff.tempo.apps.map.config;
+package br.uff.tempo.apps.map.dialogs;
 
 import android.app.Activity;
 
