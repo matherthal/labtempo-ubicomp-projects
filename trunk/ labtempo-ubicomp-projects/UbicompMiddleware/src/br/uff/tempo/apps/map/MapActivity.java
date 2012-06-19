@@ -1,5 +1,7 @@
 package br.uff.tempo.apps.map;
 
+import java.util.List;
+
 import org.andengine.engine.camera.ZoomCamera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -25,7 +27,6 @@ import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.SimpleLayoutGameActivity;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -36,14 +37,14 @@ import android.view.SubMenu;
 import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
-import br.uff.tempo.apps.map.config.ResourceConfig;
+import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
+import br.uff.tempo.apps.map.dialogs.ResourceConfig;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
 import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
 import br.uff.tempo.apps.stove.StoveData;
-import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.Stove;
 
 public class MapActivity extends SimpleLayoutGameActivity
@@ -63,19 +64,20 @@ public class MapActivity extends SimpleLayoutGameActivity
 	private static final long VIBRATE_TIME = 100;
 
 	// TODO: Put these constants in a separate file
-	private static final int GPR_RESOURCES = 10;
-	private static final int STOVE = GPR_RESOURCES + 1;
-	private static final int TV = STOVE + 1;
-	private static final int AR_CONDITIONER = TV + 1;
-	private static final int DVD = AR_CONDITIONER + 1;
-	private static final int BED = DVD + 1;
-	private static final int TEMPERATURE = BED + 1;
-	private static final int LUMINOSITY = TEMPERATURE + 1;
+	public static final int GPR_RESOURCES = 10;
+	public static final int STOVE = GPR_RESOURCES + 1;
+	public static final int TV = STOVE + 1;
+	public static final int AR_CONDITIONER = TV + 1;
+	public static final int DVD = AR_CONDITIONER + 1;
+	public static final int BED = DVD + 1;
+	public static final int TEMPERATURE = BED + 1;
+	public static final int LUMINOSITY = TEMPERATURE + 1;
+	public static final int EXTERNAL = LUMINOSITY + 1;
 
-	private static final int ID_UNREG = 1;
-	private static final int ID_REMOVE = 2;
-	private static final int ID_INFO = 3;
-	private static final int ID_SETTINGS = 4;
+	public static final int ID_UNREG = 1;
+	public static final int ID_REMOVE = 2;
+	public static final int ID_INFO = 3;
+	public static final int ID_SETTINGS = 4;
 
 	// ===========================================================
 	// Fields
@@ -346,7 +348,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 		simulated
 				.add(GPR_RESOURCES, LUMINOSITY, Menu.NONE, "Luminosity Sensor");
 
-		menu.add("Connect to External Resource").setIcon(R.drawable.connect);
+		menu.add(Menu.NONE, EXTERNAL, Menu.NONE, "Connect to External Resource").setIcon(R.drawable.connect);
 		menu.add("Settings").setIcon(R.drawable.settings);
 		menu.add("Load Map").setIcon(R.drawable.map);
 		menu.add("Create rule").setIcon(R.drawable.thunder);
@@ -417,6 +419,12 @@ public class MapActivity extends SimpleLayoutGameActivity
 					InterfaceApplicationManager.BED_DATA);
 			break;
 
+		case EXTERNAL:
+			
+			MiddlewareOperation m = new MiddlewareOperation(this);
+			m.execute(null);
+			
+			break;
 		default:
 			break;
 		}
@@ -445,11 +453,17 @@ public class MapActivity extends SimpleLayoutGameActivity
 	}
 	
 	public void onDialogFinished(Dialog dialog) {
-		
+	
 		regData = new RegistryData(resConf.getName());
 		resConfigured = true;
 		
 		onOptionsItemSelected(itemSelected);
+	}
+	
+	//Executed when the activity successfully receives a list of registered resources
+	public void onGetResourceList(List<String> list) {
+		
+		Toast.makeText(this, "OK!", Toast.LENGTH_SHORT).show();
 	}
 
 	private ResourceObject createSprite(final TextureRegion pTextureRegion,

@@ -1,4 +1,4 @@
-package br.uff.tempo.apps.map.config;
+package br.uff.tempo.apps.map.dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -66,6 +66,7 @@ public class ResourceConfig implements OnClickListener, OnCancelListener {
 		} else {
 
 			dialog.cancel();
+			activity.onDialogFinished(this.dialog);
 		}
 	}
 	
@@ -113,7 +114,6 @@ public class ResourceConfig implements OnClickListener, OnCancelListener {
 	public void onCancel(DialogInterface dialog) {
 		
 		finished = true;
-		activity.onDialogFinished(this.dialog);
 	}
 
 }
