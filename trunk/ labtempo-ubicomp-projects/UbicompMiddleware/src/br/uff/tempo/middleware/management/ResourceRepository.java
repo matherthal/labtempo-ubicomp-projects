@@ -1,16 +1,8 @@
 package br.uff.tempo.middleware.management;
 
-import java.lang.reflect.Method;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
@@ -25,7 +17,8 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		setId(0);
 		try{
 			InetAddress addr = InetAddress.getLocalHost();
-			setURL("rai:"+addr.getHostAddress()+"//br.uff.tempo.middleware.management.ResourceRepository:ResourceRepository");
+			setURL(ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), "br.uff.tempo.middleware.management.ResourceRepository", "ResourceRepository"));
+			
 		}catch(UnknownHostException e)
 		{
 			e.printStackTrace();

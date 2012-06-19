@@ -37,6 +37,7 @@ import android.view.SubMenu;
 import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.apps.map.dialogs.ChooseExternalResource;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.apps.map.dialogs.ResourceConfig;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
@@ -112,8 +113,9 @@ public class MapActivity extends SimpleLayoutGameActivity
 	// Manages the Resources data
 	InterfaceApplicationManager mAppManager;
 	
-	//Dialog to configure a new resource
+	//Dialog wrappers 
 	private ResourceConfig resConf;
+	private ChooseExternalResource externalList;
 	
 	//Information about the resource that will be created
 	private RegistryData regData;
@@ -158,9 +160,6 @@ public class MapActivity extends SimpleLayoutGameActivity
 				ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(
 						this.mCameraWidth, this.mCameraHeight), this.mCamera);
 
-		// get an Interface Manager instance
-		mAppManager = InterfaceApplicationManager.getInstance();
-
 		return engineOptions;
 	}
 
@@ -171,6 +170,10 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		// Create the dialogs
 		resConf = new ResourceConfig(this);
+		externalList = new ChooseExternalResource(this);
+		
+		// Get an Interface Manager instance
+		mAppManager = InterfaceApplicationManager.getInstance();
 
 		this.mEngine.enableVibrator(this);
 
@@ -394,7 +397,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 			//Creates an intent, to pass data to StoveView
 			i = new Intent(getApplicationContext(),
 					br.uff.tempo.apps.stove.StoveView.class);
-			//i.putExtra("stoveData", new StoveData(4));
+			i.putExtra("name", regData.getResourceName());
 			createSprite(this.mStoveTextureRegion, i,
 					InterfaceApplicationManager.STOVE_DATA);
 			break;
@@ -463,7 +466,8 @@ public class MapActivity extends SimpleLayoutGameActivity
 	//Executed when the activity successfully receives a list of registered resources
 	public void onGetResourceList(List<String> list) {
 		
-		Toast.makeText(this, "OK!", Toast.LENGTH_SHORT).show();
+		//Toast.makeText(this, "OK!", Toast.LENGTH_SHORT).show();
+		externalList.showDialog(list);
 	}
 
 	private ResourceObject createSprite(final TextureRegion pTextureRegion,
@@ -489,7 +493,6 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 				// Start the resource app (e.g. stove, tv)
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent.putExtra("name", regData.getResourceName());
 				
 				MapActivity.this.startActivity(intent);
 			}
