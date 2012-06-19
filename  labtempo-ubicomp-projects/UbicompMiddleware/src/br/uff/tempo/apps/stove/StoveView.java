@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.PopupWindow;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.resources.Stove;
 
 public class StoveView extends FragmentActivity /*implements Observer*/ {
 
@@ -22,6 +23,8 @@ public class StoveView extends FragmentActivity /*implements Observer*/ {
 	private StoveData stoveData;
 	private View layout_popup;
 	private MyPageAdapter mPageAdapter;
+	
+	private Stove stoveAgent;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -35,6 +38,13 @@ public class StoveView extends FragmentActivity /*implements Observer*/ {
 		
 		//create a 4-burner stove buffer
 		this.stoveData = new StoveData(4);
+		
+		Intent i = getIntent();
+		String name = i.getExtras().getString("name");
+		
+		//if (name != null)
+			stoveAgent = new Stove(name);
+			stoveAgent.identify();
 
 		List<Fragment> fragments = new Vector<Fragment>();
 		fragments.add(Fragment.instantiate(this, Burners.class.getName()));

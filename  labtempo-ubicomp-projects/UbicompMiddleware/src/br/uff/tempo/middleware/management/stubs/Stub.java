@@ -23,7 +23,8 @@ public class Stub {
 			String msg = JSONHelper.createMethodCall(methodName, params);
 
 			// Get answer from remote method call and return
-			return JSONHelper.getMessage(caller.sendMessage(msg));
+			String ret = caller.sendMessage(msg);
+			return JSONHelper.getMessage(ret);
 
 		} catch (JSONException e) {
 			e.printStackTrace();

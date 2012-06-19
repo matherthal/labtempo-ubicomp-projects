@@ -168,7 +168,8 @@ public class Dispatcher  extends Thread{
 	    		String calleeID = call[0];
 	    		String jsonstring = call[1];
 				try {
-					SocketService.sendStatus((new ResourceAgentIdentifier(calleeID)).getPath(), 8080, dispatch(calleeID,jsonstring));
+					String str = dispatch(calleeID,jsonstring);
+					SocketService.sendStatus((new ResourceAgentIdentifier(calleeID)).getPath(), 8080, str);
 				} catch (IllegalArgumentException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

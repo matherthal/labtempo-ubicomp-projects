@@ -16,7 +16,7 @@ public class SocketService {
 
     private static final int SERVER_PORT = 10006;
     //private static final String SERVER_IP = "192.168.1.111";
-    private static final String SERVER_IP = "192.168.1.28";
+    //private static final String SERVER_IP = "192.168.1.28";
 
 
     private static Socket socket;
@@ -26,11 +26,13 @@ public class SocketService {
     public static String receiveStatus(int port)
     {
         String text = null;
+        DatagramSocket s = null;
+        
         try {
 
             byte[] message = new byte[1500];
             DatagramPacket p = new DatagramPacket(message, message.length);
-            DatagramSocket s = new DatagramSocket(port);
+            s = new DatagramSocket(port);
             s.receive(p);
             text = new String(message, 0, p.getLength());
             s.close();
@@ -39,6 +41,10 @@ public class SocketService {
             Logger.getLogger(SocketService.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(SocketService.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+        	
+        	if (s != null)
+        		s.close();
         }
         return text;
     }

@@ -17,16 +17,16 @@
 	
     <string-array name="devices_array">
         <item name="item_rule">Regra</item>
-        <item name="item_tv">Televisão</item>
+        <item name="item_tv">Televisao</item>
         <item name="item_Cel">Celular</item>
-        <item name="item_Lamp">Lâmpada</item>
+        <item name="item_Lamp">Lampada</item>
         <item name="item_">Tablet</item>
-        <item name="item_stove">Fogão</item>
+        <item name="item_stove">Fogao</item>
         <item name="item_pc">Computador</item>
         <item name="item_radio">Radio</item>
-        <item name="item_clock">Relógio</item>
+        <item name="item_clock">Relogio</item>
         <item name="item_bed">Cama</item>
-        <item name="item_base">Repositório de Recursos</item>
+        <item name="item_base">Repositorio de Recursos</item>
         <item name="item_map">Mapa da casa</item>
     </string-array>
     
