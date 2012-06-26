@@ -48,10 +48,10 @@ public class ChooseExternalResource extends MapDialog {
 		
 		for (String s : resList) {
 			
-			if (!s.contains("Management")) {
+			if (!s.contains("management")) {
 				
-				//String[] names = s.split(":");
-				list.add(s);
+				String[] names = s.split(":");
+				list.add(names[2]);
 			}
 		}
 		
