@@ -12,8 +12,8 @@
         <!-- Be carreful with these values... The screen size can influenciate -->
         <org.andengine.opengl.view.RenderSurfaceView
             android:id="@+id/xmllayoutexample_rendersurfaceview"
-            android:layout_width="1200dp"
-            android:layout_height="800dp" />
+            android:layout_width="1200px"
+            android:layout_height="800px" />
     </LinearLayout>
 
 </LinearLayout>

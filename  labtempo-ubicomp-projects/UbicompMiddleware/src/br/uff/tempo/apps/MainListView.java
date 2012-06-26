@@ -20,7 +20,13 @@ public class MainListView extends ListActivity {
 	//@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Dispatcher.getInstance().start();//start listener
+		
+	
+		Dispatcher d = Dispatcher.getInstance();
+		
+		if (!d.isAlive())
+			d.start();//start listener
+		
 		//Print devices list
 		String[] devices = getResources().getStringArray(R.array.devices_array);
 		setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, devices));

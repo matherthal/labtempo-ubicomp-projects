@@ -268,6 +268,8 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		return R.id.xmllayoutexample_rendersurfaceview;
 	}
+	
+	
 
 	// Detectors
 	@Override
