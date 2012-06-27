@@ -6,27 +6,22 @@ import java.util.ArrayList;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
-public class ResourceRepository extends ResourceAgent implements IResourceRepository {
-	
+public class ResourceRepository extends ResourceAgent implements
+		IResourceRepository {
 
 	ArrayList<String> repository;
 	private static ResourceRepository instance;
-	
-	private ResourceRepository()
-	{
+
+	private ResourceRepository() {
 		setId(0);
-		try{
-			InetAddress addr = InetAddress.getLocalHost();
-			setURL(ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), "br.uff.tempo.middleware.management.ResourceRepository", "ResourceRepository"));
-			
-		}catch(UnknownHostException e)
-		{
-			e.printStackTrace();
-		}
-		
+
+		setURL(ResourceAgentIdentifier.generateRAI(getLocalIpAddress(),
+				"br.uff.tempo.middleware.management.ResourceRepository",
+				"ResourceRepository"));
+
 		setName("ResourceRepository");
-		setType("management");	
-		
+		setType("management");
+
 		ResourceContainer container = ResourceContainer.getInstance();
 		ResourceRepository rR = this;
 		ResourceDiscovery rDS = ResourceDiscovery.getInstance();
@@ -36,36 +31,31 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		container.add(rDS);
 		container.add(rRS);
 		container.add(rLS);
-		
+
 		repository = new ArrayList<String>();
 		repository.add(rDS.getURL());
 		repository.add(rRS.getURL());
 		repository.add(rLS.getURL());
 		repository.add(rR.getURL());
 	}
-	
-	public static ResourceRepository getInstance()
-	{
+
+	public static ResourceRepository getInstance() {
 		if (instance == null)
 			instance = new ResourceRepository();
 		return instance;
 	}
 
-
 	public String get(String url) {
-		for (int i = 0; i< repository.size(); i++)
+		for (int i = 0; i < repository.size(); i++)
 			if (repository.get(i).contains(url))
-					return repository.get(i);
-		return null;	
+				return repository.get(i);
+		return null;
 	}
 
-
-	public ArrayList<String> getList(){
-		return  repository;
+	public ArrayList<String> getList() {
+		return repository;
 	}
-	
-	
-	
+
 	public boolean add(String url) {
 		repository.add(url);
 		return true;
@@ -76,9 +66,7 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		return true;
 	}
 
-
-	public boolean update(String url)
-	{
+	public boolean update(String url) {
 
 		repository.add(url);
 		return true;
@@ -86,15 +74,16 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 
 	@Override
 	public void notificationHandler(String change) {
-		//ResourceAgent rA = (ResourceAgent)new JSONObject(change).get("value");
-		//update(rA);
+		// ResourceAgent rA = (ResourceAgent)new
+		// JSONObject(change).get("value");
+		// update(rA);
 	}
 
 	public ArrayList<String> getSubList(String url) {
 		ArrayList<String> result = new ArrayList<String>();
-		for (int i = 0; i< repository.size(); i++)
+		for (int i = 0; i < repository.size(); i++)
 			if (repository.get(i).contains(url))
-					 result.add(repository.get(i));
+				result.add(repository.get(i));
 		if (result.size() == 0)
 			return null;
 		else

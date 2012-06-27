@@ -1,7 +1,5 @@
 package br.uff.tempo.middleware.management;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
@@ -16,18 +14,13 @@ public class ResourceDiscovery extends ResourceAgent implements
 		setId(2);
 		setName("ResourceDiscovery");
 		setType("br.uff.tempo.middleware.management.ResourceDiscovery");
-		
-		try {
-			InetAddress addr = InetAddress.getLocalHost();
-			setURL(ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), "br.uff.tempo.middleware.management.ResourceDiscovery", "ResourceDiscovery"));
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+
+		setURL(ResourceAgentIdentifier.generateRAI(getLocalIpAddress(),
+				"br.uff.tempo.middleware.management.ResourceDiscovery",
+				"ResourceDiscovery"));
+
 		ResourceContainer.getInstance().add(this);
 	}
-
 
 	public ArrayList<String> search(String query) {
 		ResourceRepository rR = ResourceRepository.getInstance();
@@ -35,7 +28,7 @@ public class ResourceDiscovery extends ResourceAgent implements
 			return rR.getList();
 		else
 			return rR.getSubList(query);
-		
+
 	}
 
 	private ArrayList<ResourceAgent> queryByLocal(String query) {
@@ -45,7 +38,6 @@ public class ResourceDiscovery extends ResourceAgent implements
 	private ArrayList<ResourceAgent> queryByProximity(String query) {
 		return null;
 	}
-	
 
 	public static ResourceDiscovery getInstance() {
 		if (instance == null)
@@ -56,7 +48,7 @@ public class ResourceDiscovery extends ResourceAgent implements
 	@Override
 	public void notificationHandler(String change) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	public ResourceAgent get(String url) {
