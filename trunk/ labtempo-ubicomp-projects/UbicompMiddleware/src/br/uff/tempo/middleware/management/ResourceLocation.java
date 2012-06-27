@@ -1,13 +1,8 @@
 package br.uff.tempo.middleware.management;
 
-import java.lang.reflect.Method;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.utils.Local;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
@@ -26,13 +21,9 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		setURL("br.uff.tempo.middleware.management.ResourceLocation");
 		setName("ResourceLocation");
 		setType("management");
-		try {
-			InetAddress addr = InetAddress.getLocalHost();
-			setURL(ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), "br.uff.tempo.middleware.management.ResourceLocation", "ResourceLocation"));
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		setURL(ResourceAgentIdentifier.generateRAI(getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceLocation", "ResourceLocation"));
+		
 		map = new HashMap<String,Local>();
 		ResourceContainer.getInstance().add(this);
 	}

@@ -6,43 +6,40 @@ import java.net.UnknownHostException;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
-public class ResourceRegister extends ResourceAgent implements IResourceRegister{
+public class ResourceRegister extends ResourceAgent implements
+		IResourceRegister {
 
 	ResourceRepository rR;
-	
+
 	private static ResourceRegister instance;
-	
-	private ResourceRegister ()
-	{
+
+	private ResourceRegister() {
 		setId(1);
 		setName("ResourceRegister");
 		setType("management");
 		setURL("br.uff.tempo.middleware.management.ResourceRegister");
-		try {
-			InetAddress addr = InetAddress.getLocalHost();
-			setURL(ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), "br.uff.tempo.middleware.management.ResourceRegister", "ResourceRegister"));
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		setURL(ResourceAgentIdentifier.generateRAI(getLocalIpAddress(),
+				"br.uff.tempo.middleware.management.ResourceRegister",
+				"ResourceRegister"));
+
 		ResourceContainer.getInstance().add(this);
 	}
-	
-	public static ResourceRegister getInstance()
-	{
+
+	public static ResourceRegister getInstance() {
 		if (instance == null)
 			instance = new ResourceRegister();
 		return instance;
 	}
-	
+
 	public boolean register(String url) {
 		rR = ResourceRepository.getInstance();
 		rR.add(url);
 		return true;
 	}
-	
+
 	public boolean unregister(String url) {
-		//rR = ResourceRepository.getInstance(); //already instantiated
+		// rR = ResourceRepository.getInstance(); //already instantiated
 		rR.remove(url);
 		return true;
 	}
@@ -50,6 +47,6 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	@Override
 	public void notificationHandler(String change) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -2,21 +2,21 @@ package br.uff.tempo.middleware.management;
 
 import java.io.Serializable;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.Enumeration;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import br.uff.tempo.middleware.comm.Caller;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import br.uff.tempo.middleware.comm.Tuple;
+import android.util.Log;
+import br.uff.tempo.middleware.comm.Caller;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
@@ -131,18 +131,34 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		this.name = name;
 		URL = "";
 
-		try {
-			InetAddress addr = InetAddress.getLocalHost();
-			URL = ResourceAgentIdentifier.generateRAI(addr.getHostAddress(),
-					type, name);
-			
-			 rDS = new ResourceDiscoveryStub(ResourceAgentIdentifier.generateRAI(addr.getHostAddress(), "br.uff.tempo.middleware.management.ResourceDiscovery", "ResourceDiscovery"));
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
+		//WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+
+		//WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		String ipAddress = getLocalIpAddress(); //Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
+		
+		URL = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);	
+		rDS = new ResourceDiscoveryStub(ResourceAgentIdentifier.generateRAI(ipAddress, "br.uff.tempo.middleware.management.ResourceDiscovery", "ResourceDiscovery"));
 		
 		//initResource();
 	}
+	
+	public String getLocalIpAddress()
+    {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.getHostAddress().contains(":")) {
+                        return inetAddress.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+        	Log.e("ResourceAgent", ex.getMessage());
+        }
+        return "No IP Available";   
+    }
 
 	@Override
 	public void onCreate() {
