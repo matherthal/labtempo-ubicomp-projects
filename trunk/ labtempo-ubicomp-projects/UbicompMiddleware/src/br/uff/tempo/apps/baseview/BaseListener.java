@@ -2,27 +2,35 @@ package br.uff.tempo.apps.baseview;
 
 import java.util.ArrayList;
 
-import br.uff.tempo.middleware.management.ResourceRepository;
+import android.app.Activity;
 import android.widget.TextView;
+import br.uff.tempo.middleware.management.ResourceRepository;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 
-public class BaseListener extends Thread{
-	
-	private ResourceRepository rR;
+public class BaseListener extends Thread {
+
+	private IResourceDiscovery rD;
 	TextView tv;
+	Activity act;
 	
-	public BaseListener(TextView tv)
+	public BaseListener(TextView tv, Activity act)
 	{
 		this.tv = tv;
+		this.act = act;
+		
+		rD = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 	}
 	
 	public void run()
 	{
-		rR = ResourceRepository.getInstance();
-        int count = rR.getList().size();
+		
+		
+        int count = rD.search("").size();
         boolean update = true;
         while (true)
         {
-        	count = rR.getList().size();
+        	count = rD.search("").size();
         	if (update)
         		updateBaseContent();
         	try {
@@ -31,18 +39,28 @@ public class BaseListener extends Thread{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        	update= count != rR.getList().size();
+        	
+        	update = count != rD.search("").size();
         }
 	}
 
     protected void updateBaseContent()
     {
-    	ArrayList<String> strList = rR.getList();
+    	ArrayList<String> strList = rD.search("");
     	String rai = "";
     	if (strList != null)
 	    	for (int i = 0;i<strList.size(); i++)	
 	    		rai += strList.get(i)+"\n";
-	    tv.setText(rai);
+    	
+    	final String text = rai;
+    	act.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				
+				tv.setText(text);
+			}
+		});
 	}
     
 }

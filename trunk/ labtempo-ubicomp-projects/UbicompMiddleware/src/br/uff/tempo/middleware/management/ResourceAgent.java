@@ -137,7 +137,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		String ipAddress = getLocalIpAddress(); //Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 		
 		URL = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);	
-		rDS = new ResourceDiscoveryStub(ResourceAgentIdentifier.generateRAI(ipAddress, "br.uff.tempo.middleware.management.ResourceDiscovery", "ResourceDiscovery"));
+		//rDS = new ResourceDiscoveryStub(ResourceAgentIdentifier.generateRAI(ipAddress, "br.uff.tempo.middleware.management.ResourceDiscovery", "ResourceDiscovery"));
+		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 		
 		//initResource();
 	}
@@ -172,7 +173,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 	
 	private void initResource() {
 		//rDS = new ResourceDiscoveryStub("rai:127.0.0.1//br.uff.tempo.middleware.management.ResourceDiscovery:ResourceDiscovery");
-		rDS = new ResourceDiscoveryStub(ResourceDiscovery.getInstance().getURL());
+		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 		identify();
 	}
 
