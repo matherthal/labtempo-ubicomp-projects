@@ -1,10 +1,16 @@
 package br.uff.tempo.middleware.management.utils;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
+
+import android.util.Log;
 
 public class ResourceAgentIdentifier {
 	
-	//rai-uri = “rai:” rai-path [“//” rai-type *(“/” rai-type)] “:” rai-name
+	//rai-uri = ï¿½rai:ï¿½ rai-path [ï¿½//ï¿½ rai-type *(ï¿½/ï¿½ rai-type)] ï¿½:ï¿½ rai-name
 	private String rai;
 	
 	private String path;
@@ -67,6 +73,24 @@ public class ResourceAgentIdentifier {
 	{
 		return "rai:"+path+"//"+type+":"+name;
 	}
+	
+	public static String getLocalIpAddress()
+    {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+                NetworkInterface intf = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress() && !inetAddress.getHostAddress().contains(":")) {
+                        return inetAddress.getHostAddress();
+                    }
+                }
+            }
+        } catch (SocketException ex) {
+        	Log.e("ResourceAgent", ex.getMessage());
+        }
+        return "No IP Available";   
+    }
 
 	
 	

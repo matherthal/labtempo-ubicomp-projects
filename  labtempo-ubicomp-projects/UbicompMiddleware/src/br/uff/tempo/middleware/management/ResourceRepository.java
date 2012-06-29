@@ -14,7 +14,7 @@ public class ResourceRepository extends ResourceAgent implements
 	private ResourceRepository() {
 		setId(0);
 
-		setURL(ResourceAgentIdentifier.generateRAI(getLocalIpAddress(),
+		setURL(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(),
 				"br.uff.tempo.middleware.management.ResourceRepository",
 				"ResourceRepository"));
 

@@ -22,7 +22,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		setName("ResourceLocation");
 		setType("management");
 		
-		setURL(ResourceAgentIdentifier.generateRAI(getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceLocation", "ResourceLocation"));
+		setURL(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceLocation", "ResourceLocation"));
 		
 		map = new HashMap<String,Local>();
 		ResourceContainer.getInstance().add(this);
