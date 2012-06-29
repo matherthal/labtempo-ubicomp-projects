@@ -38,6 +38,8 @@ public class SocketService {
             s = new DatagramSocket(port);
             s.receive(p);
             text = new String(message, 0, p.getLength());
+            
+            Log.d("SocketService", "Received message: " + text);
 
         } catch (SocketException ex) {
             Log.e("SocketService", "receiveStatus: " + ex.getMessage());

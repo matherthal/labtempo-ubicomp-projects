@@ -19,7 +19,7 @@ public class ResourceRegister extends ResourceAgent implements
 		setType("management");
 		setURL("br.uff.tempo.middleware.management.ResourceRegister");
 
-		setURL(ResourceAgentIdentifier.generateRAI(getLocalIpAddress(),
+		setURL(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(),
 				"br.uff.tempo.middleware.management.ResourceRegister",
 				"ResourceRegister"));
 
