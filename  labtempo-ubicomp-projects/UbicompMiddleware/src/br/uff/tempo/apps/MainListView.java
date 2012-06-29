@@ -35,17 +35,13 @@ public class MainListView extends ListActivity {
 		lv.setTextFilterEnabled(true);
 		
 		lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			
 			//@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				// When clicked, show a toast with the TextView text
-				//String dev = ((TextView) view).getText().toString();
-				//Toast.makeText(getApplicationContext(), dev, Toast.LENGTH_SHORT).show();
 				
 				String item = lv.getItemAtPosition(position).toString();
-				//Toast.makeText(MainListView.this, "Item = " + id + " --> position: " + position + " id: ", Toast.LENGTH_SHORT).show();
-				//Toast.makeText(MainListView.this, R.array.devices_array);
 				
-				//TODO: Change name to ID. There's a problem with some characters
+				//TODO: Change name to ID. There's a problem with some special characters
 				
 				// Calling appropriate activity
 				if (item.equals("Regra")) {

@@ -1,15 +1,14 @@
 package br.uff.tempo.middleware.comm;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
+
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -42,6 +41,9 @@ public class JSONHelper {
 		// Parse response string
 		Type collectionType = new TypeToken<HashMap<String, Object>>() {
 		}.getType();
+		
+		Log.d("JSONHelper", "result = " + result);
+		
 		Map<String, Object> response = (new Gson()).fromJson(result,
 				collectionType);
 		Object obj = response.get("result");

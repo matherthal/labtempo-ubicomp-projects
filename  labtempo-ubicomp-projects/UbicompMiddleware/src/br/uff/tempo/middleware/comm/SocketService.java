@@ -11,6 +11,8 @@ import java.net.SocketException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import android.util.Log;
+
 
 public class SocketService {
 
@@ -32,15 +34,15 @@ public class SocketService {
 
             byte[] message = new byte[1500];
             DatagramPacket p = new DatagramPacket(message, message.length);
+
             s = new DatagramSocket(port);
             s.receive(p);
             text = new String(message, 0, p.getLength());
-            s.close();
 
         } catch (SocketException ex) {
-            Logger.getLogger(SocketService.class.getName()).log(Level.SEVERE, null, ex);
+            Log.e("SocketService", "receiveStatus: " + ex.getMessage());
         } catch (IOException ex) {
-            Logger.getLogger(SocketService.class.getName()).log(Level.SEVERE, null, ex);
+            Log.e("SocketService", "receiveStatus: " + ex.getMessage());
         } finally {
         	
         	if (s != null)
@@ -51,16 +53,23 @@ public class SocketService {
 
     public static void sendStatus(String address,int port, String status)
     {
-        try {
+    	DatagramSocket s = null;
+    	
+    	try {
 
-            DatagramSocket s = new DatagramSocket();
+            s = new DatagramSocket();
             InetAddress local = InetAddress.getByName(address);
             int msg_length = status.length();
             byte[] message = status.getBytes();
             DatagramPacket p = new DatagramPacket(message, msg_length, local, port);
             s.send(p);
         } catch (IOException ex) {
-            Logger.getLogger(SocketService.class.getName()).log(Level.SEVERE, null, ex);
+        	Log.e("SocketService", "sendStatus: " + ex.getMessage());
+        }
+        finally {
+        	
+        	if (s != null)
+        		s.close();
         }
     }
 

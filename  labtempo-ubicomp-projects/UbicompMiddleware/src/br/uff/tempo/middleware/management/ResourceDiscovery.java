@@ -15,9 +15,7 @@ public class ResourceDiscovery extends ResourceAgent implements
 		setName("ResourceDiscovery");
 		setType("br.uff.tempo.middleware.management.ResourceDiscovery");
 
-		setURL(ResourceAgentIdentifier.generateRAI(getLocalIpAddress(),
-				"br.uff.tempo.middleware.management.ResourceDiscovery",
-				"ResourceDiscovery"));
+		setURL(IResourceDiscovery.RDS_ADDRESS);
 
 		ResourceContainer.getInstance().add(this);
 	}

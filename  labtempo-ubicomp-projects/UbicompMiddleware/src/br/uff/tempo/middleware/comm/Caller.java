@@ -1,22 +1,7 @@
 package br.uff.tempo.middleware.comm;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.lang.reflect.InvocationTargetException;
-import java.net.InetAddress;
-import java.net.Socket;
-
-import org.json.JSONException;
-
-import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
-
-import android.os.Handler;
 import android.util.Log;
-import android.widget.EditText;
-import android.widget.TextView;
+import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class Caller {
     private ResourceAgentIdentifier calleeAgent;
@@ -47,6 +32,7 @@ public class Caller {
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			Log.e("Caller", "IllegalArgumentException: " + e.getMessage());
 //		} catch (ClassNotFoundException e) {
 //			// TODO Auto-generated catch block
 //			e.printStackTrace();
@@ -62,6 +48,7 @@ public class Caller {
 		} catch (Exception e)
 		{
 			e.printStackTrace();
+			Log.e("Caller", "Exception: " + e.getMessage());
 		}
 		return "error";
 	}	

@@ -40,11 +40,14 @@ public class StoveView extends FragmentActivity /*implements Observer*/ {
 		this.stoveData = new StoveData(4);
 		
 		Intent i = getIntent();
-		String name = i.getExtras().getString("name");
 		
-		//if (name != null)
-			stoveAgent = new Stove(name);
-			stoveAgent.identify();
+		String name = "Fogao";
+		
+		if (i.getExtras() != null)
+			name = i.getExtras().getString("name");
+
+		stoveAgent = new Stove(name);
+		stoveAgent.identify();
 
 		List<Fragment> fragments = new Vector<Fragment>();
 		fragments.add(Fragment.instantiate(this, Burners.class.getName()));
