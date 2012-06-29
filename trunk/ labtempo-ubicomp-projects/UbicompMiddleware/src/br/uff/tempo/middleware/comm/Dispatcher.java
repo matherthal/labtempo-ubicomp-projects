@@ -3,27 +3,25 @@ package br.uff.tempo.middleware.comm;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceContainer;
 import br.uff.tempo.middleware.management.ResourceDiscovery;
-import br.uff.tempo.middleware.management.ResourceRegister;
 import br.uff.tempo.middleware.management.ResourceRepository;
-import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.management.stubs.ResourceRepositoryStub;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class Dispatcher extends Thread {
 	// Dispatcher is a Singleton
@@ -39,9 +37,25 @@ public class Dispatcher extends Thread {
 	private void update() throws ClassNotFoundException {
 		ArrayList<String> resources = new ArrayList<String>();
 
-		ResourceRepository rR = ResourceRepository.getInstance();
-		resources = ResourceDiscovery.getInstance().search(
-				rR.getLocalIpAddress());
+		IResourceRepository rR;
+		
+		//if discovery agent
+		if (IResourceDiscovery.RDS_ADDRESS.equals(ResourceAgentIdentifier
+				.getLocalIpAddress())) {
+			
+			rR = ResourceRepository.getInstance();
+			
+			resources = ResourceDiscovery.getInstance().search(
+					ResourceAgentIdentifier.getLocalIpAddress());
+		}
+		else {
+			
+			IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+			rR = new ResourceRepositoryStub(discovery.search("ResourceRepository").get(0));
+			
+			resources = discovery.search(
+					ResourceAgentIdentifier.getLocalIpAddress());
+		}
 
 		// only localhost
 		for (int i = 0; i < resources.size(); i++) {

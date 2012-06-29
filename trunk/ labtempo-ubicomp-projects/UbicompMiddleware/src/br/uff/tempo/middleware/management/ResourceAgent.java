@@ -134,7 +134,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		//WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
 
 		//WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		String ipAddress = getLocalIpAddress(); //Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
+		String ipAddress = ResourceAgentIdentifier.getLocalIpAddress(); //Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 		
 		URL = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);	
 		//rDS = new ResourceDiscoveryStub(ResourceAgentIdentifier.generateRAI(ipAddress, "br.uff.tempo.middleware.management.ResourceDiscovery", "ResourceDiscovery"));
@@ -142,24 +142,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		
 		//initResource();
 	}
-	
-	public String getLocalIpAddress()
-    {
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && !inetAddress.getHostAddress().contains(":")) {
-                        return inetAddress.getHostAddress();
-                    }
-                }
-            }
-        } catch (SocketException ex) {
-        	Log.e("ResourceAgent", ex.getMessage());
-        }
-        return "No IP Available";   
-    }
 
 	@Override
 	public void onCreate() {
