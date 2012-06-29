@@ -40,7 +40,10 @@ public class Dispatcher extends Thread {
 		IResourceRepository rR;
 		
 		//if discovery agent
-		if (IResourceDiscovery.RDS_ADDRESS.equals(ResourceAgentIdentifier
+		
+		String rdsHost = (new ResourceAgentIdentifier(IResourceDiscovery.RDS_ADDRESS)).getPath();
+		
+		if (rdsHost.equals(ResourceAgentIdentifier
 				.getLocalIpAddress())) {
 			
 			rR = ResourceRepository.getInstance();
