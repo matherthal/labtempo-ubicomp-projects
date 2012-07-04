@@ -43,8 +43,8 @@ public class JSONHelper {
 		}.getType();
 		
 		Log.d("JSONHelper", "result = " + result);
-		
-		Map<String, Object> response = (new Gson()).fromJson(result,
+		String[] resultData = result.split(";");
+		Map<String, Object> response = (new Gson()).fromJson(resultData[0],
 				collectionType);
 		Object obj = response.get("result");
 		return obj;

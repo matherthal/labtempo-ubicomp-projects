@@ -7,10 +7,12 @@ public class Caller {
     private ResourceAgentIdentifier calleeAgent;
     
     private int port = 8080;
+    SocketService socket;
     //private Handler handler = new Handler();
     
 	public Caller(String calleeAgent) {
 		this.calleeAgent = new ResourceAgentIdentifier(calleeAgent);
+//		socket = new SocketService(this.calleeAgent.getPath(), 8080);
 		// serverIP = "192.168.1.70"; //FIXME: IP shouldn't be hardcoded
 	}
 
@@ -26,9 +28,8 @@ public class Caller {
 //				return Dispatcher.getInstance().dispatch(calleeAgent.getRai(),jsonString);
 //			else
 //				{
-					SocketService.sendStatus(calleeAgent.getPath(),10006 ,calleeAgent.getRai()+";"+jsonString);
-					return SocketService.receiveStatus(port);
-//				}
+				String result = SocketService.sendReceive(calleeAgent.getPath(), calleeAgent.getRai()+";"+jsonString+";");
+				return result;
 		} catch (IllegalArgumentException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
