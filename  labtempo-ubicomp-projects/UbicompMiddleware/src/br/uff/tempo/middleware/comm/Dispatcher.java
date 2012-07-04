@@ -28,10 +28,11 @@ public class Dispatcher extends Thread {
 	private static Dispatcher instance;
 	private ResourceContainer instances;
 	private Map<String, ArrayList<Method>> interfaces;// IAR and method list
-
+	SocketService socket;
 	private Dispatcher() {
 		instances = ResourceContainer.getInstance();
 		interfaces = new HashMap<String, ArrayList<Method>>();
+//		socket = new SocketService("localhost", 10006);
 	}
 
 	private void update() throws ClassNotFoundException {
@@ -173,34 +174,11 @@ public class Dispatcher extends Thread {
 
 	public void run() {
 		while (true) {
-			String received = SocketService.receiveStatus(10006);
-			if (received != null) {
-				// int i = 0;
-				// while (received.charAt(i++)!=';');
-				String[] call = received.split(";");
-				String calleeID = call[0];
-				String jsonstring = call[1];
-				try {
-					String str = dispatch(calleeID, jsonstring);
-					SocketService.sendStatus((new ResourceAgentIdentifier(
-							calleeID)).getPath(), 8080, str);
-				} catch (IllegalArgumentException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalAccessException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (InvocationTargetException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
+			try {
+				SocketService.receiveSend(this);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 		}
 	}
