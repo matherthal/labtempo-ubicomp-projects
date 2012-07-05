@@ -46,7 +46,14 @@ public interface IStove extends IResourceAgent {
 	 */
 
 	public boolean isOnBurner(int burnerIndex);
-
+	
+	/**
+	 * Verify if the oven is on 
+	 * 
+	 * @return <code>true</code> if the oven is on; <code>false</code> otherwise.
+	 */
+	public boolean isOvenOn();
+	
 	/**
 	 * Sets the oven temperature to <code>newTemperature</code>. Notice that
 	 * setting a new temperature, the oven will be turned on.

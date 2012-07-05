@@ -1,6 +1,7 @@
 package br.uff.tempo.apps.stove;
 
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.resources.interfaces.IStove;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,7 +25,7 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 
 	private final String TAG = "Panel-StoveView";
 
-	private StoveData stove;
+	private IStove stove;
 
 	private Bitmap mBitmap;
 	private Bitmap mButtons;
@@ -70,7 +71,7 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 		int x = (int) event.getX();
 		int y = (int) event.getY();
 
-		StoveData data = ((StoveView) getContext()).getStoveState();
+		stove = ((StoveView) getContext()).getStoveState();
 
 		Log.d(TAG, "X = " + x + " and Y = " + y);
 		
@@ -89,13 +90,13 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 				
 				Log.d(TAG, "Left Button");
 				
-				if (data.isOvenOn()) {
+				if (stove.isOvenOn()) {
 					msg = "off";
-					data.setOvenTemperature(0.0f);
+					stove.setOvenTemperature(0f);
 				}
 				else {
 					msg = "on";
-					data.setOvenTemperature(100.0f);
+					stove.setOvenTemperature(100.0f);
 				}
 				
 				Toast.makeText(getContext(), "Oven turned " + msg, Toast.LENGTH_SHORT)

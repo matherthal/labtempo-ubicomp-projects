@@ -1,6 +1,7 @@
 package br.uff.tempo.apps.stove;
 
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.resources.interfaces.IStove;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,7 +24,8 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 
 	private final String TAG = "Panel-StoveView";
 
-	private StoveData stove;
+	//private StoveData stove;
+	private IStove stove;
 
 	private Bitmap mBitmap;
 	private Bitmap mButtons;
@@ -79,6 +81,7 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 
 		// draw the flame at burners, if needed
 		
+		/*
 		int[] flame = stove.getBurners();
 
 		if (flame[0] > 0)
@@ -89,7 +92,18 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 			canvas.drawBitmap(mFireThree, mX, mY, null);
 		if (flame[3] > 0)
 			canvas.drawBitmap(mFireFour, mX, mY, null);
-			
+		*/
+
+		if (stove.isOnBurner(new Integer(1)))
+			canvas.drawBitmap(mFireOne, mX, mY, null);
+		if (stove.isOnBurner(new Integer(1)))
+			canvas.drawBitmap(mFireTwo, mX, mY, null);
+		if (stove.isOnBurner(new Integer(2)))
+			canvas.drawBitmap(mFireThree, mX, mY, null);
+		if (stove.isOnBurner(new Integer(3)))
+			canvas.drawBitmap(mFireFour, mX, mY, null);
+
+
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
@@ -98,7 +112,7 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 		int x = (int) event.getX();
 		int y = (int) event.getY();
 
-		StoveData data = ((StoveView) getContext()).getStoveState();
+		stove = ((StoveView) getContext()).getStoveState();
 
 		Log.d(TAG, "X = " + x + " and Y = " + y);
 
@@ -107,34 +121,56 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 		try {
 			// Check which button has clicked
 
-			// get the pixel color of coordinate (x, y) (translated)
+			// Get the pixel color of coordinate (x, y) (translated)
 			color = mButtons.getPixel(x - mX, y - mY);
+			
+			int burnerIndex = -1;
 
 			switch (color) {
 			case Color.RED: // 0xfffa0000:
 				// ((StoveView) getContext()).showPopup(0);
-				data.setBurnerIntensity(0, 100 - data.getBurnerIntensity(0));
+				//data.setBurnerIntensity(0, 100 - data.getBurnerIntensity(0));
+				burnerIndex = 0;
+				
 				Log.d(TAG, "Burner 1");
+				
 				break;
 			case Color.BLUE:
 				// ((StoveView) getContext()).showPopup(1);
-				data.setBurnerIntensity(1, 100 - data.getBurnerIntensity(1));
+				//data.setBurnerIntensity(1, 100 - data.getBurnerIntensity(1));
+				burnerIndex = 1;
+				
 				Log.d(TAG, "Burner 2");
+				
 				break;
 			case Color.GREEN:
-				Log.d(TAG, "Burner 3");
 				// ((StoveView) getContext()).showPopup(2);
-				data.setBurnerIntensity(2, 100 - data.getBurnerIntensity(2));
+				//data.setBurnerIntensity(2, 100 - data.getBurnerIntensity(2));
+				burnerIndex = 2;
+				
+				Log.d(TAG, "Burner 3");
+				
 				break;
 			case Color.YELLOW:
-				Log.d(TAG, "Burner 4");
 				// ((StoveView) getContext()).showPopup(3);
-				data.setBurnerIntensity(3, 100 - data.getBurnerIntensity(3));
+				//data.setBurnerIntensity(3, 100 - data.getBurnerIntensity(3));
+				burnerIndex = 3;
+				
+				Log.d(TAG, "Burner 4");
+				
 				break;
 			default:
 				Log.d(TAG, "Nothing...");
 			}
 
+			if (burnerIndex != -1) {
+				
+				if (stove.isOnBurner(burnerIndex))
+					stove.turnOffBurner(burnerIndex);
+				else
+					stove.turnOnBurner(burnerIndex);
+			}
+			
 			Log.d(TAG, "Color Clicked = " + Integer.toHexString(color));
 
 		} catch (IllegalArgumentException ex) {

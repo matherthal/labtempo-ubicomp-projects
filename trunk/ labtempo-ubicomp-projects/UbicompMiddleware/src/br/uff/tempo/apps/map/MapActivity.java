@@ -26,8 +26,11 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.ui.activity.SimpleLayoutGameActivity;
 
+import com.google.gson.Gson;
+
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -46,7 +49,10 @@ import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
 import br.uff.tempo.apps.stove.StoveData;
+import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.resources.Stove;
+import br.uff.tempo.middleware.resources.interfaces.IStove;
+import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
 public class MapActivity extends SimpleLayoutGameActivity
 /* SimpleBaseGameActivity */implements IOnSceneTouchListener,
@@ -112,18 +118,18 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 	// Manages the Resources data
 	InterfaceApplicationManager mAppManager;
-	
-	//Dialog wrappers 
+
+	// Dialog wrappers
 	private ResourceConfig resConf;
 	private ChooseExternalResource externalList;
-	
-	//Information about the resource that will be created
+
+	// Information about the resource that will be created
 	private RegistryData regData;
 
-	//flag to know if the user's already finished the Config Dialog
+	// flag to know if the user's already finished the Config Dialog
 	private boolean resConfigured;
 
-	//A helper variable, keeping the selected item from menu
+	// A helper variable, keeping the selected item from menu
 	private MenuItem itemSelected;
 
 	// ===========================================================
@@ -171,7 +177,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 		// Create the dialogs
 		resConf = new ResourceConfig(this);
 		externalList = new ChooseExternalResource(this);
-		
+
 		// Get an Interface Manager instance
 		mAppManager = InterfaceApplicationManager.getInstance();
 
@@ -268,8 +274,6 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		return R.id.xmllayoutexample_rendersurfaceview;
 	}
-	
-	
 
 	// Detectors
 	@Override
@@ -348,12 +352,16 @@ public class MapActivity extends SimpleLayoutGameActivity
 		simulated.add(GPR_RESOURCES, BED, Menu.NONE, "Smart Bed");
 		simulated.add(GPR_RESOURCES, AR_CONDITIONER, Menu.NONE,
 				"Ar-conditioner");
+
 		simulated.add(GPR_RESOURCES, TEMPERATURE, Menu.NONE,
 				"Temperature Sensor");
+
 		simulated
 				.add(GPR_RESOURCES, LUMINOSITY, Menu.NONE, "Luminosity Sensor");
 
-		menu.add(Menu.NONE, EXTERNAL, Menu.NONE, "Connect to External Resource").setIcon(R.drawable.connect);
+		menu.add(Menu.NONE, EXTERNAL, Menu.NONE, "Connect to External Resource")
+				.setIcon(R.drawable.connect);
+
 		menu.add("Settings").setIcon(R.drawable.settings);
 		menu.add("Load Map").setIcon(R.drawable.map);
 		menu.add("Create rule").setIcon(R.drawable.thunder);
@@ -365,17 +373,16 @@ public class MapActivity extends SimpleLayoutGameActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 
-		Intent i = null;
-
-		// A simulated resource was selected
+		// A resource was selected
 		// Call a configuration dialog and get some information about the
-		// resource. Pass only if the resource selected is not configured yet! (and if groupID == GPR_RESOURCES :D )
-		
+		// resource. Pass only if the resource selected is not configured yet!
+		// (and if groupID == GPR_RESOURCES :D )
+
 		if (item.getGroupId() == GPR_RESOURCES && !resConfigured) {
 
 			callConfigDialog();
 			itemSelected = item;
-			
+
 			// if the resource isn't already configured, exit the method
 			// probably it's not configured yet... just certifying,
 			// because the variable is modified in another thread too...
@@ -384,55 +391,10 @@ public class MapActivity extends SimpleLayoutGameActivity
 		}
 
 		resConfigured = false;
-		
+
+		createResourceIcon(item.getItemId(), true);
+
 		// Checks which item was selected
-		switch (item.getItemId()) {
-
-		// Smart Stove selected. Creates a new stove in the scene
-		case STOVE:
-
-			//Creates an agent for the stove (Stove Agent)
-			//Stove agent = new Stove(regData.getResourceName());
-			//Stores this agent in the application manager
-			//this.mAppManager.addResourceAgent(agent.getId(), agent);
-			
-			//Creates an intent, to pass data to StoveView
-			i = new Intent(getApplicationContext(),
-					br.uff.tempo.apps.stove.StoveView.class);
-			i.putExtra("name", regData.getResourceName());
-			createSprite(this.mStoveTextureRegion, i,
-					InterfaceApplicationManager.STOVE_DATA);
-			break;
-
-		// Smart TV selected. Creates a new TV in the scene
-		case TV:
-			
-			//Creates an intent, to pass data to TvView
-			i = new Intent(getApplicationContext(),
-					br.uff.tempo.apps.stove.StoveView.class);
-			createSprite(this.mTVTextureRegion, i,
-					InterfaceApplicationManager.TV_DATA);
-			break;
-
-		// Smart Bed selected. Creates a new Bed in the scene
-		case BED:
-			
-			//Creates an intent, to pass data to BedView
-			i = new Intent(getApplicationContext(),
-					br.uff.tempo.apps.bed.BedView.class);
-			createSprite(this.mBedTextureRegion, i,
-					InterfaceApplicationManager.BED_DATA);
-			break;
-
-		case EXTERNAL:
-			
-			MiddlewareOperation m = new MiddlewareOperation(this);
-			m.execute(null);
-			
-			break;
-		default:
-			break;
-		}
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -451,25 +413,104 @@ public class MapActivity extends SimpleLayoutGameActivity
 	// Methods
 	// ===========================================================
 
+	// Called when a new resource agent is created
 	private void callConfigDialog() {
 
 		this.resConfigured = false;
 		resConf.showDialog();
 	}
-	
+
 	public void onDialogFinished(Dialog dialog) {
-	
+
 		regData = new RegistryData(resConf.getName());
 		resConfigured = true;
-		
+
 		onOptionsItemSelected(itemSelected);
 	}
-	
-	//Executed when the activity successfully receives a list of registered resources
+
+	// Executed when the activity successfully receives a list of registered
+	// resources
 	public void onGetResourceList(List<String> list) {
-		
-		//Toast.makeText(this, "OK!", Toast.LENGTH_SHORT).show();
+
+		// Call a dialog to show the registered resource list
 		externalList.showDialog(list);
+	}
+
+	public void onRegisteredResourceChoosed(String resourceRAI) {
+
+		int type = -1;
+		regData = new RegistryData(resourceRAI);
+
+		// Toast.makeText(this, resourceRAI, Toast.LENGTH_LONG).show();
+		if (resourceRAI.contains("Stove")) {
+			type = STOVE;
+		}
+
+		createResourceIcon(type, false);
+
+	}
+
+	public void createResourceIcon(int iconType, boolean simulated) {
+
+		Intent i = null;
+		Bundle b = null;
+
+		switch (iconType) {
+
+		// Smart Stove selected. Creates a new stove in the scene
+		case STOVE:
+
+			// Creates an intent, to pass data to StoveView
+			i = new Intent(this,
+					br.uff.tempo.apps.stove.StoveView.class);
+			
+			//i.putExtra("name", regData.getResourceName());
+			IStove stoveAgent;
+			
+			String type = null;
+			
+			if (simulated) {
+				type = "agent";
+			}
+			else {
+				type = "stub";
+			}
+			
+			i.putExtra(type, regData.getResourceName());
+		
+			createSprite(this.mStoveTextureRegion, i,
+					InterfaceApplicationManager.STOVE_DATA);
+			break;
+
+		// Smart TV selected. Creates a new TV in the scene
+		case TV:
+
+			// Creates an intent, to pass data to TvView
+			i = new Intent(getApplicationContext(),
+					br.uff.tempo.apps.stove.StoveView.class);
+			createSprite(this.mTVTextureRegion, i,
+					InterfaceApplicationManager.TV_DATA);
+			break;
+
+		// Smart Bed selected. Creates a new Bed in the scene
+		case BED:
+
+			// Creates an intent, to pass data to BedView
+			i = new Intent(getApplicationContext(),
+					br.uff.tempo.apps.bed.BedView.class);
+			createSprite(this.mBedTextureRegion, i,
+					InterfaceApplicationManager.BED_DATA);
+			break;
+
+		case EXTERNAL:
+
+			MiddlewareOperation m = new MiddlewareOperation(this);
+			m.execute(null);
+
+			break;
+		default:
+			break;
+		}
 	}
 
 	private ResourceObject createSprite(final TextureRegion pTextureRegion,
@@ -495,7 +536,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 				// Start the resource app (e.g. stove, tv)
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				
+
 				MapActivity.this.startActivity(intent);
 			}
 

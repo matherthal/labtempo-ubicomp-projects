@@ -33,8 +33,11 @@ public class JSONHelper {
 		methodCall.put("jsonrpc", "2.0");
 		methodCall.put("method", method);
 		methodCall.put("params", jsonparams);
+		
+		Type collectionType = new TypeToken<HashMap<String, Object>>() {
+		}.getType();
 
-		return (new Gson()).toJson(methodCall);
+		return (new Gson()).toJson(methodCall, collectionType);
 	}
 
 	public static Object getMessage(String result) throws JSONException {
