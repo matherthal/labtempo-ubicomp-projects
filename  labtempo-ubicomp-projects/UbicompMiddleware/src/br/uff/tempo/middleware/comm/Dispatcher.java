@@ -92,14 +92,26 @@ public class Dispatcher extends Thread {
 			InvocationTargetException {
 		update();
 
-		Map methodCall = getMethodCall(msg);
+		Map<String, Object> methodCall = getMethodCall(msg);
 		String method = getMethodName(methodCall);
 
 		ArrayList<Method> methods = interfaces.get(calleeID);
 		for (int i = 0; i < methods.size(); i++)
 			if (methods.get(i).getName().equals(method)) {
-				Object obj = execute(calleeID, methods.get(i),
+				Object obj = null;
+				try{
+					obj = execute(calleeID, methods.get(i),
 						getParams(methodCall));
+				} catch (IllegalArgumentException e)
+				{
+//					java.lang.IllegalArgumentException: argument 1 should have type int, got java.lang.Double
+					String[] error = e.getMessage().split(",");
+					if (error[0].contains("int"))
+					{
+						if (error[1].contains("Double"));
+							//method
+					}
+				}
 				return JSONHelper.createReply(obj);
 			}
 		return msg;

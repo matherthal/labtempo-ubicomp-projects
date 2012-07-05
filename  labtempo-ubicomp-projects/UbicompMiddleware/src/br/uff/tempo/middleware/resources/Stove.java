@@ -232,7 +232,7 @@ public class Stove extends ResourceAgent implements IStove {
 		return r.nextBoolean();
 	}
 
-	// These methods are from IStove. We have talk about the interface methods
+	// These methods are from IStove. We have to talk about the interface methods
 
 	@Override
 	public boolean isOn() {
@@ -274,6 +274,12 @@ public class Stove extends ResourceAgent implements IStove {
 	public void turnOffOven() {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean isOvenOn() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

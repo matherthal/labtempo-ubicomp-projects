@@ -5,14 +5,18 @@ import java.util.List;
 
 import android.app.Activity;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.apps.map.MapActivity;
 
-public class ChooseExternalResource extends MapDialog {
+public class ChooseExternalResource extends MapDialog implements AdapterView.OnItemClickListener {
 	
 	private ListView list;
 	private ArrayAdapter<String> lvAdapter;
+	private List<String> resourcesRAI;
 	
 	public ChooseExternalResource(final Activity act) {
 	
@@ -25,6 +29,7 @@ public class ChooseExternalResource extends MapDialog {
 			
 				// Get the reference to the list view
 				list = (ListView) dialog.findViewById(R.id.list_registered);
+				list.setOnItemClickListener(ChooseExternalResource.this);
 				
 				//Cancel the dialog if you touch outside its area.
 				dialog.setCanceledOnTouchOutside(true);
@@ -34,6 +39,8 @@ public class ChooseExternalResource extends MapDialog {
 
 	public void showDialog(List<String> resList) {
 
+		resourcesRAI = resList;
+		
 		lvAdapter = new ArrayAdapter<String>(activity,
 				android.R.layout.simple_list_item_1, formatList(resList));
 		
@@ -42,7 +49,7 @@ public class ChooseExternalResource extends MapDialog {
 		super.showDialog();
 	}
 	
-	private List<String> formatList(List<String> resList) {
+	public List<String> formatList(List<String> resList) {
 		
 		List<String> list = new ArrayList<String>();
 		
@@ -61,6 +68,18 @@ public class ChooseExternalResource extends MapDialog {
 	@Override
 	public void onClick(View v) {
 		
+		
+	}
+
+	@Override
+	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		
+		String resourceRAI = resourcesRAI.get(position + 4); //TODO This is a magic number... must be changed!
+		MapActivity map = (MapActivity) activity;
+		
+		map.onRegisteredResourceChoosed(resourceRAI);
+		
+		dialog.cancel();
 		
 	}
 

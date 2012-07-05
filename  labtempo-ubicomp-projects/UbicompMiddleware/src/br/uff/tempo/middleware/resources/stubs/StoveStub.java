@@ -73,4 +73,12 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 
 	}
 
+	@Override
+	public boolean isOvenOn() {
+		
+		List<Tuple> params = new ArrayList<Tuple>();
+
+		return (Boolean) makeCall("isOvenOn", params);
+	}
+
 }
