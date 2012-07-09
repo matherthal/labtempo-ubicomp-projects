@@ -113,7 +113,7 @@ public class Dispatcher extends Thread {
 					{
 						if (error[1].contains("Double"));
 						{
-							for (int j = 0; i<paramsArray.length; i++)
+							for (int j = 0; j<paramsArray.length; j++)
 							{
 								if (paramsArray[j].getClass().equals(Double.class))
 									paramsArray[j] = (int)Math.round((Double)paramsArray[j]);
