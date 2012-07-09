@@ -37,21 +37,29 @@ public class Stove extends ResourceAgent implements IStove {
 	private List<Float> burners;
 
 	public Stove() {
-	
 		this("");
 	}
 	
 	public Stove(String name) {
 		// FIXME: get correct id
 		super(name, "br.uff.tempo.middleware.resources.Stove", 5); 
-		burners = new ArrayList<Float>();
+		burners = new ArrayList<Float>(4);
+		initBurners();
 	}
 
+	private void initBurners()
+	{
+		for (int i = 0; i<4; i++)
+			burners.add(0.0f);
+	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		// register();
+		if (burners.size()<4)
+		{
+			burners = new ArrayList<Float>(4);
+		}
 	}
 
 	/*
@@ -242,20 +250,17 @@ public class Stove extends ResourceAgent implements IStove {
 
 	@Override
 	public void turnOnBurner(int burnerIndex) {
-		// TODO Auto-generated method stub
-
+		burners.set(burnerIndex, 1.0f);
 	}
 
 	@Override
 	public void turnOffBurner(int burnerIndex) {
-		// TODO Auto-generated method stub
-
+		burners.set(burnerIndex, 0.0f);
 	}
 
 	@Override
 	public boolean isOnBurner(int burnerIndex) {
-		// TODO Auto-generated method stub
-		return false;
+		return burners.get(burnerIndex)>0;
 	}
 
 	@Override
