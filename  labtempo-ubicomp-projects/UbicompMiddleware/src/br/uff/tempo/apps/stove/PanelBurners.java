@@ -94,7 +94,7 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 			canvas.drawBitmap(mFireFour, mX, mY, null);
 		*/
 
-		if (stove.isOnBurner(new Integer(1)))
+		if (stove.isOnBurner(new Integer(0)))
 			canvas.drawBitmap(mFireOne, mX, mY, null);
 		if (stove.isOnBurner(new Integer(1)))
 			canvas.drawBitmap(mFireTwo, mX, mY, null);

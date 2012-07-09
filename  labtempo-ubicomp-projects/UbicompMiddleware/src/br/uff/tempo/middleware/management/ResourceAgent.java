@@ -126,7 +126,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		// stakeholders.add(new Stakeholder("update",rR));
 		registered = false;
 
-		this.type = type;// addres+port+type+name
+		this.type = type;// address+port+type+name
 		this.id = id;
 		this.name = name;
 		URL = "";
@@ -137,7 +137,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		String ipAddress = ResourceAgentIdentifier.getLocalIpAddress(); //Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 		
 		URL = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);	
-		//rDS = new ResourceDiscoveryStub(ResourceAgentIdentifier.generateRAI(ipAddress, "br.uff.tempo.middleware.management.ResourceDiscovery", "ResourceDiscovery"));
+		
 		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 		
 		//initResource();
@@ -185,9 +185,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 			
 			registered = rrs.register(this.URL);
 			String result = "";
-			// int i = 0; // 5 tries
-			// while (i++ < 5 && (result = rrs.getResult()) == null)
-			/* sleep time */// while not respond wait because doesn't exist RRS
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
 		}
@@ -204,7 +201,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 				new ResourceAgentStub(rDS.search(url).get(0))
 						.notificationHandler(change);// change = id, method name
 														// and value
-			// stakeholders.get(i) = stakeholderStub;
 			// query by url return a unique instance
 		}
 	}
@@ -216,7 +212,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 	 *            It has new status of instance
 	 * @throws JSONException
 	 */
-
 	public abstract void notificationHandler(String change);
 
 	public void registerStakeholder(String method, String url) {

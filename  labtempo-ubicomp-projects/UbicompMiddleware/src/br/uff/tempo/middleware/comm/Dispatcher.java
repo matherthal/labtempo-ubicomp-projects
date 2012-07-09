@@ -94,14 +94,17 @@ public class Dispatcher extends Thread {
 
 		Map<String, Object> methodCall = getMethodCall(msg);
 		String method = getMethodName(methodCall);
-
+		Map<String, Object> params = getParams(methodCall);
+		
+		Object[] paramsArray = paramsToArray(params);
+		
 		ArrayList<Method> methods = interfaces.get(calleeID);
 		for (int i = 0; i < methods.size(); i++)
 			if (methods.get(i).getName().equals(method)) {
 				Object obj = null;
 				try{
 					obj = execute(calleeID, methods.get(i),
-						getParams(methodCall));
+						paramsArray);
 				} catch (IllegalArgumentException e)
 				{
 //					java.lang.IllegalArgumentException: argument 1 should have type int, got java.lang.Double
@@ -109,8 +112,16 @@ public class Dispatcher extends Thread {
 					if (error[0].contains("int"))
 					{
 						if (error[1].contains("Double"));
-							//method
+						{
+							for (int j = 0; i<paramsArray.length; i++)
+							{
+								if (paramsArray[j].getClass().equals(Double.class))
+									paramsArray[j] = (int)Math.round((Double)paramsArray[j]);
+							}
+						}
 					}
+					obj = execute(calleeID, methods.get(i),
+							paramsArray);
 				}
 				return JSONHelper.createReply(obj);
 			}
@@ -131,16 +142,21 @@ public class Dispatcher extends Thread {
 	private Map<String, Object> getParams(Map<String, Object> methodCall) {
 		return (Map<String, Object>) methodCall.get("params");
 	}
-
-	private Object execute(String resource, Method method,
-			Map<String, Object> params) throws JSONException,
-			IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
-		ResourceAgent rA = instances.get(resource);
+	
+	private Object[] paramsToArray(Map<String, Object> params)
+	{
 		Object[] paramsArray = params.values().toArray();
 		Object[] args = new Object[params.size()];
 		for (int i = 0; i < paramsArray.length; i++)
 			args[i] = paramsArray[i];
+		return args;
+	}
+
+	private Object execute(String resource, Method method,
+			Object[] args) throws JSONException,
+			IllegalArgumentException, IllegalAccessException,
+			InvocationTargetException {
+		ResourceAgent rA = instances.get(resource);
 		return method.invoke(rA, args);
 	}
 

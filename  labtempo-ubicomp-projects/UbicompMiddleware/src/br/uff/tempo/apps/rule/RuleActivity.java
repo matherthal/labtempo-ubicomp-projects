@@ -37,20 +37,14 @@ public class RuleActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.rule);
         
-        //Initialize Condition's ListView
-    	//ListView lv = (ListView) findViewById(R.id.listViewConds);
-    	//listItems.add("Nenhuma condição");
-		//lvAdapter = new ArrayAdapter<String>(this,
-		//		android.R.layout.simple_list_item_1, listItems);
-		//lv.setAdapter(lvAdapter);
-
 		//Binding RuleAgent
 		Intent intent = new Intent(this, Rule.class);
 		bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
 
 		//Get Discovery Service
-		if (rule != null)
+		if (rule != null) {
 			discovery = rule.getRDS();
+		}
     }
 
 	/*
@@ -88,7 +82,7 @@ public class RuleActivity extends Activity {
 				//Condition cond = (Condition) Serialization.deserializeObject(data.getByteArrayExtra("COND")); //DEBUG
 				
 				//createCond(condStr[0], condStr[1], condStr[2], condStr[3]);
-				Toast.makeText(this, "Novas Condições", Toast.LENGTH_SHORT)
+				Toast.makeText(this, "Novas Condi��es", Toast.LENGTH_SHORT)
 						.show();
 			} else if (resultCode == RESULT_CANCELED) {
 			}
