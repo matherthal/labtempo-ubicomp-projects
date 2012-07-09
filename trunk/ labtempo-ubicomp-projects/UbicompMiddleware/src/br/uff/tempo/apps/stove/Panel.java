@@ -27,12 +27,16 @@ public abstract class Panel extends SurfaceView implements SurfaceHolder.Callbac
 
 	private ViewThread mThread;
 
+	boolean touched;
+	
 	public Panel(Context context) {
 		super(context);
+		touched = true;
 	}
 
 	public Panel(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		touched = true;
 	}
 
 	protected void init() {
@@ -69,6 +73,14 @@ public abstract class Panel extends SurfaceView implements SurfaceHolder.Callbac
 		if (mThread.isAlive()) {
 			mThread.setRunning(false);
 		}
+	}
+
+	public boolean isTouched() {
+		return touched;
+	}
+
+	public void setTouched(boolean touched) {
+		this.touched = touched;
 	}
 
 }
