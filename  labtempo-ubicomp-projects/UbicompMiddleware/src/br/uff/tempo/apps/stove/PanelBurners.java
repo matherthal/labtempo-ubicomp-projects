@@ -1,5 +1,8 @@
 package br.uff.tempo.apps.stove;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import br.uff.tempo.R;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 import android.content.Context;
@@ -36,7 +39,8 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 	private Bitmap mFireFour;
 
 	private ViewThread mThread;
-
+	private List<Boolean> isOnBurners;
+	
 	public PanelBurners(Context context) {
 		super(context);
 		init();
@@ -69,21 +73,25 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 
 		mX -= mBitmap.getWidth() / 2;
 		mY -= mBitmap.getHeight() / 2;
+		
+		isOnBurners = new ArrayList<Boolean>(4);
+		for (int i = 0; i<4; i++)
+			isOnBurners.add(false);
 	}
 
 	public void doDraw(Canvas canvas) {
-
+		
 		// draw the background color
 		canvas.drawColor(Color.BLACK);
-
+		
 		// draw the stove bitmap
 		canvas.drawBitmap(mBitmap, mX, mY, null);
-
+		
 		// draw the flame at burners, if needed
 		
 		/*
 		int[] flame = stove.getBurners();
-
+		
 		if (flame[0] > 0)
 			canvas.drawBitmap(mFireOne, mX, mY, null);
 		if (flame[1] > 0)
@@ -93,17 +101,22 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 		if (flame[3] > 0)
 			canvas.drawBitmap(mFireFour, mX, mY, null);
 		*/
-
-		if (stove.isOnBurner(new Integer(0)))
+//		if (touched)
+//		{	
+			for (int i = 0; i< 4; i++)
+			{
+				isOnBurners.set(i,stove.isOnBurner(new Integer(i)));
+			}
+//		}
+		if (isOnBurners.get(0))
 			canvas.drawBitmap(mFireOne, mX, mY, null);
-		if (stove.isOnBurner(new Integer(1)))
+		if (isOnBurners.get(1))
 			canvas.drawBitmap(mFireTwo, mX, mY, null);
-		if (stove.isOnBurner(new Integer(2)))
+		if (isOnBurners.get(2))
 			canvas.drawBitmap(mFireThree, mX, mY, null);
-		if (stove.isOnBurner(new Integer(3)))
+		if (isOnBurners.get(3))
 			canvas.drawBitmap(mFireFour, mX, mY, null);
-
-
+		touched = false;
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
@@ -164,11 +177,12 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 			}
 
 			if (burnerIndex != -1) {
-				
+				touched = false;
 				if (stove.isOnBurner(burnerIndex))
 					stove.turnOffBurner(burnerIndex);
 				else
 					stove.turnOnBurner(burnerIndex);
+				touched = true;
 			}
 			
 			Log.d(TAG, "Color Clicked = " + Integer.toHexString(color));

@@ -24,8 +24,9 @@ public class ViewThread extends Thread {
             canvas = mHolder.lockCanvas();
             if (canvas != null) {
                 mPanel.doDraw(canvas);
-                mHolder.unlockCanvasAndPost(canvas);
+                //mHolder.unlockCanvasAndPost(canvas);
             }
+            mHolder.unlockCanvasAndPost(canvas);
         }
     }
 }
