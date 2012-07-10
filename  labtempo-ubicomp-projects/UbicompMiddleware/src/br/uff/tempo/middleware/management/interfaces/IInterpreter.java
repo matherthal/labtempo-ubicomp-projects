@@ -6,15 +6,15 @@ import java.util.Set;
 
 import android.R.integer;
 import br.uff.tempo.middleware.management.Interpreter.ConditionalResult;
+import br.uff.tempo.middleware.management.Operator;
 
-public interface IInterpreter {
+public interface IInterpreter extends IResourceAgent {
 	// Operation are the possible comparison clauses used to compare CV to the
 	// constants in ConditionalResultsSet
-	public enum Operation {
-		Equal, Different, GreaterThan, LessThan, GreaterThanOrEqual, LessThanOrEqual
-	};
 
-	public abstract boolean setContextVariable(Method cv);
+	public abstract boolean setContextVariable(IResourceAgent ra, String cvName);
+	public abstract boolean setContextVariable(IResourceAgent ra, Method cv);
+	public abstract void start();
 
 	/** Used to define expression of a Conditional Value with one or more
 	 * conditions.<br><br> 
@@ -37,7 +37,7 @@ public interface IInterpreter {
 	 * Attention! The "and" clause in the first example and the "or" clause and
 	 * the second example are both in a sense of sum.
 	 */
-	public abstract boolean setConditionalResult(Operation op, Object constant,
+	public abstract boolean setConditionalResult(Operator op, Object constant,
 			Object result);
 
 	/** Used to define expression of a Conditional Value with one or more
@@ -63,15 +63,18 @@ public interface IInterpreter {
 	 */
 	public abstract boolean setConditionalResult(ConditionalResult cr);
 
-	public abstract boolean setConditionalResultDefault(Object constant,
-			Object result);
+	public abstract boolean setConditionalResultDefault(Object result);
 	
 	public abstract Method getContextVariable();
 
+	@ContextVariable(name="Interpretação para inteiro")
 	public abstract int interpretToInt();
+	@ContextVariable(name="Interpretação para inteiro longo")
 	public abstract long interpretToLong();
+	@ContextVariable(name="Interpretação para booleano")
 	public abstract boolean interpretToBoolean();
+	@ContextVariable(name="Interpretação para texto")
 	public abstract String interpretToString();
+	@ContextVariable(name="Interpretação genérica")
 	public abstract Object interpretToObject();
-	
 }

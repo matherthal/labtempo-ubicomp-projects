@@ -90,7 +90,7 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 				
 				Log.d(TAG, "Left Button");
 				
-				if (stove.isOvenOn()) {
+				if (stove.isOnOven()) {
 					msg = "off";
 					stove.setOvenTemperature(0f);
 				}

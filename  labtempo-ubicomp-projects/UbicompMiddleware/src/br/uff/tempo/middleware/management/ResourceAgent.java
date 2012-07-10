@@ -17,6 +17,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.Caller;
+import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
@@ -42,58 +43,71 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 	private ArrayList<ResourceAgent> interests;
 	private ArrayList<Stakeholder> stakeholders;
 	private ResourceRegister rRS;
-	private IResourceDiscovery rDS;
+	private static IResourceDiscovery rDS;
 	private ArrayList<String> registeredList;
 	private String RDS_URL;
 
+	//public static IResourceDiscovery getRDS()
 	public IResourceDiscovery getRDS() {
 		return rDS;
 	}
 
+	@Override
 	public int getId() {
 		return id;
 	}
 
+	@Override
 	public void setId(int id) {
 		this.id = id;
 	}
 
+	@Override
 	public String getName() {
 		return name;
 	}
 
+	@Override
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@Override
 	public String getURL() {
 		return URL;
 	}
 
+	@Override
 	public void setURL(String uRL) {
 		URL = uRL;
 	}
 
+	@Override
 	public String getType() {
 		return type;
 	}
 
+	@Override
 	public void setType(String type) {
 		this.type = type;
 	}
 
+	@Override
 	public ArrayList<ResourceAgent> getInterests() {
 		return interests;
 	}
 
+	@Override
 	public void setInterests(ArrayList<ResourceAgent> interests) {
 		this.interests.addAll(interests);
 	}
 
+	@Override
 	public ArrayList<String> getRegisteredList() {
 		return registeredList;
 	}
 
+	@Override
 	public String getResourceClassName() {
 		return this.getClass().getName();
 	}
@@ -172,10 +186,12 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		// this.register();
 	}
 
+	@Override
 	public boolean isRegistered() {
 		return registered;
 	}
 
+	@Override
 	public boolean identify() {
 
 		if (!registered) {
@@ -192,6 +208,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		return registered;
 	}
 
+	@Override
 	public void notifyStakeholders(String change) throws JSONException {
 		int i = 0;
 		while (i < stakeholders.size()) {
@@ -214,21 +231,19 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 	 */
 	public abstract void notificationHandler(String change);
 
+	@Override
 	public void registerStakeholder(String method, String url) {
 		stakeholders.add(new Stakeholder(method, url));
 	}
 
-	public boolean registerStakeholder(String method, ResourceAgent rA) {
-		stakeholders.add(new Stakeholder(method, rA));
-		return true;
-	}
+//	@Override
+//	public boolean registerStakeholder(String method, ResourceAgent rA) {
+//		stakeholders.add(new Stakeholder(method, rA));
+//		return true;
+//	}
 
 	public String change(String id, String method, Object value)
 			throws JSONException {
-		JSONObject json = new JSONObject();
-		json.put("id", id);
-		json.put("method", method);
-		json.put("value", value);
-		return json.toString();
+		return JSONHelper.createChange(id, method, value);
 	}
 }
