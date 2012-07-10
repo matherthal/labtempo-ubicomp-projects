@@ -1,5 +1,7 @@
 package br.uff.tempo.middleware.resources.interfaces;
 
-public interface IBed {
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+
+public interface IBed extends IResourceAgent {
 	public Integer numUsers = 0;
 }

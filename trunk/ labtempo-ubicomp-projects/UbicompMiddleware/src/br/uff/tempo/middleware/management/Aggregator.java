@@ -1,27 +1,43 @@
 package br.uff.tempo.middleware.management;
 
-import org.json.JSONException;
+import java.lang.reflect.Method;
+import java.util.HashSet;
+import java.util.Set;
 
+import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IAggregator;
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.resources.interfaces.IStove;
-import br.uff.tempo.middleware.resources.stubs.StoveStub;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
-public class Aggregator extends ResourceAgent implements IAggregator {
-	//@Override
+public abstract class Aggregator extends ResourceAgent implements IAggregator {
+	//Set Interpreted Context Variables
+	//private Set<Interpreter> interpretedCVSet = new HashSet<Interpreter>();
+	//Set not Interpreted Context Variables
+	//private Set<Tuple<IResourceAgent, Method>> rawCVSet = new HashSet<Tuple<IResourceAgent, Method>>();
+	
+	//Set of Context Variables
+	private Set<Tuple<IResourceAgent, Method>> rawCVSet = new HashSet<Tuple<IResourceAgent, Method>>();
+	
+	/*@Override
 	public boolean addContextVariable(Interpreter interpreter) {
-		this.contextVariables.add(interpreter);
+		this.interpretedCVSet.add(interpreter);
 		
-		IResourceDiscovery iRDS = getRDS();
-		IStove iStove = new StoveStub(iRDS.search("stove").get(0));
-		iStove.registerStakeholder("getOvenIsOn", this.getURL());
+		//IResourceDiscovery iRDS = getRDS();
+		//IStove iStove = new StoveStub(iRDS.search("stove").get(0));
+		//iStove.registerStakeholder("getOvenIsOn", this.getURL());
+		
+		return false;
+	}*/
+	
+	@Override
+	public boolean addContextVariable(IResourceAgent ra, String method) {
+		this.rawCVSet.add(new Tuple<IResourceAgent, Method>(ra, method));		
+		ra.registerStakeholder(method, this.getURL());
 		
 		return false;
 	}
-
+	
 	@Override
 	public void notificationHandler(String change) {
-		// TODO Auto-generated method stub
 		
 	}
 }

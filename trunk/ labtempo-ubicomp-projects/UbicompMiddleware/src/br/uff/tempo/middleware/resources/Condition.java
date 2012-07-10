@@ -1,11 +1,10 @@
 package br.uff.tempo.middleware.resources;
 
 import java.io.Serializable;
-//import java.lang.reflect.InvocationHandler;
-//import java.lang.reflect.Method;
 import java.util.Comparator;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 /**
  * Class Condition
@@ -18,7 +17,7 @@ import br.uff.tempo.middleware.management.ResourceAgent;
  */
 //public class Condition implements InvocationHandler, Serializable {
 public class Condition implements Serializable {
-	public ResourceAgent ra;
+	public IResourceAgent ra;
 	//public Method method;
 	public String method;
 	public String operator = "==";
@@ -35,7 +34,7 @@ public class Condition implements Serializable {
 	 *            It creates a condition
 	 * @throws Exception
 	 */
-	public Condition(ResourceAgent ra, String method, String operator,
+	public Condition(IResourceAgent ra, String method, String operator,
 			Object value) throws Exception {
 		//if (!method.getReturnType().equals(Void.TYPE)) {
 			this.ra = ra;
@@ -57,7 +56,7 @@ public class Condition implements Serializable {
 	 *            It creates a condition
 	 * @throws Exception
 	 */
-	public Condition(ResourceAgent ra, String method, String operator,
+	public Condition(IResourceAgent ra, String method, String operator,
 			Object value, long timeout) throws Exception {
 		//if (!method.getReturnType().equals(Void.TYPE)) {
 			this.ra = ra;
@@ -81,7 +80,7 @@ public class Condition implements Serializable {
 		//else
 			// Operator error
 		
-			return false;
+			return true;
 	}
 
 	/*>>>>>>>public Object invoke(Object ra, Method method, Object[] args)

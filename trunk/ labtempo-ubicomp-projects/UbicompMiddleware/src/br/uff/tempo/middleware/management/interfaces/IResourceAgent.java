@@ -5,6 +5,11 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.ArrayList;
+
+import org.json.JSONException;
+
+import br.uff.tempo.middleware.management.ResourceAgent;
 
 public interface IResourceAgent extends Serializable {
 	public String getResourceClassName();
@@ -30,4 +35,19 @@ public interface IResourceAgent extends Serializable {
 
 	public void registerStakeholder(String method, String url);
 	public void notificationHandler(String change);
+	public int getId();
+	public void setId(int id);
+	public String getName();
+	public void setName(String name);
+	public String getURL();
+	public void setURL(String uRL);
+	public String getType();
+	public void setType(String type);
+	public ArrayList<ResourceAgent> getInterests();
+	public void setInterests(ArrayList<ResourceAgent> interests);
+	public ArrayList<String> getRegisteredList();
+	public boolean isRegistered();
+	public boolean identify();
+	public void notifyStakeholders(String change) throws JSONException;
+//	public boolean registerStakeholder(String method, ResourceAgent rA);
 }

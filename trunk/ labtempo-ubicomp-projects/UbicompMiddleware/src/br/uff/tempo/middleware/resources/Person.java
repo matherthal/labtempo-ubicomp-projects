@@ -1,24 +1,55 @@
 package br.uff.tempo.middleware.resources;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import org.json.JSONException;
-
-import br.uff.tempo.middleware.comm.Tuple;
-import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.Aggregator;
+import br.uff.tempo.middleware.management.Interpreter;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.resources.interfaces.IBed;
 import br.uff.tempo.middleware.resources.interfaces.IPerson;
+import br.uff.tempo.middleware.resources.stubs.BedStub;
 
-public class Person extends ResourceAgent implements IPerson{
+public class Person extends Aggregator implements IPerson {
+	private String name = "";
+	private String lastName = "";
+	private Date birthday = null;
+	private boolean isSleeping = false;
+	private boolean isResting = false;
+	private boolean isEating = false;
+	private boolean isWalking = false;
+	private boolean isRunning = false;
 
+	public Person() {
+		//Discover ContextVariables to update this aggregator status
+		//Add them with the aggregator's support
+		IResourceDiscovery iRDS = getRDS();
+		IBed bed = new BedStub(iRDS.search("bed").get(0));
+		bed.registerStakeholder("inUse", this.getURL());
+		
+		this.addContextVariable(bed, "inUse");
+		//...
+		//Add interpreters
+		//...
+	}
+	
+	@ContextVariable(name="Nome")
+	public String getName() {
+		return this.name;
+	}
+	
+	@ContextVariable(name="Dormindo")
+	public boolean getIsSleepting() {
+		return this.isSleeping;
+	}
+	
 	@Override
 	public void notificationHandler(String change){
-		// TODO Auto-generated method stub
-		
+		//Update status of this aggregator
 	}
 
-	public Date getAge() {
-		return null;
+	@Override
+	public boolean addContextVariable(Interpreter interpreter) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 }

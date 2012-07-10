@@ -8,6 +8,7 @@ import org.json.JSONException;
 
 import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.comm.Tuple;
+import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public class ResourceAgentStub extends Stub implements IResourceAgent {
@@ -40,5 +41,95 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 
 		makeCall("registerStakeholder", params);
 	}
+
+	@Override
+	public int getId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setId(int id) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getURL() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setURL(String uRL) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setType(String type) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<ResourceAgent> getInterests() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setInterests(ArrayList<ResourceAgent> interests) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public ArrayList<String> getRegisteredList() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isRegistered() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean identify() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void notifyStakeholders(String change) throws JSONException {
+		// TODO Auto-generated method stub
+		
+	}
+
+//	@Override
+//	public boolean registerStakeholder(String method, ResourceAgent rA) {
+//		// TODO Auto-generated method stub
+//		return false;
+//	}
 
 }

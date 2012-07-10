@@ -1,6 +1,7 @@
 package br.uff.tempo.middleware.comm;
 
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,7 +20,7 @@ public class JSONHelper {
 			throws JSONException {
 
 		Map<String, Object> methodCall = new HashMap<String, Object>();
-		Map<String, Object> jsonparams = new HashMap<String, Object>();
+		List<Object> jsonparams = new ArrayList<Object>();
 
 		Iterator<Tuple> iterator = params.iterator();
 
@@ -27,7 +28,7 @@ public class JSONHelper {
 
 		while (iterator.hasNext()) {
 			tp = iterator.next();
-			jsonparams.put(tp.key, tp.value);
+			jsonparams.add(tp.value);
 		}
 
 		methodCall.put("jsonrpc", "2.0");
@@ -66,6 +67,28 @@ public class JSONHelper {
 		// Serialise response to JSON-encoded string
 		// The response string can now be sent back to the client...
 	}
+	
+	public static String createChange(String id, String method, Object value)
+	{
+		Map<String, Object> change = new HashMap<String, Object>();
+		change.put("jsonobject", "2.0");
+		change.put("id", id);
+		change.put("method", method);
+		change.put("value", value);
+		Type collectionType = new TypeToken<HashMap<String, Object>>() {
+		}.getType();
+		return (new Gson()).toJson(change, collectionType);
+	}
+	
+	public static Object getChange(String what, String change)
+	{
+		Type collectionType = new TypeToken<HashMap<String, Object>>() {
+		}.getType();
+		
+		Map<String, Object> changeObj = (new Gson()).fromJson(change, collectionType);
+		return changeObj.get(what);
+	}
+
 
 	/*
 	 * public static JSONArray createMethodParams(JSONArray params) throws

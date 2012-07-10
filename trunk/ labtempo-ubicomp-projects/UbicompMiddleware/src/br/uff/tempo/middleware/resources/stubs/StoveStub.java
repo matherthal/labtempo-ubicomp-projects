@@ -3,6 +3,9 @@ package br.uff.tempo.middleware.resources.stubs;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONException;
+
+import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
@@ -63,8 +66,19 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 
 	@Override
 	public float getOvenTemperature() {
-		// TODO Auto-generated method stub
-		return 0;
+		// The remote method to call
+//		String method = "getIsOn";
+//
+//		try {
+//			// Create message
+//			String msg = JSONHelper.createMethodCall(method, null);
+//			// Get answer from remote method call
+//			return (Boolean) JSONHelper.getMessage(caller.sendMessage(msg));
+//		} catch (JSONException e) {
+//			e.printStackTrace();
+//			return false;
+//		}
+		return 0f;
 	}
 
 	@Override
@@ -74,11 +88,29 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	}
 
 	@Override
-	public boolean isOvenOn() {
+	public float getBurnerTemperature(int burnerIndex) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public float getGasLeak() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	
+	@Override
+	public boolean isOnOven() {
 		
 		List<Tuple> params = new ArrayList<Tuple>();
 
 		return (Boolean) makeCall("isOvenOn", params);
+	}
+
+	@Override
+	public boolean isOvenOn() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

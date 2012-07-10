@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.json.JSONException;
@@ -94,7 +95,7 @@ public class Dispatcher extends Thread {
 
 		Map<String, Object> methodCall = getMethodCall(msg);
 		String method = getMethodName(methodCall);
-		Map<String, Object> params = getParams(methodCall);
+		List<Object> params = getParams(methodCall);
 		
 		Object[] paramsArray = paramsToArray(params);
 		
@@ -119,7 +120,18 @@ public class Dispatcher extends Thread {
 									paramsArray[j] = (int)Math.round((Double)paramsArray[j]);
 							}
 						}
+					}else if (error[0].contains("float"))
+					{
+						if (error[1].contains("Double"));
+						{
+							for (int j = 0; j<paramsArray.length; j++)
+							{
+								if (paramsArray[j].getClass().equals(Double.class))
+									paramsArray[j] = Float.parseFloat(paramsArray[j].toString());
+							}
+						}
 					}
+						
 					obj = execute(calleeID, methods.get(i),
 							paramsArray);
 				}
@@ -139,16 +151,15 @@ public class Dispatcher extends Thread {
 		return (String) methodCall.get("method");
 	}
 
-	private Map<String, Object> getParams(Map<String, Object> methodCall) {
-		return (Map<String, Object>) methodCall.get("params");
+	private List<Object> getParams(Map<String, Object> methodCall) {
+		return (List<Object>) methodCall.get("params");
 	}
 	
-	private Object[] paramsToArray(Map<String, Object> params)
+	private Object[] paramsToArray(List<Object> params)
 	{
-		Object[] paramsArray = params.values().toArray();
 		Object[] args = new Object[params.size()];
-		for (int i = 0; i < paramsArray.length; i++)
-			args[i] = paramsArray[i];
+		for (int i = 0; i < params.size(); i++)
+			args[i] = params.get(i);
 		return args;
 	}
 

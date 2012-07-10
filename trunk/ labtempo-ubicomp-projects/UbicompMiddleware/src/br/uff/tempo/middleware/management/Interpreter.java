@@ -4,38 +4,55 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
+import android.content.ComponentName;
+import android.content.ServiceConnection;
+import android.os.IBinder;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IInterpreter;
-import br.uff.tempo.middleware.management.interfaces.IInterpreter.Operation;
-import br.uff.tempo.middleware.management.interfaces.IResourceAgent.ContextVariable;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.resources.Stove;
 
-public class Interpreter implements IInterpreter {
+public class Interpreter extends ResourceAgent implements IInterpreter {
 	private static final String TAG = "Interpreter";
-	public Method cv = null;
-	public Operation op = null;
-	public Object constant = null;
+	private IResourceAgent ra = null;
+	private Method cv = null;
+	private Operator op = null;
+	private Object constant = null;
 	// Set of conditional results
-	public Set<ConditionalResult> conditionalResultSet = new HashSet<ConditionalResult>();
+	private Set<ConditionalResult> conditionalResultSet = new HashSet<ConditionalResult>();
 
+	public Interpreter() {
+		super("br.uff.tempo.middleware.management.Interpreter", 1432);
+	}
 	
-	/* (non-Javadoc)
-	 * @see br.uff.tempo.middleware.management.IInterpreter#setContextVariable(java.lang.reflect.Method)
-	 */
 	//@Override
-	public boolean setContextVariable(Method cv) {
+	public boolean setContextVariable(IResourceAgent ra, String cvName) {
+		Method[] mtds = Stove.class.getMethods();
+		for (Method m : mtds)
+			if (m.isAnnotationPresent(IResourceAgent.ContextVariable.class))
+				if (m.getAnnotation(IResourceAgent.ContextVariable.class).name() == cvName) {
+					this.cv = m;
+					this.ra = ra;
+					ra.registerStakeholder(cv.getName(), this.getURL());
+					return true;
+				}
+		return false;
+	}
+	
+	@Override
+	public boolean setContextVariable(IResourceAgent ra, Method cv) {
 		// Verifying if it's really a CV
 		if (cv.isAnnotationPresent(ContextVariable.class)) {
 			this.cv = cv;
+			this.ra = ra;
+			ra.registerStakeholder(cv.getName(), this.getURL());
 		}
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.uff.tempo.middleware.management.IInterpreter#setConditionalResult(br.uff.tempo.middleware.management.Interpreter.Operation, java.lang.Object, java.lang.Object)
-	 */
 	//@Override
-	public boolean setConditionalResult(Operation op, Object constant, Object result) {
+	public boolean setConditionalResult(Operator op, Object constant, Object result) {
 		// Verify if the ConditionalResult's expression intersects any other
 		// ConditionalResult's expression domain
 		/*Set<Tuple<Operation, Object>> expr = cr.getExpression();
@@ -134,7 +151,7 @@ public class Interpreter implements IInterpreter {
 	 * @see br.uff.tempo.middleware.management.IInterpreter#setConditionalResultDefault(java.lang.Object, java.lang.Object)
 	 */
 	//@Override
-	public boolean setConditionalResultDefault(Object constant, Object result) {
+	public boolean setConditionalResultDefault(Object result) {
 		//Verify if there is another ConditionResult set as Default
 		//There must be only one Default
 		for (ConditionalResult cr : conditionalResultSet) 
@@ -171,7 +188,8 @@ public class Interpreter implements IInterpreter {
 
 	//@Override
 	public String interpretToString() {
-		return evaluate().toString();
+		Object o = evaluate(); 
+		return o == null ? "" : o.toString();
 	}
 
 	//@Override
@@ -180,9 +198,10 @@ public class Interpreter implements IInterpreter {
 	}
 
 	private Object evaluate() {
+		Object result = null;
 		try {
 			// Context Variable
-			Object cv = this.cv.invoke(null, new Object[0]);
+			Object cv = this.cv.invoke(ra, new Object[0]);
 
 			ConditionalResult crDefault = null;
 			for (ConditionalResult cr : this.conditionalResultSet) {
@@ -190,8 +209,8 @@ public class Interpreter implements IInterpreter {
 					crDefault = cr;
 				else {
 					boolean valid = false;
-					for (Tuple<Operation, Object> tp : cr.expression) {
-						switch ((Operation) tp.value) {
+					for (Tuple<Operator, Object> tp : cr.expression) {
+						switch ((Operator) tp.value) {
 						case Equal:
 							valid = tp.value2.equals(cv);
 							break;
@@ -200,89 +219,69 @@ public class Interpreter implements IInterpreter {
 							break;
 						case GreaterThan:
 							try {
-								float val = Float.parseFloat(tp.value2
-										.toString());
+								float val = Float.parseFloat(tp.value2.toString());
 								float cvfl = Float.parseFloat(cv.toString());
 								valid = cvfl > val;
 							} catch (Exception ee) {
 								try {
-									long val = Long.parseLong(tp.value2
-											.toString());
+									long val = Long.parseLong(tp.value2.toString());
 									long cvlg = Long.parseLong(cv.toString());
 									valid = cvlg > val;
 								} catch (Exception eex) {
-									Log.e(TAG,
-											"Error: comparing with GreaterThan the value: \""
-													+ cv.toString()
-													+ "\" and \""
-													+ tp.value2.toString()
-													+ "\"", ee);
+									Log.e(TAG, "Error: comparing with GreaterThan the value: \""
+													+ cv.toString() + "\" and \""
+													+ tp.value2.toString() + "\"", ee);
 								}
 							}
 							break;
 						case LessThan:
 							try {
-								float val = Float.parseFloat(tp.value2
-										.toString());
+								float val = Float.parseFloat(tp.value2.toString());
 								float cvfl = Float.parseFloat(cv.toString());
 								valid = cvfl < val;
 							} catch (Exception ee) {
 								try {
-									long val = Long.parseLong(tp.value2
-											.toString());
+									long val = Long.parseLong(tp.value2.toString());
 									long cvlg = Long.parseLong(cv.toString());
 									valid = cvlg < val;
 								} catch (Exception eex) {
-									Log.e(TAG,
-											"Error: comparing with LessThan the value: \""
-													+ cv.toString()
-													+ "\" and \""
-													+ tp.value2.toString()
-													+ "\"", ee);
+									Log.e(TAG, "Error: comparing with LessThan the value: \""
+													+ cv.toString()	+ "\" and \""
+													+ tp.value2.toString() + "\"", ee);
 								}
 							}
 							break;
 						case GreaterThanOrEqual:
 							try {
-								float val = Float.parseFloat(tp.value2
-										.toString());
+								float val = Float.parseFloat(tp.value2.toString());
 								float cvfl = Float.parseFloat(cv.toString());
 								valid = cvfl >= val;
 							} catch (Exception ee) {
 								try {
-									long val = Long.parseLong(tp.value2
-											.toString());
+									long val = Long.parseLong(tp.value2.toString());
 									long cvlg = Long.parseLong(cv.toString());
 									valid = cvlg >= val;
 								} catch (Exception eex) {
-									Log.e(TAG,
-											"Error: comparing with GreaterThanOrEqual the value: \""
-													+ cv.toString()
-													+ "\" and \""
-													+ tp.value2.toString()
+									Log.e(TAG, "Error: comparing with GreaterThanOrEqual the value: \""
+													+ cv.toString() + "\" and \"" + tp.value2.toString()
 													+ "\"", ee);
 								}
 							}
 							break;
 						case LessThanOrEqual:
 							try {
-								float val = Float.parseFloat(tp.value2
-										.toString());
+								float val = Float.parseFloat(tp.value2.toString());
 								float cvfl = Float.parseFloat(cv.toString());
 								valid = cvfl >= val;
 							} catch (Exception ee) {
 								try {
-									long val = Long.parseLong(tp.value2
-											.toString());
+									long val = Long.parseLong(tp.value2.toString());
 									long cvlg = Long.parseLong(cv.toString());
 									valid = cvlg >= val;
 								} catch (Exception eex) {
-									Log.e(TAG,
-											"Error: comparing with LessThanOrEqual the value: \""
-													+ cv.toString()
-													+ "\" and \""
-													+ tp.value2.toString()
-													+ "\"", ee);
+									Log.e(TAG, "Error: comparing with LessThanOrEqual the value: \""
+													+ cv.toString() + "\" and \""
+													+ tp.value2.toString() + "\"", ee);
 								}
 							}
 							break;
@@ -293,17 +292,16 @@ public class Interpreter implements IInterpreter {
 						if (!valid) // Then expression's condition failed in the comparison
 							break; // break to try another expression
 					}
-					if (valid) // Then all the expression's condition returned true
-						return cr.getResult();
-					else if (crDefault != null) // Otherwise use the Default
-												// case, if it does exist
-						return crDefault.getResult();
+					if (valid) // Then one expression's condition returned true
+						result = cr.getResult();
+					else if (crDefault != null) // Otherwise use the Default case, if it does exist
+						result = crDefault.getResult();
 				}
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "Error: context variable method invoking error", e);
 		}
-		return null;
+		return result; //TODO: what to do if the result is null?
 	}
 	
 	
@@ -321,7 +319,7 @@ public class Interpreter implements IInterpreter {
 		 * Expression data structure. 
 		 * Set of tuples composed by an operation and an object to be compared to the CV
 		 */
-		private Set<Tuple<Operation, Object>> expression = new HashSet<Tuple<Operation,Object>>();
+		private Set<Tuple<Operator, Object>> expression = new HashSet<Tuple<Operator, Object>>();
 		
 		/**
 		 * isDefaultResult tells if this is the default result, in case all other ConditionalResults
@@ -337,9 +335,9 @@ public class Interpreter implements IInterpreter {
 		 * A ConditionalResult that is default doesn't need comparisons
 		 * then if a comparison is added, it's set as not default 
 		 */
-		public void setComparison(Operation op, Object constant) {
+		public void setComparison(Operator op, Object constant) {
 			this.isDefaultResult = false;
-			expression.add(new Tuple<Operation, Object>(op, constant));
+			expression.add(new Tuple<Operator, Object>(op, constant));
 		}
 		
 		public void setDefault(Object constant) {
@@ -351,12 +349,56 @@ public class Interpreter implements IInterpreter {
 			return this.result;
 		}
 		
-		public Set<Tuple<Operation, Object>> getExpression() {
+		public Set<Tuple<Operator, Object>> getExpression() {
 			return this.expression;
 		}
 		
 		public boolean isDefault() {
 			return this.isDefaultResult;
 		}
+	}
+
+
+	@Override
+	public String getResourceClassName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void registerStakeholder(String method, String url) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void notificationHandler(String change) {
+		//If change comes from the RA of interest
+		//If change comes from the method (CV) 
+		Log.d(TAG, "!!!Change: " + change); //FIXME:remove this
+		
+	}
+
+	private ServiceConnection mConnectionStove = new ServiceConnection() {
+		/**
+		 * Resouce Agent Connected
+		 */
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			ResourceBinder binder = (ResourceBinder) service;
+			ra = (IResourceAgent) binder.getService();
+		}
+
+		/**
+		 * Resouce Agent Disconnected
+		 */
+		public void onServiceDisconnected(ComponentName className) {
+			ra = null;
+		}
+	};
+
+	@Override
+	public void start() {
+		// TODO Auto-generated method stub
+		
 	}
 }
