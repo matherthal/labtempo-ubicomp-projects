@@ -15,6 +15,14 @@
 	<string name="btn_config_res_ok">OK</string>
 	<string name="btn_config_res_cancel">Cancel</string>
 	
+	<!-- From Layout tv.xml -->
+	<string name="tvChPlus">CH +</string>
+	<string name="tvChMinus">CH -</string>
+	<string name="tvVolPlus">Vol +</string>
+	<string name="tvVolMinus">Vol -</string>
+	<string name="tvTurnOn">Turn On</string>
+	<string name="tvTurnOff">Turn Off</string>
+	
 	<!-- From Layout  -->
 	
     <string-array name="devices_array">

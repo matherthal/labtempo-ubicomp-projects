@@ -14,6 +14,7 @@ import br.uff.tempo.apps.baseview.BaseView;
 import br.uff.tempo.apps.map.MapActivity;
 import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.stove.StoveView;
+import br.uff.tempo.apps.tv.TvView;
 import br.uff.tempo.middleware.comm.Dispatcher;
 import br.uff.tempo.middleware.management.Interpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
@@ -59,6 +60,11 @@ public class MainListView extends ListActivity {
 				} else if (item.equals("Fogao")) {
 					Intent intent = new Intent(MainListView.this,
 							StoveView.class);
+					startActivity(intent);
+				}else if(item.equals("Televisao"))
+				{
+					Intent intent = new Intent(MainListView.this,
+							TvView.class);
 					startActivity(intent);
 				} else if(item.equals("Repositorio de Recursos"))
 				{
