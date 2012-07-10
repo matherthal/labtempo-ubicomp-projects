@@ -31,9 +31,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		Serializable {
 	private static final String TAG = "AgentBase";
 
-	private static final String TCP_SERVER_IP = "192.168.1.70";
-	private static final int TCP_SERVER_PORT = 21111;
-
 	// Agent's attributes
 	private boolean registered;
 	private int id;
@@ -219,6 +216,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 						.notificationHandler(change);// change = id, method name
 														// and value
 			// query by url return a unique instance
+			i++;
 		}
 	}
 

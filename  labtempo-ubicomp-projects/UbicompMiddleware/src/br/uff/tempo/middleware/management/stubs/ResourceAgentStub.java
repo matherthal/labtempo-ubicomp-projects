@@ -12,9 +12,11 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public class ResourceAgentStub extends Stub implements IResourceAgent {
-
-	public ResourceAgentStub(String calleeID) {
-		super(calleeID);
+	private String url;
+	
+	public ResourceAgentStub(String url) {
+		super(url);
+		this.url = url;
 	}
 
 	public void notificationHandler(String change) {
@@ -69,7 +71,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	@Override
 	public String getURL() {
 		// TODO Auto-generated method stub
-		return null;
+		return url;
 	}
 
 	@Override

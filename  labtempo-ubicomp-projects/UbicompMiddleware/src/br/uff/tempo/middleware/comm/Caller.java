@@ -24,28 +24,16 @@ public class Caller {
 		//add callee + methodCaller to JSONObject
 
 		try {
-//			if (calleeAgent.getPath().contains("127.0.0.1"))
-//				return Dispatcher.getInstance().dispatch(calleeAgent.getRai(),jsonString);
-//			else
-//				{
-				String result = SocketService.sendReceive(calleeAgent.getPath(), calleeAgent.getRai()+";"+jsonString+";");
-				return result;
+			String local = ResourceAgentIdentifier.getLocalIpAddress();
+			String result = "";
+			if (calleeAgent.getPath().equals(local))
+				result = Dispatcher.getInstance().dispatch(calleeAgent.getRai(), jsonString);
+			else
+				result = SocketService.sendReceive(calleeAgent.getPath(), calleeAgent.getRai()+";"+jsonString+";");
+			return result;
 		} catch (IllegalArgumentException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			Log.e("Caller", "IllegalArgumentException: " + e.getMessage());
-//		} catch (ClassNotFoundException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (JSONException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IllegalAccessException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (InvocationTargetException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
 		} catch (Exception e)
 		{
 			e.printStackTrace();
