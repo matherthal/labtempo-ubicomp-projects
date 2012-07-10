@@ -24,6 +24,7 @@
         
         <activity android:name=".apps.stove.StoveView" />
         <activity android:name=".apps.bed.BedView" />
+        <activity android:name=".apps.tv.TvView" />
         <activity android:name=".apps.map.MapActivity" />
         <activity android:name=".apps.baseview.BaseView" />
         

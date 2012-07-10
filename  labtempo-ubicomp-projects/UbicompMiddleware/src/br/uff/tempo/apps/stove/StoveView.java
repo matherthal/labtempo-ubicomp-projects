@@ -20,51 +20,56 @@ import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
 public class StoveView extends FragmentActivity /*implements Observer*/ {
 
-        private static final String TAG = "StoveView";
-        
-        private StoveData stoveData;
-        private MyPageAdapter mPageAdapter;
-        
-        private IStove stoveAgent;
+	private static final String TAG = "StoveView";
+	
+	private static int id;
+	
+	private StoveData stoveData;
+	private MyPageAdapter mPageAdapter;
+	
+	private IStove stoveAgent;
 
-        /** Called when the activity is first created. */
-        @Override
-        public void onCreate(Bundle savedInstanceState) {
-                
-                super.onCreate(savedInstanceState);
-                
-                requestWindowFeature(Window.FEATURE_NO_TITLE);
-                
-                super.setContentView(R.layout.viewpager_layout);
-                
-                //create a 4-burner stove buffer
-                this.stoveData = new StoveData(4);
-                
-                Intent i = getIntent();
-                
-                //if the object comes from someone (like the house map)
-                String name = null;
-                
-                if (i.getExtras() != null) {
-                        
-                        if ((name = i.getExtras().getString("agent")) != null) {
-                                Stove s = new Stove(name);
-                                s.identify();
-                                stoveAgent = s;
-                        }
-                        else {
-                                name = i.getExtras().getString("stub");
-                                stoveAgent = new StoveStub(name);
-                        }
-                }
-                else {
-                        
-                        Stove s = new Stove("Fogao"); //or create one (nobody sent an agent)
-                        
-                        //identify the resource to the system (it calls ResourceRegister.register())
-                        s.identify();
-                        stoveAgent = s;
-                }
+	/** Called when the activity is first created. */
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		
+		super.onCreate(savedInstanceState);
+		
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
+		
+		super.setContentView(R.layout.viewpager_layout);
+		
+		//create a 4-burner stove buffer
+		this.stoveData = new StoveData(4);
+		
+		Intent i = getIntent();
+		
+		//A default name...
+		String name = "Fogao";
+		
+		//if the object comes from someone (like the house map)
+		if (i.getExtras() != null) {
+			
+			String type = i.getExtras().getString("type");
+			name = i.getExtras().getString("name");
+			
+			if (type.equals("agent") ) {
+				Stove s = new Stove(name);
+				s.identify();
+				stoveAgent = s;
+			}
+			else {
+				stoveAgent = new StoveStub(name);
+			}
+		}
+		else {
+			
+			Stove s = new Stove(name + (++id)); //or create one (nobody sent an agent)
+			
+			//identify the resource to the system (it calls ResourceRegister.register())
+			s.identify();
+			stoveAgent = s;
+		}
 
                 //Used to create "pages" in this activity (pages can changed with a finger)
                 List<Fragment> fragments = new Vector<Fragment>();

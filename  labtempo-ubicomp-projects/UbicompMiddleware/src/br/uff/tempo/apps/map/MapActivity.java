@@ -337,7 +337,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 		return true;
 	}
 
-	// The main menu, accessed by menu button
+	// The main menu, accessed by Android menu button (in the Android device)
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -359,11 +359,15 @@ public class MapActivity extends SimpleLayoutGameActivity
 		simulated
 				.add(GPR_RESOURCES, LUMINOSITY, Menu.NONE, "Luminosity Sensor");
 
+		//Option to connect an icon to an external resource
 		menu.add(Menu.NONE, EXTERNAL, Menu.NONE, "Connect to External Resource")
 				.setIcon(R.drawable.connect);
 
+		//Option to open a settings screen of the application
 		menu.add("Settings").setIcon(R.drawable.settings);
+		//Option to load a different map file
 		menu.add("Load Map").setIcon(R.drawable.map);
+		//Option to create a logical expression (called context rule)
 		menu.add("Create rule").setIcon(R.drawable.thunder);
 
 		return super.onCreateOptionsMenu(menu);
@@ -392,6 +396,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		resConfigured = false;
 
+		//Process the menu items...
 		createResourceIcon(item.getItemId(), true);
 
 		// Checks which item was selected
@@ -452,54 +457,56 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 	public void createResourceIcon(int iconType, boolean simulated) {
 
+		//init local variables
+		
+		//It is used to call another activiy!
 		Intent i = null;
-		Bundle b = null;
+		
+		//Tell us if the resource is an agent or an stub
+		String type = null;
+		
+		//The class of the application (StoveView, BedView)
+		//it will be called when the icon is clicked
+		Class c = null;
+		
+		//The resource icon (image)
+		TextureRegion tr = null;
+		
+		//An integer that represents the resource type
+		//it's not been used yet...
+		int resType = -1;
+
+		//type can be either 'agent' or 'stub'
+		//simulated -> agent; not simulated -> stub (proxy to an agent)
+		type = simulated ? "agent" : "stub";
 
 		switch (iconType) {
 
 		// Smart Stove selected. Creates a new stove in the scene
 		case STOVE:
 
-			// Creates an intent, to pass data to StoveView
-			i = new Intent(this,
-					br.uff.tempo.apps.stove.StoveView.class);
+			c = br.uff.tempo.apps.stove.StoveView.class;
+			tr = this.mStoveTextureRegion;
+			resType = InterfaceApplicationManager.STOVE_DATA;
 			
-			//i.putExtra("name", regData.getResourceName());
-			IStove stoveAgent;
-			
-			String type = null;
-			
-			if (simulated) {
-				type = "agent";
-			}
-			else {
-				type = "stub";
-			}
-			
-			i.putExtra(type, regData.getResourceName());
-		
-			createSprite(this.mStoveTextureRegion, i,
-					InterfaceApplicationManager.STOVE_DATA);
 			break;
 
 		// Smart TV selected. Creates a new TV in the scene
 		case TV:
 
-			// Creates an intent, to pass data to TvView
-			i = new Intent(getApplicationContext(),
-					br.uff.tempo.apps.stove.StoveView.class);
-			createSprite(this.mTVTextureRegion, i,
-					InterfaceApplicationManager.TV_DATA);
+			c = br.uff.tempo.apps.tv.TvView.class;
+			tr = this.mTVTextureRegion;
+			resType = InterfaceApplicationManager.TV_DATA;
+		
 			break;
 
 		// Smart Bed selected. Creates a new Bed in the scene
 		case BED:
 
-			// Creates an intent, to pass data to BedView
-			i = new Intent(getApplicationContext(),
-					br.uff.tempo.apps.bed.BedView.class);
-			createSprite(this.mBedTextureRegion, i,
-					InterfaceApplicationManager.BED_DATA);
+			c = br.uff.tempo.apps.bed.BedView.class;
+			tr = this.mBedTextureRegion;
+			resType = InterfaceApplicationManager.BED_DATA;
+			
 			break;
 
 		case EXTERNAL:
@@ -507,10 +514,28 @@ public class MapActivity extends SimpleLayoutGameActivity
 			MiddlewareOperation m = new MiddlewareOperation(this);
 			m.execute(null);
 
-			break;
+			//An external resource... we must exit this method, not only
+			//the 'switch case', because we don't know what is the resource chose 
+			return;
 		default:
-			break;
+			// if receive an invalid option, exit method
+			// (and doesn't execute the lines above!)
+			return;
 		}
+
+		// Creates an intent, to pass data to StoveView
+		i = new Intent(this, c);
+
+		// Pass to the Stove Activity (a kind of visualizer of the stove) the
+		// type (agent or stub) and the name
+		// (if agent, the user-defined name; if stub, the RAI)
+
+		i.putExtra("type", type);
+		i.putExtra("name", regData.getResourceName());
+
+		//create an icon in the map, according to the parameters
+		createSprite(tr, i, resType);
+
 	}
 
 	private ResourceObject createSprite(final TextureRegion pTextureRegion,
