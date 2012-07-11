@@ -1,6 +1,6 @@
 package br.uff.tempo.apps.tv;
 
-import br.uff.tempo.apps.ResourceData;
+import br.uff.tempo.middleware.management.interfaces.ResourceData;
 
 public class TvData implements ResourceData {
 

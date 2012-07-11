@@ -5,9 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import br.uff.tempo.apps.ResourceData;
+import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.ResourceData;
+import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 
 /**
  * This class manages resource agents, stubs
@@ -17,7 +19,7 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
  * @author dbarreto
  *
  */
-public class InterfaceApplicationManager {
+public class InterfaceApplicationManager extends ResourceAgent {
 	
 	// ===========================================================
 	// Constants
@@ -34,9 +36,6 @@ public class InterfaceApplicationManager {
 	//used with singleton pattern
 	private static InterfaceApplicationManager obj = null;
 	
-	//data from resources
-	private List<ResourceData> data;
-	private Map<Integer, IResourceAgent> resAg;
 	
 	// ===========================================================
 	// Constructors
@@ -44,8 +43,7 @@ public class InterfaceApplicationManager {
 	
 	private InterfaceApplicationManager() {
 		
-		this.data = new LinkedList<ResourceData>();
-		this.resAg = new HashMap<Integer, IResourceAgent>();
+		super("InterfaceManager", "br.uff.tempo.apps.map.objects.InterfaceApplicationManager", 37); 
 	}
 	
 	// ===========================================================
@@ -60,23 +58,17 @@ public class InterfaceApplicationManager {
 		return obj;
 	}
 	
-	public void addResourceData(ResourceData resourceData) {
-		
-		this.data.add(resourceData);
-	}
 	
-	public void addResourceAgent(int id, IResourceAgent ra) {
-		
-		this.resAg.put(id, ra);
-	}
+	// ===========================================================
+	// Inherited Methods
+	// ===========================================================
 	
-	public IResourceAgent getResourceAgent(int id) {
+	@Override
+	public void notificationHandler(String change) {
 		
-		return this.resAg.get(id);
-	}
-	
-	public List<ResourceData> getResourcesData() {
-		return this.data;
+		String raiFromExternal = (String) JSONHelper.getChange("id", change);
+		String methodChanged = (String) JSONHelper.getChange("method", change);
+		Object valueChanged = JSONHelper.getChange("value", change);
 	}
 
 }

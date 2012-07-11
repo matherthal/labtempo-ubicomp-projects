@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 
+@Deprecated
 public class StoveFragmentActivity extends FragmentActivity {
 	
 	private PagerAdapter mPageAdapter;
@@ -29,11 +30,6 @@ public class StoveFragmentActivity extends FragmentActivity {
 		ViewPager pager = (ViewPager) super.findViewById(R.id.viewpager);
 		pager.setAdapter(this.mPageAdapter);
 		
-	}
-
-	public StoveData getStoveState() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

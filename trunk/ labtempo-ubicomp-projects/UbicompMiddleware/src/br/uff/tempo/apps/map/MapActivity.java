@@ -24,9 +24,7 @@ import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.TextureRegion;
-import org.andengine.ui.activity.SimpleLayoutGameActivity;
-
-import com.google.gson.Gson;
+import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -48,14 +46,12 @@ import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
-import br.uff.tempo.apps.stove.StoveData;
-import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.resources.Stove;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
-public class MapActivity extends SimpleLayoutGameActivity
-/* SimpleBaseGameActivity */implements IOnSceneTouchListener,
+public class MapActivity extends /*SimpleLayoutGameActivity*/
+SimpleBaseGameActivity implements IOnSceneTouchListener,
 		IScrollDetectorListener, IPinchZoomDetectorListener {
 
 	// ===========================================================
@@ -180,6 +176,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		// Get an Interface Manager instance
 		mAppManager = InterfaceApplicationManager.getInstance();
+		mAppManager.identify();
 
 		this.mEngine.enableVibrator(this);
 
@@ -263,17 +260,17 @@ public class MapActivity extends SimpleLayoutGameActivity
 	}
 
 	// TODO: Try to use Android layouts to implement a Quick action
-	@Override
-	protected int getLayoutID() {
-
-		return R.layout.andengine;
-	}
-
-	@Override
-	protected int getRenderSurfaceViewID() {
-
-		return R.id.xmllayoutexample_rendersurfaceview;
-	}
+//	@Override
+//	protected int getLayoutID() {
+//
+//		return R.layout.andengine;
+//	}
+//
+//	@Override
+//	protected int getRenderSurfaceViewID() {
+//
+//		return R.id.xmllayoutexample_rendersurfaceview;
+//	}
 
 	// Detectors
 	@Override
@@ -359,15 +356,15 @@ public class MapActivity extends SimpleLayoutGameActivity
 		simulated
 				.add(GPR_RESOURCES, LUMINOSITY, Menu.NONE, "Luminosity Sensor");
 
-		//Option to connect an icon to an external resource
+		// Option to connect an icon to an external resource
 		menu.add(Menu.NONE, EXTERNAL, Menu.NONE, "Connect to External Resource")
 				.setIcon(R.drawable.connect);
 
-		//Option to open a settings screen of the application
+		// Option to open a settings screen of the application
 		menu.add("Settings").setIcon(R.drawable.settings);
-		//Option to load a different map file
+		// Option to load a different map file
 		menu.add("Load Map").setIcon(R.drawable.map);
-		//Option to create a logical expression (called context rule)
+		// Option to create a logical expression (called context rule)
 		menu.add("Create rule").setIcon(R.drawable.thunder);
 
 		return super.onCreateOptionsMenu(menu);
@@ -396,7 +393,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		resConfigured = false;
 
-		//Process the menu items...
+		// Process the menu items...
 		createResourceIcon(item.getItemId(), true);
 
 		// Checks which item was selected
@@ -457,28 +454,24 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 	public void createResourceIcon(int iconType, boolean simulated) {
 
-		//init local variables
-		
-		//It is used to call another activiy!
-		Intent i = null;
-		
-		//Tell us if the resource is an agent or an stub
-		String type = null;
-		
-		//The class of the application (StoveView, BedView)
-		//it will be called when the icon is clicked
-		Class c = null;
-		
-		//The resource icon (image)
-		TextureRegion tr = null;
-		
-		//An integer that represents the resource type
-		//it's not been used yet...
-		int resType = -1;
+		// init local variables
 
-		//type can be either 'agent' or 'stub'
-		//simulated -> agent; not simulated -> stub (proxy to an agent)
-		type = simulated ? "agent" : "stub";
+		// It is used to call another activity and pass values to it!
+		Intent i = null;
+
+		//It may contain lots of values wrapped, to send to another activity
+		Bundle bundle = new Bundle();
+
+		// The class of the application (StoveView, BedView)
+		// it will be called when the icon is clicked
+		Class c = null;
+
+		// The resource icon (image)
+		TextureRegion tr = null;
+
+		// An integer that represents the resource type
+		// it's not been used yet...
+		int resType = -1;
 
 		switch (iconType) {
 
@@ -489,6 +482,19 @@ public class MapActivity extends SimpleLayoutGameActivity
 			tr = this.mStoveTextureRegion;
 			resType = InterfaceApplicationManager.STOVE_DATA;
 			
+			IStove stove;
+			
+			//create an agent if it's a simulated resource; a stub otherwise
+			if (simulated) {
+				stove = new Stove(regData.getResourceName());
+			} else {
+				stove = new StoveStub(regData.getResourceName());
+				//stove.registerStakeholder("all", mAppManager.getURL());
+			}
+			
+			// simulated -> put an agent; not simulated -> put a stub (proxy to an agent)
+			bundle.putSerializable("agent", stove);
+
 			break;
 
 		// Smart TV selected. Creates a new TV in the scene
@@ -497,7 +503,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 			c = br.uff.tempo.apps.tv.TvView.class;
 			tr = this.mTVTextureRegion;
 			resType = InterfaceApplicationManager.TV_DATA;
-		
+
 			break;
 
 		// Smart Bed selected. Creates a new Bed in the scene
@@ -506,7 +512,7 @@ public class MapActivity extends SimpleLayoutGameActivity
 			c = br.uff.tempo.apps.bed.BedView.class;
 			tr = this.mBedTextureRegion;
 			resType = InterfaceApplicationManager.BED_DATA;
-			
+
 			break;
 
 		case EXTERNAL:
@@ -514,8 +520,9 @@ public class MapActivity extends SimpleLayoutGameActivity
 			MiddlewareOperation m = new MiddlewareOperation(this);
 			m.execute(null);
 
-			//An external resource... we must exit this method, not only
-			//the 'switch case', because we don't know what is the resource chose 
+			// An external resource... we must exit this method, not only
+			// the 'switch case', because we don't know what is the resource
+			// chose
 			return;
 		default:
 			// if receive an invalid option, exit method
@@ -525,15 +532,11 @@ public class MapActivity extends SimpleLayoutGameActivity
 
 		// Creates an intent, to pass data to StoveView
 		i = new Intent(this, c);
+		
+		//Put all information in the intent
+		i.putExtras(bundle);
 
-		// Pass to the Stove Activity (a kind of visualizer of the stove) the
-		// type (agent or stub) and the name
-		// (if agent, the user-defined name; if stub, the RAI)
-
-		i.putExtra("type", type);
-		i.putExtra("name", regData.getResourceName());
-
-		//create an icon in the map, according to the parameters
+		// create an icon in the map, according to the parameters
 		createSprite(tr, i, resType);
 
 	}

@@ -49,5 +49,9 @@ public interface IResourceAgent extends Serializable {
 	public boolean isRegistered();
 	public boolean identify();
 	public void notifyStakeholders(String change) throws JSONException;
+	
+	//TODO Not so good solution... We need to improve this.
+	//public ResourceData getData();
+	//public void updateData(ResourceData state);
 //	public boolean registerStakeholder(String method, ResourceAgent rA);
 }

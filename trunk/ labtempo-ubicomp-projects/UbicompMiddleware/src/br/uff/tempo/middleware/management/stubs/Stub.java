@@ -1,5 +1,6 @@
 package br.uff.tempo.middleware.management.stubs;
 
+import java.io.Serializable;
 import java.util.List;
 
 import org.json.JSONException;
@@ -8,7 +9,7 @@ import br.uff.tempo.middleware.comm.Caller;
 import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.comm.Tuple;
 
-public class Stub {
+public class Stub implements Serializable {
 	
 	public Caller caller;
 	

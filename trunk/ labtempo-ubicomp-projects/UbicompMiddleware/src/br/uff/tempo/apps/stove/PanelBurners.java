@@ -29,6 +29,7 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 
 	//private StoveData stove;
 	private IStove stove;
+	private IStove cache;
 
 	private Bitmap mBitmap;
 	private Bitmap mButtons;
@@ -77,6 +78,8 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 		isOnBurners = new ArrayList<Boolean>(4);
 		for (int i = 0; i<4; i++)
 			isOnBurners.add(false);
+		
+		stove = ((StoveView) getContext()).getStoveState();
 	}
 
 	public void doDraw(Canvas canvas) {
@@ -124,8 +127,6 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 		// get the touch coordinates
 		int x = (int) event.getX();
 		int y = (int) event.getY();
-
-		stove = ((StoveView) getContext()).getStoveState();
 
 		Log.d(TAG, "X = " + x + " and Y = " + y);
 
