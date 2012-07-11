@@ -1,5 +1,6 @@
 package br.uff.tempo.middleware.management.utils;
 
+import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -8,7 +9,7 @@ import java.util.Enumeration;
 
 import android.util.Log;
 
-public class ResourceAgentIdentifier {
+public class ResourceAgentIdentifier implements Serializable {
 	
 	//rai-uri = �rai:� rai-path [�//� rai-type *(�/� rai-type)] �:� rai-name
 	private String rai;

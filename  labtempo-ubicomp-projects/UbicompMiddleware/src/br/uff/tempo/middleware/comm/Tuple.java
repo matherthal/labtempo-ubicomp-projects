@@ -1,6 +1,8 @@
 package br.uff.tempo.middleware.comm;
 
-public class Tuple<key, value> {
+import java.io.Serializable;
+
+public class Tuple<key, value> implements Serializable {
 	public String key = "";
 	public Object value = null;
 	public Object value2 = null;

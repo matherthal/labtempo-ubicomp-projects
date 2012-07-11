@@ -211,7 +211,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		while (i < stakeholders.size()) {
 			String url = stakeholders.get(i).getUrl();
 			// stakeholderStub = new ResourceAgentStub(url);
-			if (change.contains(stakeholders.get(i).getMethod()))
+			if (change.contains(stakeholders.get(i).getMethod()) || stakeholders.get(i).getMethod().equalsIgnoreCase("all") )
 				new ResourceAgentStub(rDS.search(url).get(0))
 						.notificationHandler(change);// change = id, method name
 														// and value

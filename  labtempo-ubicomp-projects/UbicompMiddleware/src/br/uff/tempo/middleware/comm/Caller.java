@@ -1,9 +1,11 @@
 package br.uff.tempo.middleware.comm;
 
+import java.io.Serializable;
+
 import android.util.Log;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
-public class Caller {
+public class Caller implements Serializable {
     private ResourceAgentIdentifier calleeAgent;
     
     private int port = 8080;

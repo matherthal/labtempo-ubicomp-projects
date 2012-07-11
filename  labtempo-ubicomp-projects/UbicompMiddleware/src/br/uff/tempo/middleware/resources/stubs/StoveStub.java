@@ -3,9 +3,6 @@ package br.uff.tempo.middleware.resources.stubs;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONException;
-
-import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.IStove;

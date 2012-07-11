@@ -1,4 +1,4 @@
-package br.uff.tempo.apps;
+package br.uff.tempo.middleware.management.interfaces;
 
 import java.io.Serializable;
 
