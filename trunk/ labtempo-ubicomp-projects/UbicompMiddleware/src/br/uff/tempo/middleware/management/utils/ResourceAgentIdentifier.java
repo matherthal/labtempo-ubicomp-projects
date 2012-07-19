@@ -10,17 +10,18 @@ import java.util.Enumeration;
 import android.util.Log;
 
 public class ResourceAgentIdentifier implements Serializable {
-	
-	//rai-uri = �rai:� rai-path [�//� rai-type *(�/� rai-type)] �:� rai-name
+
+	// rai-uri = �rai:� rai-path [�//� rai-type *(�/� rai-type)]
+	// �:� rai-name
 	private String rai;
-	
+
 	private String path;
 	private ArrayList<String> type;
 	private String name;
-	
+
 	private int pointer;
-	public ResourceAgentIdentifier(String rai)
-	{
+
+	public ResourceAgentIdentifier(String rai) {
 		this.rai = rai;
 		pointer = 0;
 		path = extractPath();
@@ -29,29 +30,29 @@ public class ResourceAgentIdentifier implements Serializable {
 	}
 
 	private String extractPath() {
-		while (rai.charAt(pointer++)!=':');
+		while (rai.charAt(pointer++) != ':')
+			;
 		int begin = pointer;
-		while (!(rai.charAt(pointer)== '/' && rai.charAt(pointer+1)=='/'))
+		while (!(rai.charAt(pointer) == '/' && rai.charAt(pointer + 1) == '/'))
 			pointer++;
 		return rai.substring(begin, pointer);
 	}
-	
+
 	private ArrayList<String> extractType() {
-		ArrayList<String> result = new ArrayList<String> ();
+		ArrayList<String> result = new ArrayList<String>();
 		pointer++;
-		while(rai.charAt(pointer)!=':')
-		{
+		while (rai.charAt(pointer) != ':') {
 			pointer++;
 			int begin = pointer;
-			while (rai.charAt(pointer)!='/'&& rai.charAt(pointer)!=':')
+			while (rai.charAt(pointer) != '/' && rai.charAt(pointer) != ':')
 				pointer++;
-			result.add(rai.substring(begin,pointer));
+			result.add(rai.substring(begin, pointer));
 		}
 		return result;
 	}
-	
+
 	private String extractName() {
-		return rai.substring(pointer+1);
+		return rai.substring(pointer + 1);
 	}
 
 	public String getRai() {
@@ -70,30 +71,25 @@ public class ResourceAgentIdentifier implements Serializable {
 		return name;
 	}
 
-	public static String generateRAI(String path, String type,String name)
-	{
-		return "rai:"+path+"//"+type+":"+name;
+	public static String generateRAI(String path, String type, String name) {
+		return "rai:" + path + "//" + type + ":" + name;
 	}
-	
-	public static String getLocalIpAddress()
-    {
-        try {
-            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-                NetworkInterface intf = en.nextElement();
-                for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-                    InetAddress inetAddress = enumIpAddr.nextElement();
-                    if (!inetAddress.isLoopbackAddress() && !inetAddress.getHostAddress().contains(":")) {
-                        return inetAddress.getHostAddress();
-                    }
-                }
-            }
-        } catch (SocketException ex) {
-        	Log.e("ResourceAgent", ex.getMessage());
-        }
-        return "No IP Available";   
-    }
 
-	
-	
-	
+	public static String getLocalIpAddress() {
+		try {
+			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+				NetworkInterface intf = en.nextElement();
+				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+					InetAddress inetAddress = enumIpAddr.nextElement();
+					if (!inetAddress.isLoopbackAddress() && !inetAddress.getHostAddress().contains(":")) {
+						return inetAddress.getHostAddress();
+					}
+				}
+			}
+		} catch (SocketException ex) {
+			Log.e("ResourceAgent", ex.getMessage());
+		}
+		return "No IP Available";
+	}
+
 }

@@ -10,16 +10,16 @@ import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 public class RuleInterpreterTest extends ResourceAgent {
 	private String TAG = "RuleInterpreterTest";
 	private IResourceDiscovery discovery;
-	
+
 	public RuleInterpreterTest() {
 		super("Teste regra", "br.uff.tempo.apps.rule.RuleInterpreterTest", 30);
 		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		IResourceAgent  ra = new ResourceAgentStub(discovery.search("Regra do Fogao").get(0));
-		
+		IResourceAgent ra = new ResourceAgentStub(discovery.search("Regra do Fogao").get(0));
+
 		String cv = "Regra disparada";
 		ra.registerStakeholder(cv, this.getURL());
 	}
-	
+
 	@Override
 	public void notificationHandler(String change) {
 		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);

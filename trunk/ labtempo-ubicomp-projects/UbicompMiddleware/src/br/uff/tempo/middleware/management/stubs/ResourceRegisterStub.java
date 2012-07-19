@@ -10,8 +10,7 @@ import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 
 import com.google.gson.reflect.TypeToken;
 
-public class ResourceRegisterStub extends ResourceAgentStub implements
-		IResourceRegister {
+public class ResourceRegisterStub extends ResourceAgentStub implements IResourceRegister {
 
 	public ResourceRegisterStub(String calleeID) {
 		super(calleeID);

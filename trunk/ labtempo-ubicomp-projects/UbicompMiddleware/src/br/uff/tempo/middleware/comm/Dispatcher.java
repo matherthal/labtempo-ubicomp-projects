@@ -30,36 +30,33 @@ public class Dispatcher extends Thread {
 	private ResourceContainer instances;
 	private Map<String, ArrayList<Method>> interfaces;// IAR and method list
 	SocketService socket;
+
 	private Dispatcher() {
 		instances = ResourceContainer.getInstance();
 		interfaces = new HashMap<String, ArrayList<Method>>();
-//		socket = new SocketService("localhost", 10006);
+		// socket = new SocketService("localhost", 10006);
 	}
 
 	private void update() throws ClassNotFoundException {
 		ArrayList<String> resources = new ArrayList<String>();
 
 		IResourceRepository rR;
-		
-		//if discovery agent
-		
+
+		// if discovery agent
+
 		String rdsHost = (new ResourceAgentIdentifier(IResourceDiscovery.RDS_ADDRESS)).getPath();
-		
-		if (rdsHost.equals(ResourceAgentIdentifier
-				.getLocalIpAddress())) {
-			
+
+		if (rdsHost.equals(ResourceAgentIdentifier.getLocalIpAddress())) {
+
 			rR = ResourceRepository.getInstance();
-			
-			resources = ResourceDiscovery.getInstance().search(
-					ResourceAgentIdentifier.getLocalIpAddress());
-		}
-		else {
-			
+
+			resources = ResourceDiscovery.getInstance().search(ResourceAgentIdentifier.getLocalIpAddress());
+		} else {
+
 			IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 			rR = new ResourceRepositoryStub(discovery.search("ResourceRepository").get(0));
-			
-			resources = discovery.search(
-					ResourceAgentIdentifier.getLocalIpAddress());
+
+			resources = discovery.search(ResourceAgentIdentifier.getLocalIpAddress());
 		}
 
 		// only localhost
@@ -67,8 +64,7 @@ public class Dispatcher extends Thread {
 			String resource = resources.get(i);
 			ArrayList<Method> methodsList = new ArrayList<Method>();
 			ResourceAgentIdentifier rai = new ResourceAgentIdentifier(resource);
-			Class agent = getClassOf(rai.getType()
-					.get(rai.getType().size() - 1));
+			Class agent = getClassOf(rai.getType().get(rai.getType().size() - 1));
 			Method[] methods = agent.getMethods();
 			for (Method method : methods)
 				methodsList.add(method);
@@ -87,53 +83,47 @@ public class Dispatcher extends Thread {
 		return instance;
 	}
 
-	public String dispatch(String calleeID, String msg)
-			throws ClassNotFoundException, JSONException,
-			IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	public String dispatch(String calleeID, String msg) throws ClassNotFoundException, JSONException, IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		update();
 
 		Map<String, Object> methodCall = getMethodCall(msg);
 		String method = getMethodName(methodCall);
 		List<Object> params = getParams(methodCall);
-		
+
 		Object[] paramsArray = paramsToArray(params);
-		
+
 		ArrayList<Method> methods = interfaces.get(calleeID);
 		for (int i = 0; i < methods.size(); i++)
 			if (methods.get(i).getName().equals(method)) {
 				Object obj = null;
-				try{
-					obj = execute(calleeID, methods.get(i),
-						paramsArray);
-				} catch (IllegalArgumentException e)
-				{
-//					java.lang.IllegalArgumentException: argument 1 should have type int, got java.lang.Double
+				try {
+					obj = execute(calleeID, methods.get(i), paramsArray);
+				} catch (IllegalArgumentException e) {
+					// java.lang.IllegalArgumentException: argument 1 should
+					// have type int, got java.lang.Double
 					String[] error = e.getMessage().split(",");
-					if (error[0].contains("int"))
-					{
-						if (error[1].contains("Double"));
+					if (error[0].contains("int")) {
+						if (error[1].contains("Double"))
+							;
 						{
-							for (int j = 0; j<paramsArray.length; j++)
-							{
+							for (int j = 0; j < paramsArray.length; j++) {
 								if (paramsArray[j].getClass().equals(Double.class))
-									paramsArray[j] = (int)Math.round((Double)paramsArray[j]);
+									paramsArray[j] = (int) Math.round((Double) paramsArray[j]);
 							}
 						}
-					}else if (error[0].contains("float"))
-					{
-						if (error[1].contains("Double"));
+					} else if (error[0].contains("float")) {
+						if (error[1].contains("Double"))
+							;
 						{
-							for (int j = 0; j<paramsArray.length; j++)
-							{
+							for (int j = 0; j < paramsArray.length; j++) {
 								if (paramsArray[j].getClass().equals(Double.class))
 									paramsArray[j] = Float.parseFloat(paramsArray[j].toString());
 							}
 						}
 					}
-						
-					obj = execute(calleeID, methods.get(i),
-							paramsArray);
+
+					obj = execute(calleeID, methods.get(i), paramsArray);
 				}
 				return JSONHelper.createReply(obj);
 			}
@@ -154,19 +144,16 @@ public class Dispatcher extends Thread {
 	private List<Object> getParams(Map<String, Object> methodCall) {
 		return (List<Object>) methodCall.get("params");
 	}
-	
-	private Object[] paramsToArray(List<Object> params)
-	{
+
+	private Object[] paramsToArray(List<Object> params) {
 		Object[] args = new Object[params.size()];
 		for (int i = 0; i < params.size(); i++)
 			args[i] = params.get(i);
 		return args;
 	}
 
-	private Object execute(String resource, Method method,
-			Object[] args) throws JSONException,
-			IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException {
+	private Object execute(String resource, Method method, Object[] args) throws JSONException, IllegalArgumentException,
+			IllegalAccessException, InvocationTargetException {
 		ResourceAgent rA = instances.get(resource);
 		return method.invoke(rA, args);
 	}

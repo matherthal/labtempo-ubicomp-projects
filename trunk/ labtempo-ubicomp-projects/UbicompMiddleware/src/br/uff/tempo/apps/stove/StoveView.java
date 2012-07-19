@@ -51,10 +51,9 @@ public class StoveView extends FragmentActivity /* implements Observer */{
 			// identify the resource to the system (it calls
 			// ResourceRegister.register())
 			s.identify();
-			
+
 			stoveAgent = s;
 		}
-		
 
 		/*
 		 * // if the object comes from someone (like the house map) if
@@ -79,8 +78,7 @@ public class StoveView extends FragmentActivity /* implements Observer */{
 		fragments.add(Fragment.instantiate(this, Burners.class.getName()));
 		fragments.add(Fragment.instantiate(this, Oven.class.getName()));
 
-		this.mPageAdapter = new MyPageAdapter(
-				super.getSupportFragmentManager(), fragments);
+		this.mPageAdapter = new MyPageAdapter(super.getSupportFragmentManager(), fragments);
 
 		ViewPager pager = (ViewPager) super.findViewById(R.id.viewpager);
 		pager.setAdapter(this.mPageAdapter);

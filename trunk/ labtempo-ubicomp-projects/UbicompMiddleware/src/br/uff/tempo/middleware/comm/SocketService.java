@@ -58,8 +58,7 @@ public class SocketService {
 			InetAddress local = InetAddress.getByName(address);
 			int msg_length = status.length();
 			byte[] message = status.getBytes();
-			DatagramPacket p = new DatagramPacket(message, msg_length, local,
-					port);
+			DatagramPacket p = new DatagramPacket(message, msg_length, local, port);
 			s.send(p);
 		} catch (IOException ex) {
 			Log.e("SocketService", "sendStatus: " + ex.getMessage());
@@ -129,8 +128,7 @@ public class SocketService {
 		s.close();
 	}
 
-	public static String sendReceive(String address, String message)
-			throws Exception {
+	public static String sendReceive(String address, String message) throws Exception {
 		DatagramSocket s = new DatagramSocket();
 		String outString = message;
 		int msg_length = outString.length();
@@ -140,7 +138,7 @@ public class SocketService {
 
 		InetAddress hostAddress = InetAddress.getByName(address);
 		DatagramPacket out = null;
-		out = new DatagramPacket(buf, msg_length, hostAddress,4000);
+		out = new DatagramPacket(buf, msg_length, hostAddress, 4000);
 		Log.d("sendReceive()", out.toString());
 		s.send(out);
 
@@ -155,7 +153,7 @@ public class SocketService {
 		int PORT = 4000;
 		byte[] buf = new byte[1500];
 		DatagramPacket dgp = new DatagramPacket(buf, buf.length);
-		 
+
 		DatagramSocket sk;
 
 		sk = new DatagramSocket(PORT);
@@ -164,16 +162,15 @@ public class SocketService {
 		sk.receive(dgp);
 		String rcvd = new String(dgp.getData());
 		System.out.println(rcvd);
-		Log.d("Received value",rcvd);
+		Log.d("Received value", rcvd);
 		String[] call = rcvd.split(";");
 		String calleeID = call[0];
 		String jsonstring = call[1];
-		Log.d("Callee value",calleeID);
-		Log.d("JSON value",jsonstring);
-		String result = dispatcher.dispatch(calleeID, jsonstring)+";";
-		byte[] bufsk = result.getBytes(); 
-		DatagramPacket out = new DatagramPacket(bufsk, bufsk.length,
-				dgp.getAddress(), dgp.getPort());
+		Log.d("Callee value", calleeID);
+		Log.d("JSON value", jsonstring);
+		String result = dispatcher.dispatch(calleeID, jsonstring) + ";";
+		byte[] bufsk = result.getBytes();
+		DatagramPacket out = new DatagramPacket(bufsk, bufsk.length, dgp.getAddress(), dgp.getPort());
 		sk.send(out);
 		sk.close();
 	}

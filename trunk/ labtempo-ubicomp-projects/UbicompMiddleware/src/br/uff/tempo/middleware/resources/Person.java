@@ -20,31 +20,31 @@ public class Person extends Aggregator implements IPerson {
 	private boolean isRunning = false;
 
 	public Person() {
-		//Discover ContextVariables to update this aggregator status
-		//Add them with the aggregator's support
+		// Discover ContextVariables to update this aggregator status
+		// Add them with the aggregator's support
 		IResourceDiscovery iRDS = getRDS();
 		IBed bed = new BedStub(iRDS.search("bed").get(0));
 		bed.registerStakeholder("inUse", this.getURL());
-		
+
 		this.addContextVariable(bed, "inUse");
-		//...
-		//Add interpreters
-		//...
+		// ...
+		// Add interpreters
+		// ...
 	}
-	
-	@ContextVariable(name="Nome")
+
+	@ContextVariable(name = "Nome")
 	public String getName() {
 		return this.name;
 	}
-	
-	@ContextVariable(name="Dormindo")
+
+	@ContextVariable(name = "Dormindo")
 	public boolean getIsSleepting() {
 		return this.isSleeping;
 	}
-	
+
 	@Override
-	public void notificationHandler(String change){
-		//Update status of this aggregator
+	public void notificationHandler(String change) {
+		// Update status of this aggregator
 	}
 
 	@Override

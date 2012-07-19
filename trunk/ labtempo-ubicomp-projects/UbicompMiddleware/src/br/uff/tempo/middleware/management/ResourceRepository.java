@@ -5,8 +5,7 @@ import java.util.ArrayList;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
-public class ResourceRepository extends ResourceAgent implements
-		IResourceRepository {
+public class ResourceRepository extends ResourceAgent implements IResourceRepository {
 
 	ArrayList<String> repository;
 	private static ResourceRepository instance;
@@ -14,9 +13,7 @@ public class ResourceRepository extends ResourceAgent implements
 	private ResourceRepository() {
 		setId(0);
 
-		setURL(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(),
-				"br.uff.tempo.middleware.management.ResourceRepository",
-				"ResourceRepository"));
+		setURL(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceRepository", "ResourceRepository"));
 
 		setName("ResourceRepository");
 		setType("management");

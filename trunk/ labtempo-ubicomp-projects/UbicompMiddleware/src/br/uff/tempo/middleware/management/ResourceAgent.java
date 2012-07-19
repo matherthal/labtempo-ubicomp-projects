@@ -20,8 +20,7 @@ import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
-public abstract class ResourceAgent extends Service implements IResourceAgent,
-		Serializable {
+public abstract class ResourceAgent extends Service implements IResourceAgent, Serializable {
 	private static final String TAG = "AgentBase";
 
 	// Agent's attributes
@@ -37,7 +36,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 	private ArrayList<String> registeredList;
 	private String RDS_URL;
 
-	//public static IResourceDiscovery getRDS()
+	// public static IResourceDiscovery getRDS()
 	public IResourceDiscovery getRDS() {
 		return rDS;
 	}
@@ -135,16 +134,17 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		this.name = name;
 		URL = "";
 
-		//WifiManager wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
+		// WifiManager wifiManager = (WifiManager)
+		// getSystemService(WIFI_SERVICE);
 
-		//WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		String ipAddress = ResourceAgentIdentifier.getLocalIpAddress(); //Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
-		
-		URL = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);	
-		
+		// WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+		String ipAddress = ResourceAgentIdentifier.getLocalIpAddress(); // Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
+
+		URL = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);
+
 		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		
-		//initResource();
+
+		// initResource();
 	}
 
 	@Override
@@ -156,9 +156,10 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		// Exists only to defeat instantiation.
 		// rrs = ResourceRegisterServiceStub.getInstance();
 	}
-	
+
 	private void initResource() {
-		//rDS = new ResourceDiscoveryStub("rai:127.0.0.1//br.uff.tempo.middleware.management.ResourceDiscovery:ResourceDiscovery");
+		// rDS = new
+		// ResourceDiscoveryStub("rai:127.0.0.1//br.uff.tempo.middleware.management.ResourceDiscovery:ResourceDiscovery");
 		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 		identify();
 	}
@@ -185,16 +186,14 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 	public boolean identify() {
 
 		if (!registered) {
-			rrs = new ResourceRegisterStub(rDS.search(
-					"br.uff.tempo.middleware.management.ResourceRegister").get(
-					0));
-			
+			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
+
 			registered = rrs.register(this.URL);
 			String result = "";
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
 		}
-		
+
 		return registered;
 	}
 
@@ -204,10 +203,14 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		while (i < stakeholders.size()) {
 			String url = stakeholders.get(i).getUrl();
 			// stakeholderStub = new ResourceAgentStub(url);
-			if (change.contains(stakeholders.get(i).getMethod()) || stakeholders.get(i).getMethod().equalsIgnoreCase("all") )
-				new ResourceAgentStub(rDS.search(url).get(0))
-						.notificationHandler(change);// change = id, method name
-														// and value
+			if (change.contains(stakeholders.get(i).getMethod()) || stakeholders.get(i).getMethod().equalsIgnoreCase("all"))
+				new ResourceAgentStub(rDS.search(url).get(0)).notificationHandler(change);// change
+																							// =
+																							// id,
+																							// method
+																							// name
+																							// and
+																							// value
 			// query by url return a unique instance
 			i++;
 		}
@@ -227,14 +230,13 @@ public abstract class ResourceAgent extends Service implements IResourceAgent,
 		stakeholders.add(new Stakeholder(method, url));
 	}
 
-//	@Override
-//	public boolean registerStakeholder(String method, ResourceAgent rA) {
-//		stakeholders.add(new Stakeholder(method, rA));
-//		return true;
-//	}
+	// @Override
+	// public boolean registerStakeholder(String method, ResourceAgent rA) {
+	// stakeholders.add(new Stakeholder(method, rA));
+	// return true;
+	// }
 
-	public String change(String id, String method, Object value)
-			throws JSONException {
+	public String change(String id, String method, Object value) throws JSONException {
 		return JSONHelper.createChange(id, method, value);
 	}
 }

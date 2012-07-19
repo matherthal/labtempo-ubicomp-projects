@@ -19,7 +19,7 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 
 	private final String TAG = "Panel-StoveView";
 
-	//private StoveData stove;
+	// private StoveData stove;
 	private IStove stove;
 	private IStove cache;
 
@@ -33,7 +33,7 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 
 	private ViewThread mThread;
 	private List<Boolean> isOnBurners;
-	
+
 	public PanelBurners(Context context) {
 		super(context);
 		init();
@@ -47,62 +47,51 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 	protected void init() {
 
 		super.init();
-		
+
 		stove = ((StoveView) getContext()).getStoveState();
-		mBitmap = BitmapFactory
-				.decodeResource(getResources(), R.drawable.stove);
-		mButtons = BitmapFactory.decodeResource(getResources(),
-				R.drawable.stove_buttons);
+		mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.stove);
+		mButtons = BitmapFactory.decodeResource(getResources(), R.drawable.stove_buttons);
 
 		// flames
-		mFireOne = BitmapFactory.decodeResource(getResources(),
-				R.drawable.fire_burner_one);
-		mFireTwo = BitmapFactory.decodeResource(getResources(),
-				R.drawable.fire_burner_two);
-		mFireThree = BitmapFactory.decodeResource(getResources(),
-				R.drawable.fire_burner_three);
-		mFireFour = BitmapFactory.decodeResource(getResources(),
-				R.drawable.fire_burner_four);
+		mFireOne = BitmapFactory.decodeResource(getResources(), R.drawable.fire_burner_one);
+		mFireTwo = BitmapFactory.decodeResource(getResources(), R.drawable.fire_burner_two);
+		mFireThree = BitmapFactory.decodeResource(getResources(), R.drawable.fire_burner_three);
+		mFireFour = BitmapFactory.decodeResource(getResources(), R.drawable.fire_burner_four);
 
 		mX -= mBitmap.getWidth() / 2;
 		mY -= mBitmap.getHeight() / 2;
-		
+
 		isOnBurners = new ArrayList<Boolean>(4);
-		for (int i = 0; i<4; i++)
+		for (int i = 0; i < 4; i++)
 			isOnBurners.add(false);
-		
+
 		stove = ((StoveView) getContext()).getStoveState();
 	}
 
 	public void doDraw(Canvas canvas) {
-		
+
 		// draw the background color
 		canvas.drawColor(Color.BLACK);
-		
+
 		// draw the stove bitmap
 		canvas.drawBitmap(mBitmap, mX, mY, null);
-		
+
 		// draw the flame at burners, if needed
-		
+
 		/*
-		int[] flame = stove.getBurners();
-		
-		if (flame[0] > 0)
-			canvas.drawBitmap(mFireOne, mX, mY, null);
-		if (flame[1] > 0)
-			canvas.drawBitmap(mFireTwo, mX, mY, null);
-		if (flame[2] > 0)
-			canvas.drawBitmap(mFireThree, mX, mY, null);
-		if (flame[3] > 0)
-			canvas.drawBitmap(mFireFour, mX, mY, null);
-		*/
-//		if (touched)
-//		{	
-			for (int i = 0; i< 4; i++)
-			{
-				isOnBurners.set(i,stove.isOnBurner(new Integer(i)));
-			}
-//		}
+		 * int[] flame = stove.getBurners();
+		 * 
+		 * if (flame[0] > 0) canvas.drawBitmap(mFireOne, mX, mY, null); if
+		 * (flame[1] > 0) canvas.drawBitmap(mFireTwo, mX, mY, null); if
+		 * (flame[2] > 0) canvas.drawBitmap(mFireThree, mX, mY, null); if
+		 * (flame[3] > 0) canvas.drawBitmap(mFireFour, mX, mY, null);
+		 */
+		// if (touched)
+		// {
+		for (int i = 0; i < 4; i++) {
+			isOnBurners.set(i, stove.isOnBurner(new Integer(i)));
+		}
+		// }
 		if (isOnBurners.get(0))
 			canvas.drawBitmap(mFireOne, mX, mY, null);
 		if (isOnBurners.get(1))
@@ -129,41 +118,41 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 
 			// Get the pixel color of coordinate (x, y) (translated)
 			color = mButtons.getPixel(x - mX, y - mY);
-			
+
 			int burnerIndex = -1;
 
 			switch (color) {
 			case Color.RED: // 0xfffa0000:
 				// ((StoveView) getContext()).showPopup(0);
-				//data.setBurnerIntensity(0, 100 - data.getBurnerIntensity(0));
+				// data.setBurnerIntensity(0, 100 - data.getBurnerIntensity(0));
 				burnerIndex = 0;
-				
+
 				Log.d(TAG, "Burner 1");
-				
+
 				break;
 			case Color.BLUE:
 				// ((StoveView) getContext()).showPopup(1);
-				//data.setBurnerIntensity(1, 100 - data.getBurnerIntensity(1));
+				// data.setBurnerIntensity(1, 100 - data.getBurnerIntensity(1));
 				burnerIndex = 1;
-				
+
 				Log.d(TAG, "Burner 2");
-				
+
 				break;
 			case Color.GREEN:
 				// ((StoveView) getContext()).showPopup(2);
-				//data.setBurnerIntensity(2, 100 - data.getBurnerIntensity(2));
+				// data.setBurnerIntensity(2, 100 - data.getBurnerIntensity(2));
 				burnerIndex = 2;
-				
+
 				Log.d(TAG, "Burner 3");
-				
+
 				break;
 			case Color.YELLOW:
 				// ((StoveView) getContext()).showPopup(3);
-				//data.setBurnerIntensity(3, 100 - data.getBurnerIntensity(3));
+				// data.setBurnerIntensity(3, 100 - data.getBurnerIntensity(3));
 				burnerIndex = 3;
-				
+
 				Log.d(TAG, "Burner 4");
-				
+
 				break;
 			default:
 				Log.d(TAG, "Nothing...");
@@ -177,7 +166,7 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 					stove.turnOnBurner(burnerIndex);
 				touched = true;
 			}
-			
+
 			Log.d(TAG, "Color Clicked = " + Integer.toHexString(color));
 
 		} catch (IllegalArgumentException ex) {

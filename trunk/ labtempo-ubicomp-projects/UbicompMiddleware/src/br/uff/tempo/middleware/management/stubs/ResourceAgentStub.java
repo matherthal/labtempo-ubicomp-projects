@@ -11,7 +11,7 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public class ResourceAgentStub extends Stub implements IResourceAgent {
 	private String url;
-	
+
 	public ResourceAgentStub(String url) {
 		super(url);
 		this.url = url;
@@ -51,7 +51,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	@Override
 	public void setId(int id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -63,7 +63,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	@Override
 	public void setName(String name) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -75,7 +75,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	@Override
 	public void setURL(String uRL) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -87,7 +87,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	@Override
 	public void setType(String type) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -99,7 +99,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	@Override
 	public void setInterests(ArrayList<ResourceAgent> interests) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -123,13 +123,13 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	@Override
 	public void notifyStakeholders(String change) throws JSONException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
-//	@Override
-//	public boolean registerStakeholder(String method, ResourceAgent rA) {
-//		// TODO Auto-generated method stub
-//		return false;
-//	}
+	// @Override
+	// public boolean registerStakeholder(String method, ResourceAgent rA) {
+	// // TODO Auto-generated method stub
+	// return false;
+	// }
 
 }

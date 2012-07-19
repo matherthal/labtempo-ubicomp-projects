@@ -17,14 +17,14 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	public boolean isOn() {
 
 		List<Tuple> params = new ArrayList<Tuple>();
-		//params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
+		// params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
 
 		return (Boolean) makeCall("turnOnBurner", params);
 	}
 
 	@Override
 	public void turnOnBurner(int burnerIndex) {
-		
+
 		List<Tuple> params = new ArrayList<Tuple>();
 		params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
 
@@ -44,17 +44,17 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 
 	@Override
 	public boolean isOnBurner(int burnerIndex) {
-		
+
 		List<Tuple> params = new ArrayList<Tuple>();
 		params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
 
 		return (Boolean) makeCall("isOnBurner", params);
-		
+
 	}
 
 	@Override
 	public void setOvenTemperature(float newTemperature) {
-		
+
 		List<Tuple> params = new ArrayList<Tuple>();
 		params.add(new Tuple<String, Object>("newTemperature", newTemperature));
 
@@ -64,17 +64,17 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	@Override
 	public float getOvenTemperature() {
 		// The remote method to call
-//		String method = "getIsOn";
-//
-//		try {
-//			// Create message
-//			String msg = JSONHelper.createMethodCall(method, null);
-//			// Get answer from remote method call
-//			return (Boolean) JSONHelper.getMessage(caller.sendMessage(msg));
-//		} catch (JSONException e) {
-//			e.printStackTrace();
-//			return false;
-//		}
+		// String method = "getIsOn";
+		//
+		// try {
+		// // Create message
+		// String msg = JSONHelper.createMethodCall(method, null);
+		// // Get answer from remote method call
+		// return (Boolean) JSONHelper.getMessage(caller.sendMessage(msg));
+		// } catch (JSONException e) {
+		// e.printStackTrace();
+		// return false;
+		// }
 		return 0f;
 	}
 
@@ -95,10 +95,10 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 		// TODO Auto-generated method stub
 		return 0;
 	}
-	
+
 	@Override
 	public boolean isOnOven() {
-		
+
 		List<Tuple> params = new ArrayList<Tuple>();
 
 		return (Boolean) makeCall("isOvenOn", params);

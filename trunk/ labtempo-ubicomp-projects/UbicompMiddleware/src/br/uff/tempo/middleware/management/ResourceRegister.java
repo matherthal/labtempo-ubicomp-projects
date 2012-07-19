@@ -3,8 +3,7 @@ package br.uff.tempo.middleware.management;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
-public class ResourceRegister extends ResourceAgent implements
-		IResourceRegister {
+public class ResourceRegister extends ResourceAgent implements IResourceRegister {
 
 	ResourceRepository rR;
 
@@ -16,9 +15,7 @@ public class ResourceRegister extends ResourceAgent implements
 		setType("management");
 		setURL("br.uff.tempo.middleware.management.ResourceRegister");
 
-		setURL(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(),
-				"br.uff.tempo.middleware.management.ResourceRegister",
-				"ResourceRegister"));
+		setURL(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceRegister", "ResourceRegister"));
 
 		ResourceContainer.getInstance().add(this);
 	}

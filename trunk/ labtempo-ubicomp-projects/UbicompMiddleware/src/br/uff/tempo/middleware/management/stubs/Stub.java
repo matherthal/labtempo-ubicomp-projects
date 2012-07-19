@@ -10,13 +10,13 @@ import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.comm.Tuple;
 
 public class Stub implements Serializable {
-	
+
 	public Caller caller;
-	
+
 	public Stub(String calleeAgent) {
 		caller = new Caller(calleeAgent);
 	}
-	
+
 	protected Object makeCall(String methodName, List<Tuple> params) {
 
 		try {

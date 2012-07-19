@@ -16,8 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class JSONHelper {
 
-	public static String createMethodCall(String method, List<Tuple> params)
-			throws JSONException {
+	public static String createMethodCall(String method, List<Tuple> params) throws JSONException {
 
 		Map<String, Object> methodCall = new HashMap<String, Object>();
 		List<Object> jsonparams = new ArrayList<Object>();
@@ -34,7 +33,7 @@ public class JSONHelper {
 		methodCall.put("jsonrpc", "2.0");
 		methodCall.put("method", method);
 		methodCall.put("params", jsonparams);
-		
+
 		Type collectionType = new TypeToken<HashMap<String, Object>>() {
 		}.getType();
 
@@ -45,11 +44,10 @@ public class JSONHelper {
 		// Parse response string
 		Type collectionType = new TypeToken<HashMap<String, Object>>() {
 		}.getType();
-		
+
 		Log.d("JSONHelper", "result = " + result);
 		String[] resultData = result.split(";");
-		Map<String, Object> response = (new Gson()).fromJson(resultData[0],
-				collectionType);
+		Map<String, Object> response = (new Gson()).fromJson(resultData[0], collectionType);
 		Object obj = response.get("result");
 		return obj;
 	}
@@ -67,9 +65,8 @@ public class JSONHelper {
 		// Serialise response to JSON-encoded string
 		// The response string can now be sent back to the client...
 	}
-	
-	public static String createChange(String id, String method, Object value)
-	{
+
+	public static String createChange(String id, String method, Object value) {
 		Map<String, Object> change = new HashMap<String, Object>();
 		change.put("jsonobject", "2.0");
 		change.put("id", id);
@@ -79,16 +76,14 @@ public class JSONHelper {
 		}.getType();
 		return (new Gson()).toJson(change, collectionType);
 	}
-	
-	public static Object getChange(String what, String change)
-	{
+
+	public static Object getChange(String what, String change) {
 		Type collectionType = new TypeToken<HashMap<String, Object>>() {
 		}.getType();
-		
+
 		Map<String, Object> changeObj = (new Gson()).fromJson(change, collectionType);
 		return changeObj.get(what);
 	}
-
 
 	/*
 	 * public static JSONArray createMethodParams(JSONArray params) throws

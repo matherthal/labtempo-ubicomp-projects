@@ -25,8 +25,8 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 	public Interpreter() {
 		super("br.uff.tempo.middleware.management.Interpreter", 1432);
 	}
-	
-	//@Override
+
+	// @Override
 	public boolean setContextVariable(IResourceAgent ra, String cvName) {
 		Method[] mtds = Stove.class.getMethods();
 		for (Method m : mtds)
@@ -39,7 +39,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 				}
 		return false;
 	}
-	
+
 	@Override
 	public boolean setContextVariable(IResourceAgent ra, Method cv) {
 		// Verifying if it's really a CV
@@ -51,43 +51,34 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 		return false;
 	}
 
-	//@Override
+	// @Override
 	public boolean setConditionalResult(Operator op, Object constant, Object result) {
 		// Verify if the ConditionalResult's expression intersects any other
 		// ConditionalResult's expression domain
-		/*Set<Tuple<Operation, Object>> expr = cr.getExpression();
-		//Compare all tuples from the expression with each CR from the list
-		for (ConditionalResult craux : conditionalResultSet) {
-			// Each tuple in the expression determines a domain
-			for (Tuple<Operation, Object> tp : expr) {
-				switch (op) {
-				case Equal: // Verify if there is another object equal
-							// one-by-one
+		/*
+		 * Set<Tuple<Operation, Object>> expr = cr.getExpression(); //Compare
+		 * all tuples from the expression with each CR from the list for
+		 * (ConditionalResult craux : conditionalResultSet) { // Each tuple in
+		 * the expression determines a domain for (Tuple<Operation, Object> tp :
+		 * expr) { switch (op) { case Equal: // Verify if there is another
+		 * object equal // one-by-one
+		 * 
+		 * break; case Different: // Verify if the expression contains another
+		 * // condition that is not compared by // "Different" operation,
+		 * otherwise it doesn't // have a domain
+		 * 
+		 * break; case GreaterThan:
+		 * 
+		 * break; case LessThan:
+		 * 
+		 * break; case GreaterThanOrEqual:
+		 * 
+		 * break; case LessThanOrEqual:
+		 * 
+		 * break; } } }
+		 */
 
-					break;
-				case Different: // Verify if the expression contains another
-								// condition that is not compared by
-								// "Different" operation, otherwise it doesn't
-								// have a domain
-
-					break;
-				case GreaterThan:
-
-					break;
-				case LessThan:
-
-					break;
-				case GreaterThanOrEqual:
-
-					break;
-				case LessThanOrEqual:
-
-					break;
-				}
-			}
-		}*/
-		
-		//FIXME: Assuming that the domains don't intersect each other 
+		// FIXME: Assuming that the domains don't intersect each other
 		ConditionalResult cr = new ConditionalResult();
 		cr.setResult(result);
 		cr.setComparison(op, constant);
@@ -95,10 +86,14 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see br.uff.tempo.middleware.management.IInterpreter#setConditionalResult(br.uff.tempo.middleware.management.Interpreter.ConditionalResult)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.uff.tempo.middleware.management.IInterpreter#setConditionalResult(
+	 * br.uff.tempo.middleware.management.Interpreter.ConditionalResult)
 	 */
-	//@Override
+	// @Override
 	public boolean setConditionalResult(ConditionalResult cr) {
 		if (cr.isDefault()) {
 			// Verify if there is another ConditionResult set as Default
@@ -110,51 +105,46 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 
 		// Verify if the ConditionalResult's expression intersects any other
 		// ConditionalResult's expression domain
-		/*Set<Tuple<Operation, Object>> expr = cr.getExpression();
-		//Compare all tuples from the expression with each CR from the list
-		for (ConditionalResult craux : conditionalResultSet) {
-			// Each tuple in the expression determines a domain
-			for (Tuple<Operation, Object> tp : expr) {
-				switch (op) {
-				case Equal: // Verify if there is another object equal
-							// one-by-one
+		/*
+		 * Set<Tuple<Operation, Object>> expr = cr.getExpression(); //Compare
+		 * all tuples from the expression with each CR from the list for
+		 * (ConditionalResult craux : conditionalResultSet) { // Each tuple in
+		 * the expression determines a domain for (Tuple<Operation, Object> tp :
+		 * expr) { switch (op) { case Equal: // Verify if there is another
+		 * object equal // one-by-one
+		 * 
+		 * break; case Different: // Verify if the expression contains another
+		 * // condition that is not compared by // "Different" operation,
+		 * otherwise it doesn't // have a domain
+		 * 
+		 * break; case GreaterThan:
+		 * 
+		 * break; case LessThan:
+		 * 
+		 * break; case GreaterThanOrEqual:
+		 * 
+		 * break; case LessThanOrEqual:
+		 * 
+		 * break; } } }
+		 */
 
-					break;
-				case Different: // Verify if the expression contains another
-								// condition that is not compared by
-								// "Different" operation, otherwise it doesn't
-								// have a domain
-
-					break;
-				case GreaterThan:
-
-					break;
-				case LessThan:
-
-					break;
-				case GreaterThanOrEqual:
-
-					break;
-				case LessThanOrEqual:
-
-					break;
-				}
-			}
-		}*/
-		
-		//FIXME: Assuming that the domains don't intersect each other 
+		// FIXME: Assuming that the domains don't intersect each other
 		conditionalResultSet.add(cr);
 		return true;
 	}
-	
-	/* (non-Javadoc)
-	 * @see br.uff.tempo.middleware.management.IInterpreter#setConditionalResultDefault(java.lang.Object, java.lang.Object)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * br.uff.tempo.middleware.management.IInterpreter#setConditionalResultDefault
+	 * (java.lang.Object, java.lang.Object)
 	 */
-	//@Override
+	// @Override
 	public boolean setConditionalResultDefault(Object result) {
-		//Verify if there is another ConditionResult set as Default
-		//There must be only one Default
-		for (ConditionalResult cr : conditionalResultSet) 
+		// Verify if there is another ConditionResult set as Default
+		// There must be only one Default
+		for (ConditionalResult cr : conditionalResultSet)
 			if (cr.isDefault())
 				return false;
 		ConditionalResult cr = new ConditionalResult();
@@ -163,36 +153,36 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 		return true;
 	}
 
-	//@Override
+	// @Override
 	public Method getContextVariable() {
 		return this.cv;
 	}
 
-	//@Override
+	// @Override
 	public int interpretToInt() {
 		int interpreted = Integer.parseInt(evaluate().toString());
 		return interpreted;
 	}
 
-	//@Override
+	// @Override
 	public long interpretToLong() {
 		long interpreted = Long.parseLong(evaluate().toString());
 		return interpreted;
 	}
 
-	//@Override
+	// @Override
 	public boolean interpretToBoolean() {
 		boolean interpreted = Boolean.parseBoolean(evaluate().toString());
 		return interpreted;
 	}
 
-	//@Override
+	// @Override
 	public String interpretToString() {
-		Object o = evaluate(); 
+		Object o = evaluate();
 		return o == null ? "" : o.toString();
 	}
 
-	//@Override
+	// @Override
 	public Object interpretToObject() {
 		return evaluate();
 	}
@@ -228,9 +218,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 									long cvlg = Long.parseLong(cv.toString());
 									valid = cvlg > val;
 								} catch (Exception eex) {
-									Log.e(TAG, "Error: comparing with GreaterThan the value: \""
-													+ cv.toString() + "\" and \""
-													+ tp.value2.toString() + "\"", ee);
+									Log.e(TAG, "Error: comparing with GreaterThan the value: \"" + cv.toString() + "\" and \"" + tp.value2.toString() + "\"", ee);
 								}
 							}
 							break;
@@ -245,9 +233,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 									long cvlg = Long.parseLong(cv.toString());
 									valid = cvlg < val;
 								} catch (Exception eex) {
-									Log.e(TAG, "Error: comparing with LessThan the value: \""
-													+ cv.toString()	+ "\" and \""
-													+ tp.value2.toString() + "\"", ee);
+									Log.e(TAG, "Error: comparing with LessThan the value: \"" + cv.toString() + "\" and \"" + tp.value2.toString() + "\"", ee);
 								}
 							}
 							break;
@@ -262,9 +248,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 									long cvlg = Long.parseLong(cv.toString());
 									valid = cvlg >= val;
 								} catch (Exception eex) {
-									Log.e(TAG, "Error: comparing with GreaterThanOrEqual the value: \""
-													+ cv.toString() + "\" and \"" + tp.value2.toString()
-													+ "\"", ee);
+									Log.e(TAG, "Error: comparing with GreaterThanOrEqual the value: \"" + cv.toString() + "\" and \"" + tp.value2.toString() + "\"", ee);
 								}
 							}
 							break;
@@ -279,9 +263,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 									long cvlg = Long.parseLong(cv.toString());
 									valid = cvlg >= val;
 								} catch (Exception eex) {
-									Log.e(TAG, "Error: comparing with LessThanOrEqual the value: \""
-													+ cv.toString() + "\" and \""
-													+ tp.value2.toString() + "\"", ee);
+									Log.e(TAG, "Error: comparing with LessThanOrEqual the value: \"" + cv.toString() + "\" and \"" + tp.value2.toString() + "\"", ee);
 								}
 							}
 							break;
@@ -289,75 +271,76 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 							Log.e(TAG, "Error: no operation");
 						}
 
-						if (!valid) // Then expression's condition failed in the comparison
+						if (!valid) // Then expression's condition failed in the
+									// comparison
 							break; // break to try another expression
 					}
 					if (valid) // Then one expression's condition returned true
 						result = cr.getResult();
-					else if (crDefault != null) // Otherwise use the Default case, if it does exist
+					else if (crDefault != null) // Otherwise use the Default
+												// case, if it does exist
 						result = crDefault.getResult();
 				}
 			}
 		} catch (Exception e) {
 			Log.e(TAG, "Error: context variable method invoking error", e);
 		}
-		return result; //TODO: what to do if the result is null?
+		return result; // TODO: what to do if the result is null?
 	}
-	
-	
+
 	/**
-	 * ConditionalResult includes the expression (defined by a set of comparisons with the value)
-	 * and the result, where the result must be retrieved if the expression is true
+	 * ConditionalResult includes the expression (defined by a set of
+	 * comparisons with the value) and the result, where the result must be
+	 * retrieved if the expression is true
 	 */
 	public class ConditionalResult {
 		/**
-		 * Result that must be returned if the respective expression is valid 
+		 * Result that must be returned if the respective expression is valid
 		 */
 		private Object result = null;
-		
+
 		/**
-		 * Expression data structure. 
-		 * Set of tuples composed by an operation and an object to be compared to the CV
+		 * Expression data structure. Set of tuples composed by an operation and
+		 * an object to be compared to the CV
 		 */
 		private Set<Tuple<Operator, Object>> expression = new HashSet<Tuple<Operator, Object>>();
-		
+
 		/**
-		 * isDefaultResult tells if this is the default result, in case all other ConditionalResults
-		 * return false then this result must be used 
+		 * isDefaultResult tells if this is the default result, in case all
+		 * other ConditionalResults return false then this result must be used
 		 */
 		private boolean isDefaultResult = false;
-		
+
 		public void setResult(Object result) {
 			this.result = result;
 		}
-		
+
 		/**
-		 * A ConditionalResult that is default doesn't need comparisons
-		 * then if a comparison is added, it's set as not default 
+		 * A ConditionalResult that is default doesn't need comparisons then if
+		 * a comparison is added, it's set as not default
 		 */
 		public void setComparison(Operator op, Object constant) {
 			this.isDefaultResult = false;
 			expression.add(new Tuple<Operator, Object>(op, constant));
 		}
-		
+
 		public void setDefault(Object constant) {
 			this.isDefaultResult = true;
 			result = constant;
 		}
-		
+
 		public Object getResult() {
 			return this.result;
 		}
-		
+
 		public Set<Tuple<Operator, Object>> getExpression() {
 			return this.expression;
 		}
-		
+
 		public boolean isDefault() {
 			return this.isDefaultResult;
 		}
 	}
-
 
 	@Override
 	public String getResourceClassName() {
@@ -368,15 +351,15 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 	@Override
 	public void registerStakeholder(String method, String url) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void notificationHandler(String change) {
-		//If change comes from the RA of interest
-		//If change comes from the method (CV) 
-		Log.d(TAG, "!!!Change: " + change); //FIXME:remove this
-		
+		// If change comes from the RA of interest
+		// If change comes from the method (CV)
+		Log.d(TAG, "!!!Change: " + change); // FIXME:remove this
+
 	}
 
 	private ServiceConnection mConnectionStove = new ServiceConnection() {
@@ -399,6 +382,6 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 	@Override
 	public void start() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

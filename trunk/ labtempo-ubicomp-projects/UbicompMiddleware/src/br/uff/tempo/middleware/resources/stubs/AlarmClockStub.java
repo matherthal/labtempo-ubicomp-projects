@@ -44,13 +44,13 @@ public class AlarmClockStub extends ResourceAgentStub implements IAlarmClock {
 	@Override
 	public void stop() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void wentOff() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

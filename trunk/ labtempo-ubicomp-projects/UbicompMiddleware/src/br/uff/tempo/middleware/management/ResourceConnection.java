@@ -5,21 +5,21 @@ import android.content.ServiceConnection;
 import android.os.IBinder;
 import br.uff.tempo.middleware.management.ResourceAgent.ResourceBinder;
 
-public class ResourceConnection implements ServiceConnection{
-    
+public class ResourceConnection implements ServiceConnection {
+
 	private ResourceAgent rA;
-	
+
 	public ResourceAgent getrA() {
 		return rA;
 	}
 
 	public void onServiceConnected(ComponentName className, IBinder service) {
-        ResourceBinder binder = (ResourceBinder) service;
-        rA = binder.getService();
-    }
+		ResourceBinder binder = (ResourceBinder) service;
+		rA = binder.getService();
+	}
 
-    public void onServiceDisconnected(ComponentName className) {
-            rA = null;
-    }
+	public void onServiceDisconnected(ComponentName className) {
+		rA = null;
+	}
 
 }
