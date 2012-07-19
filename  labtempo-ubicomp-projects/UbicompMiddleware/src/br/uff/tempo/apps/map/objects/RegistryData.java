@@ -2,8 +2,8 @@ package br.uff.tempo.apps.map.objects;
 
 /**
  * This class aims to wrap the necessary information to register a resource and
- * enable this information to be passed as parameter easily. Initially, it's just
- * a helper class to MapActivity.
+ * enable this information to be passed as parameter easily. Initially, it's
+ * just a helper class to MapActivity.
  * 
  * @author dbarreto
  */
@@ -29,7 +29,8 @@ public class RegistryData {
 	/**
 	 * Set the name the will be used as resource name (user-defined)
 	 * 
-	 * @param name The user-defined resource name
+	 * @param name
+	 *            The user-defined resource name
 	 */
 	public void setResourceName(String name) {
 		this.resName = name;

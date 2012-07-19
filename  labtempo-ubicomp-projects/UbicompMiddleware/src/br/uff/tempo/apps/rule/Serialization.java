@@ -31,8 +31,7 @@ public class Serialization {
 
 	public static Object deserializeObject(byte[] b) {
 		try {
-			ObjectInputStream in = new ObjectInputStream(
-					new ByteArrayInputStream(b));
+			ObjectInputStream in = new ObjectInputStream(new ByteArrayInputStream(b));
 			Object object = in.readObject();
 			in.close();
 

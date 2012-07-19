@@ -28,25 +28,23 @@ public class Stove extends ResourceAgent implements IStove {
 	public Stove() {
 		this("");
 	}
-	
+
 	public Stove(String name) {
 		// FIXME: get correct id
-		super(name, "br.uff.tempo.middleware.resources.Stove", 5); 
+		super(name, "br.uff.tempo.middleware.resources.Stove", 5);
 		burners = new ArrayList<Float>(4);
 		initBurners();
 	}
 
-	private void initBurners()
-	{
-		for (int i = 0; i<4; i++)
+	private void initBurners() {
+		for (int i = 0; i < 4; i++)
 			burners.add(0.0f);
 	}
 
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		if (burners.size()<4)
-		{
+		if (burners.size() < 4) {
 			burners = new ArrayList<Float>(4);
 		}
 	}
@@ -69,26 +67,27 @@ public class Stove extends ResourceAgent implements IStove {
 
 	@Override
 	public void notificationHandler(String change) {
-		
+
 	}
 
 	/*
 	 * GAS LEAK
 	 */
-	/*@ContextVariable(name="Vazamento de gás", description="", type = CVType.On)
-	public boolean gasLeak() {
-		Random r = new Random();
-		return r.nextBoolean();
-	}*/
+	/*
+	 * @ContextVariable(name="Vazamento de gás", description="", type =
+	 * CVType.On) public boolean gasLeak() { Random r = new Random(); return
+	 * r.nextBoolean(); }
+	 */
 	@Override
-	@ContextVariable(name="Vazamento de gás", description="", type = CVType.On)
+	@ContextVariable(name = "Vazamento de gás", description = "", type = CVType.On)
 	public float getGasLeak() {
 		Random r = new Random();
 		this.gasLeak = r.nextFloat();
 		return this.gasLeak;
 	}
 
-	// These methods are from IStove. We have to talk about the interface methods
+	// These methods are from IStove. We have to talk about the interface
+	// methods
 
 	@Override
 	public boolean isOn() {
@@ -108,7 +107,7 @@ public class Stove extends ResourceAgent implements IStove {
 
 	@Override
 	public boolean isOnBurner(int burnerIndex) {
-		return burners.get(burnerIndex)>0;
+		return burners.get(burnerIndex) > 0;
 	}
 
 	@Override
@@ -123,11 +122,11 @@ public class Stove extends ResourceAgent implements IStove {
 
 	@Override
 	public float getOvenTemperature() {
-//		Random r = new Random();
-//		this.tempOven1 = 80 + r.nextFloat() * 20;
-//		return this.tempOven1;
+		// Random r = new Random();
+		// this.tempOven1 = 80 + r.nextFloat() * 20;
+		// return this.tempOven1;
 		// TODO Auto-generated method stub
-		
+
 		return 0;
 	}
 

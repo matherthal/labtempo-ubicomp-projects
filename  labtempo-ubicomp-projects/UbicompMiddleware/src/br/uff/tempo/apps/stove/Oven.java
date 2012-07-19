@@ -11,16 +11,15 @@ import br.uff.tempo.R;
 public class Oven extends Fragment {
 
 	private LinearLayout layout;
-	
+
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		
+	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
 		if (container == null)
 			return null;
-		
+
 		layout = (LinearLayout) inflater.inflate(R.layout.stove_oven, container, false);
-		
+
 		return layout;
 	}
 }

@@ -41,8 +41,7 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 		stove = ((StoveView) getContext()).getStoveState();
 		mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.oven);
 
-		mButtons = BitmapFactory.decodeResource(getResources(),
-				R.drawable.oven_buttons);
+		mButtons = BitmapFactory.decodeResource(getResources(), R.drawable.oven_buttons);
 
 		mX -= mBitmap.getWidth() / 2;
 		mY -= mBitmap.getHeight() / 2;
@@ -66,7 +65,7 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 		stove = ((StoveView) getContext()).getStoveState();
 
 		Log.d(TAG, "X = " + x + " and Y = " + y);
-		
+
 		int color;
 		String msg;
 
@@ -77,30 +76,28 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 			color = mButtons.getPixel(x - mX, y - mY);
 
 			switch (color) {
-			
+
 			case Color.RED:
-				
+
 				Log.d(TAG, "Left Button");
-				
+
 				if (stove.isOnOven()) {
 					msg = "off";
 					stove.setOvenTemperature(0f);
-				}
-				else {
+				} else {
 					msg = "on";
 					stove.setOvenTemperature(100.0f);
 				}
-				
-				Toast.makeText(getContext(), "Oven turned " + msg, Toast.LENGTH_SHORT)
-				.show();
+
+				Toast.makeText(getContext(), "Oven turned " + msg, Toast.LENGTH_SHORT).show();
 				break;
-				
+
 			case Color.YELLOW:
-				
+
 				Log.d(TAG, "Right Button");
-				
+
 				break;
-				
+
 			default:
 				Log.d(TAG, "Nothing...");
 			}

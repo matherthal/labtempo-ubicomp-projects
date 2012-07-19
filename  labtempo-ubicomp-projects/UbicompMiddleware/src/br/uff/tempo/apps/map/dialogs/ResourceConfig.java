@@ -15,12 +15,12 @@ public class ResourceConfig extends MapDialog {
 
 		super(act, R.layout.resource_config, R.string.title_config_res);
 
-		//Register
+		// Register
 		act.runOnUiThread(new Runnable() {
-			
+
 			@Override
 			public void run() {
-				
+
 				Button ok = (Button) dialog.findViewById(R.id.btnOk);
 				Button cancel = (Button) dialog.findViewById(R.id.btnCancel);
 
@@ -35,9 +35,9 @@ public class ResourceConfig extends MapDialog {
 	public void btnOkClick(View v) {
 
 		EditText edit = (EditText) dialog.findViewById(R.id.etName);
-		
+
 		this.name = edit.getText().toString();
-		
+
 		if (name.equals("")) {
 
 			activity.runOnUiThread(new Runnable() {
@@ -45,8 +45,7 @@ public class ResourceConfig extends MapDialog {
 				@Override
 				public void run() {
 
-					Toast.makeText(activity, "Enter a non-empty name!",
-							Toast.LENGTH_LONG).show();
+					Toast.makeText(activity, "Enter a non-empty name!", Toast.LENGTH_LONG).show();
 				}
 			});
 		} else {
@@ -58,7 +57,7 @@ public class ResourceConfig extends MapDialog {
 
 	// When Cancel button is clicked
 	public void btnCancelClick(View v) {
-		
+
 		dialog.cancel();
 	}
 
@@ -69,7 +68,7 @@ public class ResourceConfig extends MapDialog {
 
 	@Override
 	public void onClick(View v) {
-		
+
 		switch (v.getId()) {
 		case R.id.btnOk:
 

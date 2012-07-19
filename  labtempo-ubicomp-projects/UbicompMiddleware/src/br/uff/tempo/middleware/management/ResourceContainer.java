@@ -5,24 +5,22 @@ import java.util.Map;
 
 import br.uff.tempo.middleware.management.interfaces.IResourceContainer;
 
-public class ResourceContainer implements IResourceContainer{
+public class ResourceContainer implements IResourceContainer {
 
 	private static ResourceContainer instance;
-	
+
 	private Map<String, ResourceAgent> container;
-	
-	private ResourceContainer()
-	{
+
+	private ResourceContainer() {
 		container = new HashMap<String, ResourceAgent>();
 	}
-	
-	public static ResourceContainer getInstance()
-	{
+
+	public static ResourceContainer getInstance() {
 		if (instance == null)
 			instance = new ResourceContainer();
 		return instance;
 	}
-	
+
 	public void add(ResourceAgent rA) {
 		container.put(rA.getURL(), rA);
 	}

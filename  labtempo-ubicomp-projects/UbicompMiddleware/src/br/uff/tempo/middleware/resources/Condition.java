@@ -14,10 +14,10 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
  *         them It implements the method to make the comparation, or test: the
  *         method test
  */
-//public class Condition implements InvocationHandler, Serializable {
+// public class Condition implements InvocationHandler, Serializable {
 public class Condition implements Serializable {
 	public IResourceAgent ra;
-	//public Method method;
+	// public Method method;
 	public String method;
 	public Object[] params;
 	public String operator = "==";
@@ -34,8 +34,8 @@ public class Condition implements Serializable {
 	 *            It creates a condition
 	 * @throws Exception
 	 */
-	public Condition(IResourceAgent ra, String method, Object[] params, String operator,
-			Object value, long timeout) throws Exception {
+	public Condition(IResourceAgent ra, String method, Object[] params, String operator, Object value, long timeout)
+			throws Exception {
 		this.ra = ra;
 		this.method = method;
 		this.params = params;
@@ -45,28 +45,30 @@ public class Condition implements Serializable {
 	}
 
 	public boolean test() {
-		//Parse value to attribute's type
-		//ex., if it is boolean, so we parse the value to boolean before compare
-		
-		//Object attrib = this.invoke(ra, method, new Object[0]);
-		//if (operator.equals("==")) // Operator ==
-		//	return attrib.equals(value);
-		//else if (operator.equals("!=")) // Operator !=
-		//	return !attrib.equals(value);
-		//else
-			// Operator error
-		
+		// Parse value to attribute's type
+		// ex., if it is boolean, so we parse the value to boolean before
+		// compare
+
+		// Object attrib = this.invoke(ra, method, new Object[0]);
+		// if (operator.equals("==")) // Operator ==
+		// return attrib.equals(value);
+		// else if (operator.equals("!=")) // Operator !=
+		// return !attrib.equals(value);
+		// else
+		// Operator error
+
 		return true;
 	}
 
-	/*>>>>>>>public Object invoke(Object ra, Method method, Object[] args)
-			throws Throwable {
-		return method.invoke(ra, args);
-	}*/
-	
+	/*
+	 * >>>>>>>public Object invoke(Object ra, Method method, Object[] args)
+	 * throws Throwable { return method.invoke(ra, args); }
+	 */
+
 	@Override
 	public String toString() {
-		//return this.ra.getType() + "." + this.ra.getId() + "." + this.method.getName() + this.operator + this.value;
+		// return this.ra.getType() + "." + this.ra.getId() + "." +
+		// this.method.getName() + this.operator + this.value;
 		return this.ra.getType() + "." + this.ra.getId() + "." + this.method + this.operator + this.value;
 	}
 }

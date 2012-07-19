@@ -7,22 +7,22 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent.Service;
 
 public interface IAlarmClock {
 
-	@Service(name="Programa alarme")
+	@Service(name = "Programa alarme")
 	void scheduleAlarm(String name, Calendar start);
 
-	@Service(name="Programa despertador periódico")
+	@Service(name = "Programa despertador periódico")
 	void setPeriodicAlarm(String name, Calendar start, int interval);
 
-	@Service(name="Disparar alarme")
+	@Service(name = "Disparar alarme")
 	void goOff();
 
-	@Service(name="Soneca")
+	@Service(name = "Soneca")
 	void snooze(int timeInSec);
 
-	@Service(name="Parar alarme")
+	@Service(name = "Parar alarme")
 	void stop();
 
-	@ContextVariable(name="Alarme disparou")
+	@ContextVariable(name = "Alarme disparou")
 	void wentOff();
 
 }

@@ -7,8 +7,7 @@ import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
-public class ResourceDiscoveryStub extends ResourceAgentStub implements
-		IResourceDiscovery {
+public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourceDiscovery {
 
 	public ResourceDiscoveryStub(String calleeID) {
 		super(calleeID);

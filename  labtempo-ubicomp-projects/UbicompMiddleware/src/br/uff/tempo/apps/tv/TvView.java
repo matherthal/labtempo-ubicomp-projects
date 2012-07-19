@@ -57,53 +57,52 @@ public class TvView extends Activity implements OnClickListener {
 			t.identify();
 			tvAgent = t;
 		}
-		
+
 		Button chPlus = (Button) findViewById(R.id.btnChPlus);
 		Button chMinus = (Button) findViewById(R.id.btnChMinus);
 		Button volPlus = (Button) findViewById(R.id.btnVolPlus);
 		Button volMinus = (Button) findViewById(R.id.btnVolMinus);
 		Button turnOnOff = (Button) findViewById(R.id.btnTurnOnOff);
-		
+
 		chPlus.setOnClickListener(this);
 		chMinus.setOnClickListener(this);
 		volPlus.setOnClickListener(this);
 		volMinus.setOnClickListener(this);
 		turnOnOff.setOnClickListener(this);
 	}
-	
+
 	@Override
 	public void onClick(View v) {
-		
 
 		switch (v.getId()) {
-		
+
 		case R.id.btnChPlus:
-			
+
 			tvAgent.incChannel();
 			break;
-		
+
 		case R.id.btnChMinus:
-			
+
 			tvAgent.decChannel();
 			break;
 
 		case R.id.btnVolPlus:
-			
+
 			tvAgent.incVolume(10);
 			break;
-			
+
 		case R.id.btnVolMinus:
-			
+
 			tvAgent.decVolume(10);
 			break;
-			
+
 		case R.id.btnTurnOnOff:
-			
+
 			boolean on = tvAgent.isOn();
 			tvAgent.setOn(!on);
-			
+
 			break;
-			
+
 		default:
 			break;
 		}

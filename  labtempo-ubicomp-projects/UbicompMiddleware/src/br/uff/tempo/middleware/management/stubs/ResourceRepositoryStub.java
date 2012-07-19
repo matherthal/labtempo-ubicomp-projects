@@ -6,8 +6,7 @@ import java.util.List;
 import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 
-public class ResourceRepositoryStub extends ResourceAgentStub implements
-		IResourceRepository {
+public class ResourceRepositoryStub extends ResourceAgentStub implements IResourceRepository {
 
 	public ResourceRepositoryStub(String calleeID) {
 		super(calleeID);

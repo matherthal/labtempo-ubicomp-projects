@@ -6,7 +6,7 @@ import br.uff.tempo.middleware.resources.interfaces.IBed;
 public class Bed extends ResourceAgent implements IBed {
 
 	private boolean hasSomeone;
-	
+
 	@Override
 	public void notificationHandler(String change) {
 		// TODO Auto-generated method stub
@@ -15,13 +15,13 @@ public class Bed extends ResourceAgent implements IBed {
 
 	@Override
 	public boolean hasSomeoneIn() {
-		
+
 		return hasSomeone;
 	}
 
 	@Override
 	public void setSomeoneIn(boolean someone) {
-		
+
 		this.hasSomeone = someone;
 	}
 

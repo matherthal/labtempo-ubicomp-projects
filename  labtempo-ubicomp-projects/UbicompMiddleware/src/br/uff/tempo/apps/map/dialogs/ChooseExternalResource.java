@@ -12,25 +12,25 @@ import br.uff.tempo.R;
 import br.uff.tempo.apps.map.MapActivity;
 
 public class ChooseExternalResource extends MapDialog implements AdapterView.OnItemClickListener {
-	
+
 	private ListView list;
 	private ArrayAdapter<String> lvAdapter;
 	private List<String> resourcesRAI;
-	
+
 	public ChooseExternalResource(final Activity act) {
-	
+
 		super(act, R.layout.registered_resource_list, R.string.title_config_res);
-		
+
 		act.runOnUiThread(new Runnable() {
-			
+
 			@Override
 			public void run() {
-			
+
 				// Get the reference to the list view
 				list = (ListView) dialog.findViewById(R.id.list_registered);
 				list.setOnItemClickListener(ChooseExternalResource.this);
-				
-				//Cancel the dialog if you touch outside its area.
+
+				// Cancel the dialog if you touch outside its area.
 				dialog.setCanceledOnTouchOutside(true);
 			}
 		});
@@ -39,47 +39,49 @@ public class ChooseExternalResource extends MapDialog implements AdapterView.OnI
 	public void showDialog(List<String> resList) {
 
 		resourcesRAI = resList;
-		
-		lvAdapter = new ArrayAdapter<String>(activity,
-				android.R.layout.simple_list_item_1, formatList(resList));
-		
+
+		lvAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, formatList(resList));
+
 		list.setAdapter(lvAdapter);
-		
+
 		super.showDialog();
 	}
-	
+
 	public List<String> formatList(List<String> resList) {
-		
+
 		List<String> list = new ArrayList<String>();
-		
+
 		for (String s : resList) {
-			
+
 			if (!s.contains("management")) {
-				
+
 				String[] names = s.split(":");
 				list.add(names[2]);
 			}
 		}
-		
+
 		return list;
 	}
 
 	@Override
 	public void onClick(View v) {
-		
-		
+
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		
-		String resourceRAI = resourcesRAI.get(position + 4); //TODO This is a magic number... must be changed!
+
+		String resourceRAI = resourcesRAI.get(position + 4); // TODO This is a
+																// magic
+																// number...
+																// must be
+																// changed!
 		MapActivity map = (MapActivity) activity;
-		
+
 		map.onRegisteredResourceChoosed(resourceRAI);
-		
+
 		dialog.cancel();
-		
+
 	}
 
 }

@@ -11,14 +11,14 @@ import android.view.WindowManager;
 public abstract class Panel extends SurfaceView implements SurfaceHolder.Callback {
 
 	private final String TAG = "Panel-StoveView";
-	
+
 	protected int mX = 20;
 	protected int mY = 20;
 
 	private ViewThread mThread;
 
 	boolean touched;
-	
+
 	public Panel(Context context) {
 		super(context);
 		touched = true;
@@ -31,8 +31,7 @@ public abstract class Panel extends SurfaceView implements SurfaceHolder.Callbac
 
 	protected void init() {
 
-		WindowManager wm = (WindowManager) getContext().getSystemService(
-				Context.WINDOW_SERVICE);
+		WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
 		DisplayMetrics metrics = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(metrics);
 
@@ -46,8 +45,7 @@ public abstract class Panel extends SurfaceView implements SurfaceHolder.Callbac
 
 	public abstract void doDraw(Canvas canvas);
 
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
+	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
 		// TODO Auto-generated method stub
 	}
 
