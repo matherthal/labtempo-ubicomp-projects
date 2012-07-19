@@ -20,6 +20,7 @@ public class Condition implements Serializable {
 	public IResourceAgent ra;
 	//public Method method;
 	public String method;
+	public Object[] params;
 	public String operator = "==";
 	public Object value;
 	public long timeout;
@@ -34,38 +35,14 @@ public class Condition implements Serializable {
 	 *            It creates a condition
 	 * @throws Exception
 	 */
-	public Condition(IResourceAgent ra, String method, String operator,
-			Object value) throws Exception {
-		//if (!method.getReturnType().equals(Void.TYPE)) {
-			this.ra = ra;
-			this.method = method;
-			this.operator = operator;
-			this.value = value;
-			this.timeout = 0;
-		//} else
-		//	throw new Exception();
-	}
-
-	/**
-	 * Constructor
-	 * 
-	 * @param ra
-	 * @param method
-	 * @param operator
-	 * @param value
-	 *            It creates a condition
-	 * @throws Exception
-	 */
-	public Condition(IResourceAgent ra, String method, String operator,
+	public Condition(IResourceAgent ra, String method, Object[] params, String operator,
 			Object value, long timeout) throws Exception {
-		//if (!method.getReturnType().equals(Void.TYPE)) {
-			this.ra = ra;
-			this.method = method;
-			this.operator = operator;
-			this.value = value;
-			this.timeout = timeout;
-		//} else
-		//	throw new Exception();
+		this.ra = ra;
+		this.method = method;
+		this.params = params;
+		this.operator = operator;
+		this.value = value;
+		this.timeout = timeout;
 	}
 
 	public boolean test() {
@@ -80,7 +57,7 @@ public class Condition implements Serializable {
 		//else
 			// Operator error
 		
-			return true;
+		return true;
 	}
 
 	/*>>>>>>>public Object invoke(Object ra, Method method, Object[] args)

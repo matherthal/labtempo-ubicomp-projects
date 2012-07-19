@@ -197,7 +197,7 @@ public class RuleConditionActivity extends Activity {
 		Condition cond;
 		try {
 			// Initialize Condition
-			cond = new Condition(ra, mtd, operation, value);
+			cond = new Condition(ra, mtd, null, operation, value, 0);
 		} catch (Exception e) {
 			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);
 			return;
