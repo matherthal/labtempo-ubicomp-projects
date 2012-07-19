@@ -25,7 +25,6 @@ public class RuleInterpreter extends ResourceAgent {
 	
 	@ContextVariable(name="Regra disparada")
 	public void ruleTrigger() {
-		
 	}
 	
 	@Service(name="Definir expressão")
@@ -38,12 +37,11 @@ public class RuleInterpreter extends ResourceAgent {
 	}
 	
 	@Deprecated
-	public void setCondition(String rai, String cv, Operator op, Object value) throws Exception {
+	public void setCondition(String rai, String cv, Object[] params, Operator op, Object value) throws Exception {
 		IResourceAgent ra = new ResourceAgentStub(rai);
 		ra.registerStakeholder(cv, this.getURL());
 		//re discovery.search(rai).get(0);
-		conds.add(new Condition(ra, cv, op.toString(), value));
-		
+		conds.add(new Condition(ra, cv, params, op.toString(), value, 0));
 	}
 	
 	private void evaluate() {

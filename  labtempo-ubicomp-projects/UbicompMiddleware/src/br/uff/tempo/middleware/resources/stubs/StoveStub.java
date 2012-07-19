@@ -9,8 +9,8 @@ import br.uff.tempo.middleware.resources.interfaces.IStove;
 
 public class StoveStub extends ResourceAgentStub implements IStove {
 
-	public StoveStub(String calleeID) {
-		super(calleeID);
+	public StoveStub(String url) {
+		super(url);
 	}
 
 	@Override

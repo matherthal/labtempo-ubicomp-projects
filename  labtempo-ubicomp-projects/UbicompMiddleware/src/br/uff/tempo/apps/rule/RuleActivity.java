@@ -1,10 +1,16 @@
 package br.uff.tempo.apps.rule;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.app.AlertDialog;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -24,6 +30,7 @@ import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.resources.AlarmClock;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Rule;
 import br.uff.tempo.middleware.resources.Stove;
@@ -44,12 +51,37 @@ public class RuleActivity extends Activity {
 	@Override
     public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		AlarmClock alarm = new AlarmClock(RuleActivity.this);
+		Calendar start = Calendar.getInstance();
+		start.add(Calendar.SECOND, 20);
+		alarm.scheduleAlarm("my alarm", start);
+//		Intent intent = new Intent(RuleActivity.this, AlarmClock.AlarmReceiver.class);
+//		PendingIntent pendingIntent = PendingIntent.getBroadcast(RuleActivity.this, 001000, intent, 0);
+//		AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+//		alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (5 * 1000), pendingIntent);
+		
+		
+//		NotificationManager manger = (NotificationManager) RuleActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
+//		Notification notification = new Notification(R.drawable.icon, "Wake up alarm", System.currentTimeMillis());
+//		Intent intent = new Intent(RuleActivity.this, AlarmReceiver.class);
+//		PendingIntent contentIntent = PendingIntent.getBroadcast(RuleActivity.this, 001000, intent, 0);
+//		notification.setLatestEventInfo(RuleActivity.this, "Context Title", "Context text", contentIntent);
+//		notification.flags = Notification.FLAG_INSISTENT;
+//
+//		notification.sound = (Uri) intent.getParcelableExtra("Ringtone");
+//		notification.vibrate = (long[]) intent.getExtras().get("vibrationPatern");
+//
+//		// The PendingIntent to launch our activity if the user selects this notification
+//		manger.notify(NOTIFICATION_ID, notification);
+		
+		/*
 		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 		String rai = discovery.search("Stove").get(0);
 		
 		RuleInterpreter rule = new RuleInterpreter();
 		try {
-			rule.setCondition(rai, "getOvenTemperature", Operator.GreaterThan, "50.0");
+			rule.setCondition(rai, "getOvenTemperature", null, Operator.GreaterThan, "50.0");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -61,7 +93,7 @@ public class RuleActivity extends Activity {
 		//rule.registerStakeholder("Regra disparada", test.getURL());
 		
 		IStove stove = new StoveStub(rai);
-		stove.setOvenTemperature(76.0f);
+		stove.setOvenTemperature(76.0f);*/
 	}
 	
 	/*@Override
@@ -216,7 +248,7 @@ public class RuleActivity extends Activity {
     	Condition cond;
     	try {
     		//Initialize Condition
-			cond = new Condition(ra, mtd, operation, value);
+			cond = new Condition(ra, mtd, null, operation, value, 0);
 		} catch (Exception e) {
 			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);
 			return;
