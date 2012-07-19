@@ -3,7 +3,6 @@ package br.uff.tempo.middleware.management;
 import java.util.ArrayList;
 
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceDiscovery extends ResourceAgent implements
 		IResourceDiscovery {

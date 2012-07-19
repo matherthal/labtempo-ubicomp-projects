@@ -1,6 +1,5 @@
 package br.uff.tempo.apps.bed;
 
-import br.uff.tempo.R;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -14,6 +13,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
+import br.uff.tempo.R;
 
 public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 

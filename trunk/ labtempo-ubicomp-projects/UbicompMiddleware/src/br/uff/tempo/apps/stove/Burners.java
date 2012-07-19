@@ -1,12 +1,12 @@
 package br.uff.tempo.apps.stove;
 
-import br.uff.tempo.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import br.uff.tempo.R;
 
 public class Burners extends Fragment {
 

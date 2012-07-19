@@ -1,10 +1,7 @@
 package br.uff.tempo.middleware.management.interfaces;
 
 import java.lang.reflect.Method;
-import java.util.HashSet;
-import java.util.Set;
 
-import android.R.integer;
 import br.uff.tempo.middleware.management.Interpreter.ConditionalResult;
 import br.uff.tempo.middleware.management.Operator;
 

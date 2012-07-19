@@ -1,8 +1,6 @@
 package br.uff.tempo.middleware.resources;
 
 import java.util.Calendar;
-import java.util.Map;
-import java.util.Set;
 
 import org.json.JSONException;
 
@@ -10,7 +8,6 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IAlarmClock;

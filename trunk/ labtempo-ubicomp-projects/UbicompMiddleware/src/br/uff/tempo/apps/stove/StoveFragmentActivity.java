@@ -3,12 +3,12 @@ package br.uff.tempo.apps.stove;
 import java.util.List;
 import java.util.Vector;
 
-import br.uff.tempo.R;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import br.uff.tempo.R;
 
 @Deprecated
 public class StoveFragmentActivity extends FragmentActivity {

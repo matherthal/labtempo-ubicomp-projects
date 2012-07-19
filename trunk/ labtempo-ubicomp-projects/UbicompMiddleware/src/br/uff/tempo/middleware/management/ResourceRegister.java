@@ -1,8 +1,5 @@
 package br.uff.tempo.middleware.management;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 

@@ -3,7 +3,6 @@ package br.uff.tempo.apps.map.objects;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.andengine.engine.Engine;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;

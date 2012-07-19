@@ -3,7 +3,6 @@ package br.uff.tempo.middleware.resources;
 import java.io.Serializable;
 import java.util.Comparator;
 
-import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 /**

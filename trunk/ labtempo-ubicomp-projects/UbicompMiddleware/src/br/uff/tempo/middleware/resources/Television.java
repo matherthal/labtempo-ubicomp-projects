@@ -27,6 +27,7 @@ public class Television extends ResourceAgent implements ITelevision {
 		
 	}
 
+	// begin - tv attribute
 	@Override
 	public int getChannel() {
 		
@@ -86,5 +87,5 @@ public class Television extends ResourceAgent implements ITelevision {
 		
 		this.volume--;
 	}
-
+	// end - tv attribute
 }

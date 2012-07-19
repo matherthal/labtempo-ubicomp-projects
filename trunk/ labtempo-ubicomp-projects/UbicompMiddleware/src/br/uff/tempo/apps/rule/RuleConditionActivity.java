@@ -1,7 +1,5 @@
 package br.uff.tempo.apps.rule;
 
-import java.io.Serializable;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -17,8 +15,8 @@ import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.resources.Rule;
 import br.uff.tempo.middleware.resources.Condition;
+import br.uff.tempo.middleware.resources.Rule;
 import br.uff.tempo.middleware.resources.Stove;
 
 public class RuleConditionActivity extends Activity {

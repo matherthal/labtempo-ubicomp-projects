@@ -2,12 +2,6 @@ package br.uff.tempo.apps.rule;
 
 import java.util.ArrayList;
 
-import br.uff.tempo.R;
-import br.uff.tempo.middleware.management.ResourceAgent;
-import br.uff.tempo.middleware.resources.Condition;
-import br.uff.tempo.middleware.resources.Stove;
-import br.uff.tempo.middleware.resources.Teapot;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +9,11 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.resources.Condition;
+import br.uff.tempo.middleware.resources.Stove;
+import br.uff.tempo.middleware.resources.Teapot;
 
 
 

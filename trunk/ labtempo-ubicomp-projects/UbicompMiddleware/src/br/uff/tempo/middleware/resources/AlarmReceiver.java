@@ -1,10 +1,8 @@
 package br.uff.tempo.middleware.resources;
 
-import br.uff.tempo.middleware.comm.JSONHelper;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
 

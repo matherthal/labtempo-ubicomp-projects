@@ -1,22 +1,11 @@
 package br.uff.tempo.middleware.resources;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
-import java.io.Serializable;
-import java.lang.reflect.Method;
 
-/*import jboolexpr.BooleanExpression;
-import jboolexpr.MalformedBooleanException;
-*/
-
-import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
-import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
 
 /**
