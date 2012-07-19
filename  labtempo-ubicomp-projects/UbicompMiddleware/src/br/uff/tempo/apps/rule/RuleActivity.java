@@ -4,38 +4,24 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import android.app.Activity;
-import android.app.AlarmManager;
-import android.app.AlertDialog;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
-import br.uff.tempo.middleware.management.Interpreter;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceAgent.ResourceBinder;
-import br.uff.tempo.middleware.management.Operator;
-import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.AlarmClock;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Rule;
 import br.uff.tempo.middleware.resources.Stove;
-import br.uff.tempo.middleware.resources.interfaces.IStove;
-import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
 public class RuleActivity extends Activity {
 	private static final String TAG = "RuleActivity";

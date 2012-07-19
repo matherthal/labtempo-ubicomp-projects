@@ -1,15 +1,7 @@
 package br.uff.tempo.apps.map.objects;
 
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
 import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
-import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
-import br.uff.tempo.middleware.management.interfaces.ResourceData;
-import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 
 /**
  * This class manages resource agents, stubs

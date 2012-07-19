@@ -2,8 +2,6 @@ package br.uff.tempo.middleware.resources;
 
 import java.util.Random;
 
-import org.json.JSONException;
-
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.ITeapot;
 

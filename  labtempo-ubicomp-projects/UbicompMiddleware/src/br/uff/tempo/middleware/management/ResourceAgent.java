@@ -1,21 +1,14 @@
 package br.uff.tempo.middleware.management;
 
 import java.io.Serializable;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.Enumeration;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
-import android.util.Log;
 import br.uff.tempo.middleware.comm.Caller;
 import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;

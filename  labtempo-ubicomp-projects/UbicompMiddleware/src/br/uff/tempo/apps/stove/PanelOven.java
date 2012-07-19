@@ -1,25 +1,17 @@
 package br.uff.tempo.apps.stove;
 
-import br.uff.tempo.R;
-import br.uff.tempo.middleware.resources.interfaces.IStove;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.os.Parcelable;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
+import br.uff.tempo.R;
+import br.uff.tempo.middleware.resources.interfaces.IStove;
 
 public class PanelOven extends Panel implements SurfaceHolder.Callback {
 

@@ -4,16 +4,11 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONException;
-
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import br.uff.tempo.middleware.comm.Caller;
-import br.uff.tempo.middleware.comm.JSONHelper;
 import br.uff.tempo.middleware.comm.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
+
+import com.google.gson.reflect.TypeToken;
 
 public class ResourceRegisterStub extends ResourceAgentStub implements
 		IResourceRegister {

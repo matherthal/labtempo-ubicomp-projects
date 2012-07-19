@@ -3,15 +3,8 @@ package br.uff.tempo.middleware.comm;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.NetworkInterface;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketException;
-import java.util.Enumeration;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import android.os.Handler;
 import android.util.Log;

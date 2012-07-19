@@ -3,7 +3,6 @@ package br.uff.tempo.apps;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -16,13 +15,6 @@ import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.stove.StoveView;
 import br.uff.tempo.apps.tv.TvView;
 import br.uff.tempo.middleware.comm.Dispatcher;
-import br.uff.tempo.middleware.management.Interpreter;
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.Operator;
-import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.resources.Stove;
-import br.uff.tempo.middleware.resources.interfaces.IStove;
-import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
 public class MainListView extends ListActivity {
 	
