@@ -11,31 +11,27 @@ public class BedStub extends ResourceAgentStub implements IBed {
 
 	public BedStub(String calleeID) {
 		super(calleeID);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void notificationHandler(String change) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
-	public boolean hasSomeoneIn() {
-
+	public boolean occupied() {
 		List<Tuple> params = new ArrayList<Tuple>();
-		// params.add(new Tuple<String, Object>("text", text));
-
 		return (Boolean) makeCall("hasSomeoneIn", params);
 	}
 
 	@Override
-	public void setSomeoneIn(boolean someone) {
-
+	public void lieDown() {
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("someone", someone));
-
-		makeCall("setSomeoneIn", params);
+		makeCall("lieDown", params);
 	}
 
+	@Override
+	public void getOut() {
+		List<Tuple> params = new ArrayList<Tuple>();
+		makeCall("getOut", params);
+	}
 }

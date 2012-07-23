@@ -2,6 +2,7 @@ package br.uff.tempo.middleware.management;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import br.uff.tempo.middleware.management.interfaces.IResourceContainer;
 
@@ -31,6 +32,10 @@ public class ResourceContainer implements IResourceContainer {
 
 	public ResourceAgent get(String url) {
 		return container.get(url);
+	}
+
+	public Set<String> getRAI() {
+		return container.keySet();
 	}
 
 }

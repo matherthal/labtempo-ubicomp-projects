@@ -10,6 +10,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.baseview.BaseView;
+import br.uff.tempo.apps.bed.BedView;
 import br.uff.tempo.apps.map.MapActivity;
 import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.stove.StoveView;
@@ -50,6 +51,9 @@ public class MainListView extends ListActivity {
 					startActivity(intent);
 				} else if (item.equals("Fogao")) {
 					Intent intent = new Intent(MainListView.this, StoveView.class);
+					startActivity(intent);
+				} else if (item.equals("Cama")) {
+					Intent intent = new Intent(MainListView.this, BedView.class);
 					startActivity(intent);
 				} else if (item.equals("Televisao")) {
 					Intent intent = new Intent(MainListView.this, TvView.class);

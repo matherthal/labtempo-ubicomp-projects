@@ -1,7 +1,6 @@
 package br.uff.tempo.apps.rule;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -15,13 +14,17 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceAgent.ResourceBinder;
+import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.resources.AlarmClock;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Rule;
 import br.uff.tempo.middleware.resources.Stove;
+import br.uff.tempo.middleware.resources.interfaces.IStove;
+import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
 public class RuleActivity extends Activity {
 	private static final String TAG = "RuleActivity";
@@ -38,10 +41,11 @@ public class RuleActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		AlarmClock alarm = new AlarmClock(RuleActivity.this);
-		Calendar start = Calendar.getInstance();
-		start.add(Calendar.SECOND, 20);
-		alarm.scheduleAlarm("my alarm", start);
+		// AlarmClock alarm = new AlarmClock(RuleActivity.this);
+		// Calendar start = Calendar.getInstance();
+		// start.add(Calendar.SECOND, 20);
+		// alarm.scheduleAlarm("my alarm", start);
+
 		// Intent intent = new Intent(RuleActivity.this,
 		// AlarmClock.AlarmReceiver.class);
 		// PendingIntent pendingIntent =
@@ -70,22 +74,23 @@ public class RuleActivity extends Activity {
 		// notification
 		// manger.notify(NOTIFICATION_ID, notification);
 
-		/*
-		 * discovery = new
-		 * ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS); String rai =
-		 * discovery.search("Stove").get(0);
-		 * 
-		 * RuleInterpreter rule = new RuleInterpreter(); try {
-		 * rule.setCondition(rai, "getOvenTemperature", null,
-		 * Operator.GreaterThan, "50.0"); } catch (Exception e) { // TODO
-		 * Auto-generated catch block e.printStackTrace(); } rule.identify();
-		 * 
-		 * RuleInterpreterTest test = new RuleInterpreterTest();
-		 * test.identify(); //rule.registerStakeholder("Regra disparada",
-		 * test.getURL());
-		 * 
-		 * IStove stove = new StoveStub(rai); stove.setOvenTemperature(76.0f);
-		 */
+		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS); 
+		String rai = discovery.search("Stove").get(0);
+		
+		RuleInterpreter rule = new RuleInterpreter(); 
+		try {
+			rule.setCondition(rai, "getOvenTemperature", null, Operator.GreaterThan, "50.0"); 
+		} catch (Exception e) { // TODO
+		//Auto-generated catch block e.printStackTrace(); 
+		} 
+		rule.identify();
+		
+		RuleInterpreterTest test = new RuleInterpreterTest();
+		// rule.registerStakeholder("Regra disparada", test.getURL());
+		test.identify(); 
+		
+		IStove stove = new StoveStub(rai);
+		stove.setOvenTemperature(76.0f);
 	}
 
 	/*

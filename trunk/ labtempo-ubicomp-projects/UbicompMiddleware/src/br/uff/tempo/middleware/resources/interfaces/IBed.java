@@ -4,9 +4,12 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public interface IBed extends IResourceAgent {
 
-	public Integer numUsers = 0;
+	@ContextVariable(name = "Cama ocupada")
+	public boolean occupied();
 
-	boolean hasSomeoneIn();
+	@Service(name = "Ocupar cama")
+	public void lieDown();
 
-	void setSomeoneIn(boolean someone);
+	@Service(name = "Desocupar cama")
+	public void getOut();
 }
