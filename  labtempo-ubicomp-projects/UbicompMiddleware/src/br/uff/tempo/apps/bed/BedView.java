@@ -6,11 +6,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.resources.Bed;
 
 public class BedView extends Activity /* implements Observer */{
 
 	private static final String TAG = "BedView";
 	private BedData bedData;
+	private Bed bed;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -18,6 +20,7 @@ public class BedView extends Activity /* implements Observer */{
 		super.onCreate(savedInstanceState);
 
 		this.bedData = new BedData();
+		this.bed = new Bed();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.bed);
@@ -43,7 +46,6 @@ public class BedView extends Activity /* implements Observer */{
 	}
 
 	public void onRegisterClick(View target) {
-
 		Toast.makeText(BedView.this, "Register Called", Toast.LENGTH_LONG).show();
 	}
 

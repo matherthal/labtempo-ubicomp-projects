@@ -1,6 +1,7 @@
 package br.uff.tempo.apps.rule;
 
 import android.util.Log;
+import android.widget.Toast;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
@@ -29,6 +30,7 @@ public class RuleInterpreterTest extends ResourceAgent {
 		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);
 		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);
 		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);
+		Toast.makeText(this, "Notificacao. Mudança: " + change, Toast.LENGTH_LONG).show();
 	}
 
 }

@@ -61,21 +61,16 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void doDraw(Canvas canvas) {
-
 		// draw the background color
 		canvas.drawColor(Color.BLACK);
-
 		// draw the bed bitmap
 		canvas.drawBitmap(mBitmap, mX, mY, null);
-
 	}
 
 	public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-		// TODO Auto-generated method stub
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
-
 		// get the touch coordinates
 		int x = (int) event.getX();
 		int y = (int) event.getY();
