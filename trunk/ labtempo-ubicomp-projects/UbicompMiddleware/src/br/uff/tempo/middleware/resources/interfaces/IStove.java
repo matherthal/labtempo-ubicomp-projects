@@ -50,14 +50,6 @@ public interface IStove extends IResourceAgent {
 	public float getOvenTemperature();
 
 	/**
-	 * Returns if the oven is on or not
-	 * 
-	 * @return <code>true</code> if the ove is on; <code>false</code> otherwise.
-	 */
-	@ContextVariable(name = "Boca Ligada", description = "", type = CVType.On)
-	public boolean isOnOven();
-
-	/**
 	 * Returns the amount of gas leaking
 	 */
 	@ContextVariable(name = "Vazamento de gás", description = "", type = CVType.On)
