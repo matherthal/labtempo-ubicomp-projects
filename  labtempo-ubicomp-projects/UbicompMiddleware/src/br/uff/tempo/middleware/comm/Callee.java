@@ -6,6 +6,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import br.uff.tempo.middleware.comm.current.api.JSONHelper;
+
 import android.os.Handler;
 import android.util.Log;
 

@@ -15,7 +15,7 @@ import br.uff.tempo.apps.map.MapActivity;
 import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.stove.StoveView;
 import br.uff.tempo.apps.tv.TvView;
-import br.uff.tempo.middleware.comm.Dispatcher;
+import br.uff.tempo.middleware.comm.current.api.Dispatcher;
 
 public class MainListView extends ListActivity {
 

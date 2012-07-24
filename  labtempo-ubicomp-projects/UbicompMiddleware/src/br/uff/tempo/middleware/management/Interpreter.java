@@ -8,7 +8,7 @@ import android.content.ComponentName;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.util.Log;
-import br.uff.tempo.middleware.comm.Tuple;
+import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.Stove;
