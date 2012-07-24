@@ -3,7 +3,7 @@ package br.uff.tempo.middleware.resources.stubs;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.uff.tempo.middleware.comm.Tuple;
+import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 
@@ -97,17 +97,9 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	}
 
 	@Override
-	public boolean isOnOven() {
-
-		List<Tuple> params = new ArrayList<Tuple>();
-
-		return (Boolean) makeCall("isOvenOn", params);
-	}
-
-	@Override
 	public boolean isOvenOn() {
-		// TODO Auto-generated method stub
-		return false;
+		List<Tuple> params = new ArrayList<Tuple>();
+		return (Boolean) makeCall("isOvenOn", params);
 	}
 
 }
