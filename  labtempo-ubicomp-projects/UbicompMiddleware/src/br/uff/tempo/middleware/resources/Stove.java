@@ -8,7 +8,7 @@ import org.json.JSONException;
 
 import android.os.Binder;
 import android.os.IBinder;
-import br.uff.tempo.middleware.comm.JSONHelper;
+import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 
@@ -17,6 +17,8 @@ public class Stove extends ResourceAgent implements IStove {
 
 	// Gas Leak
 	private float gasLeak = 0.0f; // Measure of natural gas leaking
+	private float ovenTemp = 0.0f;
+	private boolean ovenOn = false;
 
 	// private List<Object> components;
 	// private static final int SOUND_ID_STOVE = R.raw.stove;
@@ -112,6 +114,9 @@ public class Stove extends ResourceAgent implements IStove {
 
 	@Override
 	public void setOvenTemperature(float newTemperature) {
+		this.ovenTemp = newTemperature;
+		this.ovenOn = true;
+
 		try {
 			notifyStakeholders(JSONHelper.createChange(this.getURL(), "getOvenTemperature", newTemperature));
 		} catch (JSONException e) {
@@ -127,7 +132,7 @@ public class Stove extends ResourceAgent implements IStove {
 		// return this.tempOven1;
 		// TODO Auto-generated method stub
 
-		return 0;
+		return this.ovenTemp;
 	}
 
 	@Override
@@ -143,14 +148,7 @@ public class Stove extends ResourceAgent implements IStove {
 	}
 
 	@Override
-	public boolean isOnOven() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
 	public boolean isOvenOn() {
-		// TODO Auto-generated method stub
-		return false;
+		return this.ovenOn;
 	}
 }
