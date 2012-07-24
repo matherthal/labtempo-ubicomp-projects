@@ -7,9 +7,13 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IBed;
 
 public class Bed extends ResourceAgent implements IBed {
-
 	private Integer numUsers = 0;
 	private boolean hasSomeone;
+
+	public Bed(String name) {
+		// FIXME: get correct id
+		super(name, "br.uff.tempo.middleware.resources.Bed", 6);
+	}
 
 	@Override
 	public void notificationHandler(String change) {
@@ -24,7 +28,7 @@ public class Bed extends ResourceAgent implements IBed {
 	public void lieDown() {
 		this.hasSomeone = true;
 		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), "lieDown", ""));
+			notifyStakeholders(JSONHelper.createChange(this.getURL(), "occupied", true));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -35,7 +39,7 @@ public class Bed extends ResourceAgent implements IBed {
 	public void getOut() {
 		this.hasSomeone = true;
 		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), "getOut", ""));
+			notifyStakeholders(JSONHelper.createChange(this.getURL(), "occupied", false));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

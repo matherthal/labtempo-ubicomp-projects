@@ -11,7 +11,7 @@ import br.uff.tempo.middleware.resources.Bed;
 public class BedView extends Activity /* implements Observer */{
 
 	private static final String TAG = "BedView";
-	private BedData bedData;
+	// private BedData bedData;
 	private Bed bed;
 
 	/** Called when the activity is first created. */
@@ -19,8 +19,9 @@ public class BedView extends Activity /* implements Observer */{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.bedData = new BedData();
-		this.bed = new Bed();
+		// this.bedData = new BedData();
+		this.bed = new Bed("cama");
+		this.bed.identify();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.bed);
@@ -49,8 +50,12 @@ public class BedView extends Activity /* implements Observer */{
 		Toast.makeText(BedView.this, "Register Called", Toast.LENGTH_LONG).show();
 	}
 
-	public BedData getStoveState() {
-		return bedData;
+	// public BedData getStoveState() {
+	// return bedData;
+	// }
+
+	public Bed getBedState() {
+		return bed;
 	}
 
 	/*
