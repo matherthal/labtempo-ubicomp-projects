@@ -23,8 +23,6 @@ import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Rule;
 import br.uff.tempo.middleware.resources.Stove;
-import br.uff.tempo.middleware.resources.interfaces.IStove;
-import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
 public class RuleActivity extends Activity {
 	private static final String TAG = "RuleActivity";
@@ -40,6 +38,8 @@ public class RuleActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		Toast.makeText(this, "Regra Inicializada", Toast.LENGTH_SHORT).show();
 
 		// AlarmClock alarm = new AlarmClock(RuleActivity.this);
 		// Calendar start = Calendar.getInstance();
@@ -75,22 +75,38 @@ public class RuleActivity extends Activity {
 		// manger.notify(NOTIFICATION_ID, notification);
 
 		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS); 
-		String rai = discovery.search("Stove").get(0);
+		String raiStove = discovery.search("Stove").get(0);
+		Toast.makeText(this, "Fogão encontrado", Toast.LENGTH_SHORT).show();
+
+		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+		String raiBed = discovery.search("Bed").get(0);
+		Toast.makeText(this, "Cama encontrada", Toast.LENGTH_SHORT).show();
 		
 		RuleInterpreter rule = new RuleInterpreter(); 
 		try {
-			rule.setCondition(rai, "getOvenTemperature", null, Operator.GreaterThan, "50.0"); 
+			rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, "50.0"); 
+			rule.setCondition(raiBed, "occupied", null, Operator.Equal, "True");
 		} catch (Exception e) { // TODO
 		//Auto-generated catch block e.printStackTrace(); 
 		} 
 		rule.identify();
+		Toast.makeText(this, "Regra registrada", Toast.LENGTH_SHORT).show();
 		
 		RuleInterpreterTest test = new RuleInterpreterTest();
 		// rule.registerStakeholder("Regra disparada", test.getURL());
-		test.identify(); 
-		
-		IStove stove = new StoveStub(rai);
-		stove.setOvenTemperature(76.0f);
+		test.identify();
+		Toast.makeText(this, "Aplicação inicializada e registrada", Toast.LENGTH_SHORT).show();
+
+		// Change Stove state
+		// IStove stove = new StoveStub(raiStove);
+		// stove.setOvenTemperature(76.0f);
+
+		try {
+			finalize();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	/*

@@ -14,6 +14,7 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.resources.Bed;
 
 public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -24,7 +25,8 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 
 	private boolean occuped = false;
 
-	private BedData bed;
+	// private BedData bed;
+	private Bed bed;
 	private Bitmap mBitmap;
 
 	private ViewThread mThread;
@@ -48,7 +50,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 		mX = metrics.widthPixels / 2;
 		mY = metrics.heightPixels / 2;
 
-		bed = ((BedView) getContext()).getStoveState();
+		bed = ((BedView) getContext()).getBedState();
 		mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bed);
 
 		getHolder().addCallback(this);
@@ -87,8 +89,10 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 
 			if (occuped) {
 				msg = "There is someone in the bed";
+				bed.lieDown();
 			} else {
 				msg = "There is no one in the bed";
+				bed.getOut();
 			}
 
 			Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();

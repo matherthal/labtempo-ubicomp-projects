@@ -58,9 +58,9 @@ public class Dispatcher extends Thread {
 		// resources =
 		// discovery.search(ResourceAgentIdentifier.getLocalIpAddress());
 		// }
-		
+
 		resources = ResourceContainer.getInstance().getRAI();
-		
+
 		// only localhost
 		for (String resource : resources) {
 			ArrayList<Method> methodsList = new ArrayList<Method>();
@@ -105,18 +105,14 @@ public class Dispatcher extends Thread {
 					// have type int, got java.lang.Double
 					String[] error = e.getMessage().split(",");
 					if (error[0].contains("int")) {
-						if (error[1].contains("Double"))
-							;
-						{
+						if (error[1].contains("Double")) {
 							for (int j = 0; j < paramsArray.length; j++) {
 								if (paramsArray[j].getClass().equals(Double.class))
 									paramsArray[j] = (int) Math.round((Double) paramsArray[j]);
 							}
 						}
 					} else if (error[0].contains("float")) {
-						if (error[1].contains("Double"))
-							;
-						{
+						if (error[1].contains("Double")) {
 							for (int j = 0; j < paramsArray.length; j++) {
 								if (paramsArray[j].getClass().equals(Double.class))
 									paramsArray[j] = Float.parseFloat(paramsArray[j].toString());
