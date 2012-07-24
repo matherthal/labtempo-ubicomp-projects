@@ -6,7 +6,7 @@ import java.util.Set;
 import org.json.JSONException;
 
 import android.util.Log;
-import br.uff.tempo.middleware.comm.JSONHelper;
+import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;

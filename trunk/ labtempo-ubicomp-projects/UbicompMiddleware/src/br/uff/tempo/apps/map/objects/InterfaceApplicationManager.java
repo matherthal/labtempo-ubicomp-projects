@@ -1,6 +1,6 @@
 package br.uff.tempo.apps.map.objects;
 
-import br.uff.tempo.middleware.comm.JSONHelper;
+import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 
 /**

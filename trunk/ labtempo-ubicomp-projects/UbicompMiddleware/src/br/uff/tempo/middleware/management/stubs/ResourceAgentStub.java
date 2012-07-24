@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.json.JSONException;
 
-import br.uff.tempo.middleware.comm.Tuple;
+import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 

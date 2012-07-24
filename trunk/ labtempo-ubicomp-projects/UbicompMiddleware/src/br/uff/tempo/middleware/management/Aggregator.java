@@ -4,7 +4,7 @@ import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 
-import br.uff.tempo.middleware.comm.Tuple;
+import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IAggregator;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 

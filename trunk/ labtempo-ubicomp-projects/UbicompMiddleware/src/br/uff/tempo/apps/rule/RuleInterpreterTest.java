@@ -23,13 +23,8 @@ public class RuleInterpreterTest extends ResourceAgent {
 
 	@Override
 	public void notificationHandler(String change) {
-		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);
-		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);
-		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);
-		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);
-		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);
-		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);
-		Log.d(TAG, "!!!!!!!!!!!!!!CHANGE: " + change);
+		Log.d(TAG, "CHANGE: " + change);
+		
 		Toast.makeText(this, "Notificacao. Mudança: " + change, Toast.LENGTH_LONG).show();
 	}
 
