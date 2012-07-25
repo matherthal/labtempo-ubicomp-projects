@@ -1,5 +1,6 @@
 package br.uff.tempo.apps;
 
+
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,6 +15,7 @@ import br.uff.tempo.apps.bed.BedView;
 import br.uff.tempo.apps.map.MapActivity;
 import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.stove.StoveView;
+import br.uff.tempo.apps.tictactoe.TicTacToe;
 import br.uff.tempo.apps.tv.TvView;
 import br.uff.tempo.middleware.comm.current.api.Dispatcher;
 
@@ -63,6 +65,9 @@ public class MainListView extends ListActivity {
 					startActivity(intent);
 				} else if (item.equals("Mapa da casa")) {
 					Intent intent = new Intent(MainListView.this, MapActivity.class);
+					startActivity(intent);
+				} else if (item.equals("Jogo da velha")) {
+					Intent intent = new Intent(MainListView.this, TicTacToe.class);
 					startActivity(intent);
 				} else {
 					Toast.makeText(MainListView.this, "Não existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();
