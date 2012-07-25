@@ -152,9 +152,13 @@ public class Dispatcher extends Thread {
 	}
 
 	private Object execute(String resource, Method method, Object[] args) throws JSONException, IllegalArgumentException,
-			IllegalAccessException, InvocationTargetException {
+			IllegalAccessException {
 		ResourceAgent rA = instances.get(resource);
-		return method.invoke(rA, args);
+		try {
+			return method.invoke(rA, args);
+		} catch (InvocationTargetException e) {
+			return null;
+		}
 	}
 
 	private String getMessage(String jsonString) {
