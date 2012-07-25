@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+  <ListPreference
+      android:defaultValue="@string/type_player_x_default"
+      android:entries="@array/type_player_list"
+      android:entryValues="@array/type_player_list"
+      android:key="@string/type_player_x_key"
+      android:summary="@string/type_player_summary"
+      android:title="@string/type_player_x_title"/>
+  <ListPreference
+      android:defaultValue="@string/type_player_o_default"
+      android:entries="@array/type_player_list"
+      android:entryValues="@array/type_player_list"
+      android:key="@string/type_player_o_key"
+      android:summary="@string/type_player_summary"
+      android:title="@string/type_player_o_title"/>
+</PreferenceScreen>
