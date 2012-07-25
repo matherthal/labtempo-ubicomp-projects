@@ -48,6 +48,24 @@
         <service android:enabled="true" android:name=".apps.MediaService" />
         
         <receiver android:name=".middleware.resources.AlarmReceiver"></receiver>
+        <!-- Begin tictactoe app -->
+        <activity android:name=".apps.tictactoe.TicTacToe" 
+            android:label="@string/app_tic_name"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="portrait">
+            <intent-filter >
+		       <action android:name="android.intent.action.MAIN"/>
+		       <category android:name="android.intent.category.LAUNCHER"/>                
+            </intent-filter>
+        </activity>
+        <activity android:label="@string/settings_title" android:name=".apps.tictactoe.Settings"/>
+		<activity
+		    android:label="@string/about_title"
+		    android:name=".apps.tictactoe.About"
+		    android:theme="@android:style/Theme.Dialog">
+		</activity>
+        <!-- End tictactoe app -->
+        
     </application>
     
 </manifest>
