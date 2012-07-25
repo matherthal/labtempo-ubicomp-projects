@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+  
     <string name="hello">Hello World, TestRPC!</string>
     <string name="app_name">MainListView</string>
     <string name="ip_ok">IP OK!</string>
@@ -38,6 +38,7 @@
         <item name="item_bed">Cama</item>
         <item name="item_base">Repositorio de Recursos</item>
         <item name="item_map">Mapa da casa</item>
+        <item name="item_tttoe">Jogo da velha</item>
     </string-array>
     
     <!-- RuleActivity -->
@@ -78,4 +79,31 @@
     <string name="button_rule">Regra</string>
     <!-- End RuleActivity -->
     <string name="content">Base content</string>
+  
+  <!-- Begin tictactoe app -->  
+  <string name="app_tic_name">Tic-Tac-Toe</string>
+
+  <string name="about_label">About</string>
+  <string name="about_title">Tic-Tac-Toe</string>
+  <string name="about_content">2010 Science Fair Project\nby Sarah Moloney</string>
+
+  <string name="new_game_label">New Game</string>
+
+  <string name="settings_label">Settings...</string>
+  <string name="settings_title">Tic-Tac-Toe Settings</string>
+
+  <string name="type_player_computer">Computer</string>
+  <string name="type_player_human">Human</string>
+  <string-array name="type_player_list">
+    <item>@string/type_player_computer</item>
+    <item>@string/type_player_human</item>
+  </string-array>
+  <string name="type_player_o_default">@string/type_player_computer</string>
+  <string name="type_player_o_key">typePlayerO</string>
+  <string name="type_player_o_title">Player O</string>
+  <string name="type_player_summary">Computer or Human</string>
+  <string name="type_player_x_default">@string/type_player_human</string>
+  <string name="type_player_x_key">typePlayerX</string>
+  <string name="type_player_x_title">Player X</string>
+  <!-- End tictactoe app -->
 </resources>
