@@ -2,7 +2,7 @@ package br.uff.tempo.middleware.resources;
 
 import org.json.JSONException;
 
-import br.uff.tempo.middleware.comm.JSONHelper;
+import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IBed;
 
