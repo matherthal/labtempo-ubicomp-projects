@@ -4,6 +4,8 @@
 
 package br.uff.tempo.apps.tictactoe;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +13,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.resources.GameAgent;
+import br.uff.tempo.middleware.resources.interfaces.IGameAgent;
+import br.uff.tempo.middleware.resources.stubs.GameAgentStub;
 
 public class TicTacToe extends Activity {
 
@@ -19,7 +26,21 @@ public class TicTacToe extends Activity {
   //
 
   public TicTacToe() {
-    this.game = new Game(this);
+		IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+		ArrayList<String> gameList = discovery.search("GameAgent");
+		IGameAgent gameAgent;
+		int id = (int) Math.round(50 * Math.random());
+		gameAgent = new GameAgent("Game"+id);
+		if (gameList != null){
+			for (String iGameAgentRai : gameList) {
+				IGameAgent iGameAgent = new GameAgentStub(iGameAgentRai);
+				((GameAgentStub) iGameAgent).registerStakeholder("setMove", iGameAgentRai);
+				((GameAgent) gameAgent).registerStakeholder("setMove", ((GameAgent) gameAgent).getURL());
+			}
+		}
+		this.game = new Game(this, gameAgent);
+		gameAgent.setGame(this.game);
+		((GameAgent) gameAgent).identify();
   }
 
   //
