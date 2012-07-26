@@ -34,8 +34,8 @@ public class TicTacToe extends Activity {
 		if (gameList != null){
 			for (String iGameAgentRai : gameList) {
 				IGameAgent iGameAgent = new GameAgentStub(iGameAgentRai);
-				((GameAgentStub) iGameAgent).registerStakeholder("setMove", iGameAgentRai);
-				((GameAgent) gameAgent).registerStakeholder("setMove", ((GameAgent) gameAgent).getURL());
+				((GameAgentStub) iGameAgent).registerStakeholder("setMove", ((GameAgent) gameAgent).getURL());
+				((GameAgent) gameAgent).registerStakeholder("setMove", iGameAgentRai);
 			}
 		}
 		this.game = new Game(this, gameAgent);

@@ -58,6 +58,7 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 		mFireThree = BitmapFactory.decodeResource(getResources(), R.drawable.fire_burner_three);
 		mFireFour = BitmapFactory.decodeResource(getResources(), R.drawable.fire_burner_four);
 
+		// these coordinates represent the center of the bitmap
 		mX -= mBitmap.getWidth() / 2;
 		mY -= mBitmap.getHeight() / 2;
 
