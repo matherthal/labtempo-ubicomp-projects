@@ -1,7 +1,7 @@
 package br.uff.tempo.apps.rule;
 
+import android.content.Context;
 import android.util.Log;
-import android.widget.Toast;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
@@ -11,6 +11,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 public class RuleInterpreterTest extends ResourceAgent {
 	private String TAG = "RuleInterpreterTest";
 	private IResourceDiscovery discovery;
+
+	public Context context;
 
 	public RuleInterpreterTest() {
 		super("Teste regra", "br.uff.tempo.apps.rule.RuleInterpreterTest", 30);
@@ -25,7 +27,10 @@ public class RuleInterpreterTest extends ResourceAgent {
 	public void notificationHandler(String change) {
 		Log.d(TAG, "CHANGE: " + change);
 		
-		Toast.makeText(this, "Notificacao. Mudança: " + change, Toast.LENGTH_LONG).show();
+		// Toast.makeText(getBaseContext(), "Notificacao 1. Mudança: " + change,
+		// Toast.LENGTH_LONG).show();
+		// Toast.makeText(context, "Notificacao 2. Mudança: " + change,
+		// Toast.LENGTH_LONG).show();
 	}
 
 }

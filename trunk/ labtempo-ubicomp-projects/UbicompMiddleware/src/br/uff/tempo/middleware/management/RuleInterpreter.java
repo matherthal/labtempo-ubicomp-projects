@@ -41,7 +41,7 @@ public class RuleInterpreter extends ResourceAgent {
 		IResourceAgent ra = new ResourceAgentStub(rai);
 		ra.registerStakeholder(cv, this.getURL());
 		// re discovery.search(rai).get(0);
-		conds.add(new Condition(ra, cv, params, op.toString(), value, 0));
+		conds.add(new Condition(rai, cv, params, op, value, 0));
 	}
 
 	private void evaluate() {
@@ -70,7 +70,7 @@ public class RuleInterpreter extends ResourceAgent {
 		Object val = JSONHelper.getChange("value", change);
 
 		for (Condition c : conds) {
-			if (c.ra.getURL().equals(id) && c.method.equals(mtd) && !c.value.equals(val)) {
+			if (c.rai.equals(id) && c.method.equals(mtd) && !c.value.equals(val)) {
 				c.value = val;
 				evaluate();
 			}

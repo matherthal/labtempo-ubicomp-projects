@@ -1,9 +1,13 @@
 package br.uff.tempo.middleware.resources;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
-import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.comm.current.api.Tuple;
+import br.uff.tempo.middleware.management.Operator;
+import br.uff.tempo.middleware.management.stubs.Stub;
 
 /**
  * Class Condition
@@ -16,11 +20,13 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
  */
 // public class Condition implements InvocationHandler, Serializable {
 public class Condition implements Serializable {
-	public IResourceAgent ra;
+	public String rai;
 	// public Method method;
 	public String method;
-	public Object[] params;
-	public String operator = "==";
+//	public Object[] params;
+//	public Class[] paramTypes;
+	public List<Tuple> params;
+	public Operator operator = Operator.Equal;
 	public Object value;
 	public long timeout;
 
@@ -34,14 +40,23 @@ public class Condition implements Serializable {
 	 *            It creates a condition
 	 * @throws Exception
 	 */
-	public Condition(IResourceAgent ra, String method, Object[] params, String operator, Object value, long timeout)
+	public Condition(String rai, String method, Object[] params, Operator operator, Object value, long timeout)
 			throws Exception {
-		this.ra = ra;
+		this.rai = rai;
 		this.method = method;
-		this.params = params;
+		// this.params = params;
 		this.operator = operator;
 		this.value = value;
 		this.timeout = timeout;
+
+		this.params = new ArrayList<Tuple>();
+		if (params != null) {
+			int i = 0;
+			for (Object o : params) {
+				this.params.add(new Tuple<String, Object>(o.toString(), o.getClass()));
+				i++;
+			}
+		}
 	}
 
 	public boolean test() {
@@ -49,15 +64,29 @@ public class Condition implements Serializable {
 		// ex., if it is boolean, so we parse the value to boolean before
 		// compare
 
-		// Object attrib = this.invoke(ra, method, new Object[0]);
-		// if (operator.equals("==")) // Operator ==
-		// return attrib.equals(value);
-		// else if (operator.equals("!=")) // Operator !=
-		// return !attrib.equals(value);
-		// else
-		// Operator error
+		// IResourceAgent ra = new ResourceAgentStub(this.ra.getURL());
+		Stub s = new Stub(rai);
+		Object ret = s.makeCall(method, params);
+		// ret = ra.getClass().getMethod(method, paramTypes).invoke(params);
 
-		return true;
+		if (operator.equals(Operator.Equal)) // Operator ==
+			return ret.equals(value);
+		else if (operator.equals(Operator.Different)) // Operator !=
+			return !ret.equals(value);
+		else {
+			double d_val = Double.parseDouble(value.toString());
+			double d_ret = Double.parseDouble(ret.toString());
+			if (operator.equals(Operator.GreaterThan))
+				return d_ret > d_val;
+			if (operator.equals(Operator.GreaterThanOrEqual))
+				return d_ret >= d_val;
+			if (operator.equals(Operator.LessThan))
+				return d_ret < d_val;
+			if (operator.equals(Operator.LessThanOrEqual))
+				return d_ret <= d_val;
+			else
+				return false;
+		}
 	}
 
 	/*
@@ -67,9 +96,9 @@ public class Condition implements Serializable {
 
 	@Override
 	public String toString() {
-		// return this.ra.getType() + "." + this.ra.getId() + "." +
-		// this.method.getName() + this.operator + this.value;
-		return this.ra.getType() + "." + this.ra.getId() + "." + this.method + this.operator + this.value;
+		// return this.ra.getType() + "." + this.ra.getId() + "." + this.method
+		// + this.operator + this.value;
+		return "";
 	}
 }
 

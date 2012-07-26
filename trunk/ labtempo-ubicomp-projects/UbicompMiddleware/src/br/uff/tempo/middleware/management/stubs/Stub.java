@@ -17,7 +17,7 @@ public class Stub implements Serializable {
 		caller = new Caller(calleeAgent);
 	}
 
-	protected Object makeCall(String methodName, List<Tuple> params) {
+	public Object makeCall(String methodName, List<Tuple> params) {
 
 		try {
 			// Create message

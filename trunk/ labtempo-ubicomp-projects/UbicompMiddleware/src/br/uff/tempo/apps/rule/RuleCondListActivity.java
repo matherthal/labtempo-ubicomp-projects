@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Stove;
@@ -72,7 +73,7 @@ public class RuleCondListActivity extends Activity {
 				ra.identify();
 				Condition cond = null;
 				try {
-					cond = new Condition(ra, "temperature", null, ">=", "100", 0);
+					cond = new Condition(ra.getURL(), "temperature", null, Operator.GreaterThanOrEqual, "100", 0);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -90,7 +91,7 @@ public class RuleCondListActivity extends Activity {
 	 * Creates a condition and adds to the list. Then a rule could be created
 	 * after.
 	 */
-	public void createCond(String raID, String attrib, String operation, String value) {
+	public void createCond(String raID, String attrib, Operator operator, String value) {
 		// ResourceAgent ra =
 		// (ResourceAgent)discovery.search(s.getSelectedItem().toString()).get(0);
 		ResourceAgent ra = new Stove();// FIXME: get it out of here, just for
@@ -113,7 +114,7 @@ public class RuleCondListActivity extends Activity {
 		Condition cond;
 		try {
 			// Initialize Condition
-			cond = new Condition(ra, mtd, null, operation, value, 0);
+			cond = new Condition(ra.getURL(), mtd, null, operator, value, 0);
 		} catch (Exception e) {
 			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);
 			return;
