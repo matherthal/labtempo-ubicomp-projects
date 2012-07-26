@@ -19,15 +19,19 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.resources.interfaces.IGameAgent;
 
 public class Game {
 
   //
   // Constructors
   //
+	private IGameAgent gameAgent;
 
-  public Game(Context context) {
+	public Game(Context context, IGameAgent gameAgent) {
     this.context = context;
+		this.gameAgent = gameAgent;
+		this.gameAgent.setGame(this);
   }
 
   //
@@ -102,11 +106,12 @@ public class Game {
     return player;
   }
 
-  private void processMove(Location move) {
-
+	public void processMove(Location move, String flag) {
     // Store the move if it is valid.
     if (!this.gameOver && this.board.setMove(move, this.currentPlayer)) {
-
+			if (!flag.equals("local")) {
+			gameAgent.setMove(move.getRow(), move.getColumn(), this.currentPlayer.toString());
+			}
       // Hide the prompt for the human player.
       if (this.currentPlayer.getType() == Player.Type.Human) {
         this.playerPrompts.get(this.currentPlayer.getName()).hide();
@@ -265,7 +270,7 @@ public class Game {
   private Runnable updateTimeTask = new Runnable() {
     //@Override
     public void run() {
-      Game.this.processMove(Game.this.currentPlayer.getMove());
+			Game.this.processMove(Game.this.currentPlayer.getMove(), "notify");
       if (Game.this.gameOver) {
         Game.this.pause();
       }
