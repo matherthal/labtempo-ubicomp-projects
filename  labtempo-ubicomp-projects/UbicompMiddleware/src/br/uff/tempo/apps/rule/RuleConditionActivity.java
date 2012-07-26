@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Condition;
@@ -179,8 +180,8 @@ public class RuleConditionActivity extends Activity {
 
 		// Get operation
 		spn = (Spinner) findViewById(R.id.spinnerOperation);
-		String operation = spn.getSelectedItem().toString();
-
+		String op = spn.getSelectedItem().toString();
+		
 		// Get value to be compared
 		TextView tv = (TextView) findViewById(R.id.editTextValue);
 		String value = tv.getText().toString();
@@ -188,7 +189,7 @@ public class RuleConditionActivity extends Activity {
 		Condition cond;
 		try {
 			// Initialize Condition
-			cond = new Condition(ra, mtd, null, operation, value, 0);
+			cond = new Condition(ra.getURL(), mtd, null, Operator.valueOf(op), value, 0);
 		} catch (Exception e) {
 			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);
 			return;

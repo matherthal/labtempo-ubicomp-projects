@@ -74,38 +74,42 @@ public class RuleActivity extends Activity {
 		// notification
 		// manger.notify(NOTIFICATION_ID, notification);
 
-		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS); 
-		String raiStove = discovery.search("Stove").get(0);
-		Toast.makeText(this, "Fogão encontrado", Toast.LENGTH_SHORT).show();
+		if (savedInstanceState == null) {
+			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+			String raiStove = discovery.search("Stove").get(0);
+			Toast.makeText(this, "Fogão encontrado", Toast.LENGTH_SHORT).show();
 
-		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		String raiBed = discovery.search("Bed").get(0);
-		Toast.makeText(this, "Cama encontrada", Toast.LENGTH_SHORT).show();
-		
-		RuleInterpreter rule = new RuleInterpreter(); 
-		try {
-			rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, "50.0"); 
-			rule.setCondition(raiBed, "occupied", null, Operator.Equal, "True");
-		} catch (Exception e) { // TODO
-		//Auto-generated catch block e.printStackTrace(); 
-		} 
-		rule.identify();
-		Toast.makeText(this, "Regra registrada", Toast.LENGTH_SHORT).show();
-		
-		RuleInterpreterTest test = new RuleInterpreterTest();
-		// rule.registerStakeholder("Regra disparada", test.getURL());
-		test.identify();
-		Toast.makeText(this, "Aplicação inicializada e registrada", Toast.LENGTH_SHORT).show();
+			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+			String raiBed = discovery.search("Bed").get(0);
+			Toast.makeText(this, "Cama encontrada", Toast.LENGTH_SHORT).show();
 
-		// Change Stove state
-		// IStove stove = new StoveStub(raiStove);
-		// stove.setOvenTemperature(76.0f);
+			RuleInterpreter rule = new RuleInterpreter();
+			try {
+				rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, "50.0");
+				rule.setCondition(raiBed, "occupied", null, Operator.Equal, "True");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			rule.identify();
+			Toast.makeText(this, "Regra registrada", Toast.LENGTH_SHORT).show();
 
-		try {
-			finalize();
-		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			RuleInterpreterTest test = new RuleInterpreterTest();
+			// rule.registerStakeholder("Regra disparada", test.getURL());
+			test.identify();
+			Toast.makeText(this, "Aplicação inicializada e registrada", Toast.LENGTH_SHORT).show();
+
+			// FIXME: DEBUG
+			test.context = this;
+
+			// Change Stove state
+			// IStove stove = new StoveStub(raiStove);
+			// stove.setOvenTemperature(76.0f);
+
+			try {
+				finalize();
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
@@ -226,7 +230,7 @@ public class RuleActivity extends Activity {
 	 * Creates a condition and adds to the list. Then a rule could be created
 	 * after.
 	 */
-	public void createCond(String raID, String attrib, String operation, String value) {
+	public void createCond(String raID, String attrib, Operator operator, String value) {
 		// ResourceAgent ra =
 		// (ResourceAgent)discovery.search(s.getSelectedItem().toString()).get(0);
 		ResourceAgent ra = new Stove();// FIXME: get it out of here, just for
@@ -249,7 +253,7 @@ public class RuleActivity extends Activity {
 		Condition cond;
 		try {
 			// Initialize Condition
-			cond = new Condition(ra, mtd, null, operation, value, 0);
+			cond = new Condition(ra.getURL(), mtd, null, operator, value, 0);
 		} catch (Exception e) {
 			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);
 			return;
