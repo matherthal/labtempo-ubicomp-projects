@@ -99,32 +99,8 @@ public class Dispatcher extends Thread {
 		for (int i = 0; i < methods.size(); i++)
 			if (methods.get(i).getName().equals(method)) {
 				Object obj = null;
-				try {
-					obj = execute(calleeID, methods.get(i), paramsArray);
-				} catch (IllegalArgumentException e) {
-					// java.lang.IllegalArgumentException: argument 1 should
-					// have type int, got java.lang.Double
-					String[] error = e.getMessage().split(",");
-					if (error[0].contains("int")) {
-						if (error[1].contains("Double"))
-						{
-							for (int j = 0; j < paramsArray.length; j++) {
-								if (paramsArray[j].getClass().equals(Double.class))
-									paramsArray[j] = (int) Math.round((Double) paramsArray[j]);
-							}
-						}
-					} else if (error[0].contains("float")) {
-						if (error[1].contains("Double"))
-						{
-							for (int j = 0; j < paramsArray.length; j++) {
-								if (paramsArray[j].getClass().equals(Double.class))
-									paramsArray[j] = Float.parseFloat(paramsArray[j].toString());
-							}
-						}
-					}
-
-					obj = execute(calleeID, methods.get(i), paramsArray);
-				}
+				obj = execute(calleeID, methods.get(i), paramsArray);
+				
 				return JSONHelper.createReply(obj);
 			}
 		return msg;
@@ -199,17 +175,6 @@ public class Dispatcher extends Thread {
 		}
 		jsonString = "";
 		try {
-			// How to extract the request data
-			// printOnScreen("Parsed request with properties :");
-			// printOnScreen("\tmethod     : " + reqIn.getString("method"));
-			// printOnScreen("\tparameters : " + reqIn.getJSONArray("params"));
-			// printOnScreen("\tid         : " + reqIn.getString("id") +
-			// "\n\n");
-
-			// Process request...
-
-			// Create the response (note that the JSON-RPC ID must be echoed
-			// back)
 			String result = "received";
 			JSONObject respOut = new JSONObject();
 			respOut.put("result", result);
