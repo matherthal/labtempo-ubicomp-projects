@@ -22,9 +22,9 @@ public class GameAgentStub extends ResourceAgentStub implements IGameAgent {
 	@Override
 	public void setMove(int row, int column, String player) {
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("row", row));
-		params.add(new Tuple<String, Object>("column", column));
-		params.add(new Tuple<String, Object>("player", player));
+		params.add(new Tuple<String, Object>(Integer.class.getName(), row));
+		params.add(new Tuple<String, Object>(Integer.class.getName(), column));
+		params.add(new Tuple<String, Object>(String.class.getName(), player));
 
 		makeCall("setMove", params);
 	}

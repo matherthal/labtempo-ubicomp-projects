@@ -31,6 +31,7 @@ public class TicTacToe extends Activity {
 		IGameAgent gameAgent;
 		int id = (int) Math.round(50 * Math.random());
 		gameAgent = new GameAgent("Game"+id);
+		((GameAgent) gameAgent).identify();
 		if (gameList != null){
 			for (String iGameAgentRai : gameList) {
 				IGameAgent iGameAgent = new GameAgentStub(iGameAgentRai);
@@ -40,7 +41,6 @@ public class TicTacToe extends Activity {
 		}
 		this.game = new Game(this, gameAgent);
 		gameAgent.setGame(this.game);
-		((GameAgent) gameAgent).identify();
   }
 
   //

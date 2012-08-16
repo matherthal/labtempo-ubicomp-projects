@@ -16,7 +16,7 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("url", url));
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
 		return (String) makeCall("get", params);
 
@@ -26,7 +26,7 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("url", url));
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
 		return (Boolean) makeCall("add", params);
 
@@ -36,7 +36,7 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("url", url));
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
 		return (Boolean) makeCall("remove", params);
 
@@ -51,7 +51,7 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("url", url));
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
 		return (Boolean) makeCall("update", params);
 	}
@@ -60,7 +60,7 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("url", url));
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
 		return (ArrayList<String>) makeCall("getSubList", params);
 	}

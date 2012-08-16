@@ -25,9 +25,9 @@ public class AlarmClockStub extends ResourceAgentStub implements IAlarmClock {
 	@Override
 	public void setPeriodicAlarm(String name, Calendar start, int interval) {
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("name", name));
-		params.add(new Tuple<String, Object>("start", start));
-		params.add(new Tuple<String, Object>("interval", interval));
+		params.add(new Tuple<String, Object>(String.class.getName(), name));
+		params.add(new Tuple<String, Object>(Calendar.class.getName(), start));
+		params.add(new Tuple<String, Object>(Integer.class.getName(), interval));
 		makeCall("turnOnBurner", params);
 	}
 

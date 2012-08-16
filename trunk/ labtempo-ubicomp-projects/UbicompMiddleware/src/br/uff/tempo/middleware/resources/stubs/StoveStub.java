@@ -26,7 +26,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	public void turnOnBurner(int burnerIndex) {
 
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
+		params.add(new Tuple<String, Object>(Integer.class.getName(), burnerIndex));
 
 		makeCall("turnOnBurner", params);
 
@@ -36,7 +36,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	public void turnOffBurner(int burnerIndex) {
 
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
+		params.add(new Tuple<String, Object>(Integer.class.getName(), burnerIndex));
 
 		makeCall("turnOffBurner", params);
 
@@ -46,7 +46,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	public boolean isOnBurner(int burnerIndex) {
 
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
+		params.add(new Tuple<String, Object>(Integer.class.getName(), burnerIndex));
 
 		return (Boolean) makeCall("isOnBurner", params);
 
@@ -56,7 +56,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	public void setOvenTemperature(float newTemperature) {
 
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("newTemperature", newTemperature));
+		params.add(new Tuple<String, Object>(Float.class.getName(), newTemperature));
 
 		makeCall("setOvenTemperature", params);
 	}

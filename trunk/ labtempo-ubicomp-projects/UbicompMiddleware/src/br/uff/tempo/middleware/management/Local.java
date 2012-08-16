@@ -1,6 +1,6 @@
 package br.uff.tempo.middleware.management;
 
-public class Local {
+public class Local extends ResourceAgent{
 
 	Position lower;// left lower vertex
 	Position upper;// right upper vertex
@@ -60,6 +60,12 @@ public class Local {
 		equalDown = equalDown && (equalRight || equalLeft);
 
 		return equalUp || equalDown;
+	}
+
+	@Override
+	public void notificationHandler(String change) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

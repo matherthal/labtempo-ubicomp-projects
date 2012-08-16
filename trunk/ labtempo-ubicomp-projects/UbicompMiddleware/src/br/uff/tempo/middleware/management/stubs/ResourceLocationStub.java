@@ -19,7 +19,7 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("rA", rA));
+		params.add(new Tuple<String, Object>(ResourceAgent.class.getName(), rA));
 
 		return (ArrayList<Local>) makeCall("search", params);
 
@@ -29,7 +29,7 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("rA", rA));
+		params.add(new Tuple<String, Object>(ResourceAgent.class.getName(), rA));
 
 		return (Local) makeCall("get", params);
 	}

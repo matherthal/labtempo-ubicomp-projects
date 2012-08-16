@@ -20,7 +20,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	public void notificationHandler(String change) {
 
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("change", change));
+		params.add(new Tuple<String, Object>("java.lang.String", change));
 
 		makeCall("notificationHandler", params);
 
@@ -36,8 +36,8 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("method", method));
-		params.add(new Tuple<String, Object>("url", url));
+		params.add(new Tuple<String, Object>("java.lang.String", method));
+		params.add(new Tuple<String, Object>("java.lang.String", url));
 
 		makeCall("registerStakeholder", params);
 	}

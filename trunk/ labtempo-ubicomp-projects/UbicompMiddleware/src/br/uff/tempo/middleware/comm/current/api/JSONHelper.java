@@ -20,6 +20,7 @@ public class JSONHelper {
 
 		Map<String, Object> methodCall = new HashMap<String, Object>();
 		List<Object> jsonparams = new ArrayList<Object>();
+		List<Object> jsontypes = new ArrayList<Object>();
 
 		Iterator<Tuple> iterator = params.iterator();
 
@@ -28,11 +29,13 @@ public class JSONHelper {
 		while (iterator.hasNext()) {
 			tp = iterator.next();
 			jsonparams.add(tp.value);
+			jsontypes.add(tp.key);
 		}
 
 		methodCall.put("jsonrpc", "2.0");
 		methodCall.put("method", method);
 		methodCall.put("params", jsonparams);
+		methodCall.put("types", jsontypes);
 
 		Type collectionType = new TypeToken<HashMap<String, Object>>() {
 		}.getType();

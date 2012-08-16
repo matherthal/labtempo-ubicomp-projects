@@ -24,7 +24,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 		Type rAType = new TypeToken<ResourceAgent>() {
 		}.getType();
 
-		params.add(new Tuple<String, Object>("url", url));
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
 		return (Boolean) makeCall("register", params);
 	}
@@ -32,7 +32,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 	public boolean unregister(String url) {
 
 		List<Tuple> params = new ArrayList<Tuple>();
-		params.add(new Tuple<String, Object>("url", url));
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
 		return (Boolean) makeCall("register", params);
 	}
