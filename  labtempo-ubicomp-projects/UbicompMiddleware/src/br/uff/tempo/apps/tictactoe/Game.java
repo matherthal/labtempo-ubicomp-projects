@@ -110,7 +110,7 @@ public class Game {
     // Store the move if it is valid.
     if (!this.gameOver && this.board.setMove(move, this.currentPlayer)) {
 			if (!flag.equals("local")) {
-			gameAgent.setMove(move.getRow(), move.getColumn(), this.currentPlayer.toString());
+				gameAgent.setMove(move.getRow(), move.getColumn(), this.currentPlayer.toString());
 			}
       // Hide the prompt for the human player.
       if (this.currentPlayer.getType() == Player.Type.Human) {

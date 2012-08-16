@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -90,7 +91,7 @@ public class Dispatcher extends Thread {
 
 		Map<String, Object> methodCall = getMethodCall(msg);
 		String method = getMethodName(methodCall);
-		List<Object> params = getParams(methodCall);
+		List<Tuple<String, Object>> params = getParams(methodCall);
 
 		Object[] paramsArray = paramsToArray(params);
 
@@ -140,14 +141,38 @@ public class Dispatcher extends Thread {
 		return (String) methodCall.get("method");
 	}
 
-	private List<Object> getParams(Map<String, Object> methodCall) {
-		return (List<Object>) methodCall.get("params");
+	private List<Tuple<String, Object>> getParams(Map<String, Object> methodCall) {
+		List<Tuple<String, Object>> result = new ArrayList<Tuple<String, Object>>();
+		List<Object> params = (List<Object>) methodCall.get("params");
+		List<String> types = (List<String>) methodCall.get("types");
+		Iterator<Object> itParams = params.iterator();
+		Iterator<String> itTypes = types.iterator();
+
+		Tuple<String, Object> tp;
+
+		while (itParams.hasNext()) {
+			tp = new Tuple<String, Object> (itTypes.next(), itParams.next());
+			result.add(tp);
+		}
+		return result;
 	}
 
-	private Object[] paramsToArray(List<Object> params) {
-		Object[] args = new Object[params.size()];
-		for (int i = 0; i < params.size(); i++)
-			args[i] = params.get(i);
+	private Object[] paramsToArray(List<Tuple<String, Object>> argList) {
+		Object[] args = new Object[argList.size()];
+		for (int i = 0; i < argList.size(); i++){
+			Tuple<String, Object> tuple = argList.get(i);
+			if (tuple.key.equals("String")){
+				args[i] = tuple.value;
+			} else {
+				try {
+					Class type = getClassOf(tuple.key);
+					args[i] = type.cast(tuple.value);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		}			
 		return args;
 	}
 
