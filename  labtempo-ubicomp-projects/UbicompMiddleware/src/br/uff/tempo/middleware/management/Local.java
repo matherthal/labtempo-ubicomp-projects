@@ -1,7 +1,11 @@
 package br.uff.tempo.middleware.management;
 
+import br.uff.tempo.middleware.management.utils.Position;
+
 public class Local extends ResourceAgent{
 
+	String name;
+	
 	Position lower;// left lower vertex
 	Position upper;// right upper vertex
 
@@ -62,6 +66,12 @@ public class Local extends ResourceAgent{
 		return equalUp || equalDown;
 	}
 
+	public boolean contains(Position position)
+	{
+		return (position.compareTo(lower)==1 && position.compareTo(upper)==3); 
+	}
+	
+	
 	@Override
 	public void notificationHandler(String change) {
 		// TODO Auto-generated method stub

@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
-import br.uff.tempo.middleware.management.utils.Local;
+import br.uff.tempo.middleware.management.Local;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceLocation extends ResourceAgent implements IResourceLocation {
@@ -64,6 +65,17 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		return null;
 	}
 
+	public Local getLocal(Position position) {
+		ArrayList<Local> localList = (ArrayList<Local>) map.values();
+		for (Local local : localList)
+		{
+			if (local.contains(position)){
+				return local;
+			}
+		}
+		return null;
+	}
+	
 	public void setMap(HashMap<String, Local> map) {
 		this.map = map;
 	}
