@@ -25,4 +25,24 @@ public class Position {
 	public void setY(int y) {
 		this.y = y;
 	}
+
+	//return quadrant number (in clockwise direction: 1: ++; 2: -+; 3: --; 4: +-;)
+	public int compareTo(Position position) {
+		int result = -1;
+		if (x>=position.x){ 
+			if (y>=position.y){
+				result = 1;
+			} else {
+				result = 4;
+			}
+		} else
+		{
+			if (y>=position.y){
+				result = 2;
+			} else {
+				result = 3;
+			}				
+		}
+		return result;
+	}
 }
