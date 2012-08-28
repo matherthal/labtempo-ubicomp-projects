@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.Place;
+import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
 
 public interface IResourceLocation {

@@ -13,6 +13,7 @@ import br.uff.tempo.R;
 import br.uff.tempo.apps.baselocationview.BaseLocationView;
 import br.uff.tempo.apps.baseview.BaseView;
 import br.uff.tempo.apps.bed.BedView;
+import br.uff.tempo.apps.lamp.LampView;
 import br.uff.tempo.apps.map.MapActivity;
 import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.stove.StoveView;
@@ -72,6 +73,9 @@ public class MainListView extends ListActivity {
 					startActivity(intent);
 				} else if (item.equals("Jogo da velha")) {
 					Intent intent = new Intent(MainListView.this, TicTacToe.class);
+					startActivity(intent);
+				} else if (item.equals("Lampada")) {
+					Intent intent = new Intent(MainListView.this, LampView.class);
 					startActivity(intent);
 				} else {
 					Toast.makeText(MainListView.this, "Não existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();

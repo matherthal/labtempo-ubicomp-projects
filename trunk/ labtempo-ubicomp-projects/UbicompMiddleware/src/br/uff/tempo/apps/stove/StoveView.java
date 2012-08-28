@@ -43,8 +43,8 @@ public class StoveView extends FragmentActivity /* implements Observer */{
 
 		Bundle b = i.getExtras();
 
-		if (b != null)
-			stoveAgent = (IStove) b.getSerializable("obj");
+		if (b != null && b.getSerializable("agent") != null)
+			stoveAgent = (IStove) b.getSerializable("agent");
 		else {
 			Stove s = new Stove(name + (++id)); // or create one (nobody sent an
 			// agent)

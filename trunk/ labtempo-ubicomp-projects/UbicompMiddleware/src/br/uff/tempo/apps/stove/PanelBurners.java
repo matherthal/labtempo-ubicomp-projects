@@ -90,7 +90,7 @@ public class PanelBurners extends Panel implements SurfaceHolder.Callback {
 		// if (touched)
 		// {
 		for (int i = 0; i < 4; i++) {
-			isOnBurners.set(i, stove.isOnBurner(new Integer(i)));
+			isOnBurners.set(i, stove.isOnBurner(i));
 		}
 		// }
 		if (isOnBurners.get(0))

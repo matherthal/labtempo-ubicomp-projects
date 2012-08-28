@@ -72,7 +72,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 	public static final int AR_CONDITIONER = TV + 1;
 	public static final int DVD = AR_CONDITIONER + 1;
 	public static final int BED = DVD + 1;
-	public static final int TEMPERATURE = BED + 1;
+	public static final int LAMP = BED + 1;
+	public static final int TEMPERATURE = LAMP + 1;
 	public static final int LUMINOSITY = TEMPERATURE + 1;
 	public static final int EXTERNAL = LUMINOSITY + 1;
 
@@ -209,6 +210,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		this.mScene.setOnAreaTouchTraversalFrontToBack();
 
 		// load the TMX map (tiled map from house)
+		// see www.mapeditor.org
 		final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, this.getVertexBufferObjectManager(), null);
 
 		try {
@@ -368,8 +370,6 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		// Process the menu items...
 		createResourceIcon(item.getItemId(), true);
 
-		// Checks which item was selected
-
 		return super.onOptionsItemSelected(item);
 	}
 
@@ -390,10 +390,15 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 	// Called when a new resource agent is created
 	private void callConfigDialog() {
 
+		// It is a configuration dialog to
+		// get a name, location and
+		// others configurations
+		
 		this.resConfigured = false;
 		resConf.showDialog();
 	}
 
+	// When the dialog is closed, call this call back
 	public void onDialogFinished(Dialog dialog) {
 
 		regData = new RegistryData(resConf.getName());
@@ -410,6 +415,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		externalList.showDialog(list);
 	}
 
+	// It is called when user select an item from registered resources list
 	public void onRegisteredResourceChoosed(String resourceRAI) {
 
 		int type = -1;
@@ -434,7 +440,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		// It may contain lots of values wrapped, to send to another activity
 		Bundle bundle = new Bundle();
 
-		// The class of the application (StoveView, BedView)
+		// The class of the application (StoveView, BedView...)
 		// it will be called when the icon is clicked
 		Class c = null;
 
