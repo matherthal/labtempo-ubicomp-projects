@@ -2,6 +2,10 @@ package br.uff.tempo.middleware.management;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.Place;
@@ -64,12 +68,37 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		return instance;
 	}
 
-	public ArrayList<Place> search(ResourceAgent rA) {
-		ArrayList<Place> result = new ArrayList<Place>();
-		Place current = get(rA);
-		result.add(0, current);// current local is the nearest
-		ArrayList<Place> localList = (ArrayList<Place>) map.values();
-		result = getNeighbors(current, localList, result);
+//	public ArrayList<Place> search(ResourceAgent rA) {
+//		ArrayList<Place> result = new ArrayList<Place>();
+//		Place current = get(rA);
+//		result.add(0, current);// current local is the nearest
+//		ArrayList<Place> localList = (ArrayList<Place>) map.values();
+//		result = getNeighbors(current, localList, result);
+//		return result;
+//	}
+	
+	public ArrayList<String> search(String query) {
+		ArrayList<String> result = new ArrayList<String>();
+		ArrayList<Set<String>> setList = new ArrayList<Set<String>>();
+		
+		if (query.equals("")) {
+			Set<String> setMap = base.keySet();
+			Iterator<String> itSet = setMap.iterator();
+			while(itSet.hasNext()) {
+				Map<String,Position> raMap = base.get(itSet.next());
+				setList.add(raMap.keySet());
+			}
+		} else {
+			Map<String,Position> raMap = base.get(query);
+			setList.add(raMap.keySet());		
+		}
+		for (Set<String> set : setList) {
+			Iterator<String> itRA = set.iterator();
+			while (itRA.hasNext()) {
+				result.add(itRA.next());
+			}
+		}
+			
 		return result;
 	}
 
@@ -115,11 +144,25 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		// TODO Auto-generated method stub
 
 	}
-
+	
+	
 
 	public void registerInPlace(String url, Position position) {
 		Place place = getLocal(position);
 		HashMap<String, Position> rAMap = base.get(place.getName());
 		rAMap.put(url, position);
 	}
+	
+	public Set<String> listLocations()
+	{
+		return map.keySet();
+	}
+
+
+	@Override
+	public Position getPosition(String place, String rai) {
+		return base.get(place).get(rai);
+	}
+	
+	
 }

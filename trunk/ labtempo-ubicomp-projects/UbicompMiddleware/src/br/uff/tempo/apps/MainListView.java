@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.apps.baselocationview.BaseLocationView;
 import br.uff.tempo.apps.baseview.BaseView;
 import br.uff.tempo.apps.bed.BedView;
 import br.uff.tempo.apps.map.MapActivity;
@@ -63,6 +64,9 @@ public class MainListView extends ListActivity {
 				} else if (item.equals("Repositorio de Recursos")) {
 					Intent intent = new Intent(MainListView.this, BaseView.class);
 					startActivity(intent);
+				} else if (item.equals("Base de Lugares")) {
+					Intent intent = new Intent(MainListView.this, BaseLocationView.class);
+					startActivity(intent);
 				} else if (item.equals("Mapa da casa")) {
 					Intent intent = new Intent(MainListView.this, MapActivity.class);
 					startActivity(intent);
@@ -74,46 +78,5 @@ public class MainListView extends ListActivity {
 				}
 			}
 		});
-
-		// ///////////DEBUG
-		// Log.d("", "Teste inicio");
-		// Toast.makeText(this, "Teste inicio", Toast.LENGTH_SHORT).show();
-		// Exemplo de agregação, interpretação e criação
-		// intent = new Intent(this, Stove.class);
-		// bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
-		// new Stove("Fogao Querido");
-		// //IResourceDiscovery discover = ResourceAgent.getRDS();
-		// IResourceDiscovery discover = new
-		// ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		// Log.d("", "search");
-		// String rai = discover.search("Stove").get(0);
-		// Log.d("", "rai = " + rai);
-		// IStove stove = new StoveStub(rai);
-		// Log.d("", "stove = " + stove.getId());
-		//
-		// Interpreter intp = new Interpreter();
-		// Log.d("", "interpretador = " + intp.getId());
-		// intp.setName("Perigo Vazamento de Gás");
-		//
-		// //Set Context Variable
-		// String cvName = "Vazamento de gás";
-		// intp.setContextVariable(stove, cvName);
-		//
-		// //Set conditional results
-		// float cte = 0.7f;
-		// String res = "Emergência!";
-		// intp.setConditionalResult(Operation.GreaterThanOrEqual, cte, res);
-		// cte = 0.4f;
-		// res = "Alerta";
-		// intp.setConditionalResult(Operation.GreaterThanOrEqual, cte, res);
-		// cte = 0.4f;
-		// res = "Normal";
-		// intp.setConditionalResult(Operation.LessThan, cte, res);
-		//
-		// //Interpretation
-		// res = intp.interpretToString();
-		// Log.d("", "Interpretation: " + res);
-		//
-		// Toast.makeText(this, "Resultado: " + res, Toast.LENGTH_LONG).show();
 	}
 }
