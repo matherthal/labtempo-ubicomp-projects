@@ -17,6 +17,7 @@ import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
@@ -35,6 +36,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private static IResourceDiscovery rDS;
 	private ArrayList<String> registeredList;
 	private String RDS_URL;
+	
+	private Position position;
 
 	// public static IResourceDiscovery getRDS()
 	public IResourceDiscovery getRDS() {
@@ -124,6 +127,11 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 
 	public ResourceAgent(String name, String type, int id) {
 
+		this(name, type, id, null);
+	}
+	
+	public ResourceAgent(String name, String type, int id, Position position) {
+
 		stakeholders = new ArrayList<Stakeholder>();
 
 		// stakeholders.add(new Stakeholder("update",rR));
@@ -144,6 +152,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 
 		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 
+		this.position = position;
 		// initResource();
 	}
 
@@ -188,7 +197,12 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		if (!registered) {
 			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
 
-			registered = rrs.register(this.URL);
+			if (position != null) {
+				registered = rrs.registerLocation(this.URL, this.position);
+			} else {
+				registered = rrs.register(this.URL);
+			}
+				
 			String result = "";
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
@@ -197,6 +211,21 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		return registered;
 	}
 
+	public boolean identifyPosition(Position position) {
+
+		if (!registered) {
+			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
+			this.position = position;
+			registered = rrs.registerLocation(this.URL, this.position);
+				
+			String result = "";
+			// adding local reference of this instance
+			ResourceContainer.getInstance().add(this);
+		}
+
+		return registered;
+	}
+	
 	@Override
 	public void notifyStakeholders(String change) throws JSONException {
 		int i = 0;

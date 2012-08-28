@@ -10,6 +10,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 
 public class Stove extends ResourceAgent implements IStove {
@@ -34,6 +35,13 @@ public class Stove extends ResourceAgent implements IStove {
 	public Stove(String name) {
 		// FIXME: get correct id
 		super(name, "br.uff.tempo.middleware.resources.Stove", 5);
+		burners = new ArrayList<Float>(4);
+		initBurners();
+	}
+	
+	public Stove(String name, Position position) {
+		// FIXME: get correct id
+		super(name, "br.uff.tempo.middleware.resources.Stove", 5, position);
 		burners = new ArrayList<Float>(4);
 		initBurners();
 	}

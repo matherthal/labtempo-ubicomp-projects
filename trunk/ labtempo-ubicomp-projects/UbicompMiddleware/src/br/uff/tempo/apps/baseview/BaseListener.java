@@ -5,11 +5,14 @@ import java.util.ArrayList;
 import android.app.Activity;
 import android.widget.TextView;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 
 public class BaseListener extends Thread {
 
 	private IResourceDiscovery rD;
+	private IResourceLocation rL;
 	TextView tv;
 	Activity act;
 
@@ -18,6 +21,7 @@ public class BaseListener extends Thread {
 		this.act = act;
 
 		rD = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+		//rL = new ResourceLocationStub(rD.search("ResourceLocation").get(0));
 	}
 
 	public void run() {

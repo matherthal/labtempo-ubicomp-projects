@@ -10,8 +10,10 @@ import java.util.Map;
 import org.json.JSONException;
 
 import android.util.Log;
+import android.view.View;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 public class JSONHelper {
@@ -25,12 +27,19 @@ public class JSONHelper {
 		Iterator<Tuple> iterator = params.iterator();
 
 		Tuple<String, Object> tp;
-
-		while (iterator.hasNext()) {
-			tp = iterator.next();
-			jsonparams.add(tp.value);
-			jsontypes.add(tp.key);
+		
+		try {
+			while (iterator.hasNext()) {	
+				tp = iterator.next();
+				Class type = Class.forName(tp.key);
+				jsonparams.add(tp.value);
+				jsontypes.add(tp.key);
+			}
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
 
 		methodCall.put("jsonrpc", "2.0");
 		methodCall.put("method", method);
@@ -62,8 +71,14 @@ public class JSONHelper {
 		response.put("result", msg);
 		response.put("id", "0"); // we don't really use this so value is always
 									// zero
-		String resultMsg = (new Gson()).toJson(response);
-
+		String resultMsg;
+		try {
+			resultMsg = (new Gson()).toJson(response);
+		} catch (Exception e) {
+			String result = (new Gson()).toJson(response.get("result"), View.class);
+			response.put("result", result);
+			resultMsg = (new Gson()).toJson(response);
+		}
 		return resultMsg;
 		// Serialise response to JSON-encoded string
 		// The response string can now be sent back to the client...

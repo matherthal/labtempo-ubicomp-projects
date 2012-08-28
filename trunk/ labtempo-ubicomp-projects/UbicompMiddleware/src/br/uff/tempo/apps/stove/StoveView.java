@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Window;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.Stove;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 
@@ -50,7 +51,7 @@ public class StoveView extends FragmentActivity /* implements Observer */{
 
 			// identify the resource to the system (it calls
 			// ResourceRegister.register())
-			s.identify();
+			s.identifyPosition(new Position(20,20));
 
 			stoveAgent = s;
 		}

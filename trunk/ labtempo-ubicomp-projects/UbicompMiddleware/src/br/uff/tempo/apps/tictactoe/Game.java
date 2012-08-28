@@ -21,7 +21,7 @@ import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.middleware.resources.interfaces.IGameAgent;
 
-public class Game {
+public class Game implements IGame{
 
   //
   // Constructors

@@ -7,6 +7,7 @@ import java.util.List;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
+import br.uff.tempo.middleware.management.utils.Position;
 
 import com.google.gson.reflect.TypeToken;
 
@@ -35,6 +36,15 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
 		return (Boolean) makeCall("register", params);
+	}
+
+	@Override
+	public boolean registerLocation(String url, Position position) {
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(Position.class.getName(), position));
+		
+		return (Boolean) makeCall("registerLocation", params);		
 	}
 
 }
