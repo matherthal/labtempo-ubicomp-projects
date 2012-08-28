@@ -95,6 +95,6 @@ public class TicTacToe extends Activity {
   // Attributes
   //
 
-	private IGame game;
+	private Game game;
 
 }
