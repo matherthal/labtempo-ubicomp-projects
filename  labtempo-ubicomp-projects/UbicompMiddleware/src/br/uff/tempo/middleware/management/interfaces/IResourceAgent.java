@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import org.json.JSONException;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.utils.Position;
 
 public interface IResourceAgent extends Serializable {
 	public String getResourceClassName();
@@ -78,6 +79,7 @@ public interface IResourceAgent extends Serializable {
 	public boolean identify();
 
 	public void notifyStakeholders(String change) throws JSONException;
+
 
 	// TODO Not so good solution... We need to improve this.
 	// public ResourceData getData();

@@ -9,7 +9,7 @@ import br.uff.tempo.middleware.management.utils.Position;
 public class Person extends ResourceAgent{
 
 	List<SmartObject> sensors;
-	List<Local> recentLocal;
+	List<Place> recentLocal;
 	List<Position> recentPositions;
 	IResourceLocation rLS;
 	public Person(List<SmartObject> sensors, List<Position> recentPositions, String name, String type, int id){

@@ -1,11 +1,13 @@
 package br.uff.tempo.middleware.management;
 
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceRegister extends ResourceAgent implements IResourceRegister {
 
 	ResourceRepository rR;
+	ResourceLocation rL;
 
 	private static ResourceRegister instance;
 
@@ -29,6 +31,14 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	public boolean register(String url) {
 		rR = ResourceRepository.getInstance();
 		rR.add(url);
+		return true;
+	}
+	
+	public boolean registerLocation(String url, Position position) {
+		rR = ResourceRepository.getInstance();
+		rR.add(url);
+		rL = ResourceLocation.getInstance();
+		rL.registerInPlace(url,position);
 		return true;
 	}
 

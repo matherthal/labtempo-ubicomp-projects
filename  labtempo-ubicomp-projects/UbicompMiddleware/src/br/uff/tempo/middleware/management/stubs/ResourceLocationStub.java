@@ -7,7 +7,7 @@ import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.utils.Position;
-import br.uff.tempo.middleware.management.Local;
+import br.uff.tempo.middleware.management.Place;
 
 public class ResourceLocationStub extends Stub implements IResourceLocation {
 
@@ -15,31 +15,31 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 		super(calleeID);
 	}
 
-	public ArrayList<Local> search(ResourceAgent rA) {
+	public ArrayList<Place> search(ResourceAgent rA) {
 		String method = "search";
 
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
 		params.add(new Tuple<String, Object>(ResourceAgent.class.getName(), rA));
 
-		return (ArrayList<Local>) makeCall("search", params);
+		return (ArrayList<Place>) makeCall("search", params);
 
 	}
 
-	public Local get(ResourceAgent rA) {
+	public Place get(ResourceAgent rA) {
 
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
 		params.add(new Tuple<String, Object>(ResourceAgent.class.getName(), rA));
 
-		return (Local) makeCall("get", params);
+		return (Place) makeCall("get", params);
 	}
 	
-	public Local getLocal(Position position) {
+	public Place getLocal(Position position) {
 		List<Tuple> params = new ArrayList<Tuple>();
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 		
-		return (Local) makeCall("getLocal", params);
+		return (Place) makeCall("getLocal", params);
 	}
 
 }

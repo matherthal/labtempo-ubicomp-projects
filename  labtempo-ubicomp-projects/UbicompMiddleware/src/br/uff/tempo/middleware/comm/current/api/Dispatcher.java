@@ -21,9 +21,11 @@ import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceRepositoryStub;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 public class Dispatcher extends Thread {
@@ -127,9 +129,12 @@ public class Dispatcher extends Thread {
 		Tuple<String, Object> tp;
 
 		while (itParams.hasNext()) {
-			tp = new Tuple<String, Object> (itTypes.next(), itParams.next());
+			String strType = itTypes.next();
+			Object param = itParams.next();
+			tp = new Tuple<String, Object>(strType, param);
 			result.add(tp);
 		}
+	
 		return result;
 	}
 
@@ -137,8 +142,15 @@ public class Dispatcher extends Thread {
 		Object[] args = new Object[argList.size()];
 		for (int i = 0; i < argList.size(); i++){
 			Tuple<String, Object> tuple = argList.get(i);
-			if (tuple.key.equals("String")){
+			if (tuple.key.equals(String.class.getName())){
 				args[i] = tuple.value;
+			} else if (tuple.key.equals(Position.class.getName())){
+				String str = tuple.value.toString();
+				String[] array = str.split(",");
+				String[] arrayX = array[0].split("=");
+				String[] arrayY = array[1].split("=");
+				arrayY[0] = arrayY[1].substring(0,arrayY[1].length()-1);
+				args[i] = new Position(Math.round(Float.valueOf(arrayX[1])), Math.round(Float.valueOf(arrayY[0])));
 			} else {
 				try {
 					Class type = getClassOf(tuple.key);

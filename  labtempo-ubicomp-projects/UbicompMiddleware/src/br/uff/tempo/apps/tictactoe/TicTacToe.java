@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import br.uff.tempo.R;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
@@ -40,7 +41,7 @@ public class TicTacToe extends Activity {
 			}
 		}
 		this.game = new Game(this, gameAgent);
-		gameAgent.setGame(this.game);
+		gameAgent.setGame((Game)this.game);
   }
 
   //
@@ -50,7 +51,8 @@ public class TicTacToe extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    this.setContentView(this.game.initialize());
+		View view = this.game.initialize();
+		this.setContentView(view);
   }
 
   @Override
@@ -93,6 +95,6 @@ public class TicTacToe extends Activity {
   // Attributes
   //
 
-  private Game game;
+	private IGame game;
 
 }
