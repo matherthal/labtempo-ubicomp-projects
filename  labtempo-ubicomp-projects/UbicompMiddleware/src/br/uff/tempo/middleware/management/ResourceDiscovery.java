@@ -27,7 +27,7 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 
 	}
 
-	private ArrayList<ResourceAgent> queryByLocal(String query) {
+	public ArrayList<String> queryByLocal(String query) {
 		return null;
 	}
 

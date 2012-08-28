@@ -67,4 +67,12 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 		return (Position) makeCall("getPosition", params, Position.class);
 	}
 
+	@Override
+	public ArrayList<String> queryByLocal(Position position) {
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>(Position.class.getName(), position));
+		
+		return (ArrayList<String>) makeCall("queryByLocal", params);
+	}
+
 }

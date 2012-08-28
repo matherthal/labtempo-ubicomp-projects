@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.Bed;
 
 public class BedView extends Activity /* implements Observer */{
@@ -21,7 +22,7 @@ public class BedView extends Activity /* implements Observer */{
 
 		// this.bedData = new BedData();
 		this.bed = new Bed("cama");
-		this.bed.identify();
+		this.bed.identifyPosition(new Position(10,10));
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		setContentView(R.layout.bed);
