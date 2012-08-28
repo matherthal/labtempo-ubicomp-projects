@@ -63,6 +63,19 @@ public class JSONHelper {
 		Object obj = response.get("result");
 		return obj;
 	}
+	
+	public static Object getMessage(String result, Class type) throws JSONException {
+		// Parse response string
+		Type collectionType = new TypeToken<HashMap<String, Object>>() {
+		}.getType();
+
+		Log.d("JSONHelper", "result = " + result);
+		String[] resultData = result.split(";");
+		Map<String, Object> response = (new Gson()).fromJson(resultData[0], collectionType);
+		Object obj = response.get("result");
+		Object resultObj = new Gson().fromJson(obj.toString(), type);
+		return resultObj;
+	}
 
 	public static String createReply(Object msg) throws JSONException {
 		// FIXME: Can I return anything?

@@ -32,4 +32,20 @@ public class Stub implements Serializable {
 			return null;
 		}
 	}
+	
+	public Object makeCall(String methodName, List<Tuple> params, Class returnType) {
+
+		try {
+			// Create message
+			String msg = JSONHelper.createMethodCall(methodName, params);
+
+			// Get answer from remote method call and return
+			String ret = caller.sendMessage(msg);
+			return JSONHelper.getMessage(ret,returnType);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

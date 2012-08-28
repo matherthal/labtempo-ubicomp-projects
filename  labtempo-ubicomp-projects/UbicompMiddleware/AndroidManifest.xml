@@ -28,6 +28,7 @@
         <activity android:name=".apps.tv.TvView" />
         <activity android:name=".apps.map.MapActivity" />
         <activity android:name=".apps.baseview.BaseView" />
+        <activity android:name=".apps.baselocationview.BaseLocationView" />
         
         <!-- Rule -->
         <activity android:name=".apps.rule.RuleActivity"

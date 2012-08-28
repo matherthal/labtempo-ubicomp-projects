@@ -37,6 +37,7 @@
         <item name="item_clock">Relogio</item>
         <item name="item_bed">Cama</item>
         <item name="item_base">Repositorio de Recursos</item>
+        <item name="item_place">Base de Lugares</item>
         <item name="item_map">Mapa da casa</item>
         <item name="item_tttoe">Jogo da velha</item>
     </string-array>

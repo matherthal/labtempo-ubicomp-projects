@@ -8,6 +8,7 @@ import org.json.JSONException;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.utils.Position;
 
 public class ResourceAgentStub extends Stub implements IResourceAgent {
 	private String url;

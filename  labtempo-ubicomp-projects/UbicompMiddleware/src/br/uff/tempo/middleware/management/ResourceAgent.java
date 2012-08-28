@@ -83,7 +83,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public void setType(String type) {
 		this.type = type;
 	}
-
+	
 	@Override
 	public ArrayList<ResourceAgent> getInterests() {
 		return interests;
@@ -263,4 +263,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public String change(String id, String method, Object value) throws JSONException {
 		return JSONHelper.createChange(id, method, value);
 	}
+	
+
 }

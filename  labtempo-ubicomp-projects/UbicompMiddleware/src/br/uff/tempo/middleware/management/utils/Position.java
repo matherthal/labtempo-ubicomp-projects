@@ -45,4 +45,9 @@ public class Position {
 		}
 		return result;
 	}
+	
+	//proposital don't override toString
+	public String print() {
+		return "{x="+x+", y="+y+"}";
+	}
 }
