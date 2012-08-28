@@ -10,9 +10,12 @@ import br.uff.tempo.middleware.management.utils.Position;
 
 public interface IResourceLocation {
 
-	public ArrayList<String> search(String query);// return sorted list by
-														// proximity
+	public ArrayList<String> search(String query);
+	public ArrayList<String> queryByLocal(Position position);	// return sorted list by
+																// proximity
+	
 
+	
 	public Place get(ResourceAgent rA);
 	public Place getLocal(Position position);
 

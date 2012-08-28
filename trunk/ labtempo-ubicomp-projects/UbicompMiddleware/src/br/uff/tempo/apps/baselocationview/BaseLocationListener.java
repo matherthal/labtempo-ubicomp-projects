@@ -62,7 +62,15 @@ public class BaseLocationListener extends Thread {
 					result += rai + " Position: "+ position.print() +"\n";
 				}
 			}
-		}			
+		}
+		
+		result += "=======================\n+" +
+				  "======Sorted List======\n+" +
+				  "=======Ref 0,0=========\n";
+		ArrayList<String> sortedList = rL.queryByLocal(new Position(0,0));
+		for (String rai: sortedList) {
+			result += rai+"\n";
+		}
 
 		final String text = result;
 		act.runOnUiThread(new Runnable() {

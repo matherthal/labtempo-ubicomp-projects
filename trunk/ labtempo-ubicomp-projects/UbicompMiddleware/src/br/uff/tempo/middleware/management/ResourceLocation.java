@@ -7,10 +7,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
+import br.uff.tempo.middleware.management.utils.Sorter;
 
 public class ResourceLocation extends ResourceAgent implements IResourceLocation {
 
@@ -19,6 +21,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	private static ResourceLocation instance;
 
 	HashMap<String, Place> map;
+	HashMap<String, Position> resources;
 	HashMap<String, HashMap<String, Position>> base;
 		
 	private ResourceLocation() {
@@ -30,6 +33,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		setURL(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceLocation", "ResourceLocation"));
 
 		map = new HashMap<String, Place>();
+		resources = new HashMap<String, Position>();
 		base = new HashMap<String, HashMap<String, Position>>();
 		ResourceContainer.getInstance().add(this);
 		loadBase();
@@ -151,6 +155,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		Place place = getLocal(position);
 		HashMap<String, Position> rAMap = base.get(place.getName());
 		rAMap.put(url, position);
+		resources.put(url, position);
 	}
 	
 	public Set<String> listLocations()
@@ -162,6 +167,19 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	@Override
 	public Position getPosition(String place, String rai) {
 		return base.get(place).get(rai);
+	}
+	
+	public ArrayList<String> queryByLocal(Position position) {
+		List<Tuple<String,Position>> raList = new ArrayList<Tuple<String,Position>>();
+		Set<String> setRai= resources.keySet();
+		Iterator<String> itRai = setRai.iterator();
+		while(itRai.hasNext()) {
+			String rai = itRai.next();
+			raList.add(new Tuple(rai, resources.get(rai)));
+		}
+		
+		Sorter<Position> sorter = new Sorter<Position>(raList,position);
+		return sorter.sort();
 	}
 	
 	

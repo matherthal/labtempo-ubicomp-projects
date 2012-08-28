@@ -46,6 +46,11 @@ public class Position {
 		return result;
 	}
 	
+	//distância der AB = raiz de ( Xa - Xb )^2 + ( Ya - Yb )^2
+	public double getDistance(Position position) {
+		return Math.sqrt(Math.pow(position.x-x, 2)+Math.pow(position.y-y, 2));
+	}
+	
 	//proposital don't override toString
 	public String print() {
 		return "{x="+x+", y="+y+"}";
