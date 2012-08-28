@@ -6,15 +6,15 @@ import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
 
-public class Person extends ResourceAgent{
+public class Person extends ResourceAgent {
 
-	List<SmartObject> sensors;
+	List<SmartObject> objects;
 	List<Place> recentLocal;
 	List<Position> recentPositions;
 	IResourceLocation rLS;
 	public Person(List<SmartObject> sensors, List<Position> recentPositions, String name, String type, int id){
 		super(name, type, id);
-		this.sensors = sensors;
+		this.objects = sensors;
 		this.recentPositions = recentPositions;		
 	}
 	
@@ -30,24 +30,48 @@ public class Person extends ResourceAgent{
 	//list is in reverse order
 	public SmartObject getSensor(int i)
 	{
-		return sensors.get(sensors.size()-(i+1));
+		return objects.get(objects.size()-(i+1));
 	}
 	
 	//return preview sensor
 	public SmartObject setSensor(int i, SmartObject sensor){
-		return sensors.set(sensors.size()-(i+1), sensor);
+		return objects.set(objects.size()-(i+1), sensor);
 	}
 	
 	public void addSensor(SmartObject sensor)
 	{
-		sensors.add(sensor);
+		objects.add(sensor);
 	}
 	
 	public boolean removeSensor(SmartObject sensor)
 	{
-		return sensors.remove(sensor);
+		return objects.remove(sensor);
 	}
 	
+	public Position getPosition(int i)
+	{
+		return recentPositions.get(objects.size()-(i+1));
+	}
+	
+	public Position getCurrentPosition()
+	{
+		return getPosition(0);
+	}
+	
+	//return preview sensor
+	public Position setPosition(int i, Position position){
+		return recentPositions.set(recentPositions.size()-(i+1), position);
+	}
+	
+	public void addPosition(Position position)
+	{
+		recentPositions.add(position);
+	}
+	
+	public boolean removePosition(Position position)
+	{
+		return recentPositions.remove(position);
+	}	
 	
 	@Override
 	public void notificationHandler(String change) {
