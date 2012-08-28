@@ -145,16 +145,11 @@ public class Dispatcher extends Thread {
 			if (tuple.key.equals(String.class.getName())){
 				args[i] = tuple.value;
 			} else if (tuple.key.equals(Position.class.getName())){
-				String str = tuple.value.toString();
-				String[] array = str.split(",");
-				String[] arrayX = array[0].split("=");
-				String[] arrayY = array[1].split("=");
-				arrayY[0] = arrayY[1].substring(0,arrayY[1].length()-1);
-				args[i] = new Position(Math.round(Float.valueOf(arrayX[1])), Math.round(Float.valueOf(arrayY[0])));
+				args[i] = new Gson().fromJson(tuple.value.toString(), Position.class);
 			} else {
 				try {
 					Class type = getClassOf(tuple.key);
-					args[i] = type.cast(tuple.value);
+					args[i] = new Gson().fromJson(tuple.value.toString(), type);
 				} catch (ClassNotFoundException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
