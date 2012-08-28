@@ -9,9 +9,11 @@ public class Place extends ResourceAgent{
 	Position lower;// left lower vertex
 	Position upper;// right upper vertex
 
-	public Place(Position lower, Position upper)// It defines a rectangle from
+	public Place(String name, Position lower, Position upper)// It defines a rectangle from
 												// the vertex
 	{
+		super(name, "br.uff.tempo.middleware.management.Place", 0);
+		this.name = name;
 		this.lower = lower;
 		this.upper = upper;
 	}
