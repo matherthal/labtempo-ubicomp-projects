@@ -73,7 +73,8 @@ public class RuleCondListActivity extends Activity {
 				ra.identify();
 				Condition cond = null;
 				try {
-					cond = new Condition(ra.getURL(), "temperature", null, Operator.GreaterThanOrEqual, "100", 0);
+					// cond = new Condition(ra.getURL(), "temperature", null,
+					// Operator.GreaterThanOrEqual, "100", 0);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -111,10 +112,10 @@ public class RuleCondListActivity extends Activity {
 		// }
 		String mtd = "get" + attrib;
 
-		Condition cond;
+		Condition cond = null;
 		try {
 			// Initialize Condition
-			cond = new Condition(ra.getURL(), mtd, null, operator, value, 0);
+			// cond = new Condition(ra.getURL(), mtd, null, operator, value, 0);
 		} catch (Exception e) {
 			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);
 			return;

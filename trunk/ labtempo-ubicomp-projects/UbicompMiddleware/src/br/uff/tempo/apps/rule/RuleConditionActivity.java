@@ -13,7 +13,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
-import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Condition;
@@ -186,10 +185,11 @@ public class RuleConditionActivity extends Activity {
 		TextView tv = (TextView) findViewById(R.id.editTextValue);
 		String value = tv.getText().toString();
 
-		Condition cond;
+		Condition cond = null;
 		try {
 			// Initialize Condition
-			cond = new Condition(ra.getURL(), mtd, null, Operator.valueOf(op), value, 0);
+			// cond = new Condition(ra.getURL(), mtd, null,
+			// Operator.valueOf(op), value, 0);
 		} catch (Exception e) {
 			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);
 			return;

@@ -76,7 +76,8 @@ public class RuleActivity extends Activity {
 
 		if (savedInstanceState == null) {
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-			String raiStove = discovery.search("Stove").get(0);
+			ArrayList<String> stoves = discovery.search("Stove");
+			String raiStove = stoves.get(0);
 			Toast.makeText(this, "Fogão encontrado", Toast.LENGTH_SHORT).show();
 
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
@@ -86,14 +87,14 @@ public class RuleActivity extends Activity {
 			RuleInterpreter rule = new RuleInterpreter();
 			try {
 				rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, "50.0");
-				rule.setCondition(raiBed, "occupied", null, Operator.Equal, "True");
+				rule.setCondition(raiBed, "occupied", null, Operator.Equal, true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			rule.identify();
 			Toast.makeText(this, "Regra registrada", Toast.LENGTH_SHORT).show();
 
-			RuleInterpreterTest test = new RuleInterpreterTest();
+			RuleInterpreterTest test = new RuleInterpreterTest(null);
 			// rule.registerStakeholder("Regra disparada", test.getURL());
 			test.identify();
 			Toast.makeText(this, "Aplicação inicializada e registrada", Toast.LENGTH_SHORT).show();
@@ -253,17 +254,18 @@ public class RuleActivity extends Activity {
 		Condition cond;
 		try {
 			// Initialize Condition
-			cond = new Condition(ra.getURL(), mtd, null, operator, value, 0);
+			// cond = new Condition(ra.getURL(), mtd, null, operator, value, 0,
+			// this);
 		} catch (Exception e) {
 			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);
 			return;
 		}
 
 		// Add condition to list of conditions
-		conds.add(cond);
+		// conds.add(cond);
 		// Add condition to list in the view
-		listItems.add(cond.toString());
-		lvAdapter.notifyDataSetChanged();
+		// listItems.add(cond.toString());
+		// lvAdapter.notifyDataSetChanged();
 	}
 
 	public void buttonCreateRule_Clicked(View view) {

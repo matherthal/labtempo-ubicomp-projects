@@ -11,12 +11,15 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.resources.Condition;
 
 public class RuleInterpreter extends ResourceAgent {
 	private String TAG = "RuleInterpreter";
-	private Set<Condition> conds = new HashSet<Condition>();
+
+	public final String RULE_TRIGGERED = "RULE_TRIGGERED";
+
+	private Set<ComparisonNode> cNSet = new HashSet<ComparisonNode>();
 	private IResourceDiscovery discovery;
+	private boolean valid = false;
 
 	public RuleInterpreter() {
 		super("Regra do Fogao", "br.uff.tempo.middleware.management.RuleInterpreter", 9);
@@ -24,7 +27,8 @@ public class RuleInterpreter extends ResourceAgent {
 	}
 
 	@ContextVariable(name = "Regra disparada")
-	public void ruleTrigger() {
+	public boolean ruleTrigger() {
+		return valid;
 	}
 
 	@Service(name = "Definir expressão")
@@ -41,22 +45,35 @@ public class RuleInterpreter extends ResourceAgent {
 		IResourceAgent ra = new ResourceAgentStub(rai);
 		ra.registerStakeholder(cv, this.getURL());
 		// re discovery.search(rai).get(0);
-		conds.add(new Condition(rai, cv, params, op, value, 0));
+		cNSet.add(new ComparisonNode(rai, cv, params, op, value, 0));
 	}
 
-	private void evaluate() {
-		boolean valid = false;
-		for (Condition c : conds) {
-			if (c.test())
-				valid = true;
-			else {
-				valid = false;
+	@Deprecated
+	public void setTimedCondition(String rai, String cv, Object[] params, Operator op, Object value, Integer timeInSec)
+			throws Exception {
+		IResourceAgent ra = new ResourceAgentStub(rai);
+		ra.registerStakeholder(cv, this.getURL());
+		// re discovery.search(rai).get(0);
+		cNSet.add(new ComparisonNode(rai, cv, params, op, value, timeInSec));
+	}
+
+	/**
+	 * Get the data structure that stores the Comparison Nodes and evaluates
+	 * this.
+	 */
+	private void evaluateExpr() {
+		boolean v = true;
+		for (ComparisonNode cn : cNSet) {
+			if (!cn.evaluate()) {
+				v = false;
 				break;
 			}
 		}
-		if (valid)
+
+		if (v)
+			valid = v;
 			try {
-				notifyStakeholders(JSONHelper.createChange(this.getURL(), "Regra disparada", true));
+			notifyStakeholders(JSONHelper.createChange(this.getURL(), RULE_TRIGGERED, true));
 			} catch (JSONException e) {
 				Log.e(TAG, "Error in evaluation");
 				e.printStackTrace();
@@ -69,12 +86,30 @@ public class RuleInterpreter extends ResourceAgent {
 		String mtd = JSONHelper.getChange("method", change).toString();
 		Object val = JSONHelper.getChange("value", change);
 
-		for (Condition c : conds) {
-			if (c.rai.equals(id) && c.method.equals(mtd) && !c.value.equals(val)) {
-				c.value = val;
-				evaluate();
+		for (ComparisonNode cn : cNSet) {
+			// If the change comes from the correct agent AND the context
+			// variable (method) is the same AND the value is different,
+			// then evaluate
+			// && !cn.getValueCache().equals(val)
+			if (cn.getRai().equals(id) && cn.getMethod().equals(mtd)) {
+				cn.setValueCache(val);
+				// The expression only will be evaluated if the current
+				// validation of the rule is false. Otherwise it will be assumed
+				// that the expression didn't came from a change. This avoids
+				// the problem of overflow the system with messages while the
+				// rule keeps with valid value as true
+				if (!valid) {
+					Log.i("EVALUATE CN ", "?");
+					if (cn.evaluate()) {
+						Log.i("EVALUATE CN ", "TRUE");
+						evaluateExpr();
+					}
+				}
 			}
 		}
 	}
 
+	public void ConditionTimeout() {
+
+	}
 }
