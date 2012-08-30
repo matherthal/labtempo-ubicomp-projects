@@ -10,7 +10,6 @@ import br.uff.tempo.middleware.resources.interfaces.IGeneric;
 public class Generic extends ResourceAgent implements IGeneric {
 	private String TAG = "Generic";
 	protected String name = "";
-	protected String url = "";
 
 	public Generic(String name) {
 		// FIXME: consertar id passada por param
