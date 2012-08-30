@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -50,15 +51,10 @@ public class AppLampController extends Activity {
 						// If value has changed
 						if (count == 0 || lastVal != val) {
 							lastVal = val;
-							incCount();
+							incCount();						
 						}
 				}
 			};
-			// lampStakeholder.identify();
-			// Log.i(TAG, "Generic lamp stakeholder identified");
-			// String cv = "isOn";
-			// lamp.registerStakeholder(cv, lampStakeholder.getURL());
-			// Log.i(TAG, "Generic lamp stakeholder subscribed");
 		}
     }
 
@@ -88,9 +84,22 @@ public class AppLampController extends Activity {
 		Toast.makeText(this, "Lâmpada desligada", Toast.LENGTH_SHORT).show();
 	}
 	
+	private Activity a = this; 
+	
+	final Handler mHandler = new Handler();
+	final Runnable mUpdateResults = new Runnable() {
+	    public void run() {
+	        Toast.makeText(a, "Contador incrementado para " + count, Toast.LENGTH_LONG).show();
+	    }
+	};
+	
 	private void incCount() {
 		count++;
 		Log.i(TAG, "Count inc to: " + count);
-		Toast.makeText(this, "Contador incrementado para " + count, Toast.LENGTH_LONG).show();
+//		 Toast.makeText(AppLampController.this, "Contador incrementado para "
+//		 + count, Toast.LENGTH_LONG).show();
+		// TextView tv = (TextView) findViewById(R.id.textViewStatus);
+		// tv.setText("Contador incrementado para " + count);
+		mHandler.post(mUpdateResults);
 	}
 }
