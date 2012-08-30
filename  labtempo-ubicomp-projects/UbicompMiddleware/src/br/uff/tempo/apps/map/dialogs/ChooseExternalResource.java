@@ -76,9 +76,9 @@ public class ChooseExternalResource extends MapDialog implements AdapterView.OnI
 																// number...
 																// must be
 																// changed!
-		MapActivity map = (MapActivity) activity;
+		IResourceChooser chooser = (IResourceChooser) activity;
 
-		map.onRegisteredResourceChoosed(resourceRAI);
+		chooser.onRegisteredResourceChoosed(resourceRAI);
 
 		dialog.cancel();
 

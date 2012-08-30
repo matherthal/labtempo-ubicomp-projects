@@ -39,6 +39,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseExternalResource;
+import br.uff.tempo.apps.map.dialogs.IResourceChooser;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.apps.map.dialogs.ResourceConfig;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
@@ -51,7 +52,7 @@ import br.uff.tempo.middleware.resources.interfaces.IStove;
 import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
 public class MapActivity extends /* SimpleLayoutGameActivity */
-SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener, IPinchZoomDetectorListener {
+SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener, IPinchZoomDetectorListener, IResourceChooser {
 
 	// ===========================================================
 	// Constants
@@ -416,6 +417,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 	}
 
 	// It is called when user select an item from registered resources list
+	@Override
 	public void onRegisteredResourceChoosed(String resourceRAI) {
 
 		int type = -1;
