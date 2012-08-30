@@ -13,8 +13,10 @@ import br.uff.tempo.R;
 import br.uff.tempo.apps.baselocationview.BaseLocationView;
 import br.uff.tempo.apps.baseview.BaseView;
 import br.uff.tempo.apps.bed.BedView;
+import br.uff.tempo.apps.counter.CounterView;
 import br.uff.tempo.apps.lamp.LampView;
 import br.uff.tempo.apps.map.MapActivity;
+import br.uff.tempo.apps.onoffsample.OnOffView;
 import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.stove.StoveView;
 import br.uff.tempo.apps.tictactoe.TicTacToe;
@@ -79,6 +81,11 @@ public class MainListView extends ListActivity {
 					startActivity(intent);
 				} else if (item.equals("Controlador de Lampada")) {
 					Intent intent = new Intent(MainListView.this, AppLampController.class);
+				} else if (item.equals("DeviceOnOff")) {
+					Intent intent = new Intent(MainListView.this, OnOffView.class);
+					startActivity(intent);
+				} else if (item.equals("Counter")) {
+					Intent intent = new Intent(MainListView.this, CounterView.class);
 					startActivity(intent);
 				} else {
 					Toast.makeText(MainListView.this, "Não existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();
