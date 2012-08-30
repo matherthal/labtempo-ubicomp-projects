@@ -8,7 +8,7 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.management.utils.NotifyDemo;
+//import br.uff.tempo.middleware.management.utils.NotifyDemo;
 
 public class RuleInterpreterTest extends ResourceAgent {
 	private String TAG = "RuleInterpreterTest";
@@ -36,8 +36,8 @@ public class RuleInterpreterTest extends ResourceAgent {
 		Log.d(TAG, "CHANGE: " + change);
 		Log.d(TAG, "CHANGE: " + change);
 		
-		Intent intent = new Intent(null, NotifyDemo.class);
-		startActivity(intent);
+		//Intent intent = new Intent(null, NotifyDemo.class);
+		//startActivity(intent);
 		// Toast.makeText(getBaseContext(), "Notificacao 1. Mudança: " + change,
 		// Toast.LENGTH_LONG).show();
 		// Toast.makeText(context, "Notificacao 2. Mudança: " + change,
