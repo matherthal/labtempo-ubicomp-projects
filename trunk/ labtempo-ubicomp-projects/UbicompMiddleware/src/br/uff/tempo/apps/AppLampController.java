@@ -36,29 +36,29 @@ public class AppLampController extends Activity {
 			lamp = new LampStub(raiLamp);
 			
 			// Subscription
-			lampStakeholder = new Generic("Controlador de Lampada") {
-				// @Override
-				// public void onCreate() {
-				// Log.i(TAG, "Generic lamp stakeholder created");
-				// String cv = "isOn";
-				// lamp.registerStakeholder(cv, url);
-				// }
-				
+			lampStakeholder = new Generic("Controlador de Lampada", lamp, "isOn") {
+				boolean lastVal = false;
+
 				@Override
 				public void notificationHandler(String change) {
 					Log.d(TAG, "CHANGE: " + change);
 					String id = JSONHelper.getChange("id", change).toString();
 					String mtd = JSONHelper.getChange("method", change).toString();
-					// Object val = JSONHelper.getChange("value", change);
+					boolean val = Boolean.valueOf(JSONHelper.getChange("value", change).toString());
+					// If it's really the lamp
 					if (id.equals(lamp.getURL()) && mtd.equals("isOn"))
-						incCount();
+						// If value has changed
+						if (count == 0 || lastVal != val) {
+							lastVal = val;
+							incCount();
+						}
 				}
 			};
-			lampStakeholder.identify();
-			Log.i(TAG, "Generic lamp stakeholder identified");
-			String cv = "isOn";
-			lamp.registerStakeholder(cv, lampStakeholder.getURL());
-			Log.i(TAG, "Generic lamp stakeholder subscribed");
+			// lampStakeholder.identify();
+			// Log.i(TAG, "Generic lamp stakeholder identified");
+			// String cv = "isOn";
+			// lamp.registerStakeholder(cv, lampStakeholder.getURL());
+			// Log.i(TAG, "Generic lamp stakeholder subscribed");
 		}
     }
 
