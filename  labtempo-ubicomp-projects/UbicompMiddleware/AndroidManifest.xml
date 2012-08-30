@@ -5,24 +5,26 @@
     android:versionName="1.0" >
 
     <uses-sdk android:minSdkVersion="8" />
+
     <uses-permission android:name="android.permission.VIBRATE" />
-	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE"/>
-    
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
-    
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
+
     <application
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
-        <activity android:name=".apps.MainListView" android:label="MainListView">
+        <activity
+            android:name=".apps.MainListView"
+            android:label="MainListView" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
         <activity android:name=".apps.stove.StoveView" />
         <activity android:name=".apps.bed.BedView" />
         <activity android:name=".apps.tv.TvView" />
@@ -30,44 +32,70 @@
         <activity android:name=".apps.baseview.BaseView" />
         <activity android:name=".apps.lamp.LampView" />
         <activity android:name=".apps.baselocationview.BaseLocationView" />
-        
+
         <!-- Rule -->
-        <activity android:name=".apps.rule.RuleActivity"
+        <activity
+            android:name=".apps.rule.RuleActivity"
             android:label="@string/rule_creation" />
-        <activity android:name=".apps.rule.RuleConditionActivityivity"
+        <activity
+            android:name=".apps.rule.RuleConditionActivityivity"
             android:label="@string/rule_cond" />
-        <activity android:name=".apps.rule.RuleCondListActivityivity"
+        <activity
+            android:name=".apps.rule.RuleCondListActivityivity"
             android:label="@string/rule_cond" />
-        <activity android:name=".apps.rule.RuleActionListActivityivity"
+        <activity
+            android:name=".apps.rule.RuleActionListActivityivity"
             android:label="@string/rule_action" />
-        <activity android:name=".apps.rule.RuleActionActivityonActivity"
+        <activity
+            android:name=".apps.rule.RuleActionActivityonActivity"
             android:label="@string/rule_action" />
-        <service android:enabled="true" android:name=".middleware.resources.Rule" />
+
+        <service
+            android:name=".middleware.resources.Rule"
+            android:enabled="true" />
         <!-- End Rule -->
-        
-        <service android:enabled="true" android:name=".middleware.management.ResourceAgent" />	
-        <service android:enabled="true" android:name=".middleware.resources.Stove" />       
-        <service android:enabled="true" android:name=".apps.MediaService" />
-        
-        <receiver android:name=".middleware.resources.AlarmReceiver"></receiver>
+
+        <service
+            android:name=".middleware.management.ResourceAgent"
+            android:enabled="true" />
+        <service
+            android:name=".middleware.resources.Stove"
+            android:enabled="true" />
+        <service
+            android:name=".apps.MediaService"
+            android:enabled="true" />
+
+        <receiver android:name=".middleware.resources.AlarmReceiver" >
+        </receiver>
         <!-- Begin tictactoe app -->
-        <activity android:name=".apps.tictactoe.TicTacToe" 
-            android:label="@string/app_tic_name"
+        <activity
+            android:name=".apps.tictactoe.TicTacToe"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="portrait">
-            <intent-filter >
-		       <action android:name="android.intent.action.MAIN"/>
-		       <category android:name="android.intent.category.LAUNCHER"/>                
+            android:label="@string/app_tic_name"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/settings_title" android:name=".apps.tictactoe.Settings"/>
-		<activity
-		    android:label="@string/about_title"
-		    android:name=".apps.tictactoe.About"
-		    android:theme="@android:style/Theme.Dialog">
-		</activity>
+        <activity
+            android:name=".apps.tictactoe.Settings"
+            android:label="@string/settings_title" />
+        <activity
+            android:name=".apps.tictactoe.About"
+            android:label="@string/about_title"
+            android:theme="@android:style/Theme.Dialog" >
+        </activity>
         <!-- End tictactoe app -->
-        
+
+        <activity
+            android:name=".middleware.management.utils.NotifyDemo"
+            android:label="NotifyDemo" />
+        <!-- App Lamp Controller -->
+        <activity
+            android:name=".apps.AppLampController"
+            android:label="@string/title_activity_app_lamp_controller" />
     </application>
-    
+
 </manifest>
