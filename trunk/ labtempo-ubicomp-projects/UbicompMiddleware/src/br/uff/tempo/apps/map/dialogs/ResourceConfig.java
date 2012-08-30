@@ -51,7 +51,8 @@ public class ResourceConfig extends MapDialog {
 		} else {
 
 			dialog.cancel();
-			activity.onDialogFinished(this.dialog);
+			IResourceChooser chooser = (IResourceChooser) activity;
+			chooser.onDialogFinished(this.dialog);
 		}
 	}
 

@@ -16,6 +16,7 @@ import br.uff.tempo.apps.bed.BedView;
 import br.uff.tempo.apps.counter.CounterView;
 import br.uff.tempo.apps.lamp.LampView;
 import br.uff.tempo.apps.map.MapActivity;
+import br.uff.tempo.apps.onOffCounter.CounterApp;
 import br.uff.tempo.apps.onoffsample.OnOffView;
 import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.stove.StoveView;
@@ -81,8 +82,12 @@ public class MainListView extends ListActivity {
 					startActivity(intent);
 				} else if (item.equals("Controlador de Lampada")) {
 					Intent intent = new Intent(MainListView.this, AppLampController.class);
+					startActivity(intent);
 				} else if (item.equals("DeviceOnOff")) {
 					Intent intent = new Intent(MainListView.this, OnOffView.class);
+					startActivity(intent);
+				} else if (item.equals("Contador de OnOff")) {
+					Intent intent = new Intent(MainListView.this, CounterApp.class);
 					startActivity(intent);
 				} else if (item.equals("Counter")) {
 					Intent intent = new Intent(MainListView.this, CounterView.class);

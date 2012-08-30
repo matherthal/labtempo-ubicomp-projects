@@ -71,11 +71,8 @@ public class ChooseExternalResource extends MapDialog implements AdapterView.OnI
 	@Override
 	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-		String resourceRAI = resourcesRAI.get(position + 4); // TODO This is a
-																// magic
-																// number...
-																// must be
-																// changed!
+		String resourceRAI = resourcesRAI.get(position);
+		
 		IResourceChooser chooser = (IResourceChooser) activity;
 
 		chooser.onRegisteredResourceChoosed(resourceRAI);

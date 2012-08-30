@@ -81,13 +81,13 @@ public class RuleActivity extends Activity {
 			Toast.makeText(this, "Fogão encontrado", Toast.LENGTH_SHORT).show();
 
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-			String raiBed = discovery.search("Bed").get(0);
+			//String raiBed = discovery.search("Bed").get(0);
 			Toast.makeText(this, "Cama encontrada", Toast.LENGTH_SHORT).show();
 
 			RuleInterpreter rule = new RuleInterpreter();
 			try {
 				rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, "50.0");
-				rule.setCondition(raiBed, "occupied", null, Operator.Equal, true);
+				//rule.setCondition(raiBed, "occupied", null, Operator.Equal, true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

@@ -10,12 +10,12 @@ import br.uff.tempo.apps.map.MapActivity;
 public abstract class MapDialog implements OnCancelListener, OnClickListener {
 
 	protected Dialog dialog;
-	protected MapActivity activity;
+	protected Activity activity;
 	protected boolean finished = false;
 
 	public MapDialog(final Activity activity, final int layout, final int titleString) {
 
-		this.activity = (MapActivity) activity;
+		this.activity = activity;
 
 		activity.runOnUiThread(new Runnable() {
 

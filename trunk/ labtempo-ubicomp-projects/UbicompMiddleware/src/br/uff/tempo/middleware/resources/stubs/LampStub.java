@@ -17,7 +17,7 @@ public class LampStub extends ResourceAgentStub implements ILamp {
 	@ContextVariable(name = "Lampada ligada")
 	public boolean isOn() {
 		List<Tuple> params = new ArrayList<Tuple>();
-		return (Boolean) makeCall("turnOnBurner", params);
+		return (Boolean) makeCall("isOn", params);
 	}
 
 	@Override
