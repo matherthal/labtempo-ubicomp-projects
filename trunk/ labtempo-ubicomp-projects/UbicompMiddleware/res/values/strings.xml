@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <string name="hello">Hello World, TestRPC!</string>
     <string name="app_name">MainListView</string>
@@ -41,6 +41,8 @@
         <item name="item_map">Mapa da casa</item>
         <item name="item_tttoe">Jogo da velha</item>
         <item name="item_app_lampcontrol">Controlador de Lampada</item>
+        <item name="item_device">DeviceOnOff</item>
+        <item name="item_counter">Counter</item>
     </string-array>
 
     <!-- RuleActivity -->
