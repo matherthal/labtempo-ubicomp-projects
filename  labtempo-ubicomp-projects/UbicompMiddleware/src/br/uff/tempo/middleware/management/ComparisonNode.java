@@ -15,9 +15,24 @@ public class ComparisonNode {
 	private Object valueComp;
 	// valueCache is the cache of value retrieved from the context variable
 	// access
-	private Object valueCache;
-	private long timeout;
+	private Object valueCache = null;
+	private long timeout = 0;
 	private boolean valid = false;
+
+	/**
+	 * @param valid
+	 *            the valid to set
+	 */
+	public void setValid(boolean valid) {
+		this.valid = valid;
+	}
+
+	/**
+	 * @return the valid
+	 */
+	public boolean isValid() {
+		return valid;
+	}
 
 	/**
 	 * @return the valueCache
@@ -118,27 +133,29 @@ public class ComparisonNode {
 	}
 
 	public boolean evaluate() {
+		if (this.valueCache == null)
+			updateValueCache();
 		// Parse value to attribute's type. Ex., if it is boolean, so we parse
 		// the value to boolean before compare
-
 		if (operator.equals(Operator.Equal)) // Operator ==
-			return this.valueCache.equals(valueComp);
+			this.valid = this.valueCache.equals(valueComp);
 		else if (operator.equals(Operator.Different)) // Operator !=
-			return !this.valueCache.equals(valueComp);
+			this.valid = !this.valueCache.equals(valueComp);
 		else {
 			double d_val = Double.parseDouble(valueComp.toString());
 			double d_ret = Double.parseDouble(this.valueCache.toString());
 			if (operator.equals(Operator.GreaterThan))
-				return d_ret > d_val;
-			if (operator.equals(Operator.GreaterThanOrEqual))
-				return d_ret >= d_val;
-			if (operator.equals(Operator.LessThan))
-				return d_ret < d_val;
-			if (operator.equals(Operator.LessThanOrEqual))
-				return d_ret <= d_val;
+				this.valid = d_ret > d_val;
+			else if (operator.equals(Operator.GreaterThanOrEqual))
+				this.valid = d_ret >= d_val;
+			else if (operator.equals(Operator.LessThan))
+				this.valid = d_ret < d_val;
+			else if (operator.equals(Operator.LessThanOrEqual))
+				this.valid = d_ret <= d_val;
 			else
-				return false;
+				this.valid = false;
 		}
+		return isValid();
 	}
 
 	@Override
