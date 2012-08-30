@@ -18,7 +18,7 @@ public class LampView extends Activity /* implements Observer */{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.lamp = new Lamp("lampada");
+		this.lamp = new Lamp("Lampada Quarto");
 		this.lamp.identify();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
