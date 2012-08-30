@@ -11,7 +11,6 @@ import br.uff.tempo.middleware.resources.Lamp;
 public class LampView extends Activity /* implements Observer */{
 
 	private static final String TAG = "LampView";
-	// private BedData bedData;
 	private Lamp lamp;
 
 	/** Called when the activity is first created. */
@@ -19,7 +18,6 @@ public class LampView extends Activity /* implements Observer */{
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// this.bedData = new BedData();
 		this.lamp = new Lamp("cama");
 		this.lamp.identify();
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -49,10 +47,6 @@ public class LampView extends Activity /* implements Observer */{
 	public void onRegisterClick(View target) {
 		Toast.makeText(LampView.this, "Register Called", Toast.LENGTH_LONG).show();
 	}
-
-	// public BedData getStoveState() {
-	// return bedData;
-	// }
 
 	public Lamp getLampState() {
 		return lamp;
