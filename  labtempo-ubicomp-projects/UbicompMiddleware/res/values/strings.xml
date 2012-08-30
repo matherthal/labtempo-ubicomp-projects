@@ -1,30 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  
+
     <string name="hello">Hello World, TestRPC!</string>
     <string name="app_name">MainListView</string>
     <string name="ip_ok">IP OK!</string>
     <string name="button_stove">Fogão</string>
     <string name="regButton">Register this device</string>
     <string name="information">"Choose the intensity (0 means off) of the burner "</string>
-	<string name="textView_log">Log: </string>
-	
-	<!-- From Layout resource_config.xml -->
-	<string name="title_config_res">Create new Resource</string>
-	<string name="tv_config_res_name">Resource Name: </string>
-	<string name="btn_config_res_ok">OK</string>
-	<string name="btn_config_res_cancel">Cancel</string>
-	
-	<!-- From Layout tv.xml -->
-	<string name="tvChPlus">CH +</string>
-	<string name="tvChMinus">CH -</string>
-	<string name="tvVolPlus">Vol +</string>
-	<string name="tvVolMinus">Vol -</string>
-	<string name="tvTurnOn">Turn On</string>
-	<string name="tvTurnOff">Turn Off</string>
-	
-	<!-- From Layout  -->
-	
+    <string name="textView_log">Log: </string>
+
+    <!-- From Layout resource_config.xml -->
+    <string name="title_config_res">Create new Resource</string>
+    <string name="tv_config_res_name">Resource Name: </string>
+    <string name="btn_config_res_ok">OK</string>
+    <string name="btn_config_res_cancel">Cancel</string>
+
+    <!-- From Layout tv.xml -->
+    <string name="tvChPlus">CH +</string>
+    <string name="tvChMinus">CH -</string>
+    <string name="tvVolPlus">Vol +</string>
+    <string name="tvVolMinus">Vol -</string>
+    <string name="tvTurnOn">Turn On</string>
+    <string name="tvTurnOff">Turn Off</string>
+
+    <!-- From Layout -->
+
     <string-array name="devices_array">
         <item name="item_rule">Regra</item>
         <item name="item_tv">Televisao</item>
@@ -40,12 +40,14 @@
         <item name="item_place">Base de Lugares</item>
         <item name="item_map">Mapa da casa</item>
         <item name="item_tttoe">Jogo da velha</item>
+        <item name="item_app_lampcontrol">Controlador de Lampada</item>
     </string-array>
-    
+
     <!-- RuleActivity -->
-	<string name="rule_creation">Criar Regra</string>
-	<string name="rule_name">Nome</string>
-    <!-- <string-array name="rule_select_ra_class_array">
+    <string name="rule_creation">Criar Regra</string>
+    <string name="rule_name">Nome</string>
+    <!--
+    <string-array name="rule_select_ra_class_array">
         <item name="rule_select_ra_class">Escolha um tipo de dispositivo:</item>
     </string-array>
     
@@ -59,7 +61,8 @@
     
     <string-array name="rule_select_operation_array">
         <item name="rule_select_operation">Escolha a operação de comparação:</item>
-    </string-array>-->
+    </string-array>
+    -->
     <string name="rule_select_ra_class">Escolha um tipo de dispositivo:</string>
     <string name="rule_select_ra">Escolha o recurso:</string>
     <string name="rule_select_ra_var">Escolha um atributo:</string>
@@ -80,31 +83,35 @@
     <string name="button_rule">Regra</string>
     <!-- End RuleActivity -->
     <string name="content">Base content</string>
-  
-  <!-- Begin tictactoe app -->  
-  <string name="app_tic_name">Tic-Tac-Toe</string>
 
-  <string name="about_label">About</string>
-  <string name="about_title">Tic-Tac-Toe</string>
-  <string name="about_content">2010 Science Fair Project\nby Sarah Moloney</string>
+    <!-- Begin tictactoe app -->
+    <string name="app_tic_name">Tic-Tac-Toe</string>
+    <string name="about_label">About</string>
+    <string name="about_title">Tic-Tac-Toe</string>
+    <string name="about_content">2010 Science Fair Project\nby Sarah Moloney</string>
+    <string name="new_game_label">New Game</string>
+    <string name="settings_label">Settings...</string>
+    <string name="settings_title">Tic-Tac-Toe Settings</string>
+    <string name="type_player_computer">Computer</string>
+    <string name="type_player_human">Human</string>
 
-  <string name="new_game_label">New Game</string>
+    <string-array name="type_player_list">
+        <item>@string/type_player_computer</item>
+        <item>@string/type_player_human</item>
+    </string-array>
 
-  <string name="settings_label">Settings...</string>
-  <string name="settings_title">Tic-Tac-Toe Settings</string>
-
-  <string name="type_player_computer">Computer</string>
-  <string name="type_player_human">Human</string>
-  <string-array name="type_player_list">
-    <item>@string/type_player_computer</item>
-    <item>@string/type_player_human</item>
-  </string-array>
-  <string name="type_player_o_default">@string/type_player_computer</string>
-  <string name="type_player_o_key">typePlayerO</string>
-  <string name="type_player_o_title">Player O</string>
-  <string name="type_player_summary">Computer or Human</string>
-  <string name="type_player_x_default">@string/type_player_human</string>
-  <string name="type_player_x_key">typePlayerX</string>
-  <string name="type_player_x_title">Player X</string>
-  <!-- End tictactoe app -->
+    <string name="type_player_o_default">@string/type_player_computer</string>
+    <string name="type_player_o_key">typePlayerO</string>
+    <string name="type_player_o_title">Player O</string>
+    <string name="type_player_summary">Computer or Human</string>
+    <string name="type_player_x_default">@string/type_player_human</string>
+    <string name="type_player_x_key">typePlayerX</string>
+    <string name="type_player_x_title">Player X</string>
+    <!-- End tictactoe app -->
+    
+    <!-- App Lamp Controller -->
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_app_lamp_controller">AppLampController</string>
+    <string name="app_lamp_controller">Controlador de Lâmpada</string>
+	<!-- End App Lamp Controller -->
 </resources>
