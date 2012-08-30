@@ -32,7 +32,9 @@
         <activity android:name=".apps.baseview.BaseView" />
         <activity android:name=".apps.lamp.LampView" />
         <activity android:name=".apps.baselocationview.BaseLocationView" />
-
+        <activity android:name=".apps.onoffsample.OnOffView" />
+        <activity android:name=".apps.counter.CounterView" />
+		
         <!-- Rule -->
         <activity
             android:name=".apps.rule.RuleActivity"
