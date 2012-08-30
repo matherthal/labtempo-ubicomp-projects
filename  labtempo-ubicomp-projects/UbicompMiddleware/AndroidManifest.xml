@@ -23,6 +23,7 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+  
             </intent-filter>
         </activity>
         <activity android:name=".apps.stove.StoveView" />
@@ -34,6 +35,7 @@
         <activity android:name=".apps.baselocationview.BaseLocationView" />
         <activity android:name=".apps.onoffsample.OnOffView" />
         <activity android:name=".apps.counter.CounterView" />
+        <activity android:name=".apps.onOffCounter.CounterApp" />
 		
         <!-- Rule -->
         <activity

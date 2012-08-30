@@ -23,10 +23,10 @@ public class Person extends Aggregator implements IPerson {
 		// Discover ContextVariables to update this aggregator status
 		// Add them with the aggregator's support
 		IResourceDiscovery iRDS = getRDS();
-		IBed bed = new BedStub(iRDS.search("bed").get(0));
-		bed.registerStakeholder("inUse", this.getURL());
+		//IBed bed = new BedStub(iRDS.search("bed").get(0));
+		//bed.registerStakeholder("inUse", this.getURL());
 
-		this.addContextVariable(bed, "inUse");
+		//this.addContextVariable(bed, "inUse");
 		// ...
 		// Add interpreters
 		// ...

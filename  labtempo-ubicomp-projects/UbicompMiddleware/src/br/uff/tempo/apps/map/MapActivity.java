@@ -400,6 +400,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 	}
 
 	// When the dialog is closed, call this call back
+	@Override
 	public void onDialogFinished(Dialog dialog) {
 
 		regData = new RegistryData(resConf.getName());
