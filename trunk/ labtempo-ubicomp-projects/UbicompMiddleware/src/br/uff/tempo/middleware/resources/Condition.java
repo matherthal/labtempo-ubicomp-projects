@@ -171,7 +171,7 @@ public class Condition implements Serializable {
 			if (test()) {
 				this.timeoutArrived = true;
 				c.value = true;
-				ri.ConditionTimeout();
+				// ri.ConditionTimeout();
 			}
 		}
 	}
