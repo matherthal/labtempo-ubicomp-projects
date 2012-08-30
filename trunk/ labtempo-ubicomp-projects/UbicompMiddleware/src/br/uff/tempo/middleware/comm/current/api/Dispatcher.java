@@ -98,12 +98,14 @@ public class Dispatcher extends Thread {
 		Object[] paramsArray = paramsToArray(params);
 
 		ArrayList<Method> methods = interfaces.get(calleeID);
-		for (int i = 0; i < methods.size(); i++)
-			if (methods.get(i).getName().equals(method)) {
-				Object obj = null;
-				obj = execute(calleeID, methods.get(i), paramsArray);
-				
-				return JSONHelper.createReply(obj);
+		
+			for (int i = 0; i < methods.size(); i++) {
+				if (methods.get(i).getName().equals(method)) {
+					Object obj = null;
+					obj = execute(calleeID, methods.get(i), paramsArray);
+					
+					return JSONHelper.createReply(obj);
+				}
 			}
 		return msg;
 	}
