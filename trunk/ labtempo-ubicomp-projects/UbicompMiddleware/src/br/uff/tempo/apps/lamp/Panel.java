@@ -14,7 +14,6 @@ import android.view.SurfaceView;
 import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
-import br.uff.tempo.middleware.resources.Bed;
 import br.uff.tempo.middleware.resources.Lamp;
 
 public class Panel extends SurfaceView implements SurfaceHolder.Callback {
@@ -24,7 +23,7 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 	private int mX = 20;
 	private int mY = 20;
 
-	private boolean on = false;
+	// private boolean on = false;
 
 	// private BedData bed;
 	private Lamp lamp;
@@ -67,11 +66,15 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public void doDraw(Canvas canvas) {
+		// Log.d(TAG, "Draw Lamp panel");
 		// draw the background color
 		canvas.drawColor(Color.WHITE);
 		// draw the lamp bitmap
 		
-		if (on) {
+		//FIXME: precisa?
+		lamp = ((LampView) getContext()).getLampState();
+
+		if (lamp.isOn()) {
 			canvas.drawBitmap(mBitmapOn, mX, mY, null);
 		}
 		else {
@@ -87,15 +90,22 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 		int x = (int) event.getX();
 		int y = (int) event.getY();
 
+		//FIXME: precisa?
+		lamp = ((LampView) getContext()).getLampState();
+
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
-			on = !on;
+			// on = !on;
+			if (lamp.isOn())
+				lamp.turnOff();
+			else
+				lamp.turnOn();
 
 			Log.d(TAG, "X = " + x + " and Y = " + y);
 
 			String msg;
 
-			if (on) {
+			if (lamp.isOn()) {
 				msg = "The lamp is on";
 				lamp.turnOn();
 			} else {
