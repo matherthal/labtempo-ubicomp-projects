@@ -21,7 +21,8 @@ public class RuleInterpreterTest extends ResourceAgent {
 		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 		IResourceAgent ra = new ResourceAgentStub(discovery.search("Regra do Fogao").get(0));
 
-		String cv = "Regra disparada";
+		// String cv = "Regra disparada";
+		String cv = "ruleTrigger";
 		ra.registerStakeholder(cv, this.getURL());
 
 		this.context = mContext;
