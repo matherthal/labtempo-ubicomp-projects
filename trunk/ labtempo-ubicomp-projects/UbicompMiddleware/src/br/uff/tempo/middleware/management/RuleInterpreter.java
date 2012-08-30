@@ -1,7 +1,13 @@
 package br.uff.tempo.middleware.management;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.json.JSONException;
 
@@ -20,6 +26,11 @@ public class RuleInterpreter extends ResourceAgent {
 	private Set<ComparisonNode> cNSet = new HashSet<ComparisonNode>();
 	private IResourceDiscovery discovery;
 	private boolean valid = false;
+	private Timer timer;
+	private TimeoutTask timeTask = null;
+	private List<Integer> timeoutList = new ArrayList();
+	// FIXME: this will not belong to the rule, but to the comparison node
+	private Integer timeout = 0;
 
 	public RuleInterpreter() {
 		super("Regra do Fogao", "br.uff.tempo.middleware.management.RuleInterpreter", 9);
@@ -40,6 +51,15 @@ public class RuleInterpreter extends ResourceAgent {
 		// Condition cond = new Condition(rRS, expr, expr, cond);
 	}
 
+	/**
+	 * FIXME: this will not belong to the rule, but to the comparison node
+	 * 
+	 * @param timeoutInSec
+	 */
+	public void setTimeout(Integer timeoutInSec) {
+		this.timeout = timeoutInSec;
+	}
+
 	@Deprecated
 	public void setCondition(String rai, String cv, Object[] params, Operator op, Object value) throws Exception {
 		IResourceAgent ra = new ResourceAgentStub(rai);
@@ -48,40 +68,52 @@ public class RuleInterpreter extends ResourceAgent {
 		cNSet.add(new ComparisonNode(rai, cv, params, op, value, 0));
 	}
 
-	@Deprecated
-	public void setTimedCondition(String rai, String cv, Object[] params, Operator op, Object value, Integer timeInSec)
-			throws Exception {
-		IResourceAgent ra = new ResourceAgentStub(rai);
-		ra.registerStakeholder(cv, this.getURL());
-		// re discovery.search(rai).get(0);
-		cNSet.add(new ComparisonNode(rai, cv, params, op, value, timeInSec));
-	}
+	// @Deprecated
+	// public void setTimedCondition(String rai, String cv, Object[] params,
+	// Operator op, Object value, Integer timeInSec)
+	// throws Exception {
+	// IResourceAgent ra = new ResourceAgentStub(rai);
+	// ra.registerStakeholder(cv, this.getURL());
+	// // re discovery.search(rai).get(0);
+	// cNSet.add(new ComparisonNode(rai, cv, params, op, value, timeInSec));
+	// timeoutList.add(timeInSec);
+	// }
 
 	/**
 	 * Get the data structure that stores the Comparison Nodes and evaluates
 	 * this.
 	 */
-	private void evaluateExpr() {
-		boolean v = true;
+	private boolean evaluateExpr() {
+		boolean prevValid = valid;
+		valid = true; // Temporary. If it's false, it'll turn again to false
 		for (ComparisonNode cn : cNSet) {
 			if (!cn.evaluate()) {
-				v = false;
+				valid = false;
 				break;
 			}
 		}
-
-		if (v)
-			valid = v;
-			try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), RULE_TRIGGERED, true));
-			} catch (JSONException e) {
-				Log.e(TAG, "Error in evaluation");
-				e.printStackTrace();
+		if (valid)
+			if (timeout > 0 && !prevValid) {
+				Log.i("RuleInterpreter", "Timer reset!");
+				timerReset();
 			}
+			else
+				timerStop();
+		return valid;
+	}
+
+	private void notifyActionPerformers() {
+		try {
+			notifyStakeholders(JSONHelper.createChange(this.getURL(), RULE_TRIGGERED, true));
+		} catch (JSONException e) {
+			Log.e(TAG, "Error in evaluation");
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void notificationHandler(String change) {
+		Log.i(TAG, "Notification received");
 		String id = JSONHelper.getChange("id", change).toString();
 		String mtd = JSONHelper.getChange("method", change).toString();
 		Object val = JSONHelper.getChange("value", change);
@@ -90,26 +122,70 @@ public class RuleInterpreter extends ResourceAgent {
 			// If the change comes from the correct agent AND the context
 			// variable (method) is the same AND the value is different,
 			// then evaluate
-			// && !cn.getValueCache().equals(val)
 			if (cn.getRai().equals(id) && cn.getMethod().equals(mtd)) {
+				boolean prevValid = cn.isValid();
+
 				cn.setValueCache(val);
 				// The expression only will be evaluated if the current
-				// validation of the rule is false. Otherwise it will be assumed
-				// that the expression didn't came from a change. This avoids
-				// the problem of overflow the system with messages while the
-				// rule keeps with valid value as true
-				if (!valid) {
-					Log.i("EVALUATE CN ", "?");
-					if (cn.evaluate()) {
-						Log.i("EVALUATE CN ", "TRUE");
-						evaluateExpr();
-					}
+				// validation of the rule and the context variable are false.
+				// Otherwise it will be assumed that the expression didn't came
+				// from a change. This avoids the problem of overflow the system
+				// with messages while the rule keeps with valid value as true
+				Log.i("EVALUATE CN ", cn.getRai());
+				if (cn.evaluate()) {
+					Log.i("EVALUATE CN ", "TRUE");
+					// If the node contains a timer and it's validation has
+					// changed from false to true, reset timer
+					// if (cn.getTimeout() > 0 && !prevValid) {
+					// Log.i("RuleInterpreter", "Timer reset!");
+					// timerReset();
+					// }
+
+					evaluateExpr();
+					if (valid && timeout <= 0)
+						notifyActionPerformers();
+				} else {
+					// If the evaluation of the context variable returns false,
+					// the timer (if it exists) must be stopped
+					if (cn.getTimeout() > 0)
+						timerStop();
 				}
+				
 			}
 		}
 	}
 
-	public void ConditionTimeout() {
+	private void timerReset() {
+		timerStop();
+		Log.i("Timer", "Start");
+		this.timer = new Timer();
+		timeTask = new TimeoutTask();
 
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+		String currentDateandTime = sdf.format(new Date());
+		Log.i("TIME", currentDateandTime);
+
+		timer.scheduleAtFixedRate(timeTask, 0, this.timeout * 1000);
+	}
+
+	private void timerStop() {
+		Log.i("Timer", "Stop");
+		if (timeTask != null) {
+			timeTask.cancel();
+			timeTask = null;
+		}
+	}
+
+	class TimeoutTask extends TimerTask {
+
+		public void run() {
+			Log.i("TimeoutTask", "Timeout went off!");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
+			String currentDateandTime = sdf.format(new Date());
+			Log.i("TIME", currentDateandTime);
+
+			if (evaluateExpr())
+				notifyActionPerformers();
+		}
 	}
 }
