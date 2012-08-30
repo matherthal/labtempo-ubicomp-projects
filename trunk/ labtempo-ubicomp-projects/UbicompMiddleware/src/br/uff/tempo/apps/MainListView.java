@@ -77,6 +77,9 @@ public class MainListView extends ListActivity {
 				} else if (item.equals("Lampada")) {
 					Intent intent = new Intent(MainListView.this, LampView.class);
 					startActivity(intent);
+				} else if (item.equals("Controlador de Lampada")) {
+					Intent intent = new Intent(MainListView.this, AppLampController.class);
+					startActivity(intent);
 				} else {
 					Toast.makeText(MainListView.this, "Não existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();
 				}
