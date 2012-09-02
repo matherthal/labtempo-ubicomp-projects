@@ -1,6 +1,5 @@
 package br.uff.tempo.middleware.management;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -21,7 +20,7 @@ import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 public class RuleInterpreter extends ResourceAgent {
 	private String TAG = "RuleInterpreter";
 
-	public final String RULE_TRIGGERED = "RULE_TRIGGERED";
+	public static final String RULE_TRIGGERED = "RULE_TRIGGERED";
 
 	private Set<ComparisonNode> cNSet = new HashSet<ComparisonNode>();
 	private IResourceDiscovery discovery;
@@ -161,9 +160,7 @@ public class RuleInterpreter extends ResourceAgent {
 		this.timer = new Timer();
 		timeTask = new TimeoutTask();
 
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-		String currentDateandTime = sdf.format(new Date());
-		Log.i("TIME", currentDateandTime);
+		Log.i("TIME", new Date().toGMTString());
 
 		timer.scheduleAtFixedRate(timeTask, 0, this.timeout * 1000);
 	}
@@ -180,10 +177,7 @@ public class RuleInterpreter extends ResourceAgent {
 
 		public void run() {
 			Log.i("TimeoutTask", "Timeout went off!");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-			String currentDateandTime = sdf.format(new Date());
-			Log.i("TIME", currentDateandTime);
-
+			Log.i("TIME", new Date().toGMTString());
 			if (evaluateExpr())
 				notifyActionPerformers();
 		}
