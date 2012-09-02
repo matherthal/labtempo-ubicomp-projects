@@ -7,7 +7,9 @@ import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -21,14 +23,15 @@ import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Condition;
+import br.uff.tempo.middleware.resources.Generic;
 import br.uff.tempo.middleware.resources.Rule;
 import br.uff.tempo.middleware.resources.Stove;
+import br.uff.tempo.middleware.resources.interfaces.IStove;
+import br.uff.tempo.middleware.resources.stubs.StoveStub;
 
 public class RuleActivity extends Activity {
 	private static final String TAG = "RuleActivity";
 	private Rule rule;
-	private final String serverIP = "192.168.1.70";
-	// private final String serverIP = "127.0.0.'1";
 	private IResourceDiscovery discovery;
 	private ArrayList<ResourceAgent> ras;
 	private ArrayList<Condition> conds = new ArrayList<Condition>();
@@ -38,9 +41,7 @@ public class RuleActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		Toast.makeText(this, "Regra Inicializada", Toast.LENGTH_SHORT).show();
-
+		
 		// AlarmClock alarm = new AlarmClock(RuleActivity.this);
 		// Calendar start = Calendar.getInstance();
 		// start.add(Calendar.SECOND, 20);
@@ -75,38 +76,66 @@ public class RuleActivity extends Activity {
 		// manger.notify(NOTIFICATION_ID, notification);
 
 		if (savedInstanceState == null) {
+			Toast.makeText(this, "Regra Inicializada", Toast.LENGTH_SHORT).show();
+
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 			ArrayList<String> stoves = discovery.search("Stove");
 			String raiStove = stoves.get(0);
 			Toast.makeText(this, "Fogão encontrado", Toast.LENGTH_SHORT).show();
 
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-			//String raiBed = discovery.search("Bed").get(0);
+			String raiBed = discovery.search("Bed").get(0);
 			Toast.makeText(this, "Cama encontrada", Toast.LENGTH_SHORT).show();
 
 			RuleInterpreter rule = new RuleInterpreter();
 			try {
-				rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, "50.0");
-				//rule.setCondition(raiBed, "occupied", null, Operator.Equal, true);
+				rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, 50.0f);
+				rule.setCondition(raiBed, "occupied", null, Operator.Equal, true);
+				// Log.i(TAG, "Timeout 20seg");
+				// rule.setTimeout(20);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			rule.identify();
 			Toast.makeText(this, "Regra registrada", Toast.LENGTH_SHORT).show();
 
-			RuleInterpreterTest test = new RuleInterpreterTest(null);
-			// rule.registerStakeholder("Regra disparada", test.getURL());
-			test.identify();
-			Toast.makeText(this, "Aplicação inicializada e registrada", Toast.LENGTH_SHORT).show();
+			// RuleInterpreterTest test = new RuleInterpreterTest(null);
+			// // rule.registerStakeholder("Regra disparada", test.getURL());
+			// test.identify();
+			// Toast.makeText(this, "Aplicação inicializada e registrada",
+			// Toast.LENGTH_SHORT).show();
+			//
+			// // FIXME: DEBUG
+			// test.context = this;
+
+			new Generic("Stove Urgency Action", rule, RuleInterpreter.RULE_TRIGGERED) {
+
+				@Override
+				public void notificationHandler(String change) {
+					Log.i(TAG, "CHANGE: " + change);
+					mHandler.post(mUpdateResults);
+				}
+			};
 
 			// FIXME: DEBUG
-			test.context = this;
-
 			// Change Stove state
-			// IStove stove = new StoveStub(raiStove);
-			// stove.setOvenTemperature(76.0f);
+			IStove stove = new StoveStub(raiStove);
+			stove.setOvenTemperature(76.0f);
+
+			// change bed's value
+			// int delay = 5000; // delay for 5 sec.
+			// int period = 1000; // repeat every sec.
+			// Timer timer = new Timer();
+			// timer.scheduleAtFixedRate(new TimerTask() {
+			// public void run() {
+			// System.out.println("done");
+			// IBed bed = new BedStub(raiBed);
+			// bed.(76.0f);
+			// }
+			// }, delay, period);
 
 			try {
+				Log.i(TAG, "Finalizing...");
 				finalize();
 			} catch (Throwable e) {
 				e.printStackTrace();
@@ -312,6 +341,14 @@ public class RuleActivity extends Activity {
 			}
 		}
 	}
+
+	private Activity a = this;
+	final Handler mHandler = new Handler();
+	final Runnable mUpdateResults = new Runnable() {
+		public void run() {
+			Toast.makeText(a, "Regra disparada!", Toast.LENGTH_LONG).show();
+		}
+	};
 
 	private ServiceConnection mConnection = new ServiceConnection() {
 
