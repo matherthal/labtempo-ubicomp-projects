@@ -23,11 +23,11 @@ public class AppLampController extends Activity {
 	private ILamp lamp;
 	private int count = 0;
 	private Generic lampStakeholder;
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_app_lamp_controller);
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_app_lamp_controller);
 
 		if (savedInstanceState == null) {
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
@@ -35,7 +35,7 @@ public class AppLampController extends Activity {
 			String raiLamp = lamps.get(0);
 			Toast.makeText(this, "Lâmpada encontrada", Toast.LENGTH_SHORT).show();
 			lamp = new LampStub(raiLamp);
-			
+
 			// Subscription
 			lampStakeholder = new Generic("Controlador de Lampada", lamp, "isOn") {
 				boolean lastVal = false;
@@ -51,18 +51,18 @@ public class AppLampController extends Activity {
 						// If value has changed
 						if (count == 0 || lastVal != val) {
 							lastVal = val;
-							incCount();						
+							incCount();
 						}
 				}
 			};
 		}
-    }
+	}
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.activity_app_lamp_controller, menu);
-        return true;
-    }
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.activity_app_lamp_controller, menu);
+		return true;
+	}
 
 	/*
 	 * Button turn lamp on
@@ -83,21 +83,21 @@ public class AppLampController extends Activity {
 		Log.i(TAG, "Lamp turned off");
 		Toast.makeText(this, "Lâmpada desligada", Toast.LENGTH_SHORT).show();
 	}
-	
-	private Activity a = this; 
-	
+
+	private Activity a = this;
+
 	final Handler mHandler = new Handler();
 	final Runnable mUpdateResults = new Runnable() {
-	    public void run() {
-	        Toast.makeText(a, "Contador incrementado para " + count, Toast.LENGTH_LONG).show();
-	    }
+		public void run() {
+			Toast.makeText(a, "Contador incrementado para " + count, Toast.LENGTH_LONG).show();
+		}
 	};
-	
+
 	private void incCount() {
 		count++;
 		Log.i(TAG, "Count inc to: " + count);
-//		 Toast.makeText(AppLampController.this, "Contador incrementado para "
-//		 + count, Toast.LENGTH_LONG).show();
+		// Toast.makeText(AppLampController.this, "Contador incrementado para "
+		// + count, Toast.LENGTH_LONG).show();
 		// TextView tv = (TextView) findViewById(R.id.textViewStatus);
 		// tv.setText("Contador incrementado para " + count);
 		mHandler.post(mUpdateResults);
