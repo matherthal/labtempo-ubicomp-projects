@@ -105,6 +105,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 	private TextureRegion mStoveTextureRegion;
 	private TextureRegion mTVTextureRegion;
 	private TextureRegion mBedTextureRegion;
+	private TextureRegion mLampTextureRegion;
 
 	// Camera size
 	private int mCameraWidth;
@@ -195,6 +196,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 
 		// the bed image is at the position (0,75) in the atlas
 		this.mBedTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "bed_small.png", 0, 75);
+		
+		// the lamp image is at the position (0, 107) in the atlas
+		this.mLampTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "lamp_inactive.png", 0, 107);
 
 		this.mBitmapTextureAtlas.load();
 	}
@@ -326,6 +330,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		simulated.add(GPR_RESOURCES, TV, Menu.NONE, "TV");
 		simulated.add(GPR_RESOURCES, DVD, Menu.NONE, "DVD");
 		simulated.add(GPR_RESOURCES, STOVE, Menu.NONE, "Smart Stove");
+		simulated.add(GPR_RESOURCES, LAMP, Menu.NONE, "Smart Lamp");
 		simulated.add(GPR_RESOURCES, BED, Menu.NONE, "Smart Bed");
 		simulated.add(GPR_RESOURCES, AR_CONDITIONER, Menu.NONE, "Ar-conditioner");
 
@@ -478,6 +483,15 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 			// an agent)
 			bundle.putSerializable("agent", stove);
 
+			break;
+			
+		
+		case LAMP:
+			
+			c = br.uff.tempo.apps.lamp.LampView.class;
+			tr = this.mLampTextureRegion;
+			resType = InterfaceApplicationManager.LAMP_DATA;
+			
 			break;
 
 		// Smart TV selected. Creates a new TV in the scene
