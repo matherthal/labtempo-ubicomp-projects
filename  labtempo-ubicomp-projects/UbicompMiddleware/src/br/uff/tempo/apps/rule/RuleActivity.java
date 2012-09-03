@@ -9,6 +9,7 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -41,7 +42,7 @@ public class RuleActivity extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// AlarmClock alarm = new AlarmClock(RuleActivity.this);
 		// Calendar start = Calendar.getInstance();
 		// start.add(Calendar.SECOND, 20);
@@ -91,8 +92,9 @@ public class RuleActivity extends Activity {
 			try {
 				rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, 50.0f);
 				rule.setCondition(raiBed, "occupied", null, Operator.Equal, true);
-				// Log.i(TAG, "Timeout 20seg");
-				// rule.setTimeout(20);
+				int time = 10;
+				Log.i(TAG, "Timeout " + time + "seg");
+				rule.setTimeout(time);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -109,10 +111,14 @@ public class RuleActivity extends Activity {
 			// test.context = this;
 
 			new Generic("Stove Urgency Action", rule, RuleInterpreter.RULE_TRIGGERED) {
+				private int counter = 0;
 
 				@Override
 				public void notificationHandler(String change) {
 					Log.i(TAG, "CHANGE: " + change);
+					Message msg = mHandler.obtainMessage();
+					msg.obj = counter++;
+					mHandler.sendMessage(msg);
 					mHandler.post(mUpdateResults);
 				}
 			};
@@ -207,9 +213,9 @@ public class RuleActivity extends Activity {
 	 * 
 	 * 
 	 * //Interpretation res = intp.interpretToString(); Log.d(TAG,
-	 * "Interpretation: " + res); Toast.makeText(this, "Interpretação: " +
-	 * res, Toast.LENGTH_LONG).show(); // builder.setMessage("Interpretation: "
-	 * + res).setNeutralButton("ok", dialogClickListener).show(); }
+	 * "Interpretation: " + res); Toast.makeText(this, "Interpretação: " + res,
+	 * Toast.LENGTH_LONG).show(); // builder.setMessage("Interpretation: " +
+	 * res).setNeutralButton("ok", dialogClickListener).show(); }
 	 */
 
 	/*
@@ -346,7 +352,13 @@ public class RuleActivity extends Activity {
 	final Handler mHandler = new Handler();
 	final Runnable mUpdateResults = new Runnable() {
 		public void run() {
-			Toast.makeText(a, "Regra disparada!", Toast.LENGTH_LONG).show();
+			Message msg = mHandler.obtainMessage();
+			String str = "";
+			if (msg.obj != null)
+				str = " Contador em " + msg.obj.toString();
+			Toast.makeText(a, "Regra disparada!" + str, Toast.LENGTH_LONG).show();
+			// Toast.makeText(a, "Regra disparada! Contador em ",
+			// Toast.LENGTH_LONG).show();
 		}
 	};
 
