@@ -19,6 +19,7 @@ public class InterfaceApplicationManager extends ResourceAgent {
 	public static final int STOVE_DATA = 0;
 	public static final int TV_DATA = STOVE_DATA + 1;
 	public static final int BED_DATA = TV_DATA + 1;
+	public static final int LAMP_DATA = BED_DATA + 1;
 
 	// ===========================================================
 	// Fields
