@@ -1,0 +1,19 @@
+Instalação do ambiente de programação Android no Linux
+
+Atualmente não é necessário se instalar o SDK do Android em isolado.
+Pode-se instalar o plugin do Android no Eclipse (ADT),
+que este se encarrega de baixar e configurar o SDK.
+
+O ADT é instalado direto no Eclipse (última versão) clicando-se em
+Help > Install New Software
+E dentro da janela clica-se em Add
+Adiciona-se em URL:
+https://dl-ssl.google.com/android/eclipse/
+e algum nome qualquer no campo de nome. Então segue-se normalmente a instalação.
+
+Site com manual de instalação:
+http://developer.android.com/sdk/installing/installing-adt.html
+
+A versão do SDK do Eclipse utilizada durante a criação deste documento foi a 4.2.0
+
+Para mais, pesquise em google.com ;)
