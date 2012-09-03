@@ -25,7 +25,7 @@ public class RuleInterpreter extends ResourceAgent {
 	private Set<ComparisonNode> cNSet = new HashSet<ComparisonNode>();
 	private IResourceDiscovery discovery;
 	private boolean valid = false;
-	private Timer timer;
+	private Timer timer = null;
 	private TimeoutTask timeTask = null;
 	private List<Integer> timeoutList = new ArrayList();
 	// FIXME: this will not belong to the rule, but to the comparison node
@@ -83,7 +83,7 @@ public class RuleInterpreter extends ResourceAgent {
 	 * this.
 	 */
 	private boolean evaluateExpr() {
-		boolean prevValid = valid;
+		// boolean prevValid = valid;
 		valid = true; // Temporary. If it's false, it'll turn again to false
 		for (ComparisonNode cn : cNSet) {
 			if (!cn.evaluate()) {
@@ -91,13 +91,12 @@ public class RuleInterpreter extends ResourceAgent {
 				break;
 			}
 		}
-		if (valid)
-			if (timeout > 0 && !prevValid) {
-				Log.i("RuleInterpreter", "Timer reset!");
-				timerReset();
-			}
-			else
-				timerStop();
+		// if (valid)
+		// if (timeout > 0 && !prevValid) {
+		// Log.i("RuleInterpreter", "Timer reset!");
+		// timerReset();
+		// } else
+		// timerStop();
 		return valid;
 	}
 
@@ -130,26 +129,38 @@ public class RuleInterpreter extends ResourceAgent {
 				// Otherwise it will be assumed that the expression didn't came
 				// from a change. This avoids the problem of overflow the system
 				// with messages while the rule keeps with valid value as true
-				Log.i("EVALUATE CN ", cn.getRai());
-				if (cn.evaluate()) {
-					Log.i("EVALUATE CN ", "TRUE");
-					// If the node contains a timer and it's validation has
-					// changed from false to true, reset timer
-					// if (cn.getTimeout() > 0 && !prevValid) {
-					// Log.i("RuleInterpreter", "Timer reset!");
-					// timerReset();
-					// }
+				// Log.i("EVALUATE CN ", cn.getRai());
+				// if (cn.evaluate()) {
+				// Log.i("EVALUATE CN ", "TRUE");
+				// If the node contains a timer and it's validation has
+				// changed from false to true, reset timer
+				// if (cn.getTimeout() > 0 && !prevValid) {
+				// Log.i("RuleInterpreter", "Timer reset!");
+				// timerReset();
+				// }
 
-					evaluateExpr();
-					if (valid && timeout <= 0)
+				valid = evaluateExpr();
+
+				if (valid) {
+					if (timeout <= 0) {
 						notifyActionPerformers();
+					} else {
+						if (!prevValid) {
+							// It means that the rule wasn't correct,
+							// but now it's
+							Log.i("RuleInterpreter", "Timer start!");
+							timerReset();
+						}
+						// If the rule correctness didn't change
+						// do nothing
+					}
 				} else {
-					// If the evaluation of the context variable returns false,
-					// the timer (if it exists) must be stopped
-					if (cn.getTimeout() > 0)
-						timerStop();
+					// If the evaluation of the context variable returns
+					// false, the timer (if it exists) must be stopped
+					// if (cn.getTimeout() > 0)
+					timerStop();
 				}
-				
+
 			}
 		}
 	}
@@ -162,12 +173,13 @@ public class RuleInterpreter extends ResourceAgent {
 
 		Log.i("TIME", new Date().toGMTString());
 
-		timer.scheduleAtFixedRate(timeTask, 0, this.timeout * 1000);
+		long t = this.timeout * 1000;
+		timer.schedule(timeTask, t);
 	}
 
 	private void timerStop() {
-		Log.i("Timer", "Stop");
 		if (timeTask != null) {
+			Log.i("Timer", "Stop");
 			timeTask.cancel();
 			timeTask = null;
 		}
