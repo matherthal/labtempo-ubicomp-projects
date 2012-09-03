@@ -162,4 +162,9 @@ public class CounterApp extends Activity implements IResourceChooser {
 		}
 			
 	}
+	
+	public void resetCounterClick(View v) {
+		
+		counter = 0;
+	}
 }
