@@ -214,6 +214,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		// see www.mapeditor.org
 		final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, this.getVertexBufferObjectManager(), null);
 
+		//TODO Read a property file to load the map file. Create an interface to choose the file
 		try {
 			// this.tiledMap = tmxLoader.loadFromAsset("tmx/desert.tmx");
 			this.tiledMap = tmxLoader.loadFromAsset("tmx/house.tmx");
