@@ -1,5 +1,8 @@
 Instrução para se encontrar dispositivos Android, que não estejam sendo automaticamente encontrados, no Linux
 
+Este manual considera que o SDK Android já está corretamente instalado no sistema.
+Se não estiver, vá para o manual: "Instalação Android no Linux"
+
 No diretório "/etc/udev/rules.d"
 procurar o arquivo "51-android.rules"
 se não houver, deve ser criado.
