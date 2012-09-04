@@ -1,5 +1,6 @@
 package br.uff.tempo.apps.map.objects;
 
+import android.util.Log;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 
@@ -34,7 +35,8 @@ public class InterfaceApplicationManager extends ResourceAgent {
 
 	private InterfaceApplicationManager() {
 
-		super("InterfaceManager", "br.uff.tempo.apps.map.objects.InterfaceApplicationManager", 37);
+		super("InterfaceManager",
+				"br.uff.tempo.apps.map.objects.InterfaceApplicationManager", 37);
 	}
 
 	// ===========================================================
@@ -43,8 +45,10 @@ public class InterfaceApplicationManager extends ResourceAgent {
 
 	public static InterfaceApplicationManager getInstance() {
 
-		if (obj == null)
+		if (obj == null) {
 			obj = new InterfaceApplicationManager();
+			obj.identify();
+		}
 
 		return obj;
 	}
@@ -59,6 +63,10 @@ public class InterfaceApplicationManager extends ResourceAgent {
 		String raiFromExternal = (String) JSONHelper.getChange("id", change);
 		String methodChanged = (String) JSONHelper.getChange("method", change);
 		Object valueChanged = JSONHelper.getChange("value", change);
+
+		Log.d("InterfaceManager", "Notification received from "
+				+ raiFromExternal + ". Context variable modified: "
+				+ methodChanged + " current value: " + valueChanged);
 	}
 
 }

@@ -1,6 +1,8 @@
 package br.uff.tempo.middleware.resources.interfaces;
 
-public interface ITelevision {
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+
+public interface ITelevision extends IResourceAgent {
 
 	/**
 	 * Shows a message in the TV screen

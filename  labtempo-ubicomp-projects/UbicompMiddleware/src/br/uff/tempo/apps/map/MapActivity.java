@@ -47,9 +47,19 @@ import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.resources.Bed;
+import br.uff.tempo.middleware.resources.Lamp;
 import br.uff.tempo.middleware.resources.Stove;
+import br.uff.tempo.middleware.resources.Television;
+import br.uff.tempo.middleware.resources.interfaces.IBed;
+import br.uff.tempo.middleware.resources.interfaces.ILamp;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
+import br.uff.tempo.middleware.resources.interfaces.ITelevision;
+import br.uff.tempo.middleware.resources.stubs.BedStub;
+import br.uff.tempo.middleware.resources.stubs.LampStub;
 import br.uff.tempo.middleware.resources.stubs.StoveStub;
+import br.uff.tempo.middleware.resources.stubs.TelevisionStub;
 
 public class MapActivity extends /* SimpleLayoutGameActivity */
 SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener, IPinchZoomDetectorListener, IResourceChooser {
@@ -453,6 +463,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 
 		// The resource icon (image)
 		TextureRegion tr = null;
+		
+		// Reference to resource to be created
+		IResourceAgent resAg = null;
 
 		// An integer that represents the resource type
 		// it's not been used yet...
@@ -474,40 +487,74 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 				stove = new Stove(regData.getResourceName());
 			} else {
 				stove = new StoveStub(regData.getResourceName());
-				stove.registerStakeholder("all", mAppManager.getURL());
 			}
 
 			// simulated -> put an agent; not simulated -> put a stub (proxy to
 			// an agent)
 			bundle.putSerializable("agent", stove);
 
+			resAg = stove;
+			
 			break;
 			
 		// Smart Lamp selected. Creates a new lamp in the scene
 		case LAMP:
 			
+			ILamp lamp;
+			
+			// create an agent if it's a simulated resource; a stub otherwise
+			if (simulated) {
+				lamp = new Lamp(regData.getResourceName());
+			} else {
+				lamp = new LampStub(regData.getResourceName());
+			}
+			
 			c = br.uff.tempo.apps.lamp.LampView.class;
 			tr = this.mLampTextureRegion;
 			resType = InterfaceApplicationManager.LAMP_DATA;
+			
+			resAg = lamp;
 			
 			break;
 
 		// Smart TV selected. Creates a new TV in the scene
 		case TV:
 
+			ITelevision tv;
+			
+			// create an agent if it's a simulated resource; a stub otherwise
+			if (simulated) {
+				tv = new Television(regData.getResourceName());
+			} else {
+				tv = new TelevisionStub(regData.getResourceName());
+			}
+			
 			c = br.uff.tempo.apps.tv.TvView.class;
 			tr = this.mTVTextureRegion;
 			resType = InterfaceApplicationManager.TV_DATA;
 
+			resAg = tv;
+			
 			break;
 
 		// Smart Bed selected. Creates a new Bed in the scene
 		case BED:
 
+			IBed bed;
+			
+			// create an agent if it's a simulated resource; a stub otherwise
+			if (simulated) {
+				bed = new Bed(regData.getResourceName());
+			} else {
+				bed = new BedStub(regData.getResourceName());
+			}
+			
 			c = br.uff.tempo.apps.bed.BedView.class;
 			tr = this.mBedTextureRegion;
 			resType = InterfaceApplicationManager.BED_DATA;
 
+			resAg = bed;
+			
 			break;
 
 		case EXTERNAL:
@@ -525,6 +572,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 			return;
 		}
 
+		// Subscribe to the agent (all context variables) to receive notifications
+		resAg.registerStakeholder("all", mAppManager.getURL());
+		
 		// Creates an intent, to pass data to StoveView
 		i = new Intent(this, c);
 
@@ -555,6 +605,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 
 				// Start the resource app (e.g. stove, tv)
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				
+				Log.d("IPGAP", "A resource was selected. Opening the Application");
 
 				MapActivity.this.startActivity(intent);
 			}
@@ -574,6 +626,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		return sprite;
 	}
 
+	//It's not been used yet
 	private void setupQuickActions() {
 
 		ActionItem unregItem = new ActionItem(ID_UNREG, "Unregister", getResources().getDrawable(R.drawable.add));
