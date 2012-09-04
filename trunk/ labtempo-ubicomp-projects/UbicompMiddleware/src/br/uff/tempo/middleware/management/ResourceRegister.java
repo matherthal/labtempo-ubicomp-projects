@@ -51,6 +51,8 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		rL.registerInPlace(url,position);
 		return true;
 	}
+	
+	
 
 	public boolean unregister(String url) {
 		// rR = ResourceRepository.getInstance(); //already instantiated
@@ -62,5 +64,18 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	public void notificationHandler(String change) {
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public boolean registerInPlace(String url, String placeName, Position position) {
+		rR = ResourceRepository.getInstance();
+		rR.add(url);
+		rL = ResourceLocation.getInstance();
+		if (position == null){
+			rL.registerInPlaceMiddlePos(url, rL.getPlace(placeName));
+		} else {
+			rL.registerInPlaceRelative(url,rL.getPlace(placeName), position);
+		}
+		return true;
 	}
 }
