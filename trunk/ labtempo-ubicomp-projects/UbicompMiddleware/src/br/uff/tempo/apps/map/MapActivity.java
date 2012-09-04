@@ -186,7 +186,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		// Be careful with these integers! They are the TerxtureRegion
 		// coordinates (pixels) in the atlas
 
-		this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 127, 253, TextureOptions.BILINEAR);
+		this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 127, 285, TextureOptions.BILINEAR);
 
 		// the stove image is in position (0,0) in the atlas
 		this.mStoveTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "stove_small.png", 0, 0);
@@ -197,8 +197,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		// the bed image is at the position (0,75) in the atlas
 		this.mBedTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "bed_small.png", 0, 75);
 		
-		// the lamp image is at the position (0, 107) in the atlas
-		this.mLampTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "lamp_inactive.png", 0, 107);
+		// the lamp image is at the position (0, 253) in the atlas
+		this.mLampTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "lamp_inactive.png", 0, 253);
 
 		this.mBitmapTextureAtlas.load();
 	}
@@ -220,8 +220,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 
 		//TODO Read a property file to load the map file. Create an interface to choose the file
 		try {
-			// this.tiledMap = tmxLoader.loadFromAsset("tmx/desert.tmx");
-			this.tiledMap = tmxLoader.loadFromAsset("tmx/house.tmx");
+			this.tiledMap = tmxLoader.loadFromAsset("tmx/casa_meiry.tmx");
+			//this.tiledMap = tmxLoader.loadFromAsset("tmx/house.tmx");
 			// this.tiledMap = tmxLoader.loadFromAsset("tmx/testTiled.tmx");
 		} catch (TMXLoadException e) {
 			e.printStackTrace();
@@ -239,8 +239,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		this.mCamera.setBounds(0, 0, tmxLayer.getWidth(), tmxLayer.getHeight());
 		this.mCamera.setBoundsEnabled(true);
 
-		// Background is a kind of blue...
-		this.mScene.setBackground(new Background(0.09804f, 0.6274f, 0.8784f));
+		// Background is black...
+		this.mScene.setBackground(new Background(0.0f, 0.0f, 0.0f));
 
 		// Instantiating detectors (to perform Pan and Zoom)
 		this.mScrollDetector = new SurfaceScrollDetector(this);
@@ -382,8 +382,6 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 
 	// @Override protected void onActivityResult(int requestCode, int
 	// resultCode, Intent data) {
-	//
-	// // TODO Auto-generated method stub
 	// super.onActivityResult(requestCode, resultCode, data);
 	//
 	// //mAppManager.addResourceData((ResourceData)
@@ -476,7 +474,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 				stove = new Stove(regData.getResourceName());
 			} else {
 				stove = new StoveStub(regData.getResourceName());
-				// stove.registerStakeholder("all", mAppManager.getURL());
+				stove.registerStakeholder("all", mAppManager.getURL());
 			}
 
 			// simulated -> put an agent; not simulated -> put a stub (proxy to
@@ -485,7 +483,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 
 			break;
 			
-		
+		// Smart Lamp selected. Creates a new lamp in the scene
 		case LAMP:
 			
 			c = br.uff.tempo.apps.lamp.LampView.class;
