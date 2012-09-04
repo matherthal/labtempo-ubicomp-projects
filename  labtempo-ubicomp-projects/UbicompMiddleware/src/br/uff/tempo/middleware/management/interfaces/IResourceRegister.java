@@ -7,6 +7,8 @@ public interface IResourceRegister {
 	public boolean register(String url);
 	
 	public boolean registerLocation(String url, Position position);
-
+	
+	public boolean registerInPlace(String url, String placeName, Position position);
+	
 	public boolean unregister(String url);
 }

@@ -122,6 +122,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		}
 		return result;
 	}
+	
 
 	public Place get(ResourceAgent rA) {
 		// TODO Auto-generated method stub
@@ -158,6 +159,24 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		resources.put(url, position);
 	}
 	
+	public void registerInPlaceRelative(String url, Place place, Position position) {
+		HashMap<String, Position> rAMap = base.get(place.getName());
+		int x = place.lower.getX() + position.getX();
+		int y = place.lower.getY() + position.getY();
+		Position rPos = new Position(x,y);
+		rAMap.put(url, rPos);
+		resources.put(url, rPos);
+	}
+	
+	public void registerInPlaceMiddlePos(String url, Place place) {
+		int x = Integer.valueOf((place.lower.getX()+place.upper.getX()/2));
+		int y = Integer.valueOf((place.lower.getY()+place.upper.getY()/2));
+		Position position = new Position(x,y); 
+		HashMap<String, Position> rAMap = base.get(place.getName());
+		rAMap.put(url, position);
+		resources.put(url, position);
+	}
+	
 	public Set<String> listLocations()
 	{
 		return map.keySet();
@@ -180,6 +199,11 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		
 		Sorter<Position> sorter = new Sorter<Position>(raList,position);
 		return sorter.sort();
+	}
+	
+	public Place getPlace(String name)
+	{
+		return map.get(name);
 	}
 	
 	

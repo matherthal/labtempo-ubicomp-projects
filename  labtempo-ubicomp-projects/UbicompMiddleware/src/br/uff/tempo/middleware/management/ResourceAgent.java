@@ -226,6 +226,21 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		return registered;
 	}
 	
+	public boolean identifyInPlace(String placeName, Position position) {
+
+		if (!registered) {
+			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
+			this.position = position;
+			registered = rrs.registerInPlace(this.URL, placeName, this.position);
+				
+			String result = "";
+			// adding local reference of this instance
+			ResourceContainer.getInstance().add(this);
+		}
+
+		return registered;
+	}
+	
 	@Override
 	public void notifyStakeholders(String change) throws JSONException {
 		int i = 0;

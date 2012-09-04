@@ -47,4 +47,14 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 		return (Boolean) makeCall("registerLocation", params);		
 	}
 
+	@Override
+	public boolean registerInPlace(String url, String placeName, Position position) {
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(String.class.getName(), placeName));
+		params.add(new Tuple<String, Object>(Position.class.getName(), position));
+		
+		return (Boolean) makeCall("registerInPlace", params);	
+	}
+
 }
