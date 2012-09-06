@@ -20,7 +20,7 @@ import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 public class RuleInterpreter extends ResourceAgent {
 	private String TAG = "RuleInterpreter";
 
-	public static final String RULE_TRIGGERED = "RULE_TRIGGERED";
+	public static final String RULE_TRIGGERED = "ruleTrigger";
 
 	private Set<ComparisonNode> cNSet = new HashSet<ComparisonNode>();
 	private IResourceDiscovery discovery;
@@ -31,8 +31,8 @@ public class RuleInterpreter extends ResourceAgent {
 	// FIXME: this will not belong to the rule, but to the comparison node
 	private Integer timeout = 0;
 
-	public RuleInterpreter() {
-		super("Regra do Fogao", "br.uff.tempo.middleware.management.RuleInterpreter", 9);
+	public RuleInterpreter(String name) {
+		super(name, "br.uff.tempo.middleware.management.RuleInterpreter", 9);
 		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 	}
 
