@@ -8,7 +8,6 @@ import org.json.JSONException;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
-import br.uff.tempo.middleware.management.utils.Position;
 
 public class ResourceAgentStub extends Stub implements IResourceAgent {
 	private String url;
@@ -19,22 +18,20 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	}
 
 	public void notificationHandler(String change) {
-
 		List<Tuple> params = new ArrayList<Tuple>();
 		params.add(new Tuple<String, Object>("java.lang.String", change));
 
 		makeCall("notificationHandler", params);
-
 	}
 
 	public String getResourceClassName() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Tuple> params = new ArrayList<Tuple>();
+
+		return makeCall("getResourceClassName", params).toString();
 	}
 
 	@Override
 	public void registerStakeholder(String method, String url) {
-
 		// Set params
 		List<Tuple> params = new ArrayList<Tuple>();
 		params.add(new Tuple<String, Object>("java.lang.String", method));
@@ -45,50 +42,61 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 
 	@Override
 	public int getId() {
-		// TODO Auto-generated method stub
-		return 0;
+		List<Tuple> params = new ArrayList<Tuple>();
+
+		return (Integer) makeCall("getName", params);
 	}
 
 	@Override
 	public void setId(int id) {
-		// TODO Auto-generated method stub
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>(Integer.class.getName(), id));
 
+		makeCall("setId", params);
 	}
 
 	@Override
 	public String getName() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Tuple> params = new ArrayList<Tuple>();
+
+		return makeCall("getName", params).toString();
 	}
 
 	@Override
 	public void setName(String name) {
-		// TODO Auto-generated method stub
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>(String.class.getName(), name));
 
+		makeCall("setName", params);
 	}
 
 	@Override
 	public String getURL() {
-		// TODO Auto-generated method stub
-		return url;
+		List<Tuple> params = new ArrayList<Tuple>();
+
+		return makeCall("getURL", params).toString();
 	}
 
 	@Override
 	public void setURL(String uRL) {
-		// TODO Auto-generated method stub
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>(String.class.getName(), uRL));
 
+		makeCall("setURL", params);
 	}
 
 	@Override
 	public String getType() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Tuple> params = new ArrayList<Tuple>();
+		return makeCall("getType", params).toString();
 	}
 
 	@Override
 	public void setType(String type) {
-		// TODO Auto-generated method stub
+		List<Tuple> params = new ArrayList<Tuple>();
+		params.add(new Tuple<String, Object>(String.class.getName(), type));
 
+		makeCall("setType", params);
 	}
 
 	@Override
@@ -111,8 +119,9 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 
 	@Override
 	public boolean isRegistered() {
-		// TODO Auto-generated method stub
-		return false;
+		List<Tuple> params = new ArrayList<Tuple>();
+
+		return (Boolean) makeCall("isRegistered", params);
 	}
 
 	@Override
