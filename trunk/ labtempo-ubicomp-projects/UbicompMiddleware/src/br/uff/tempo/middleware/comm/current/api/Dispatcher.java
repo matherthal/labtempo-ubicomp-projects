@@ -25,7 +25,6 @@ import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
 
 public class Dispatcher extends Thread {
@@ -144,18 +143,22 @@ public class Dispatcher extends Thread {
 		Object[] args = new Object[argList.size()];
 		for (int i = 0; i < argList.size(); i++){
 			Tuple<String, Object> tuple = argList.get(i);
-			if (tuple.key.equals(String.class.getName())){
-				args[i] = tuple.value;
-			} else if (tuple.key.equals(Position.class.getName())){
-				args[i] = new Gson().fromJson(tuple.value.toString(), Position.class);
-			} else {
-				try {
-					Class type = getClassOf(tuple.key);
-					args[i] = new Gson().fromJson(tuple.value.toString(), type);
-				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+			if (tuple.value != null) {
+				if (tuple.key.equals(String.class.getName())) {
+					args[i] = tuple.value;
+				} else if (tuple.key.equals(Position.class.getName())) {
+					args[i] = new Gson().fromJson(tuple.value.toString(), Position.class);
+				} else {
+					try {
+						Class type = getClassOf(tuple.key);
+						args[i] = new Gson().fromJson(tuple.value.toString(), type);
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
+			} else {
+				args[i] = null;
 			}
 		}			
 		return args;
