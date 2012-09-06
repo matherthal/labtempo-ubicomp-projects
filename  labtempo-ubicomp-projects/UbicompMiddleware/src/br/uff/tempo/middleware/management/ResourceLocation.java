@@ -9,7 +9,6 @@ import java.util.Set;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
-import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Sorter;
@@ -43,9 +42,8 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	//
 	//
 	/**
-	 * carrega mapa com lugares baseados na interface do MapaDaCasa
-	 * áreas da casa e dos cômodos foram estimadas
-	 * Área da casa: 100x50
+	 * carrega mapa com lugares baseados na interface do MapaDaCasa areas da
+	 * casa e dos comodos foram estimadas area da casa: 100x50
 	 */
 	public void loadBase()
 	{
