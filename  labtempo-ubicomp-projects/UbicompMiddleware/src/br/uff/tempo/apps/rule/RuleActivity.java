@@ -88,7 +88,7 @@ public class RuleActivity extends Activity {
 			String raiBed = discovery.search("Bed").get(0);
 			Toast.makeText(this, "Cama encontrada", Toast.LENGTH_SHORT).show();
 
-			RuleInterpreter rule = new RuleInterpreter();
+			RuleInterpreter rule = new RuleInterpreter("Regra do Fogão");
 			try {
 				rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, 50.0f);
 				rule.setCondition(raiBed, "occupied", null, Operator.Equal, true);
