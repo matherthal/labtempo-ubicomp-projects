@@ -10,14 +10,11 @@ import br.uff.tempo.middleware.resources.interfaces.ILamp;
 public class Lamp extends ResourceAgent implements ILamp {
 	private static final String TAG = "Lamp";
 	private boolean isOn;
+	public static final String CV_ISON = "isOn";
 
 	public Lamp(String name) {
 		// FIXME: get correct id
 		super(name, "br.uff.tempo.middleware.resources.Lamp", 15);
-	}
-
-	@Override
-	public void notificationHandler(String change) {
 	}
 
 	@Override
@@ -29,10 +26,10 @@ public class Lamp extends ResourceAgent implements ILamp {
 	@Override
 	@Service(name = "Acender lampada")
 	public void turnOn() {
-		Log.d(TAG, "Turn Lamp on");
+		Log.i(TAG, "Turn Lamp on");
 		isOn = true;
 		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), "isOn", isOn));
+			notifyStakeholders(JSONHelper.createChange(this.getURL(), CV_ISON, isOn));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -42,14 +39,17 @@ public class Lamp extends ResourceAgent implements ILamp {
 	@Override
 	@Service(name = "Apagar lampada")
 	public void turnOff() {
-		Log.d(TAG, "Turn Lamp off");
+		Log.i(TAG, "Turn Lamp off");
 		isOn = false;
 		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), "isOn", isOn));
+			notifyStakeholders(JSONHelper.createChange(this.getURL(), CV_ISON, isOn));
 		} catch (JSONException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	@Override
+	public void notificationHandler(String change) {
+	}
 }
