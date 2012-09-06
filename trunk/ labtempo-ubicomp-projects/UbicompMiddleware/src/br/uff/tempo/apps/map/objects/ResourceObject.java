@@ -4,10 +4,12 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.font.FontManager;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
+import org.andengine.util.color.Color;
 
-import android.content.Context;
 import android.content.Intent;
 
 //implementing long press by hands!
@@ -18,15 +20,38 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 
 	private boolean mLongPressed;
 	private Intent intent;
-	private Context context;
 	private Timer mLongPressTimer;
 
-	public ResourceObject(float pX, float pY, ITextureRegion pTextureRegion, VertexBufferObjectManager pVertexBufferObjectManager) {
+	private NotificationBox nbox;
+
+	public ResourceObject(float pX, float pY, ITextureRegion pTextureRegion,
+			VertexBufferObjectManager pVertexBufferObjectManager,
+			FontManager fontManager, TextureManager textureManager) {
 
 		super(pX, pY, pTextureRegion, pVertexBufferObjectManager);
+
+		nbox = new NotificationBox(this.getWidth(), this.getHeight(),
+				pVertexBufferObjectManager, fontManager, textureManager);
+		
+		this.attachChild(nbox);
+	}
+	
+	public void showMessage(String message) {
+	
+		nbox.show(message);
 	}
 
-	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+	public void setNotificationBoxColor(Color color) {
+		nbox.setColor(color);
+	}
+
+	public void setNotificationBoxVisible(boolean visible) {
+
+		nbox.setVisible(visible);
+	}
+
+	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
+			float pTouchAreaLocalX, float pTouchAreaLocalY) {
 
 		if (pSceneTouchEvent.isActionDown()) {
 
@@ -72,9 +97,8 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 		mLongPressed = false;
 	}
 
-	public void setAction(Intent i, Context v) {
+	public void setAction(Intent i) {
 		this.intent = i;
-		this.context = v;
 
 		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	}
@@ -87,33 +111,9 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 	public abstract void onStartLongPress(TouchEvent pSceneTouchEvent);
 
 	// fired when user finishes a long touch (more than LONGPRESS_THRESHOLD ms)
-	public abstract void onLongPress(TouchEvent pSceneTouchEvent);/*
-																 * {
-																 * 
-																 * this.setPosition
-																 * (
-																 * pSceneTouchEvent
-																 * .getX() -
-																 * this
-																 * .getWidth() /
-																 * 2,
-																 * pSceneTouchEvent
-																 * .getY() -
-																 * this
-																 * .getHeight()
-																 * / 2); }
-																 */
+	public abstract void onLongPress(TouchEvent pSceneTouchEvent);
 
 	// fired when user performs a short touch
-	public abstract void onTap(TouchEvent pSceneTouchEvent); /*
-															 * {
-															 * 
-															 * //starts an
-															 * activity
-															 * ("the app")
-															 * this.context
-															 * .startActivity
-															 * (intent); }
-															 */
+	public abstract void onTap(TouchEvent pSceneTouchEvent);
 
 }
