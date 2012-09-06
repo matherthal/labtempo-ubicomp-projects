@@ -23,7 +23,6 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-  
             </intent-filter>
         </activity>
         <activity android:name=".apps.stove.StoveView" />
@@ -36,7 +35,7 @@
         <activity android:name=".apps.onoffsample.OnOffView" />
         <activity android:name=".apps.counter.CounterView" />
         <activity android:name=".apps.onOffCounter.CounterApp" />
-		
+
         <!-- Rule -->
         <activity
             android:name=".apps.rule.RuleActivity"
@@ -100,6 +99,10 @@
         <activity
             android:name=".apps.AppLampController"
             android:label="@string/title_activity_app_lamp_controller" />
+        <activity
+            android:name=".apps.AppLampControlSystem"
+            android:label="@string/title_activity_app_lamp_control_system" >
+        </activity>
     </application>
 
 </manifest>
