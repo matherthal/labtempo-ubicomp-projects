@@ -5,7 +5,7 @@ import br.uff.tempo.middleware.management.utils.Position;
 public class Place extends ResourceAgent{
 
 	String name;
-	
+
 	Position lower;// left lower vertex
 	Position upper;// right upper vertex
 
@@ -16,6 +16,14 @@ public class Place extends ResourceAgent{
 		this.name = name;
 		this.lower = lower;
 		this.upper = upper;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public Position getLower() {
