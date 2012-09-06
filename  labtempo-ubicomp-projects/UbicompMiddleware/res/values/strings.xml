@@ -44,6 +44,7 @@
         <item name="item_app_counter_onoff">Contador de OnOff</item>
         <item name="item_device">DeviceOnOff</item>
         <item name="item_counter">Counter</item>
+        <item name="item_app_lamp_control_sys">Sistema de Controle de Lâmpadas</item>
     </string-array>
 
     <!-- RuleActivity -->
@@ -111,10 +112,13 @@
     <string name="type_player_x_key">typePlayerX</string>
     <string name="type_player_x_title">Player X</string>
     <!-- End tictactoe app -->
-    
+
+
     <!-- App Lamp Controller -->
     <string name="menu_settings">Settings</string>
     <string name="title_activity_app_lamp_controller">AppLampController</string>
     <string name="app_lamp_controller">Controlador de Lâmpada</string>
-	<!-- End App Lamp Controller -->
+    <!-- End App Lamp Controller -->
+    <string name="title_activity_app_lamp_control_system">AppLampControlSystem</string>
+
 </resources>
