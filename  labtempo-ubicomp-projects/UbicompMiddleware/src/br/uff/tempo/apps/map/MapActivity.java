@@ -20,6 +20,8 @@ import org.andengine.input.touch.detector.PinchZoomDetector.IPinchZoomDetectorLi
 import org.andengine.input.touch.detector.ScrollDetector;
 import org.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
 import org.andengine.input.touch.detector.SurfaceScrollDetector;
+import org.andengine.opengl.font.FontManager;
+import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -62,7 +64,8 @@ import br.uff.tempo.middleware.resources.stubs.StoveStub;
 import br.uff.tempo.middleware.resources.stubs.TelevisionStub;
 
 public class MapActivity extends /* SimpleLayoutGameActivity */
-SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener, IPinchZoomDetectorListener, IResourceChooser {
+SimpleBaseGameActivity implements IOnSceneTouchListener,
+		IScrollDetectorListener, IPinchZoomDetectorListener, IResourceChooser {
 
 	// ===========================================================
 	// Constants
@@ -140,6 +143,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 	// A helper variable, keeping the selected item from menu
 	private MenuItem itemSelected;
 
+	private FontManager fontManager;
+	private TextureManager textureManager;
+
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -167,9 +173,12 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		this.mCameraWidth = d.getWidth();
 		this.mCameraHeight = d.getHeight();
 
-		this.mCamera = new ZoomCamera(0, 0, this.mCameraWidth, this.mCameraHeight);
+		this.mCamera = new ZoomCamera(0, 0, this.mCameraWidth,
+				this.mCameraHeight);
 
-		final EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(this.mCameraWidth, this.mCameraHeight), this.mCamera);
+		final EngineOptions engineOptions = new EngineOptions(true,
+				ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(
+						this.mCameraWidth, this.mCameraHeight), this.mCamera);
 
 		return engineOptions;
 	}
@@ -196,19 +205,28 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		// Be careful with these integers! They are the TerxtureRegion
 		// coordinates (pixels) in the atlas
 
-		this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 127, 285, TextureOptions.BILINEAR);
+		this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 127,
+				285, TextureOptions.BILINEAR);
 
 		// the stove image is in position (0,0) in the atlas
-		this.mStoveTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "stove_small.png", 0, 0);
+		this.mStoveTextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(this.mBitmapTextureAtlas, this,
+						"stove_small.png", 0, 0);
 
 		// the tv image is at the position (0,52) in the atlas
-		this.mTVTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "tv_small.png", 0, 52);
+		this.mTVTextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(this.mBitmapTextureAtlas, this,
+						"tv_small.png", 0, 52);
 
 		// the bed image is at the position (0,75) in the atlas
-		this.mBedTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "bed_small.png", 0, 75);
-		
+		this.mBedTextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(this.mBitmapTextureAtlas, this,
+						"bed_small.png", 0, 75);
+
 		// the lamp image is at the position (0, 253) in the atlas
-		this.mLampTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(this.mBitmapTextureAtlas, this, "lamp_inactive.png", 0, 253);
+		this.mLampTextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(this.mBitmapTextureAtlas, this,
+						"lamp_inactive.png", 0, 253);
 
 		this.mBitmapTextureAtlas.load();
 	}
@@ -226,12 +244,16 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 
 		// load the TMX map (tiled map from house)
 		// see www.mapeditor.org
-		final TMXLoader tmxLoader = new TMXLoader(this.getAssets(), this.mEngine.getTextureManager(), TextureOptions.BILINEAR_PREMULTIPLYALPHA, this.getVertexBufferObjectManager(), null);
+		final TMXLoader tmxLoader = new TMXLoader(this.getAssets(),
+				this.mEngine.getTextureManager(),
+				TextureOptions.BILINEAR_PREMULTIPLYALPHA,
+				this.getVertexBufferObjectManager(), null);
 
-		//TODO Read a property file to load the map file. Create an interface to choose the file
+		// TODO Read a property file to load the map file. Create an interface
+		// to choose the file
 		try {
 			this.tiledMap = tmxLoader.loadFromAsset("tmx/casa_meiry.tmx");
-			//this.tiledMap = tmxLoader.loadFromAsset("tmx/house.tmx");
+			// this.tiledMap = tmxLoader.loadFromAsset("tmx/house.tmx");
 			// this.tiledMap = tmxLoader.loadFromAsset("tmx/testTiled.tmx");
 		} catch (TMXLoadException e) {
 			e.printStackTrace();
@@ -278,43 +300,52 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 
 	// Detectors
 	@Override
-	public void onScrollStarted(final ScrollDetector pScollDetector, final int pPointerID, final float pDistanceX,
-			final float pDistanceY) {
+	public void onScrollStarted(final ScrollDetector pScollDetector,
+			final int pPointerID, final float pDistanceX, final float pDistanceY) {
 		final float zoomFactor = this.mCamera.getZoomFactor();
-		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY / zoomFactor);
+		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
+				/ zoomFactor);
 	}
 
 	@Override
-	public void onScroll(final ScrollDetector pScollDetector, final int pPointerID, final float pDistanceX, final float pDistanceY) {
+	public void onScroll(final ScrollDetector pScollDetector,
+			final int pPointerID, final float pDistanceX, final float pDistanceY) {
 		final float zoomFactor = this.mCamera.getZoomFactor();
-		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY / zoomFactor);
+		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
+				/ zoomFactor);
 	}
 
 	@Override
-	public void onScrollFinished(final ScrollDetector pScollDetector, final int pPointerID, final float pDistanceX,
-			final float pDistanceY) {
+	public void onScrollFinished(final ScrollDetector pScollDetector,
+			final int pPointerID, final float pDistanceX, final float pDistanceY) {
 		final float zoomFactor = this.mCamera.getZoomFactor();
-		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY / zoomFactor);
+		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
+				/ zoomFactor);
 	}
 
 	@Override
-	public void onPinchZoomStarted(final PinchZoomDetector pPinchZoomDetector, final TouchEvent pTouchEvent) {
+	public void onPinchZoomStarted(final PinchZoomDetector pPinchZoomDetector,
+			final TouchEvent pTouchEvent) {
 		this.mPinchZoomStartedCameraZoomFactor = this.mCamera.getZoomFactor();
 	}
 
 	@Override
-	public void onPinchZoom(final PinchZoomDetector pPinchZoomDetector, final TouchEvent pTouchEvent, final float pZoomFactor) {
-		this.mCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor * pZoomFactor);
+	public void onPinchZoom(final PinchZoomDetector pPinchZoomDetector,
+			final TouchEvent pTouchEvent, final float pZoomFactor) {
+		this.mCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor
+				* pZoomFactor);
 	}
 
 	@Override
-	public void onPinchZoomFinished(final PinchZoomDetector pPinchZoomDetector, final TouchEvent pTouchEvent,
-			final float pZoomFactor) {
-		this.mCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor * pZoomFactor);
+	public void onPinchZoomFinished(final PinchZoomDetector pPinchZoomDetector,
+			final TouchEvent pTouchEvent, final float pZoomFactor) {
+		this.mCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor
+				* pZoomFactor);
 	}
 
 	@Override
-	public boolean onSceneTouchEvent(final Scene pScene, final TouchEvent pSceneTouchEvent) {
+	public boolean onSceneTouchEvent(final Scene pScene,
+			final TouchEvent pSceneTouchEvent) {
 		this.mPinchZoomDetector.onTouchEvent(pSceneTouchEvent);
 
 		if (this.mPinchZoomDetector.isZooming()) {
@@ -334,7 +365,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 	public boolean onCreateOptionsMenu(Menu menu) {
 
 		// sub menu: simulated resources
-		SubMenu simulated = menu.addSubMenu("Add Simulated Resource").setIcon(R.drawable.add);
+		SubMenu simulated = menu.addSubMenu("Add Simulated Resource").setIcon(
+				R.drawable.add);
 
 		// Simulated resources to add
 		simulated.add(GPR_RESOURCES, TV, Menu.NONE, "TV");
@@ -342,14 +374,18 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		simulated.add(GPR_RESOURCES, STOVE, Menu.NONE, "Smart Stove");
 		simulated.add(GPR_RESOURCES, LAMP, Menu.NONE, "Smart Lamp");
 		simulated.add(GPR_RESOURCES, BED, Menu.NONE, "Smart Bed");
-		simulated.add(GPR_RESOURCES, AR_CONDITIONER, Menu.NONE, "Ar-conditioner");
+		simulated.add(GPR_RESOURCES, AR_CONDITIONER, Menu.NONE,
+				"Ar-conditioner");
 
-		simulated.add(GPR_RESOURCES, TEMPERATURE, Menu.NONE, "Temperature Sensor");
+		simulated.add(GPR_RESOURCES, TEMPERATURE, Menu.NONE,
+				"Temperature Sensor");
 
-		simulated.add(GPR_RESOURCES, LUMINOSITY, Menu.NONE, "Luminosity Sensor");
+		simulated
+				.add(GPR_RESOURCES, LUMINOSITY, Menu.NONE, "Luminosity Sensor");
 
 		// Option to connect an icon to an external resource
-		menu.add(Menu.NONE, EXTERNAL, Menu.NONE, "Connect to External Resource").setIcon(R.drawable.connect);
+		menu.add(Menu.NONE, EXTERNAL, Menu.NONE, "Connect to External Resource")
+				.setIcon(R.drawable.connect);
 
 		// Option to open a settings screen of the application
 		menu.add("Settings").setIcon(R.drawable.settings);
@@ -408,7 +444,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		// It is a configuration dialog to
 		// get a name, location and
 		// others configurations
-		
+
 		this.resConfigured = false;
 		resConf.showDialog();
 	}
@@ -463,7 +499,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 
 		// The resource icon (image)
 		TextureRegion tr = null;
-		
+
 		// Reference to resource to be created
 		IResourceAgent resAg = null;
 
@@ -494,67 +530,67 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 			bundle.putSerializable("agent", stove);
 
 			resAg = stove;
-			
+
 			break;
-			
+
 		// Smart Lamp selected. Creates a new lamp in the scene
 		case LAMP:
-			
+
 			ILamp lamp;
-			
+
 			// create an agent if it's a simulated resource; a stub otherwise
 			if (simulated) {
 				lamp = new Lamp(regData.getResourceName());
 			} else {
 				lamp = new LampStub(regData.getResourceName());
 			}
-			
+
 			c = br.uff.tempo.apps.lamp.LampView.class;
 			tr = this.mLampTextureRegion;
 			resType = InterfaceApplicationManager.LAMP_DATA;
-			
+
 			resAg = lamp;
-			
+
 			break;
 
 		// Smart TV selected. Creates a new TV in the scene
 		case TV:
 
 			ITelevision tv;
-			
+
 			// create an agent if it's a simulated resource; a stub otherwise
 			if (simulated) {
 				tv = new Television(regData.getResourceName());
 			} else {
 				tv = new TelevisionStub(regData.getResourceName());
 			}
-			
+
 			c = br.uff.tempo.apps.tv.TvView.class;
 			tr = this.mTVTextureRegion;
 			resType = InterfaceApplicationManager.TV_DATA;
 
 			resAg = tv;
-			
+
 			break;
 
 		// Smart Bed selected. Creates a new Bed in the scene
 		case BED:
 
 			IBed bed;
-			
+
 			// create an agent if it's a simulated resource; a stub otherwise
 			if (simulated) {
 				bed = new Bed(regData.getResourceName());
 			} else {
 				bed = new BedStub(regData.getResourceName());
 			}
-			
+
 			c = br.uff.tempo.apps.bed.BedView.class;
 			tr = this.mBedTextureRegion;
 			resType = InterfaceApplicationManager.BED_DATA;
 
 			resAg = bed;
-			
+
 			break;
 
 		case EXTERNAL:
@@ -572,9 +608,10 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 			return;
 		}
 
-		// Subscribe to the agent (all context variables) to receive notifications
+		// Subscribe to the agent (all context variables) to receive
+		// notifications
 		resAg.registerStakeholder("all", mAppManager.getURL());
-		
+
 		// Creates an intent, to pass data to StoveView
 		i = new Intent(this, c);
 
@@ -582,22 +619,27 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		i.putExtras(bundle);
 
 		// create an icon in the map, according to the parameters
-		createSprite(tr, i, resType);
+		createSprite(tr, i, resType).showMessage("Texto longo, muito longo, muito longo,\n muito longo, muito longo, \nmuito longo!");
 
 	}
 
-	private ResourceObject createSprite(final TextureRegion pTextureRegion, final Intent intent, final int dataType) {
+	private ResourceObject createSprite(final TextureRegion pTextureRegion,
+			final Intent intent, final int dataType) {
 
 		// Create a new Sprite that shows pTextureImage as graphical
 		// representation
 		// It's initially positioned at center screen
-		ResourceObject sprite = new ResourceObject(this.mCameraWidth / 2, this.mCameraHeight / 2, pTextureRegion, this.getVertexBufferObjectManager()) {
+		ResourceObject sprite = new ResourceObject(this.mCameraWidth / 2,
+				this.mCameraHeight / 2, pTextureRegion,
+				this.getVertexBufferObjectManager(), this.getFontManager(),
+				this.getTextureManager()) {
 
 			@Override
 			public void onLongPress(TouchEvent pSceneTouchEvent) {
 
 				// Can freely move the resource in the screen
-				this.setPosition(pSceneTouchEvent.getX() - this.getWidth() / 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+				this.setPosition(pSceneTouchEvent.getX() - this.getWidth() / 2,
+						pSceneTouchEvent.getY() - this.getHeight() / 2);
 			}
 
 			@Override
@@ -605,8 +647,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 
 				// Start the resource app (e.g. stove, tv)
 				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				
-				Log.d("IPGAP", "A resource was selected. Opening the Application");
+
+				Log.d("IPGAP",
+						"A resource was selected. Opening the Application");
 
 				MapActivity.this.startActivity(intent);
 			}
@@ -626,13 +669,17 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		return sprite;
 	}
 
-	//It's not been used yet
+	// It's not been used yet
 	private void setupQuickActions() {
 
-		ActionItem unregItem = new ActionItem(ID_UNREG, "Unregister", getResources().getDrawable(R.drawable.add));
-		ActionItem removeItem = new ActionItem(ID_REMOVE, "Accept", getResources().getDrawable(R.drawable.cancel));
-		ActionItem infoItem = new ActionItem(ID_INFO, "Upload", getResources().getDrawable(R.drawable.info));
-		ActionItem settingsItem = new ActionItem(ID_SETTINGS, "Upload", getResources().getDrawable(R.drawable.settings));
+		ActionItem unregItem = new ActionItem(ID_UNREG, "Unregister",
+				getResources().getDrawable(R.drawable.add));
+		ActionItem removeItem = new ActionItem(ID_REMOVE, "Accept",
+				getResources().getDrawable(R.drawable.cancel));
+		ActionItem infoItem = new ActionItem(ID_INFO, "Upload", getResources()
+				.getDrawable(R.drawable.info));
+		ActionItem settingsItem = new ActionItem(ID_SETTINGS, "Upload",
+				getResources().getDrawable(R.drawable.settings));
 
 		mQuickAction = new QuickAction(getApplicationContext());
 
@@ -641,18 +688,23 @@ SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener
 		mQuickAction.addActionItem(infoItem);
 		mQuickAction.addActionItem(settingsItem);
 
-		mQuickAction.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
-			@Override
-			public void onItemClick(QuickAction quickAction, int pos, int actionId) {
-				ActionItem actionItem = quickAction.getActionItem(pos);
+		mQuickAction
+				.setOnActionItemClickListener(new QuickAction.OnActionItemClickListener() {
+					@Override
+					public void onItemClick(QuickAction quickAction, int pos,
+							int actionId) {
+						ActionItem actionItem = quickAction.getActionItem(pos);
 
-				if (actionId == ID_UNREG) {
-					Toast.makeText(getApplicationContext(), "Unregister", Toast.LENGTH_SHORT).show();
-				} else {
-					Toast.makeText(getApplicationContext(), actionItem.getTitle() + " selected", Toast.LENGTH_SHORT).show();
-				}
-			}
-		});
+						if (actionId == ID_UNREG) {
+							Toast.makeText(getApplicationContext(),
+									"Unregister", Toast.LENGTH_SHORT).show();
+						} else {
+							Toast.makeText(getApplicationContext(),
+									actionItem.getTitle() + " selected",
+									Toast.LENGTH_SHORT).show();
+						}
+					}
+				});
 	}
 
 }
