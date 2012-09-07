@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
 
     <application
@@ -92,9 +93,20 @@
         </activity>
         <!-- End tictactoe app -->
 
-        <activity
+		<!-- Begin SmartAndroid Debugger -->
+		<activity 
+		    android:name="br.uff.tempo.middleware.LogViewerActivity"
+            android:label="@string/debugger_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+		<!-- End SmartAndroid Debugger -->
+		            
+        </activity>
             android:name=".middleware.management.utils.NotifyDemo"
             android:label="NotifyDemo" />
+        
         <!-- App Lamp Controller -->
         <activity
             android:name=".apps.AppLampController"

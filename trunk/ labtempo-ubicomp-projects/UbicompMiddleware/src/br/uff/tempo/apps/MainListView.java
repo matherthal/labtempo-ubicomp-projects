@@ -22,6 +22,7 @@ import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.stove.StoveView;
 import br.uff.tempo.apps.tictactoe.TicTacToe;
 import br.uff.tempo.apps.tv.TvView;
+import br.uff.tempo.middleware.LogViewerActivity;
 import br.uff.tempo.middleware.comm.current.api.Dispatcher;
 
 public class MainListView extends ListActivity {
@@ -93,7 +94,10 @@ public class MainListView extends ListActivity {
 					Intent intent = new Intent(MainListView.this, CounterView.class);
 					startActivity(intent);
 				} else if (item.equals("Sistema de Controle de Lâmpadas")) {
-					Intent intent = new Intent(MainListView.this, AppLampControlSystem.class);
+//					Intent intent = new Intent(MainListView.this, AppLampControlSystem.class);
+//					startActivity(intent);
+				} else if (item.equals("SmartAndroid Debugger")) {
+					Intent intent = new Intent(MainListView.this, LogViewerActivity.class);
 					startActivity(intent);
 				} else {
 					Toast.makeText(MainListView.this, "Não existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();

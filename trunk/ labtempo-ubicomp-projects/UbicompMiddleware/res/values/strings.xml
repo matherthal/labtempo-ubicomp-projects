@@ -2,7 +2,7 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
     <string name="hello">Hello World, TestRPC!</string>
-    <string name="app_name">MainListView</string>
+    <string name="app_name">SmartAndroid</string>
     <string name="ip_ok">IP OK!</string>
     <string name="button_stove">Fogão</string>
     <string name="regButton">Register this device</string>
@@ -45,6 +45,7 @@
         <item name="item_device">DeviceOnOff</item>
         <item name="item_counter">Counter</item>
         <item name="item_app_lamp_control_sys">Sistema de Controle de Lâmpadas</item>
+        <item name="item_smartandroid_debugger">SmartAndroid Debugger</item>
     </string-array>
 
     <!-- RuleActivity -->
@@ -120,5 +121,9 @@
     <string name="app_lamp_controller">Controlador de Lâmpada</string>
     <!-- End App Lamp Controller -->
     <string name="title_activity_app_lamp_control_system">AppLampControlSystem</string>
+    
+    <!-- Begin Debugger app -->
+    <string name="debugger_name">SmartAndroid Debugger</string>
+	<!-- End Debugger app -->
 
 </resources>
