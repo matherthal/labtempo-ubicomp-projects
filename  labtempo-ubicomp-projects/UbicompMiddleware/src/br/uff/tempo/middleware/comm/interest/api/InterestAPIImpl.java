@@ -37,16 +37,16 @@ public class InterestAPIImpl implements InterestAPI {
 	
 	public void addInterest(String interest, Callable callback) throws Exception {
 		if (this.myInterests.get(interest) == null) {
-			Log.d("interest.api", "Adicionando o primeiro callback do interesse: " + interest);
+			Log.d("SmartAndroid", "Adicionando o primeiro callback do interesse: " + interest);
 			// first callback
 			this.myInterests.put(interest, new LinkedBlockingQueue<Callable>(Arrays.asList(callback)));
 		} else {
-			Log.d("interest.api", "Adicionando um novo callback do interesse" + interest);
+			Log.d("SmartAndroid", "Adicionando um novo callback do interesse" + interest);
 			// add new callback of the same interest
 			this.myInterests.get(interest).add(callback);	
 		}
 
-		Log.d("interest.api", "Chamando registro de interesse da repa para o interesse: " + interest);
+		Log.d("SmartAndroid", "Chamando registro de interesse da repa para o interesse: " + interest);
 		this.gateway.getRepaSocket().registerInterest(interest);
 	}
 
