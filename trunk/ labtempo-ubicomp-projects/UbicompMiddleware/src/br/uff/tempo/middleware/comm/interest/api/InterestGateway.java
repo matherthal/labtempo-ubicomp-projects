@@ -21,7 +21,7 @@ public class InterestGateway {
 		try {
 			this.startDaemon();
 		} catch (Exception e) {
-			Log.d("interest.api", "Exception do startDaemon", e);
+			Log.d("SmartAndroid", "Exception do startDaemon", e);
 		}
 	}
 	
@@ -34,7 +34,7 @@ public class InterestGateway {
 	}
 	
 	void startDaemon() throws Exception {
-		Log.d("interest.api", "Vou iniciar o daemon");
+		Log.d("SmartAndroid", "Vou iniciar o daemon");
 		new Thread(new Runnable() {
 			boolean terminated = false;
 			
@@ -43,29 +43,29 @@ public class InterestGateway {
 				
 				while (!terminated) {
 					try {
-						Log.d("interest.api", "Vou chamar o repaRecv");
+						Log.d("SmartAndroid", "Vou chamar o repaRecv");
 						message = getRepaSocket().repaRecv();
-						Log.d("interest.api", "Recebi message do repaRecv" + message.getData());
+						Log.d("SmartAndroid", "Recebi message do repaRecv" + message.getData());
 						
 						if (message != null) {
-							Log.d("interest.api", "Vou startar uma nova thread para tratar mensagem recebida");
+							Log.d("SmartAndroid", "Vou startar uma nova thread para tratar mensagem recebida");
 							new Thread(new DealRepaMessage(message, myInterests.get(message.getInterest()))).start();
 						}
 					} catch (Exception e) {
-						Log.d("interest.api", "Exception ", e);
+						Log.d("SmartAndroid", "Exception ", e);
 						terminated = true;
 						
 						try {
 							getRepaSocket().repaClose();
 						} catch (Exception e2) {
-							Log.d("interest.api", "Exception fazendo o close do socket", e2);
+							Log.d("SmartAndroid", "Exception fazendo o close do socket", e2);
 						}
 					}
 				}
-				Log.d("interest.api", "Fim da execução do daemon de recebimento de mensagens repa.");
+				Log.d("SmartAndroid", "Fim da execu√ß√£o do daemon de recebimento de mensagens repa.");
 			}
 		}).start();
-		Log.d("interest.api", "Daemon inicializado");
+		Log.d("SmartAndroid", "Daemon inicializado");
 	}
 	
 	public RepaSocket getRepaSocket() throws Exception {
