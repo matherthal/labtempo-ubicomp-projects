@@ -94,8 +94,8 @@ public class MainListView extends ListActivity {
 					Intent intent = new Intent(MainListView.this, CounterView.class);
 					startActivity(intent);
 				} else if (item.equals("Sistema de Controle de Lâmpadas")) {
-//					Intent intent = new Intent(MainListView.this, AppLampControlSystem.class);
-//					startActivity(intent);
+					Intent intent = new Intent(MainListView.this, AppLampControlSystem.class);
+					startActivity(intent);
 				} else if (item.equals("SmartAndroid Debugger")) {
 					Intent intent = new Intent(MainListView.this, LogViewerActivity.class);
 					startActivity(intent);
