@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.view.View.OnClickListener;
-import br.uff.tempo.apps.map.MapActivity;
 
 public abstract class MapDialog implements OnCancelListener, OnClickListener {
 

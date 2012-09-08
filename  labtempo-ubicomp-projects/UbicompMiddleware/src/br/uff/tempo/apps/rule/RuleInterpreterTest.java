@@ -1,14 +1,12 @@
 package br.uff.tempo.apps.rule;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-//import br.uff.tempo.middleware.management.utils.NotifyDemo;
 
 public class RuleInterpreterTest extends ResourceAgent {
 	private String TAG = "RuleInterpreterTest";

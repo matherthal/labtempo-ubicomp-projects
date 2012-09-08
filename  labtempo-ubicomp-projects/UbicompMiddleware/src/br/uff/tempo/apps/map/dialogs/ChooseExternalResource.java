@@ -9,7 +9,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.uff.tempo.R;
-import br.uff.tempo.apps.map.MapActivity;
 
 public class ChooseExternalResource extends MapDialog implements AdapterView.OnItemClickListener {
 

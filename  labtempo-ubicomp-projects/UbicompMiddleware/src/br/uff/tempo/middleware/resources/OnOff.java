@@ -5,8 +5,6 @@ import org.json.JSONException;
 import android.widget.ToggleButton;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
-import br.uff.tempo.middleware.management.interfaces.IResourceAgent.CVType;
-import br.uff.tempo.middleware.management.interfaces.IResourceAgent.ContextVariable;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.IOnOff;
 

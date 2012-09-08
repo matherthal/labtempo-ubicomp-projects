@@ -2,22 +2,21 @@ package br.uff.tempo.apps.counter;
 
 import java.util.ArrayList;
 
-import br.uff.tempo.R;
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.resources.Counter;
-import br.uff.tempo.middleware.resources.OnOff;
-import br.uff.tempo.middleware.resources.interfaces.IOnOff;
-import br.uff.tempo.middleware.resources.stubs.OnOffStub;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.view.View;
-import android.view.View.OnClickListener;
+import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.resources.Counter;
+import br.uff.tempo.middleware.resources.interfaces.IOnOff;
+import br.uff.tempo.middleware.resources.stubs.OnOffStub;
 
 public class CounterView extends Activity{
 
