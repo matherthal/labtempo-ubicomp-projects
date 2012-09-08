@@ -1,9 +1,6 @@
 package br.uff.tempo.middleware.resources;
 
-import org.json.JSONException;
-
 import android.util.Log;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.ILamp;
 
@@ -28,12 +25,8 @@ public class Lamp extends ResourceAgent implements ILamp {
 	public void turnOn() {
 		Log.i(TAG, "Turn Lamp on");
 		isOn = true;
-		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), CV_ISON, isOn));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		notifyStakeholders(CV_ISON, isOn);
 	}
 
 	@Override
@@ -41,12 +34,8 @@ public class Lamp extends ResourceAgent implements ILamp {
 	public void turnOff() {
 		Log.i(TAG, "Turn Lamp off");
 		isOn = false;
-		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), CV_ISON, isOn));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		notifyStakeholders(CV_ISON, isOn);
 	}
 
 	@Override

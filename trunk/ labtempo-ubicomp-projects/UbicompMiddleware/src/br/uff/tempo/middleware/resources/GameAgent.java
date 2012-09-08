@@ -1,7 +1,5 @@
 package br.uff.tempo.middleware.resources;
 
-import org.json.JSONException;
-
 import br.uff.tempo.apps.tictactoe.Game;
 import br.uff.tempo.apps.tictactoe.Location;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
@@ -39,12 +37,6 @@ public class GameAgent extends ResourceAgent implements IGameAgent {
 
 	@Override
 	public void setMove(int row, int column, String player) {
-		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), "setMove", row + ";" + column + ";" + player));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		notifyStakeholders("setMove", row + ";" + column + ";" + player);
 	}
-
 }

@@ -1,7 +1,5 @@
 package br.uff.tempo.middleware.resources;
 
-import org.json.JSONException;
-
 import android.widget.ToggleButton;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
@@ -33,11 +31,8 @@ public class OnOff extends ResourceAgent implements IOnOff{
 	@ContextVariable(name = "ligaDesliga", description = "", type = CVType.On)
 	public void setStatus(boolean isOn) {
 		statusOn = isOn;
-		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), "ligaDesliga", isOn));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
+		
+		notifyStakeholders("ligaDesliga", isOn);
 	}
 
 	@Override

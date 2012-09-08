@@ -8,8 +8,6 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.json.JSONException;
-
 import android.util.Log;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
@@ -101,12 +99,7 @@ public class RuleInterpreter extends ResourceAgent {
 	}
 
 	private void notifyActionPerformers() {
-		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), RULE_TRIGGERED, true));
-		} catch (JSONException e) {
-			Log.e(TAG, "Error in evaluation");
-			e.printStackTrace();
-		}
+		notifyStakeholders(RULE_TRIGGERED, true);
 	}
 
 	@Override

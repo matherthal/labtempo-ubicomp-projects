@@ -1,8 +1,5 @@
 package br.uff.tempo.middleware.resources;
 
-import org.json.JSONException;
-
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IBed;
 
@@ -27,22 +24,14 @@ public class Bed extends ResourceAgent implements IBed {
 	@Override
 	public void lieDown() {
 		this.hasSomeone = true;
-		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), "occupied", true));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		notifyStakeholders("occupied", true);
 	}
 
 	@Override
 	public void getOut() {
 		this.hasSomeone = true;
-		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), "occupied", false));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		notifyStakeholders("occupied", false);
 	}
 }

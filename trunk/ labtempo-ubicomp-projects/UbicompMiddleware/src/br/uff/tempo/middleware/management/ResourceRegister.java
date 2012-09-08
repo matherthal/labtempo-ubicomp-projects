@@ -1,8 +1,5 @@
 package br.uff.tempo.middleware.management;
 
-import org.json.JSONException;
-
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
@@ -34,13 +31,8 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	public boolean register(String url) {
 		rR = ResourceRepository.getInstance();
 		rR.add(url);
-		String ch = JSONHelper.createChange(this.getURL(), "register", url);
-		try {
-			notifyStakeholders(ch);
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		notifyStakeholders("register", url);
 		return true;
 	}
 	
