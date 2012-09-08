@@ -1,9 +1,6 @@
 package br.uff.tempo.middleware.resources;
 
-import org.json.JSONException;
-
 import android.util.Log;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IPresenceSensor;
 
@@ -30,12 +27,8 @@ public class PresenceSensor extends ResourceAgent implements IPresenceSensor {
 		else
 			Log.i(TAG, "Presence sensor " + this.getName() + " detects somebody has left");
 		this.presence = p;
-		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), this.CV_GETPRESENCE, p));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		notifyStakeholders(this.CV_GETPRESENCE, p);
 	}
 
 	@Override

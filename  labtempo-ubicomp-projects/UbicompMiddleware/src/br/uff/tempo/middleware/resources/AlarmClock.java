@@ -2,13 +2,10 @@ package br.uff.tempo.middleware.resources;
 
 import java.util.Calendar;
 
-import org.json.JSONException;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IAlarmClock;
 
@@ -77,12 +74,7 @@ public class AlarmClock extends ResourceAgent implements IAlarmClock {
 
 	@Override
 	public void wentOff() {
-		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), "Alarme disparou", ""));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		notifyStakeholders("Alarme disparou", "");
 	}
 
 	@Override

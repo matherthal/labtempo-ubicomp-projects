@@ -4,11 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import org.json.JSONException;
-
 import android.os.Binder;
 import android.os.IBinder;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
@@ -124,13 +121,8 @@ public class Stove extends ResourceAgent implements IStove {
 	public void setOvenTemperature(float newTemperature) {
 		this.ovenTemp = newTemperature;
 		this.ovenOn = true;
-
-		try {
-			notifyStakeholders(JSONHelper.createChange(this.getURL(), "getOvenTemperature", newTemperature));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		notifyStakeholders("getOvenTemperature", newTemperature);
 	}
 
 	@Override
