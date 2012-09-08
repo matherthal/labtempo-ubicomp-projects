@@ -9,6 +9,7 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import br.uff.tempo.middleware.comm.current.api.Caller;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
@@ -249,6 +250,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 	
 	@Override
+	@Deprecated()
 	public void notifyStakeholders(String change) throws JSONException {
 		int i = 0;
 		while (i < stakeholders.size()) {
@@ -259,6 +261,17 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			// change = id, method name and value
 			// query by url return a unique instance
 			i++;
+		}
+	}
+	
+	public void notifyStakeholders(String method, Object value) {
+		String change = JSONHelper.createChange(this.getURL(), method, value);
+		
+		for (Stakeholder stakeholder : stakeholders) {
+			if (stakeholder.getMethod().equals(method) || stakeholder.getMethod().equalsIgnoreCase("all")) {
+				new ResourceAgentStub(stakeholder.getUrl()).notificationHandler(change);
+				Log.d("SmartAndroid", String.format("notifyStakeholders() - stakeholder: %s method: %s value: %s was notified", stakeholder.getUrl(), method, value));
+			}
 		}
 	}
 
