@@ -77,8 +77,10 @@ public interface IResourceAgent extends Serializable {
 
 	public boolean identify();
 
+	@Deprecated()
 	public void notifyStakeholders(String change) throws JSONException;
 
+	public void notifyStakeholders(String method, Object value);
 
 	// TODO Not so good solution... We need to improve this.
 	// public ResourceData getData();

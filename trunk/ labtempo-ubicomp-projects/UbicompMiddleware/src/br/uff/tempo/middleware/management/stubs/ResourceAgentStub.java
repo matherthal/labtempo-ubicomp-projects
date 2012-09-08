@@ -131,11 +131,17 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	}
 
 	@Override
+	@Deprecated()
 	public void notifyStakeholders(String change) throws JSONException {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void notifyStakeholders(String method, Object value) {
+		// TODO Auto-generated method stub
 
+	}
 	// @Override
 	// public boolean registerStakeholder(String method, ResourceAgent rA) {
 	// // TODO Auto-generated method stub
