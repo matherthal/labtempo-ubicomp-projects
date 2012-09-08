@@ -1,6 +1,6 @@
 package br.uff.tempo.middleware.comm.interest.api;
 
-import java.util.ArrayList;
+import java.net.SocketException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -13,79 +13,110 @@ import android.util.Log;
 
 public class InterestAPIImpl implements InterestAPI {
 	
-	private ConcurrentHashMap<String, BlockingQueue<Callable>> myInterests = new ConcurrentHashMap<String, BlockingQueue<Callable>>();
+	private static ConcurrentHashMap<String, BlockingQueue<Callable>> myInterests = new ConcurrentHashMap<String, BlockingQueue<Callable>>();
 	
-	// interesse: temperatura -> callback: agente ar condicionado, callback: agente sensor de temperatura etc..
+	private static InterestAPIImpl api;
 	
-	private InterestGateway gateway;
+	private CommREPAD commREPAD;
+	
+	public synchronized static InterestAPIImpl getInstance() {
+		if (api == null) {
+			api = new InterestAPIImpl(); 
+		}
+		return api;
+	}
 	
 	public InterestAPIImpl() {
-		this.gateway = InterestGateway.getInstance(myInterests);
+		try {
+			commREPAD = new CommREPAD() {
+				@Override
+				public String serve(RepaMessage repaMessage) {
+					return dispatchRepaMessage(repaMessage);
+				}
+			};
+		} catch (SocketException e) {
+			Log.d("SmartAndroid", "Erro criando CommREPAD: " + e);
+		}
 	}
 
+	private static String dispatchRepaMessage(RepaMessage message) {
+		BlockingQueue<Callable> callbacks = myInterests.get(message.getInterest());
+		
+		Log.d("SmartAndroid", "Vou chamar os callbacks");
+		for (Callable callback : callbacks) {
+			callback.call(message.getInterest(), new String(message.getData()), message.getPrefix().getPrefix());
+		}
+		Log.d("SmartAndroid", "Fim das chamadas aos callbacks");
+		
+		return null;
+	}
+	
 	public int getMyAddress() throws Exception {
-		return this.gateway.getRepaSocket().getRepaNodeAdress().getPrefix();
+		return this.commREPAD.getRepaNodeAdress().getPrefix();
 	}
 
 	public void sendMessage(String interest, String value) throws Exception {
-		this.gateway.getRepaSocket().repaSend(new RepaMessage(interest, value));
+		this.commREPAD.repaSend(new RepaMessage(interest, value));
 	}
 	
 	public void sendMessageTo(int address, String interest, String value) throws Exception {
-		this.gateway.getRepaSocket().repaSend(new RepaMessage(interest, value, new PrefixAddress(address)));
+		this.commREPAD.repaSend(new RepaMessage(interest, value, new PrefixAddress(address)));
 	}
 	
 	public void addInterest(String interest, Callable callback) throws Exception {
-		if (this.myInterests.get(interest) == null) {
+		if (myInterests.get(interest) == null) {
 			Log.d("SmartAndroid", "Adicionando o primeiro callback do interesse: " + interest);
 			// first callback
-			this.myInterests.put(interest, new LinkedBlockingQueue<Callable>(Arrays.asList(callback)));
+			myInterests.put(interest, new LinkedBlockingQueue<Callable>(Arrays.asList(callback)));
 		} else {
 			Log.d("SmartAndroid", "Adicionando um novo callback do interesse" + interest);
 			// add new callback of the same interest
-			this.myInterests.get(interest).add(callback);	
+			myInterests.get(interest).add(callback);	
 		}
 
 		Log.d("SmartAndroid", "Chamando registro de interesse da repa para o interesse: " + interest);
-		this.gateway.getRepaSocket().registerInterest(interest);
+		this.commREPAD.registerInterest(interest);
 	}
 
 	public void removeInterest(String interest) throws Exception {
-		this.myInterests.remove(interest);
+		// TODO: remover a minha referencia e se não tiver mais ninguem remover de fato o interesse
 		
-		this.gateway.getRepaSocket().unregisterInterest(interest);
+//		myInterests.remove(interest);
+//		this.commREPAD.unregisterInterest(interest);
 	}
 	
 	public void removeInterestCallback(String interest, Callable callback) throws Exception {
-		for (Callable c : this.myInterests.get(interest)) {
+		for (Callable c : myInterests.get(interest)) {
 			if (c.equals(callback)) {
-				this.myInterests.remove(c);
+				myInterests.remove(c);
 				break;
 			}
 		}
 	}
 	
 	public void removeAllInterests() throws Exception {
-		this.myInterests.clear();
-		
-		this.gateway.getRepaSocket().unregisterAll();
+		// TODO: remover todos os interesses da minha referência
+//		myInterests.clear();
+//		this.gateway.getRepaSocket().unregisterAll();
 	}
 
 	public List<String> getListInterests() throws Exception {
-		return this.gateway.getRepaSocket().getListInterests();
+		// TODO: listar todos os interesses da minha instancia
+//		return this.gateway.getRepaSocket().getListInterests();
+		return null;
 	}
 
 	public List<Integer> getListNodes() throws Exception {
-		List<Integer> listNodes = new ArrayList<Integer>();
-		
-		List<PrefixAddress> listPrefixAddressNodes = this.gateway.getRepaSocket().getListNodes();
-		
-		if (listPrefixAddressNodes != null) {
-			for (PrefixAddress prefixAddress : listPrefixAddressNodes) {
-				listNodes.add(prefixAddress.getPrefix());
-			}
-		}
-		
-		return listNodes;
+//		List<Integer> listNodes = new ArrayList<Integer>();
+//		
+//		List<PrefixAddress> listPrefixAddressNodes = this.gateway.getRepaSocket().getListNodes();
+//		
+//		if (listPrefixAddressNodes != null) {
+//			for (PrefixAddress prefixAddress : listPrefixAddressNodes) {
+//				listNodes.add(prefixAddress.getPrefix());
+//			}
+//		}
+//		
+		return null;
 	}
 }
