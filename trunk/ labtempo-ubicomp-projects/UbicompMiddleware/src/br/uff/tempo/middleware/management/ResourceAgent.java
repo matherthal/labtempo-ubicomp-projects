@@ -154,6 +154,13 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 
 		this.position = position;
 		// initResource();
+		
+		this.registerDefaultInterests();
+	}
+
+	private void registerDefaultInterests() {
+		// TODO: André - add default interests related with context variables and services
+		// TODO: André - find methods annotated with @ContextVariable and @Service and register in communication API
 	}
 
 	@Override

@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Set;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
+import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.utils.Position;
-import br.uff.tempo.middleware.management.Place;
 
 public class ResourceLocationStub extends Stub implements IResourceLocation {
 

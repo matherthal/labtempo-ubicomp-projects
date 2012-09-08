@@ -2,14 +2,6 @@ package br.uff.tempo.apps.onoffsample;
 
 import java.util.ArrayList;
 
-import br.uff.tempo.R;
-import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
-import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.management.utils.Position;
-import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
-import br.uff.tempo.middleware.resources.OnOff;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,6 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
+import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.management.utils.Position;
+import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
+import br.uff.tempo.middleware.resources.OnOff;
 
 public class OnOffView extends Activity{
 	

@@ -15,10 +15,8 @@ import android.widget.ToggleButton;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseExternalResource;
 import br.uff.tempo.apps.map.dialogs.IResourceChooser;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.resources.Generic;
 import br.uff.tempo.middleware.resources.interfaces.ILamp;
 import br.uff.tempo.middleware.resources.stubs.LampStub;
 

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import org.json.JSONException;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
-import br.uff.tempo.middleware.management.utils.Position;
 
 public interface IResourceAgent extends Serializable {
 	public String getResourceClassName();

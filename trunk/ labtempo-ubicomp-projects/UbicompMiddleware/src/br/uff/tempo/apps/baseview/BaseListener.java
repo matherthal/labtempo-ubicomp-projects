@@ -7,7 +7,6 @@ import android.widget.TextView;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 
 public class BaseListener extends Thread {
 

@@ -5,9 +5,7 @@ import java.util.Date;
 import br.uff.tempo.middleware.management.Aggregator;
 import br.uff.tempo.middleware.management.Interpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.resources.interfaces.IBed;
 import br.uff.tempo.middleware.resources.interfaces.IPerson;
-import br.uff.tempo.middleware.resources.stubs.BedStub;
 
 public class Person extends Aggregator implements IPerson {
 	private String name = "";
