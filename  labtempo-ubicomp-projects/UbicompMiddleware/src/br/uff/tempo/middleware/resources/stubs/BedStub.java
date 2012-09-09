@@ -19,19 +19,19 @@ public class BedStub extends ResourceAgentStub implements IBed {
 
 	@Override
 	public boolean occupied() {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		return (Boolean) makeCall("hasSomeoneIn", params);
 	}
 
 	@Override
 	public void lieDown() {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		makeCall("lieDown", params);
 	}
 
 	@Override
 	public void getOut() {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		makeCall("getOut", params);
 	}
 }

@@ -16,7 +16,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	@Override
 	public boolean isOn() {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		// params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
 
 		return (Boolean) makeCall("turnOnBurner", params);
@@ -25,7 +25,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	@Override
 	public void turnOnBurner(int burnerIndex) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), burnerIndex));
 
 		makeCall("turnOnBurner", params);
@@ -35,7 +35,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	@Override
 	public void turnOffBurner(int burnerIndex) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), burnerIndex));
 
 		makeCall("turnOffBurner", params);
@@ -45,7 +45,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	@Override
 	public boolean isOnBurner(int burnerIndex) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), burnerIndex));
 
 		return (Boolean) makeCall("isOnBurner", params);
@@ -55,7 +55,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	@Override
 	public void setOvenTemperature(float newTemperature) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Float.class.getName(), newTemperature));
 
 		makeCall("setOvenTemperature", params);
@@ -98,7 +98,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 
 	@Override
 	public boolean isOvenOn() {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		return (Boolean) makeCall("isOvenOn", params);
 	}
 

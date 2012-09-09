@@ -23,7 +23,7 @@ import br.uff.tempo.middleware.management.stubs.Stub;
 public class Condition implements Serializable {
 	private String rai;
 	private String method;
-	private List<Tuple> params;
+	private List<Tuple<String, Object>> params;
 	private Operator operator = Operator.Equal;
 	private Object value;
 	private long timeout;
@@ -94,7 +94,7 @@ public class Condition implements Serializable {
 		this.method = method;
 		// this.params = params;
 
-		this.params = new ArrayList<Tuple>();
+		this.params = new ArrayList<Tuple<String, Object>>();
 		if (params != null) {
 			int i = 0;
 			for (Object o : params) {

@@ -20,7 +20,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 	public boolean register(String url) {
 
 		// Set params
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
 		Type rAType = new TypeToken<ResourceAgent>() {
 		}.getType();
@@ -32,7 +32,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 
 	public boolean unregister(String url) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
 		return (Boolean) makeCall("register", params);
@@ -40,7 +40,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 
 	@Override
 	public boolean registerLocation(String url, Position position) {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 		
@@ -49,7 +49,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 
 	@Override
 	public boolean registerInPlace(String url, String placeName, Position position) {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 		params.add(new Tuple<String, Object>(String.class.getName(), placeName));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));

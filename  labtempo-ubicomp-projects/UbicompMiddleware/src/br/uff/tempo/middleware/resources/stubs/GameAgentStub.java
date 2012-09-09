@@ -21,7 +21,7 @@ public class GameAgentStub extends ResourceAgentStub implements IGameAgent {
 
 	@Override
 	public void setMove(int row, int column, String player) {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), row));
 		params.add(new Tuple<String, Object>(Integer.class.getName(), column));
 		params.add(new Tuple<String, Object>(String.class.getName(), player));

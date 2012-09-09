@@ -15,7 +15,7 @@ public class CounterStub extends ResourceAgentStub implements ICounter{
 
 	@Override
 	public int getCount() {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		return (Integer) makeCall("getCount", params);
 	}
 	
