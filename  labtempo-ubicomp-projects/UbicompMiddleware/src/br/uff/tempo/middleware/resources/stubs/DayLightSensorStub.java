@@ -9,6 +9,8 @@ import br.uff.tempo.middleware.resources.DayLightSensor;
 import br.uff.tempo.middleware.resources.interfaces.IDayLightSensor;
 
 public class DayLightSensorStub extends ResourceAgentStub implements IDayLightSensor {
+	
+	private static final long serialVersionUID = 1L;
 
 	public DayLightSensorStub(String url) {
 		super(url);

@@ -9,6 +9,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.IGameAgent;
 
 public class GameAgentStub extends ResourceAgentStub implements IGameAgent {
+	
+	private static final long serialVersionUID = 1L;
 
 	public GameAgentStub(String url) {
 		super(url);

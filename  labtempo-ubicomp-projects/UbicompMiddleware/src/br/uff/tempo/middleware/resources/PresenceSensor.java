@@ -5,6 +5,9 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IPresenceSensor;
 
 public class PresenceSensor extends ResourceAgent implements IPresenceSensor {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private static final String TAG = "PresenceSensor";
 	private boolean presence = false;
 

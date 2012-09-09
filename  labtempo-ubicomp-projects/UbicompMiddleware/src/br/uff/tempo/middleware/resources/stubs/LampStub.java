@@ -8,6 +8,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.ILamp;
 
 public class LampStub extends ResourceAgentStub implements ILamp {
+	
+	private static final long serialVersionUID = 1L;
 
 	public LampStub(String url) {
 		super(url);

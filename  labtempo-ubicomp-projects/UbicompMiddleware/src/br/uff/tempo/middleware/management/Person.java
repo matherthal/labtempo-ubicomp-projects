@@ -7,6 +7,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
 
 public class Person extends ResourceAgent {
+	
+	private static final long serialVersionUID = 1L;
 
 	List<SmartObject> objects;
 	List<Place> recentLocal;

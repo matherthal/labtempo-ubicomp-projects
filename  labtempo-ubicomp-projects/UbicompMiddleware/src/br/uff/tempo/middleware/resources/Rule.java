@@ -13,6 +13,9 @@ import br.uff.tempo.middleware.management.ResourceAgent;
  * @author matheus Contains a set of Conditions to be tested
  */
 public class Rule extends ResourceAgent {
+	
+	private static final long serialVersionUID = 1L;
+	
 	public int id;
 	private List<Condition> conditions = new ArrayList<Condition>();
 

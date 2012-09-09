@@ -124,6 +124,9 @@ public class AppLampControlSystem extends Activity {
 
 				// Create action to subscribe to the rule interpreter
 				Generic action = new Generic("Iluminador de caminho " + place) {
+					
+					private static final long serialVersionUID = 1L;
+					
 					private ILamp lamp;
 
 					@Override

@@ -6,6 +6,9 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.ITeapot;
 
 public class Teapot extends ResourceAgent implements ITeapot {
+	
+	private static final long serialVersionUID = 1L;
+	
 	public float temperature = 0.0f;
 
 	@Override

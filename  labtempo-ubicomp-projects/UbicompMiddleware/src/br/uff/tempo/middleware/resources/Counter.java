@@ -3,6 +3,8 @@ package br.uff.tempo.middleware.resources;
 import br.uff.tempo.middleware.management.ResourceAgent;
 
 public class Counter extends ResourceAgent{
+	
+	private static final long serialVersionUID = 1L;
 
 	int count;
 	String onOffRai;

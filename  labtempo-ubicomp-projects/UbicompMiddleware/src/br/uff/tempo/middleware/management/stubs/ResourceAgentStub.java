@@ -10,6 +10,9 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public class ResourceAgentStub extends Stub implements IResourceAgent {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String url;
 
 	public ResourceAgentStub(String url) {

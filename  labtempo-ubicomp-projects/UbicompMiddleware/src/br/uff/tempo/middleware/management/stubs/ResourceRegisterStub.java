@@ -12,6 +12,8 @@ import br.uff.tempo.middleware.management.utils.Position;
 import com.google.gson.reflect.TypeToken;
 
 public class ResourceRegisterStub extends ResourceAgentStub implements IResourceRegister {
+	
+	private static final long serialVersionUID = 1L;
 
 	public ResourceRegisterStub(String calleeID) {
 		super(calleeID);

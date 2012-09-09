@@ -6,6 +6,8 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IGameAgent;
 
 public class GameAgent extends ResourceAgent implements IGameAgent {
+	
+	private static final long serialVersionUID = 1L;
 
 	private Game game;
 

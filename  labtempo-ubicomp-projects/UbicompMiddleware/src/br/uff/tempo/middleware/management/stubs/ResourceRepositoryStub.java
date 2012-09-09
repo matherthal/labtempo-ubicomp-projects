@@ -7,6 +7,8 @@ import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 
 public class ResourceRepositoryStub extends ResourceAgentStub implements IResourceRepository {
+	
+	private static final long serialVersionUID = 1L;
 
 	public ResourceRepositoryStub(String calleeID) {
 		super(calleeID);

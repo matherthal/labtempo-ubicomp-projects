@@ -11,6 +11,8 @@ import br.uff.tempo.middleware.management.ResourceAgent;
  * 
  */
 public class InterfaceApplicationManager extends ResourceAgent {
+	
+	private static final long serialVersionUID = 1L;
 
 	// ===========================================================
 	// Constants

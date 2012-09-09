@@ -6,6 +6,9 @@ import android.util.Log;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class Caller implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private ResourceAgentIdentifier calleeAgent;
 
 	private int port = 8080;

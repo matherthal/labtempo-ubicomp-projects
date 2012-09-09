@@ -8,6 +8,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 
 public class StoveStub extends ResourceAgentStub implements IStove {
+	
+	private static final long serialVersionUID = 1L;
 
 	public StoveStub(String url) {
 		super(url);

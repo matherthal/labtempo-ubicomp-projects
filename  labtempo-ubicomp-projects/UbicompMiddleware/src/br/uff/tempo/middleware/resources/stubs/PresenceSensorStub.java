@@ -8,6 +8,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.IPresenceSensor;
 
 public class PresenceSensorStub extends ResourceAgentStub implements IPresenceSensor {
+	
+	private static final long serialVersionUID = 1L;
 
 	public PresenceSensorStub(String url) {
 		super(url);

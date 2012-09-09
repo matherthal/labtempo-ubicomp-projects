@@ -8,6 +8,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.ITelevision;
 
 public class TelevisionStub extends ResourceAgentStub implements ITelevision {
+	
+	private static final long serialVersionUID = 1L;
 
 	public TelevisionStub(String calleeID) {
 		super(calleeID);

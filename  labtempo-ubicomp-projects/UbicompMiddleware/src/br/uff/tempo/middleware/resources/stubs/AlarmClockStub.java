@@ -9,6 +9,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.IAlarmClock;
 
 public class AlarmClockStub extends ResourceAgentStub implements IAlarmClock {
+	
+	private static final long serialVersionUID = 1L;
 
 	public AlarmClockStub(String url) {
 		super(url);

@@ -111,6 +111,8 @@ public class RuleActivity extends Activity {
 			// test.context = this;
 
 			new Generic("Stove Urgency Action", rule, RuleInterpreter.RULE_TRIGGERED) {
+				private static final long serialVersionUID = 1L;
+				
 				private int counter = 0;
 
 				@Override

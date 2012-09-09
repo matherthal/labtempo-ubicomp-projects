@@ -8,6 +8,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.IOnOff;
 
 public class OnOffStub extends ResourceAgentStub implements IOnOff{
+	
+	private static final long serialVersionUID = 1L;
 
 	public OnOffStub(String calleeID) {
 		super(calleeID);

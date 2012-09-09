@@ -11,6 +11,9 @@ import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 
 public class Stove extends ResourceAgent implements IStove {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private static final String TAG = "Stove";
 
 	// Gas Leak

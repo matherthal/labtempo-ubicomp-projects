@@ -9,6 +9,9 @@ import br.uff.tempo.middleware.management.interfaces.IAggregator;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public abstract class Aggregator extends ResourceAgent implements IAggregator {
+	
+	private static final long serialVersionUID = 1L;
+	
 	// Set Interpreted Context Variables
 	// private Set<Interpreter> interpretedCVSet = new HashSet<Interpreter>();
 	// Set not Interpreted Context Variables

@@ -37,6 +37,9 @@ public class AppLampController extends Activity {
 
 			// Subscription
 			lampStakeholder = new Generic("Controlador de Lampada", lamp, "isOn") {
+				
+				private static final long serialVersionUID = 1L;
+				
 				boolean lastVal = false;
 
 				@Override

@@ -7,7 +7,9 @@ import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.ICounter;
 
-public class CounterStub extends ResourceAgentStub implements ICounter{
+public class CounterStub extends ResourceAgentStub implements ICounter {
+	
+	private static final long serialVersionUID = 1L;
 	
 	public CounterStub(String calleeID) {
 		super(calleeID);

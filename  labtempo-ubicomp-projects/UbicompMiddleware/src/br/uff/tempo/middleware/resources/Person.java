@@ -8,6 +8,9 @@ import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.resources.interfaces.IPerson;
 
 public class Person extends Aggregator implements IPerson {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String name = "";
 	private String lastName = "";
 	private Date birthday = null;

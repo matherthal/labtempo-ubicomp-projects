@@ -21,6 +21,9 @@ import br.uff.tempo.middleware.management.stubs.Stub;
  *         method test
  */
 public class Condition implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String rai;
 	private String method;
 	private List<Tuple<String, Object>> params;

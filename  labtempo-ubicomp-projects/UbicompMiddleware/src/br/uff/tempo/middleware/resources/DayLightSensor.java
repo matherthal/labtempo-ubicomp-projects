@@ -5,6 +5,9 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IDayLightSensor;
 
 public class DayLightSensor extends ResourceAgent implements IDayLightSensor {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private static final String TAG = "DayLightSensor";
 	private boolean day = false;
 	private float light = 0.0f;

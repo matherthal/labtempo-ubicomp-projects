@@ -4,6 +4,9 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IBed;
 
 public class Bed extends ResourceAgent implements IBed {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private Integer numUsers = 0;
 	private boolean hasSomeone;
 

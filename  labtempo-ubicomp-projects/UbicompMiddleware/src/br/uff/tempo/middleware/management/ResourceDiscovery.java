@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
 public class ResourceDiscovery extends ResourceAgent implements IResourceDiscovery {
+	
+	private static final long serialVersionUID = 1L;
 
 	private static ResourceDiscovery instance;
 

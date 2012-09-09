@@ -3,6 +3,8 @@ package br.uff.tempo.apps.tv;
 import br.uff.tempo.middleware.management.interfaces.ResourceData;
 
 public class TvData implements ResourceData {
+	
+	private static final long serialVersionUID = 1L;
 
 	private int channel;
 	private boolean on;
