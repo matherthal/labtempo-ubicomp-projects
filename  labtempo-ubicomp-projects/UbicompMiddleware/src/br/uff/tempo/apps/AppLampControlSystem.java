@@ -63,7 +63,7 @@ public class AppLampControlSystem extends Activity {
 		// Create a day light sensor
 		DayLightSensor dl = new DayLightSensor("Sensor de Luminosidade");
 		dl.identify();
-		Log.i("DayLightSensor", "New DayLightSensor: " + dl.getURL());
+		Log.i("DayLightSensor", "New DayLightSensor: " + dl.getRAI());
 		TextView tv = (TextView) this.findViewById(R.id.textViewStatus);
 		if (dl.isDay())
 			tv.setText("É dia");
@@ -78,7 +78,7 @@ public class AppLampControlSystem extends Activity {
 				Lamp l = new Lamp("Lâmpada " + place);
 				// l.identify();
 				l.identifyInPlace(place, null);
-				final String lRAI = l.getURL();
+				final String lRAI = l.getRAI();
 				Log.i("Lamp", "New Lamp: " + lRAI);
 
 				// Put lamp in set to keep link
@@ -89,7 +89,7 @@ public class AppLampControlSystem extends Activity {
 				PresenceSensor ps = new PresenceSensor(psName);
 				// ps.identify();
 				ps.identifyInPlace(place, null);
-				Log.i("PresenceSensor", "New PresenceSensor: " + ps.getURL());
+				Log.i("PresenceSensor", "New PresenceSensor: " + ps.getRAI());
 
 				// Put presence sensor in set to keep link
 				// psSet.add(ps);
@@ -98,7 +98,7 @@ public class AppLampControlSystem extends Activity {
 				while (psDictionary.containsKey(psName))
 					// To avoid problema with nomes in dictionary
 					psName = psName + ".";
-				psDictionary.put(psName, ps.getURL());
+				psDictionary.put(psName, ps.getRAI());
 
 				// Create a rule that detects if the room has somebody
 				RuleInterpreter riRoomFull = new RuleInterpreter("Detecta Sala Cheia - " + place);
@@ -106,10 +106,10 @@ public class AppLampControlSystem extends Activity {
 				// 10 seconds has passed
 				RuleInterpreter riRoomEmpty = new RuleInterpreter("Detecta Sala Vazia por 10seg - " + place);
 				try {
-					riRoomFull.setCondition(ps.getURL(), PresenceSensor.CV_GETPRESENCE, null, Operator.Equal, true);
-					riRoomFull.setCondition(dl.getURL(), DayLightSensor.CV_ISDAY, null, Operator.Equal, false);
+					riRoomFull.setCondition(ps.getRAI(), PresenceSensor.CV_GETPRESENCE, null, Operator.Equal, true);
+					riRoomFull.setCondition(dl.getRAI(), DayLightSensor.CV_ISDAY, null, Operator.Equal, false);
 
-					riRoomEmpty.setCondition(ps.getURL(), PresenceSensor.CV_GETPRESENCE, null, Operator.Equal, false);
+					riRoomEmpty.setCondition(ps.getRAI(), PresenceSensor.CV_GETPRESENCE, null, Operator.Equal, false);
 					riRoomEmpty.setTimeout(10);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -119,8 +119,8 @@ public class AppLampControlSystem extends Activity {
 				riRoomEmpty.identify();
 
 				// Rules' RAIs to be used by the action
-				final String roomFullRAI = riRoomFull.getURL();
-				final String roomEmptyRAI = riRoomEmpty.getURL();
+				final String roomFullRAI = riRoomFull.getRAI();
+				final String roomEmptyRAI = riRoomEmpty.getRAI();
 
 				// Create action to subscribe to the rule interpreter
 				Generic action = new Generic("Iluminador de caminho " + place) {
@@ -151,8 +151,8 @@ public class AppLampControlSystem extends Activity {
 				};
 				action.identify();
 				// Subscribing this action to both rules
-				riRoomFull.registerStakeholder(RuleInterpreter.RULE_TRIGGERED, action.getURL());
-				riRoomEmpty.registerStakeholder(RuleInterpreter.RULE_TRIGGERED, action.getURL());
+				riRoomFull.registerStakeholder(RuleInterpreter.RULE_TRIGGERED, action.getRAI());
+				riRoomEmpty.registerStakeholder(RuleInterpreter.RULE_TRIGGERED, action.getRAI());
 				// actionSet.add(action);
 			}
 		// for (String l : discovery.search("Lamp"))

@@ -37,7 +37,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 				if (m.getAnnotation(IResourceAgent.ContextVariable.class).name() == cvName) {
 					this.cv = m;
 					this.ra = ra;
-					ra.registerStakeholder(cv.getName(), this.getURL());
+					ra.registerStakeholder(cv.getName(), this.getRAI());
 					return true;
 				}
 		return false;
@@ -49,7 +49,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 		if (cv.isAnnotationPresent(ContextVariable.class)) {
 			this.cv = cv;
 			this.ra = ra;
-			ra.registerStakeholder(cv.getName(), this.getURL());
+			ra.registerStakeholder(cv.getName(), this.getRAI());
 		}
 		return false;
 	}

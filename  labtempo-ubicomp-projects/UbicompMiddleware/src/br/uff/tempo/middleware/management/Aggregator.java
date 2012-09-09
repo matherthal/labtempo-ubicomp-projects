@@ -35,7 +35,7 @@ public abstract class Aggregator extends ResourceAgent implements IAggregator {
 	@Override
 	public boolean addContextVariable(IResourceAgent ra, String method) {
 		this.rawCVSet.add(new Tuple<IResourceAgent, Method>(ra, method));
-		ra.registerStakeholder(method, this.getURL());
+		ra.registerStakeholder(method, this.getRAI());
 
 		return false;
 	}

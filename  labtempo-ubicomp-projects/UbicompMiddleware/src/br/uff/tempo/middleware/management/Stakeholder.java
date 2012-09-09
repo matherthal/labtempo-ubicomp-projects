@@ -12,7 +12,7 @@ public class Stakeholder {
 
 	public Stakeholder(String method, ResourceAgent rA) {
 		this.method = method;
-		this.url = rA.getURL();
+		this.url = rA.getRAI();
 	}
 
 	public String getMethod() {

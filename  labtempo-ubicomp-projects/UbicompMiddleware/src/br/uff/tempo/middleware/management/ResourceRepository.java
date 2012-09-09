@@ -15,7 +15,7 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	private ResourceRepository() {
 		setId(0);
 
-		setURL(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceRepository", "ResourceRepository"));
+		setRAI(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceRepository", "ResourceRepository"));
 
 		setName("ResourceRepository");
 		setType("management");
@@ -31,10 +31,10 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		container.add(rLS);
 
 		repository = new ArrayList<String>();
-		repository.add(rDS.getURL());
-		repository.add(rRS.getURL());
-		repository.add(rLS.getURL());
-		repository.add(rR.getURL());
+		repository.add(rDS.getRAI());
+		repository.add(rRS.getRAI());
+		repository.add(rLS.getRAI());
+		repository.add(rR.getRAI());
 	}
 
 	public static ResourceRepository getInstance() {

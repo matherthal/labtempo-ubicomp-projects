@@ -76,16 +76,16 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	}
 
 	@Override
-	public String getURL() {
+	public String getRAI() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
 		return makeCall("getURL", params).toString();
 	}
 
 	@Override
-	public void setURL(String uRL) {
+	public void setRAI(String rai) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(String.class.getName(), uRL));
+		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
 		makeCall("setURL", params);
 	}

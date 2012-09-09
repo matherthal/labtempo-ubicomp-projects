@@ -59,9 +59,9 @@ public interface IResourceAgent extends Serializable {
 
 	public void setName(String name);
 
-	public String getURL();
+	public String getRAI();
 
-	public void setURL(String uRL);
+	public void setRAI(String rai);
 
 	public String getType();
 
