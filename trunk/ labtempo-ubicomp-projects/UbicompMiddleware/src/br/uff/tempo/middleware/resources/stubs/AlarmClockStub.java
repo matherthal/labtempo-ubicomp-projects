@@ -16,7 +16,7 @@ public class AlarmClockStub extends ResourceAgentStub implements IAlarmClock {
 
 	@Override
 	public void scheduleAlarm(String name, Calendar start) {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>("name", name));
 		params.add(new Tuple<String, Object>("start", start));
 		makeCall("turnOnBurner", params);
@@ -24,7 +24,7 @@ public class AlarmClockStub extends ResourceAgentStub implements IAlarmClock {
 
 	@Override
 	public void setPeriodicAlarm(String name, Calendar start, int interval) {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), name));
 		params.add(new Tuple<String, Object>(Calendar.class.getName(), start));
 		params.add(new Tuple<String, Object>(Integer.class.getName(), interval));
@@ -33,12 +33,12 @@ public class AlarmClockStub extends ResourceAgentStub implements IAlarmClock {
 
 	@Override
 	public void goOff() {
-		makeCall("turnOnBurner", new ArrayList<Tuple>());
+		makeCall("turnOnBurner", new ArrayList<Tuple<String, Object>>());
 	}
 
 	@Override
 	public void snooze(int timeInSec) {
-		makeCall("turnOnBurner", new ArrayList<Tuple>());
+		makeCall("turnOnBurner", new ArrayList<Tuple<String, Object>>());
 	}
 
 	@Override

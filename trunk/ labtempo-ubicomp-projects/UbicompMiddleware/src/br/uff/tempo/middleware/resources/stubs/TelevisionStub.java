@@ -17,7 +17,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 	@Override
 	public void showMessage(String text) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), text));
 
 		makeCall("showMessage", params);
@@ -26,7 +26,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 	@Override
 	public int getChannel() {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		// params.add(new Tuple<String, Object>("text", text));
 
 		return (Integer) makeCall("getChannel", params);
@@ -35,7 +35,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 	@Override
 	public void setChannel(int channel) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), channel));
 
 		makeCall("setChannel", params);
@@ -43,7 +43,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 
 	@Override
 	public boolean isOn() {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		// params.add(new Tuple<String, Object>("text", text));
 
 		return (Boolean) makeCall("isOn", params);
@@ -52,7 +52,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 	@Override
 	public void setOn(boolean on) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Boolean.class.getName(), on));
 
 		makeCall("setOn", params);
@@ -61,7 +61,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 	@Override
 	public int getVolume() {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		// params.add(new Tuple<String, Object>("text", text));
 
 		return (Integer) makeCall("getVolume", params);
@@ -70,7 +70,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 	@Override
 	public void setVolume(int volume) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), volume));
 
 		makeCall("setVolume", params);
@@ -79,7 +79,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 	@Override
 	public void incChannel() {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		// params.add(new Tuple<String, Object>("volume", volume));
 
 		makeCall("incChannel", params);
@@ -88,7 +88,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 	@Override
 	public void decChannel() {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		// params.add(new Tuple<String, Object>("volume", volume));
 
 		makeCall("decChannel", params);
@@ -97,7 +97,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 	@Override
 	public void incVolume(int inc) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), inc));
 
 		makeCall("incVolume", params);
@@ -106,7 +106,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 	@Override
 	public void decVolume(int dec) {
 
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), dec));
 
 		makeCall("decVolume", params);

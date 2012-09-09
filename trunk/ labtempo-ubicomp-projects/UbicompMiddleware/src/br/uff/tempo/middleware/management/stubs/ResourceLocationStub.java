@@ -20,7 +20,7 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 		String method = "search";
 
 		// Set params
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(ResourceAgent.class.getName(), rA));
 
 		return (ArrayList<Place>) makeCall("search", params);
@@ -30,14 +30,14 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 	public Place get(ResourceAgent rA) {
 
 		// Set params
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(ResourceAgent.class.getName(), rA));
 
 		return (Place) makeCall("get", params);
 	}
 	
 	public Place getLocal(Position position) {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 		
 		return (Place) makeCall("getLocal", params);
@@ -45,7 +45,7 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 
 	@Override
 	public ArrayList<String> search(String query) {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), query));
 
 		return (ArrayList<String>) makeCall("search", params);
@@ -53,14 +53,14 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 
 	@Override
 	public Set<String> listLocations() {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
 		return (Set<String>) makeCall("listLocations", params, Set.class);
 	}
 
 	@Override
 	public Position getPosition(String place, String rai) {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), place));
 		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 		
@@ -69,7 +69,7 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 
 	@Override
 	public ArrayList<String> queryByLocal(Position position) {
-		List<Tuple> params = new ArrayList<Tuple>();
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 		
 		return (ArrayList<String>) makeCall("queryByLocal", params);

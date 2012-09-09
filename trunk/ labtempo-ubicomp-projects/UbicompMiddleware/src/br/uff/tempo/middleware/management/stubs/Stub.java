@@ -17,7 +17,7 @@ public class Stub implements Serializable {
 		caller = new Caller(calleeAgent);
 	}
 
-	public Object makeCall(String methodName, List<Tuple> params) {
+	public Object makeCall(String methodName, List<Tuple<String, Object>> params) {
 
 		try {
 			// Create message
@@ -33,7 +33,7 @@ public class Stub implements Serializable {
 		}
 	}
 	
-	public Object makeCall(String methodName, List<Tuple> params, Class returnType) {
+	public Object makeCall(String methodName, List<Tuple<String, Object>> params, Class returnType) {
 
 		try {
 			// Create message

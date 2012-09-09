@@ -9,7 +9,7 @@ import br.uff.tempo.middleware.management.stubs.Stub;
 public class ComparisonNode {
 	private String rai;
 	private String method;
-	private List<Tuple> params;
+	private List<Tuple<String, Object>> params;
 	private Operator operator = Operator.Equal;
 	// valueComp is the value to compare the the change of the context variable
 	private Object valueComp;
@@ -119,7 +119,7 @@ public class ComparisonNode {
 		this.rai = rai;
 		this.method = method;
 
-		this.params = new ArrayList<Tuple>();
+		this.params = new ArrayList<Tuple<String, Object>>();
 		if (params != null) {
 			int i = 0;
 			for (Object o : params) {

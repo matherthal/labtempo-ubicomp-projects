@@ -17,13 +17,13 @@ import com.google.gson.reflect.TypeToken;
 
 public class JSONHelper {
 
-	public static String createMethodCall(String method, List<Tuple> params) throws JSONException {
+	public static String createMethodCall(String method, List<Tuple<String, Object>> params) throws JSONException {
 
 		Map<String, Object> methodCall = new HashMap<String, Object>();
 		List<Object> jsonparams = new ArrayList<Object>();
 		List<Object> jsontypes = new ArrayList<Object>();
 
-		Iterator<Tuple> iterator = params.iterator();
+		Iterator<Tuple<String, Object>> iterator = params.iterator();
 
 		Tuple<String, Object> tp;
 		
