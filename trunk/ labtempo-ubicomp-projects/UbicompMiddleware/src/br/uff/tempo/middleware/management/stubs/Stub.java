@@ -10,6 +10,8 @@ import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 
 public class Stub implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
 	public Caller caller;
 

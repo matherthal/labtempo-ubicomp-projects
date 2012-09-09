@@ -8,6 +8,9 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IGeneric;
 
 public class Generic extends ResourceAgent implements IGeneric {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String TAG = "Generic";
 	protected String name = "";
 

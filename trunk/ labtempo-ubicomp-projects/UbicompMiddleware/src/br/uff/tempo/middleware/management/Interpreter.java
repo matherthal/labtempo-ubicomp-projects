@@ -14,6 +14,9 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.Stove;
 
 public class Interpreter extends ResourceAgent implements IInterpreter {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private static final String TAG = "Interpreter";
 	private IResourceAgent ra = null;
 	private Method cv = null;

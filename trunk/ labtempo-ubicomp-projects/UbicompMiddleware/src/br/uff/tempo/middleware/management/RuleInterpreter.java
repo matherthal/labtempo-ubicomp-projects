@@ -15,6 +15,9 @@ import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 
 public class RuleInterpreter extends ResourceAgent {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String TAG = "RuleInterpreter";
 
 	public static final String RULE_TRIGGERED = "ruleTrigger";

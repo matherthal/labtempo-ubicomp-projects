@@ -6,6 +6,8 @@ import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.IOnOff;
 
 public class OnOff extends ResourceAgent implements IOnOff{
+	
+	private static final long serialVersionUID = 1L;
 
 	private boolean statusOn;
 	private ToggleButton onOff;

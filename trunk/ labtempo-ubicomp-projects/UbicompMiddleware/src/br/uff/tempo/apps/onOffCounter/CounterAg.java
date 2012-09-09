@@ -5,6 +5,8 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 
 public class CounterAg extends ResourceAgent {
 	
+	private static final long serialVersionUID = 1L;
+	
 	private CounterApp view;
 
 	public CounterAg (String name, CounterApp view) {

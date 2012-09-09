@@ -8,6 +8,8 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
 public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourceDiscovery {
+	
+	private static final long serialVersionUID = 1L;
 
 	public ResourceDiscoveryStub(String calleeID) {
 		super(calleeID);

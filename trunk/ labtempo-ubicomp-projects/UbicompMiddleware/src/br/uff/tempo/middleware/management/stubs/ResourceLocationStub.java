@@ -11,6 +11,8 @@ import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.utils.Position;
 
 public class ResourceLocationStub extends Stub implements IResourceLocation {
+	
+	private static final long serialVersionUID = 1L;
 
 	public ResourceLocationStub(String calleeID) {
 		super(calleeID);

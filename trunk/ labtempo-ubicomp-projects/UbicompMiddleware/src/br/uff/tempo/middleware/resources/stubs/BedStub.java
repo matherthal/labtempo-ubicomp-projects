@@ -8,6 +8,8 @@ import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.IBed;
 
 public class BedStub extends ResourceAgentStub implements IBed {
+	
+	private static final long serialVersionUID = 1L;
 
 	public BedStub(String calleeID) {
 		super(calleeID);

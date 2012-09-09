@@ -6,6 +6,8 @@ import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceRepository extends ResourceAgent implements IResourceRepository {
+	
+	private static final long serialVersionUID = 1L;
 
 	ArrayList<String> repository;
 	private static ResourceRepository instance;

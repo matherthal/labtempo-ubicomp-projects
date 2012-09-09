@@ -5,6 +5,8 @@ import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceRegister extends ResourceAgent implements IResourceRegister {
+	
+	private static final long serialVersionUID = 1L;
 
 	ResourceRepository rR;
 	ResourceLocation rL;

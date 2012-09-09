@@ -23,6 +23,9 @@ import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
 public abstract class ResourceAgent extends Service implements IResourceAgent, Serializable {
+	
+	private static final long serialVersionUID = 1L;
+
 	private static final String TAG = "AgentBase";
 
 	// Agent's attributes

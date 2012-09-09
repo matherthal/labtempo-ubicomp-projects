@@ -10,6 +10,8 @@ import java.util.Enumeration;
 import android.util.Log;
 
 public class ResourceAgentIdentifier implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
 
 	// rai-uri = �rai:� rai-path [�//� rai-type *(�/� rai-type)]
 	// �:� rai-name

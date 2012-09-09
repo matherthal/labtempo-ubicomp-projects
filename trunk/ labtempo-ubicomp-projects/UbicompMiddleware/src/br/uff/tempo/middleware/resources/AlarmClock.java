@@ -10,6 +10,9 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IAlarmClock;
 
 public class AlarmClock extends ResourceAgent implements IAlarmClock {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String TAG = "AlarmClock";
 	private Context context;
 	private AlarmManager alarm;

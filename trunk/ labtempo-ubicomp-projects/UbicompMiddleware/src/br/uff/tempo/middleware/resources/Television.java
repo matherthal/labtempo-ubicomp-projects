@@ -4,6 +4,8 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.ITelevision;
 
 public class Television extends ResourceAgent implements ITelevision {
+	
+	private static final long serialVersionUID = 1L;
 
 	private int maxChannels = 10;
 	private int channel;
