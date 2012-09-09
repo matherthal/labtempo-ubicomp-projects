@@ -42,9 +42,8 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 		// TODO Auto-generated method stub
-
 	}
 
 	public ResourceAgent get(String url) {

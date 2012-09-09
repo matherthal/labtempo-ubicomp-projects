@@ -1,7 +1,6 @@
 package br.uff.tempo.apps.map.objects;
 
 import android.util.Log;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 
 /**
@@ -58,15 +57,9 @@ public class InterfaceApplicationManager extends ResourceAgent {
 	// ===========================================================
 
 	@Override
-	public void notificationHandler(String change) {
-
-		String raiFromExternal = (String) JSONHelper.getChange("id", change);
-		String methodChanged = (String) JSONHelper.getChange("method", change);
-		Object valueChanged = JSONHelper.getChange("value", change);
-
+	public void notificationHandler(String rai, String method, Object value) {
 		Log.d("InterfaceManager", "Notification received from "
-				+ raiFromExternal + ". Context variable modified: "
-				+ methodChanged + " current value: " + valueChanged);
+				+ rai + ". Context variable modified: "
+				+ method + " current value: " + value);
 	}
-
 }

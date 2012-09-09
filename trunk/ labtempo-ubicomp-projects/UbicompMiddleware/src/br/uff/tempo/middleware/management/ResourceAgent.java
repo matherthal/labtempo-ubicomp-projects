@@ -252,12 +252,16 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	@Override
 	@Deprecated()
 	public void notifyStakeholders(String change) throws JSONException {
+		String rai = (String) JSONHelper.getChange("id", change);
+		String method = (String) JSONHelper.getChange("method", change);
+		Object value = JSONHelper.getChange("value", change);
+		
 		int i = 0;
 		while (i < stakeholders.size()) {
 			String url = stakeholders.get(i).getUrl();
 			// stakeholderStub = new ResourceAgentStub(url);
 			if (change.contains(stakeholders.get(i).getMethod()) || stakeholders.get(i).getMethod().equalsIgnoreCase("all"))
-				new ResourceAgentStub(url).notificationHandler(change);
+				new ResourceAgentStub(url).notificationHandler(rai, method, value);
 			// change = id, method name and value
 			// query by url return a unique instance
 			i++;
@@ -265,11 +269,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 	
 	public void notifyStakeholders(String method, Object value) {
-		String change = JSONHelper.createChange(this.getURL(), method, value);
-		
 		for (Stakeholder stakeholder : stakeholders) {
 			if (stakeholder.getMethod().equals(method) || stakeholder.getMethod().equalsIgnoreCase("all")) {
-				new ResourceAgentStub(stakeholder.getUrl()).notificationHandler(change);
+				new ResourceAgentStub(stakeholder.getUrl()).notificationHandler(this.getURL(), method, value);
 				Log.d("SmartAndroid", String.format("notifyStakeholders() - stakeholder: %s method: %s value: %s was notified", stakeholder.getUrl(), method, value));
 			}
 		}
@@ -282,7 +284,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	 *            It has new status of instance
 	 * @throws JSONException
 	 */
-	public abstract void notificationHandler(String change);
+	public abstract void notificationHandler(String rai, String method, Object value);
 
 	@Override
 	public void registerStakeholder(String method, String url) {

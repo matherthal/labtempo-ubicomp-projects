@@ -39,6 +39,6 @@ public class LampToShowNewNotifyStakeHolder extends ResourceAgent implements ILa
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 	}
 }

@@ -39,6 +39,6 @@ public class Lamp extends ResourceAgent implements ILamp {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 	}
 }

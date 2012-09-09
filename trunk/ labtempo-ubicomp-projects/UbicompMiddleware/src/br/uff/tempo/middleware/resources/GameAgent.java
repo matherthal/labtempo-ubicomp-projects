@@ -2,7 +2,6 @@ package br.uff.tempo.middleware.resources;
 
 import br.uff.tempo.apps.tictactoe.Game;
 import br.uff.tempo.apps.tictactoe.Location;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IGameAgent;
 
@@ -15,12 +14,10 @@ public class GameAgent extends ResourceAgent implements IGameAgent {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
-		String method = JSONHelper.getChange("method", change).toString();
+	public void notificationHandler(String rai, String method, Object value) {
 		if (method.equals("setMove")) {
 			if (game != null) {
-				String value = JSONHelper.getChange("value", change).toString();
-				String[] valueArray = value.split(";");
+				String[] valueArray = value.toString().split(";");
 				int row = Integer.valueOf(valueArray[0]);
 				int column = Integer.valueOf(valueArray[1]);
 				Location move = new Location(row, column);

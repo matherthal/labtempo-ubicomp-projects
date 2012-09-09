@@ -74,9 +74,7 @@ public class Person extends ResourceAgent {
 	}	
 	
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 		// TODO Auto-generated method stub
-		
 	}
-
 }

@@ -78,7 +78,6 @@ public class AlarmClock extends ResourceAgent implements IAlarmClock {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
-
+	public void notificationHandler(String rai, String method, Object value) {
 	}
 }

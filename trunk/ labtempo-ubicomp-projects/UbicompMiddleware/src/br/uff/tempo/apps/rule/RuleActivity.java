@@ -114,8 +114,8 @@ public class RuleActivity extends Activity {
 				private int counter = 0;
 
 				@Override
-				public void notificationHandler(String change) {
-					Log.i(TAG, "CHANGE: " + change);
+				public void notificationHandler(String rai, String method, Object value) {
+					Log.i(TAG, "CHANGE: " + rai + " " + method + " " + value);
 					Message msg = mHandler.obtainMessage();
 					msg.obj = counter++;
 					mHandler.sendMessage(msg);

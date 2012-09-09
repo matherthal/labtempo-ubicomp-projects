@@ -32,8 +32,6 @@ public class PresenceSensor extends ResourceAgent implements IPresenceSensor {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
-
+	public void notificationHandler(String rai, String method, Object value) {
 	}
-
 }

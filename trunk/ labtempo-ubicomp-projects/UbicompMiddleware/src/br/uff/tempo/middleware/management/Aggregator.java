@@ -38,7 +38,7 @@ public abstract class Aggregator extends ResourceAgent implements IAggregator {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 
 	}
 }

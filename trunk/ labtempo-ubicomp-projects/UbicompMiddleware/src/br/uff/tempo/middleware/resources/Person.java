@@ -41,7 +41,7 @@ public class Person extends Aggregator implements IPerson {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 		// Update status of this aggregator
 	}
 

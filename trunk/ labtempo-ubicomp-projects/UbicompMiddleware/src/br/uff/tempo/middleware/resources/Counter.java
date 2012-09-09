@@ -14,7 +14,7 @@ public class Counter extends ResourceAgent{
 	}
 	
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 		count++;
 	}
 	
