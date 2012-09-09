@@ -17,7 +17,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
