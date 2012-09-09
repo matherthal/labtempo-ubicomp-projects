@@ -1,7 +1,6 @@
 package br.uff.tempo.apps.onOffCounter;
 
 import android.util.Log;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 
 public class CounterAg extends ResourceAgent {
@@ -14,15 +13,10 @@ public class CounterAg extends ResourceAgent {
 		this.view = view;
 	}
 	@Override
-	public void notificationHandler(String change) {
-		
-		String id = JSONHelper.getChange("id", change).toString();
-		String mtd = JSONHelper.getChange("method", change).toString();
-		Object val = JSONHelper.getChange("value", change);
-		
-		if (id.equals(view.getCurrentURL()) && mtd.equals("isOn")) {
+	public void notificationHandler(String rai, String method, Object value) {
+		if (rai.equals(view.getCurrentURL()) && method.equals("isOn")) {
 			
-			boolean b = Boolean.valueOf(val.toString());
+			boolean b = Boolean.valueOf(value.toString());
 			
 			if (view.getCurrentState() != b) {
 				
@@ -34,5 +28,4 @@ public class CounterAg extends ResourceAgent {
 				
 		};
 	}
-
 }

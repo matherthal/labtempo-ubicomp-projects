@@ -128,16 +128,15 @@ public class AppLampControlSystem extends Activity {
 					private ILamp lamp;
 
 					@Override
-					public void notificationHandler(String change) {
-						Log.d(TAG, "CHANGE: " + change);
-						// Get which rule triggered this action
-						String id = JSONHelper.getChange("id", change).toString();
+					public void notificationHandler(String rai, String method, Object value) {
+						Log.d(TAG, "CHANGE: " + rai + " " + method + " " + value);
+						
 						// Get lamp to turn on or off
 						lamp = new LampStub(discovery.search(lRAI).get(0));
 						// Test rule's identification
-						if (id.equals(roomFullRAI))
+						if (rai.equals(roomFullRAI))
 							lamp.turnOn();
-						else if (id.equals(roomEmptyRAI))
+						else if (rai.equals(roomEmptyRAI))
 							lamp.turnOff();
 						else
 							return;

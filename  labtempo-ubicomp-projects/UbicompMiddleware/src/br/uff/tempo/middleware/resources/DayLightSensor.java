@@ -47,7 +47,6 @@ public class DayLightSensor extends ResourceAgent implements IDayLightSensor {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 	}
-
 }

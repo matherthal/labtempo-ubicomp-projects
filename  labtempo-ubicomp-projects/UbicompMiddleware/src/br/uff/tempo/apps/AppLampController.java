@@ -41,13 +41,12 @@ public class AppLampController extends Activity {
 				boolean lastVal = false;
 
 				@Override
-				public void notificationHandler(String change) {
-					Log.d(TAG, "CHANGE: " + change);
-					String id = JSONHelper.getChange("id", change).toString();
-					String mtd = JSONHelper.getChange("method", change).toString();
-					boolean val = Boolean.valueOf(JSONHelper.getChange("value", change).toString());
+				public void notificationHandler(String rai, String method, Object value) {
+					Log.d(TAG, "CHANGE: " + rai + " " + method + " " + value);
+					
+					boolean val = Boolean.valueOf(value.toString());
 					// If it's really the lamp
-					if (id.equals(lamp.getURL()) && mtd.equals("isOn"))
+					if (rai.equals(lamp.getURL()) && method.equals("isOn"))
 						// If value has changed
 						if (count == 0 || lastVal != val) {
 							lastVal = val;

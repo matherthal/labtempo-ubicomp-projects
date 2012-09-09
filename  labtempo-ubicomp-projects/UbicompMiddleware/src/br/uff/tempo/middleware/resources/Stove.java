@@ -73,8 +73,7 @@ public class Stove extends ResourceAgent implements IStove {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
-
+	public void notificationHandler(String rai, String method, Object value) {
 	}
 
 	/*

@@ -14,7 +14,7 @@ public class BedStub extends ResourceAgentStub implements IBed {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 	}
 
 	@Override

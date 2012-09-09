@@ -17,9 +17,11 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		this.url = url;
 	}
 
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>("java.lang.String", change));
+		params.add(new Tuple<String, Object>("java.lang.String", rai));
+		params.add(new Tuple<String, Object>("java.lang.String", method));
+		params.add(new Tuple<String, Object>("java.lang.Object", value));
 
 		makeCall("notificationHandler", params);
 	}

@@ -27,12 +27,12 @@ public class RuleInterpreterTest extends ResourceAgent {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
-		Log.d(TAG, "CHANGE: " + change);
-		Log.d(TAG, "CHANGE: " + change);
-		Log.d(TAG, "CHANGE: " + change);
-		Log.d(TAG, "CHANGE: " + change);
-		Log.d(TAG, "CHANGE: " + change);
+	public void notificationHandler(String rai, String method, Object value) {
+		Log.d(TAG, "CHANGE: " + rai + " " + method + " " + value);
+		Log.d(TAG, "CHANGE: " + rai + " " + method + " " + value);
+		Log.d(TAG, "CHANGE: " + rai + " " + method + " " + value);
+		Log.d(TAG, "CHANGE: " + rai + " " + method + " " + value);
+		Log.d(TAG, "CHANGE: " + rai + " " + method + " " + value);
 		
 		//Intent intent = new Intent(null, NotifyDemo.class);
 		//startActivity(intent);

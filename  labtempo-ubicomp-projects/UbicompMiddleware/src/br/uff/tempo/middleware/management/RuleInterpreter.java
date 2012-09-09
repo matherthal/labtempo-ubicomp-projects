@@ -103,20 +103,17 @@ public class RuleInterpreter extends ResourceAgent {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 		Log.i(TAG, "Notification received");
-		String id = JSONHelper.getChange("id", change).toString();
-		String mtd = JSONHelper.getChange("method", change).toString();
-		Object val = JSONHelper.getChange("value", change);
 
 		for (ComparisonNode cn : cNSet) {
 			// If the change comes from the correct agent AND the context
 			// variable (method) is the same AND the value is different,
 			// then evaluate
-			if (cn.getRai().equals(id) && cn.getMethod().equals(mtd)) {
+			if (cn.getRai().equals(rai) && cn.getMethod().equals(method)) {
 				boolean prevValid = cn.isValid();
 
-				cn.setValueCache(val);
+				cn.setValueCache(value);
 				// The expression only will be evaluated if the current
 				// validation of the rule and the context variable are false.
 				// Otherwise it will be assumed that the expression didn't came

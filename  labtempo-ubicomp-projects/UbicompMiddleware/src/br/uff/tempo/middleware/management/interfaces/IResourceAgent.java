@@ -49,7 +49,7 @@ public interface IResourceAgent extends Serializable {
 
 	public void registerStakeholder(String method, String url);
 
-	public void notificationHandler(String change);
+	public void notificationHandler(String rai, String method, Object value);
 
 	public int getId();
 

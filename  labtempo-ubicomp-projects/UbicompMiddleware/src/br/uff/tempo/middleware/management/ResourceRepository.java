@@ -69,9 +69,8 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 		// ResourceAgent rA = (ResourceAgent)new
-		// JSONObject(change).get("value");
 		// update(rA);
 	}
 

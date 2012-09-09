@@ -143,12 +143,9 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 		// TODO Auto-generated method stub
-
 	}
-	
-	
 
 	public void registerInPlace(String url, Position position) {
 		Place place = getLocal(position);

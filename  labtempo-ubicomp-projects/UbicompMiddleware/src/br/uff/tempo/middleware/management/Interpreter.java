@@ -355,10 +355,10 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 	}
 
 	@Override
-	public void notificationHandler(String change) {
+	public void notificationHandler(String rai, String method, Object value) {
 		// If change comes from the RA of interest
 		// If change comes from the method (CV)
-		Log.d(TAG, "!!!Change: " + change); // FIXME:remove this
+		Log.d(TAG, "!!!Change: " + rai + " " + method + " " + value); // FIXME:remove this
 
 	}
 

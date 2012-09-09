@@ -1,7 +1,6 @@
 package br.uff.tempo.middleware.resources;
 
 import android.widget.ToggleButton;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.IOnOff;
@@ -24,8 +23,8 @@ public class OnOff extends ResourceAgent implements IOnOff{
 	}
 
 	@Override
-	public void notificationHandler(String change) {
-		statusOn = (Boolean) JSONHelper.getChange("value", change);		
+	public void notificationHandler(String rai, String method, Object value) {
+		statusOn = (Boolean) value;		
 	}
 	
 	@ContextVariable(name = "ligaDesliga", description = "", type = CVType.On)
