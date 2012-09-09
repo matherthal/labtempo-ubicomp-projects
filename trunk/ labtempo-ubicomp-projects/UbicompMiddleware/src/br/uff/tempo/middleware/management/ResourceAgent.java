@@ -33,7 +33,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private int id;
 	private String name;
 	private String type;
-	private String URL;
+	private String rai;
 	private ArrayList<ResourceAgent> interests;
 	private ArrayList<Stakeholder> stakeholders;
 	private ResourceRegister rRS;
@@ -69,13 +69,13 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 
 	@Override
-	public String getURL() {
-		return URL;
+	public String getRAI() {
+		return this.rai;
 	}
 
 	@Override
-	public void setURL(String uRL) {
-		URL = uRL;
+	public void setRAI(String rai) {
+		this.rai = rai;
 	}
 
 	@Override
@@ -144,7 +144,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		this.type = type;// address+port+type+name
 		this.id = id;
 		this.name = name;
-		URL = "";
+		rai = "";
 
 		// WifiManager wifiManager = (WifiManager)
 		// getSystemService(WIFI_SERVICE);
@@ -152,7 +152,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		// WifiInfo wifiInfo = wifiManager.getConnectionInfo();
 		String ipAddress = ResourceAgentIdentifier.getLocalIpAddress(); // Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 
-		URL = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);
+		rai = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);
 
 		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 
@@ -209,9 +209,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
 
 			if (position != null) {
-				registered = rrs.registerLocation(this.URL, this.position);
+				registered = rrs.registerLocation(this.rai, this.position);
 			} else {
-				registered = rrs.register(this.URL);
+				registered = rrs.register(this.rai);
 			}
 				
 			String result = "";
@@ -227,7 +227,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		if (!registered) {
 			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
 			this.position = position;
-			registered = rrs.registerLocation(this.URL, this.position);
+			registered = rrs.registerLocation(this.rai, this.position);
 				
 			String result = "";
 			// adding local reference of this instance
@@ -242,7 +242,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		if (!registered) {
 			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
 			this.position = position;
-			registered = rrs.registerInPlace(this.URL, placeName, this.position);
+			registered = rrs.registerInPlace(this.rai, placeName, this.position);
 				
 			String result = "";
 			// adding local reference of this instance
@@ -274,7 +274,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public void notifyStakeholders(String method, Object value) {
 		for (Stakeholder stakeholder : stakeholders) {
 			if (stakeholder.getMethod().equals(method) || stakeholder.getMethod().equalsIgnoreCase("all")) {
-				new ResourceAgentStub(stakeholder.getUrl()).notificationHandler(this.getURL(), method, value);
+				new ResourceAgentStub(stakeholder.getUrl()).notificationHandler(this.getRAI(), method, value);
 				Log.d("SmartAndroid", String.format("notifyStakeholders() - stakeholder: %s method: %s value: %s was notified", stakeholder.getUrl(), method, value));
 			}
 		}

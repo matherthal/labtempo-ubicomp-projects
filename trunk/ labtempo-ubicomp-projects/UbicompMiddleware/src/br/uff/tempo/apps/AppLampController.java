@@ -48,7 +48,7 @@ public class AppLampController extends Activity {
 					
 					boolean val = Boolean.valueOf(value.toString());
 					// If it's really the lamp
-					if (rai.equals(lamp.getURL()) && method.equals("isOn"))
+					if (rai.equals(lamp.getRAI()) && method.equals("isOn"))
 						// If value has changed
 						if (count == 0 || lastVal != val) {
 							lastVal = val;

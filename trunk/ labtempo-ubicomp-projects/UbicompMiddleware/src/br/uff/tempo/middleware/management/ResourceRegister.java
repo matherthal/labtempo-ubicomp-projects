@@ -17,9 +17,9 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		setId(1);
 		setName("ResourceRegister");
 		setType("management");
-		setURL("br.uff.tempo.middleware.management.ResourceRegister");
+		setRAI("br.uff.tempo.middleware.management.ResourceRegister");
 
-		setURL(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceRegister", "ResourceRegister"));
+		setRAI(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceRegister", "ResourceRegister"));
 
 		ResourceContainer.getInstance().add(this);
 	}

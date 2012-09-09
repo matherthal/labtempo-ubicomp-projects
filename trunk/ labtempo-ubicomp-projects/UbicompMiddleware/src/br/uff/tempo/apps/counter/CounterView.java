@@ -82,7 +82,7 @@ public class CounterView extends Activity{
 			String selected = onOffSelector.getSelectedItem().toString();
 			countView.setText(selected);
 			iOnOff = new OnOffStub(onOffSelector.getSelectedItem().toString());
-			iOnOff.registerStakeholder("ligaDesliga", counter.getURL());
+			iOnOff.registerStakeholder("ligaDesliga", counter.getRAI());
 			countView.setText(counter.getCount()+"");
 			(new Listener()).start();
 		}

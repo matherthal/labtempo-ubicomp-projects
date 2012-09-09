@@ -23,7 +23,7 @@ public class ResourceContainer implements IResourceContainer {
 	}
 
 	public void add(ResourceAgent rA) {
-		container.put(rA.getURL(), rA);
+		container.put(rA.getRAI(), rA);
 	}
 
 	public void remove(String url) {

@@ -62,7 +62,7 @@ public class RuleInterpreter extends ResourceAgent {
 	@Deprecated
 	public void setCondition(String rai, String cv, Object[] params, Operator op, Object value) throws Exception {
 		IResourceAgent ra = new ResourceAgentStub(rai);
-		ra.registerStakeholder(cv, this.getURL());
+		ra.registerStakeholder(cv, this.getRAI());
 		// re discovery.search(rai).get(0);
 		cNSet.add(new ComparisonNode(rai, cv, params, op, value, 0));
 	}

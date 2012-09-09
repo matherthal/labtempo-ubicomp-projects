@@ -24,7 +24,7 @@ public class RuleInterpreterTest extends ResourceAgent {
 
 		// String cv = "Regra disparada";
 		String cv = "ruleTrigger";
-		ra.registerStakeholder(cv, this.getURL());
+		ra.registerStakeholder(cv, this.getRAI());
 
 		this.context = mContext;
 	}

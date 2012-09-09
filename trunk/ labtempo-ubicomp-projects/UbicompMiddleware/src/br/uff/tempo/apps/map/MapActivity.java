@@ -610,7 +610,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		// Subscribe to the agent (all context variables) to receive
 		// notifications
-		resAg.registerStakeholder("all", mAppManager.getURL());
+		resAg.registerStakeholder("all", mAppManager.getRAI());
 
 		// Creates an intent, to pass data to StoveView
 		i = new Intent(this, c);

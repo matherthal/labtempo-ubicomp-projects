@@ -29,7 +29,7 @@ public class Generic extends ResourceAgent implements IGeneric {
 
 		this.identify();
 		Log.i(TAG, "Generic stakeholder " + name + " identified");
-		ra.registerStakeholder(cv, this.getURL());
+		ra.registerStakeholder(cv, this.getRAI());
 		Log.i(TAG, "Generic stakeholder " + name + " subscribed");
 	}
 

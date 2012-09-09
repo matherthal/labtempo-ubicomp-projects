@@ -15,7 +15,7 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 		setName("ResourceDiscovery");
 		setType("br.uff.tempo.middleware.management.ResourceDiscovery");
 
-		setURL(IResourceDiscovery.RDS_ADDRESS);
+		setRAI(IResourceDiscovery.RDS_ADDRESS);
 
 		ResourceContainer.getInstance().add(this);
 	}

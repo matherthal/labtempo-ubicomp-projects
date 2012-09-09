@@ -116,7 +116,7 @@ public class CounterApp extends Activity implements IResourceChooser {
 	
 	public String getCurrentURL() {
 		
-		return lamp.getURL();
+		return lamp.getRAI();
 	}
 
 	@Override
@@ -126,7 +126,7 @@ public class CounterApp extends Activity implements IResourceChooser {
 		lamp = new LampStub(resourceRAI);
 		
 		//register my counter agent in "isOn" method in the lamp agent
-		lamp.registerStakeholder("isOn", counterAg.getURL());
+		lamp.registerStakeholder("isOn", counterAg.getRAI());
 		
 		boolean on = lamp.isOn();	
 		onOff.setChecked(on);
