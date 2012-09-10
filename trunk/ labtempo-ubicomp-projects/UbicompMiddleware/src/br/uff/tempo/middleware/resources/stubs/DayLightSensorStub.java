@@ -12,8 +12,8 @@ public class DayLightSensorStub extends ResourceAgentStub implements IDayLightSe
 	
 	private static final long serialVersionUID = 1L;
 
-	public DayLightSensorStub(String url) {
-		super(url);
+	public DayLightSensorStub(String rai) {
+		super(rai);
 	}
 
 	@Override

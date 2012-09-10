@@ -11,8 +11,8 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	
 	private static final long serialVersionUID = 1L;
 
-	public StoveStub(String url) {
-		super(url);
+	public StoveStub(String rai) {
+		super(rai);
 	}
 
 	@Override

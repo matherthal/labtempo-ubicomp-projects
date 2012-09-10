@@ -11,8 +11,8 @@ public class LampStub extends ResourceAgentStub implements ILamp {
 	
 	private static final long serialVersionUID = 1L;
 
-	public LampStub(String url) {
-		super(url);
+	public LampStub(String rai) {
+		super(rai);
 	}
 
 	@Override

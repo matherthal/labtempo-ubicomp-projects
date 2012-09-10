@@ -5,7 +5,7 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 public interface IResourceContainer {
 	void add(ResourceAgent rA);
 
-	void remove(String url);
+	void remove(String rai);
 
-	ResourceAgent get(String url);
+	ResourceAgent get(String rai);
 }
