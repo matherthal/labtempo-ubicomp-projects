@@ -188,7 +188,7 @@ public class RuleConditionActivity extends Activity {
 		Condition cond = null;
 		try {
 			// Initialize Condition
-			// cond = new Condition(ra.getURL(), mtd, null,
+			// cond = new Condition(ra.getRAI(), mtd, null,
 			// Operator.valueOf(op), value, 0);
 		} catch (Exception e) {
 			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);

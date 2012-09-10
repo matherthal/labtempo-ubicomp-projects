@@ -102,7 +102,7 @@ public class RuleActivity extends Activity {
 			Toast.makeText(this, "Regra registrada", Toast.LENGTH_SHORT).show();
 
 			// RuleInterpreterTest test = new RuleInterpreterTest(null);
-			// // rule.registerStakeholder("Regra disparada", test.getURL());
+			// // rule.registerStakeholder("Regra disparada", test.getRAI());
 			// test.identify();
 			// Toast.makeText(this, "Aplicação inicializada e registrada",
 			// Toast.LENGTH_SHORT).show();
@@ -291,7 +291,7 @@ public class RuleActivity extends Activity {
 		Condition cond;
 		try {
 			// Initialize Condition
-			// cond = new Condition(ra.getURL(), mtd, null, operator, value, 0,
+			// cond = new Condition(ra.getRAI(), mtd, null, operator, value, 0,
 			// this);
 		} catch (Exception e) {
 			Toast.makeText(this, "Erro ao criar a condição", Toast.LENGTH_LONG);

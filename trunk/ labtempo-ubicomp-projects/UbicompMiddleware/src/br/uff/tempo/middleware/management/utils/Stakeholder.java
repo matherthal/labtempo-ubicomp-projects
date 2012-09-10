@@ -5,24 +5,23 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 public class Stakeholder {
 
 	private String method;
-	private String url;
+	private String rai;
 
-	public Stakeholder(String method, String url) {
+	public Stakeholder(String method, String rai) {
 		this.method = method;
-		this.url = url;
+		this.rai = rai;
 	}
 
 	public Stakeholder(String method, ResourceAgent rA) {
 		this.method = method;
-		this.url = rA.getRAI();
+		this.rai = rA.getRAI();
 	}
 
 	public String getMethod() {
 		return method;
 	}
 
-	public String getUrl() {
-		return url;
+	public String getRAI() {
+		return rai;
 	}
-
 }

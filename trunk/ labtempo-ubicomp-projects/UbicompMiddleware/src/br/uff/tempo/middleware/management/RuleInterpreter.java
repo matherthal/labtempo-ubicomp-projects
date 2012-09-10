@@ -72,7 +72,7 @@ public class RuleInterpreter extends ResourceAgent {
 	// Operator op, Object value, Integer timeInSec)
 	// throws Exception {
 	// IResourceAgent ra = new ResourceAgentStub(rai);
-	// ra.registerStakeholder(cv, this.getURL());
+	// ra.registerStakeholder(cv, this.getRAI());
 	// // re discovery.search(rai).get(0);
 	// cNSet.add(new ComparisonNode(rai, cv, params, op, value, timeInSec));
 	// timeoutList.add(timeInSec);
