@@ -261,7 +261,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		
 		int i = 0;
 		while (i < stakeholders.size()) {
-			String url = stakeholders.get(i).getUrl();
+			String url = stakeholders.get(i).getRAI();
 			// stakeholderStub = new ResourceAgentStub(url);
 			if (change.contains(stakeholders.get(i).getMethod()) || stakeholders.get(i).getMethod().equalsIgnoreCase("all"))
 				new ResourceAgentStub(url).notificationHandler(rai, method, value);
@@ -274,8 +274,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public void notifyStakeholders(String method, Object value) {
 		for (Stakeholder stakeholder : stakeholders) {
 			if (stakeholder.getMethod().equals(method) || stakeholder.getMethod().equalsIgnoreCase("all")) {
-				new ResourceAgentStub(stakeholder.getUrl()).notificationHandler(this.getRAI(), method, value);
-				Log.d("SmartAndroid", String.format("notifyStakeholders() - stakeholder: %s method: %s value: %s was notified", stakeholder.getUrl(), method, value));
+				new ResourceAgentStub(stakeholder.getRAI()).notificationHandler(this.getRAI(), method, value);
+				Log.d("SmartAndroid", String.format("notifyStakeholders() - stakeholder: %s method: %s value: %s was notified", stakeholder.getRAI(), method, value));
 			}
 		}
 	}

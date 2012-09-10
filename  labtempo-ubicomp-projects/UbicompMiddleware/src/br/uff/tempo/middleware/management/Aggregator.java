@@ -27,7 +27,7 @@ public abstract class Aggregator extends ResourceAgent implements IAggregator {
 	 * 
 	 * //IResourceDiscovery iRDS = getRDS(); //IStove iStove = new
 	 * StoveStub(iRDS.search("stove").get(0));
-	 * //iStove.registerStakeholder("getOvenIsOn", this.getURL());
+	 * //iStove.registerStakeholder("getOvenIsOn", this.getRAI());
 	 * 
 	 * return false; }
 	 */

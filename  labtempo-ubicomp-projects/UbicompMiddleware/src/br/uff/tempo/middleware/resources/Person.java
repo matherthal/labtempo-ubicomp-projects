@@ -25,7 +25,7 @@ public class Person extends Aggregator implements IPerson {
 		// Add them with the aggregator's support
 		IResourceDiscovery iRDS = getRDS();
 		//IBed bed = new BedStub(iRDS.search("bed").get(0));
-		//bed.registerStakeholder("inUse", this.getURL());
+		//bed.registerStakeholder("inUse", this.getRAI());
 
 		//this.addContextVariable(bed, "inUse");
 		// ...

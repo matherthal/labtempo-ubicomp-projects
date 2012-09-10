@@ -68,7 +68,7 @@ public class OnOffView extends Activity{
 				if (strType.contains("OnOff")){//connecting to a existent agent
 					agent = getAgent(name+"Observer",xStr,yStr);
 					//IResourceAgent observableAgent = new ResourceAgentStub(rai);
-					//observableAgent.registerStakeholder("ligaDesliga", agent.getURL());
+					//observableAgent.registerStakeholder("ligaDesliga", agent.getRAI());
 					agent.registerStakeholder("ligaDesliga", rai);
 				} else {
 					agent = getAgent(name,xStr,yStr);

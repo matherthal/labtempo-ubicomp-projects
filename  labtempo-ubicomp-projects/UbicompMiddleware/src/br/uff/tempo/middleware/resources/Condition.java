@@ -124,7 +124,7 @@ public class Condition implements Serializable {
 		// ex., if it is boolean, so we parse the value to boolean before
 		// compare
 
-		// IResourceAgent ra = new ResourceAgentStub(this.ra.getURL());
+		// IResourceAgent ra = new ResourceAgentStub(this.ra.getRAI());
 		Stub s = new Stub(rai);
 		Object ret = s.makeCall(method, params);
 		// ret = ra.getClass().getMethod(method, paramTypes).invoke(params);
