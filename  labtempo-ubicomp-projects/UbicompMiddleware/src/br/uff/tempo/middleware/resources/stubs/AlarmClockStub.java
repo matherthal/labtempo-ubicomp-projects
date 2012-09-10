@@ -12,8 +12,8 @@ public class AlarmClockStub extends ResourceAgentStub implements IAlarmClock {
 	
 	private static final long serialVersionUID = 1L;
 
-	public AlarmClockStub(String url) {
-		super(url);
+	public AlarmClockStub(String rai) {
+		super(rai);
 	}
 
 	@Override

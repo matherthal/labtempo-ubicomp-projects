@@ -11,8 +11,8 @@ public class PresenceSensorStub extends ResourceAgentStub implements IPresenceSe
 	
 	private static final long serialVersionUID = 1L;
 
-	public PresenceSensorStub(String url) {
-		super(url);
+	public PresenceSensorStub(String rai) {
+		super(rai);
 	}
 
 	@Override

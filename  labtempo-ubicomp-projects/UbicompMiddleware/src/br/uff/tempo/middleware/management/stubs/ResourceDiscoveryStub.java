@@ -24,7 +24,7 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 		return (ArrayList<String>) makeCall("search", params);
 	}
 
-	public ResourceAgent get(String url) {
+	public ResourceAgent get(String rai) {
 		// TODO Auto-generated method stub
 		return null;
 	}

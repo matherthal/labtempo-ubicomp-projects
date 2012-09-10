@@ -352,7 +352,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 	}
 
 	@Override
-	public void registerStakeholder(String method, String url) {
+	public void registerStakeholder(String method, String rai) {
 		// TODO Auto-generated method stub
 
 	}

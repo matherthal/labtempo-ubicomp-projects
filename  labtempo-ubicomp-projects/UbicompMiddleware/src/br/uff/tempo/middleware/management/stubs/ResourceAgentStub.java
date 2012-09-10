@@ -13,11 +13,11 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private String url;
+	private String rai;
 
-	public ResourceAgentStub(String url) {
-		super(url);
-		this.url = url;
+	public ResourceAgentStub(String rai) {
+		super(rai);
+		this.rai = rai;
 	}
 
 	public void notificationHandler(String rai, String method, Object value) {
@@ -36,11 +36,11 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	}
 
 	@Override
-	public void registerStakeholder(String method, String url) {
+	public void registerStakeholder(String method, String rai) {
 		// Set params
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>("java.lang.String", method));
-		params.add(new Tuple<String, Object>("java.lang.String", url));
+		params.add(new Tuple<String, Object>("java.lang.String", rai));
 
 		makeCall("registerStakeholder", params);
 	}

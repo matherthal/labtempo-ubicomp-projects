@@ -12,8 +12,8 @@ public class GameAgentStub extends ResourceAgentStub implements IGameAgent {
 	
 	private static final long serialVersionUID = 1L;
 
-	public GameAgentStub(String url) {
-		super(url);
+	public GameAgentStub(String rai) {
+		super(rai);
 	}
 
 	@Override

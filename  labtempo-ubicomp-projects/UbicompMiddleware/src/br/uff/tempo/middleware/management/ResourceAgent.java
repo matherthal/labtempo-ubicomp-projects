@@ -290,8 +290,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public abstract void notificationHandler(String rai, String method, Object value);
 
 	@Override
-	public void registerStakeholder(String method, String url) {
-		stakeholders.add(new Stakeholder(method, url));
+	public void registerStakeholder(String method, String rai) {
+		stakeholders.add(new Stakeholder(method, rai));
 	}
 
 	// @Override
