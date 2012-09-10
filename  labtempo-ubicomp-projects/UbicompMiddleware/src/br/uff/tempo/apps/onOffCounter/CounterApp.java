@@ -4,6 +4,8 @@
 
 package br.uff.tempo.apps.onOffCounter;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.os.Bundle;
@@ -15,12 +17,14 @@ import android.widget.ToggleButton;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseExternalResource;
 import br.uff.tempo.apps.map.dialogs.IResourceChooser;
+import br.uff.tempo.apps.map.dialogs.IResourceListGetter;
+import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.interfaces.ILamp;
 import br.uff.tempo.middleware.resources.stubs.LampStub;
 
-public class CounterApp extends Activity implements IResourceChooser {
+public class CounterApp extends Activity implements IResourceChooser, IResourceListGetter {
 	
 	// My Counter Agent
 	private CounterAg counterAg;
@@ -114,11 +118,24 @@ public class CounterApp extends Activity implements IResourceChooser {
 		
 	}
 	
-	public String getCurrentURL() {
+	public String getCurrentRAI() {
 		
 		return lamp.getRAI();
 	}
+	
+	public void chooseClick(View v) {
 
+		MiddlewareOperation m = new MiddlewareOperation(this, "Lamp");
+		m.execute(null);
+		
+	}
+	
+	@Override
+	public void onGetResourceList(List<String> result) {
+		
+		dialog.showDialog(result);
+	}
+	
 	@Override
 	public void onRegisteredResourceChoosed(String resourceRAI) {
 		
@@ -140,11 +157,6 @@ public class CounterApp extends Activity implements IResourceChooser {
 		// TODO Auto-generated method stub
 		
 	}
-	
-	public void chooseClick(View v) {
-
-		dialog.showDialog(rds.search("Lamp"));
-	}
 
 	public void onOffclick(View v) {
 
@@ -163,6 +175,6 @@ public class CounterApp extends Activity implements IResourceChooser {
 	
 	public void resetCounterClick(View v) {
 		
-		counter = 0;
+		reset();
 	}
 }
