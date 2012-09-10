@@ -9,19 +9,29 @@ import br.uff.tempo.apps.map.MapActivity;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 
+/**
+ * This class is used to execute a middleware call in a separate thread
+ * while the thread is executing, a dialog shows an animation.
+ * This way, the android GUI doesn't crash.
+ * 
+ * @author dbarreto
+ *
+ */
 public class MiddlewareOperation extends AsyncTask<String, Void, List<String>> {
 
 	private ResourceDiscoveryStub rd;
 	private ProgressDialog progress;
 	private Activity act;
+	private String query;
 
-	public MiddlewareOperation(Activity act) {
+	public MiddlewareOperation(Activity act, String query) {
 
 		// TODO: This use of Resource discovery seems strange... we need to talk
 		// about it
 		rd = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 
 		this.act = act;
+		this.query = query;
 	}
 
 	@Override
@@ -45,8 +55,8 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<String>> {
 			e.printStackTrace();
 		}
 
-		// Get all registered resources references from Resource Discovery
-		return rd.search("");
+		// Get registered resources references from Resource Discovery that matches the query
+		return rd.search(this.query);
 	}
 
 	// Executed when search finishes
@@ -59,8 +69,8 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<String>> {
 		progress.dismiss();
 
 		// call a method from the activity (callback)
-		MapActivity map = (MapActivity) act;
-		map.onGetResourceList(result);
+		IResourceListGetter lg = (IResourceListGetter) act;
+		lg.onGetResourceList(result);
 	}
 
 }

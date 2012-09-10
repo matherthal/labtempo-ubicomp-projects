@@ -42,6 +42,7 @@ import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseExternalResource;
 import br.uff.tempo.apps.map.dialogs.IResourceChooser;
+import br.uff.tempo.apps.map.dialogs.IResourceListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.apps.map.dialogs.ResourceConfig;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
@@ -65,7 +66,8 @@ import br.uff.tempo.middleware.resources.stubs.TelevisionStub;
 
 public class MapActivity extends /* SimpleLayoutGameActivity */
 SimpleBaseGameActivity implements IOnSceneTouchListener,
-		IScrollDetectorListener, IPinchZoomDetectorListener, IResourceChooser {
+		IScrollDetectorListener, IPinchZoomDetectorListener, IResourceChooser,
+		IResourceListGetter {
 
 	// ===========================================================
 	// Constants
@@ -205,8 +207,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// Be careful with these integers! They are the TerxtureRegion
 		// coordinates (pixels) in the atlas
 
-		this.mBitmapTextureAtlas = new BitmapTextureAtlas(this.getTextureManager(), 127,
-				285, TextureOptions.BILINEAR);
+		this.mBitmapTextureAtlas = new BitmapTextureAtlas(
+				this.getTextureManager(), 127, 285, TextureOptions.BILINEAR);
 
 		// the stove image is in position (0,0) in the atlas
 		this.mStoveTextureRegion = BitmapTextureAtlasTextureRegionFactory
@@ -461,6 +463,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 	// Executed when the activity successfully receives a list of registered
 	// resources
+	@Override
 	public void onGetResourceList(List<String> list) {
 
 		// Call a dialog to show the registered resource list
@@ -595,7 +598,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		case EXTERNAL:
 
-			MiddlewareOperation m = new MiddlewareOperation(this);
+			// Starts a middleware operation, listing all registered resources
+			// ("")
+			MiddlewareOperation m = new MiddlewareOperation(this, "");
 			m.execute(null);
 
 			// An external resource... we must exit this method, not only
@@ -619,8 +624,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		i.putExtras(bundle);
 
 		// create an icon in the map, according to the parameters
-		createSprite(tr, i, resType).showMessage("Texto longo, muito longo, muito longo,\n muito longo, muito longo, \nmuito longo!");
+		ResourceObject res = createSprite(tr, i, resType);
 
+		mAppManager.addResource(resAg.getRAI(), res);
 	}
 
 	private ResourceObject createSprite(final TextureRegion pTextureRegion,

@@ -16,7 +16,7 @@ public class CounterAg extends ResourceAgent {
 	}
 	@Override
 	public void notificationHandler(String rai, String method, Object value) {
-		if (rai.equals(view.getCurrentURL()) && method.equals("isOn")) {
+		if (rai.equals(view.getCurrentRAI()) && method.equals("isOn")) {
 			
 			boolean b = Boolean.valueOf(value.toString());
 			
