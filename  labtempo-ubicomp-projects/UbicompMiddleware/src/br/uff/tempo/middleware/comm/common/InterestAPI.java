@@ -4,28 +4,44 @@ import java.util.List;
 
 public interface InterestAPI {
 	
-	public int getMyAddress() throws Exception;
+	// 1st step
 	
-	public void sendMessage(String contextVariable, String value) throws Exception;
-
+	
+	public Object fetchContextVariable(String contextVariable, String rai) throws Exception;
+	
+	public Object callService(String serviceName, String rai) throws Exception;
+	
 	// notifyStakeholders
 	public void sendMessageTo(String rai, String contextVariable, String value) throws Exception;
 
+	// registerStakeholders
+	public void registerInterest(String contextVariable, String rai, Callable callback) throws Exception;
+
+	// removeStakeholders
+	public void removeInterest(String contextVariable, String rai) throws Exception;
+	
+	
+	// 2nd step
+	
+	public Object fetchContextVariable(String contextVariable) throws Exception;
+	
+	public void sendMessage(String contextVariable, String value) throws Exception;
+	
 	// registerStakeholders, callback = notificationHandler
 	// (1 contextVariable could have N callbacks)
-	public void addInterest(String contextVariable, Callable callback) throws Exception;
-
-	// registerStakeholders
-	public void addInterest(String contextVariable, String rai, Callable callback) throws Exception;
+	public void registerInterest(String contextVariable, Callable callback) throws Exception;
 
 	// removeStakeholders
 	public void removeInterest(String contextVariable) throws Exception;
 
-	// removeStakeholders
-	public void removeInterest(String contextVariable, String rai) throws Exception;
-
 	// removeNotificationHandlers
 	public void removeInterestCallback(String contextVariable, Callable callback) throws Exception;
+	
+	
+	// 3rd step
+	
+	
+	public int getMyAddress() throws Exception;
 	
 	public void removeAllInterests() throws Exception;
 	
