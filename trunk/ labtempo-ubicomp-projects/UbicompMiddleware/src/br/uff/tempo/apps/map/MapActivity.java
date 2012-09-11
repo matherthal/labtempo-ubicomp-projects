@@ -19,6 +19,7 @@ import org.andengine.input.touch.detector.PinchZoomDetector;
 import org.andengine.input.touch.detector.PinchZoomDetector.IPinchZoomDetectorListener;
 import org.andengine.input.touch.detector.ScrollDetector;
 import org.andengine.input.touch.detector.ScrollDetector.IScrollDetectorListener;
+import org.andengine.input.touch.detector.SurfaceGestureDetector;
 import org.andengine.input.touch.detector.SurfaceScrollDetector;
 import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.texture.TextureManager;
@@ -34,9 +35,13 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
+import android.view.GestureDetector;
+import android.view.GestureDetector.OnDoubleTapListener;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SubMenu;
+import android.view.SurfaceHolder;
 import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
@@ -109,6 +114,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	private SurfaceScrollDetector mScrollDetector;
 	private PinchZoomDetector mPinchZoomDetector;
 	private float mPinchZoomStartedCameraZoomFactor;
+	private SurfaceGestureDetector mSurfaceGestureDetector;
 
 	// The tiled (pieces of images) map
 	private TMXTiledMap tiledMap;
@@ -283,6 +289,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// Scene must listen to touch events!
 		this.mScene.setOnSceneTouchListener(this);
 		this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
+		
+		setupGestureDetection();
 
 		return this.mScene;
 	}
@@ -299,143 +307,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	//
 	// return R.id.xmllayoutexample_rendersurfaceview;
 	// }
-
-	// Detectors
-	@Override
-	public void onScrollStarted(final ScrollDetector pScollDetector,
-			final int pPointerID, final float pDistanceX, final float pDistanceY) {
-		final float zoomFactor = this.mCamera.getZoomFactor();
-		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
-				/ zoomFactor);
-	}
-
-	@Override
-	public void onScroll(final ScrollDetector pScollDetector,
-			final int pPointerID, final float pDistanceX, final float pDistanceY) {
-		final float zoomFactor = this.mCamera.getZoomFactor();
-		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
-				/ zoomFactor);
-	}
-
-	@Override
-	public void onScrollFinished(final ScrollDetector pScollDetector,
-			final int pPointerID, final float pDistanceX, final float pDistanceY) {
-		final float zoomFactor = this.mCamera.getZoomFactor();
-		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
-				/ zoomFactor);
-	}
-
-	@Override
-	public void onPinchZoomStarted(final PinchZoomDetector pPinchZoomDetector,
-			final TouchEvent pTouchEvent) {
-		this.mPinchZoomStartedCameraZoomFactor = this.mCamera.getZoomFactor();
-	}
-
-	@Override
-	public void onPinchZoom(final PinchZoomDetector pPinchZoomDetector,
-			final TouchEvent pTouchEvent, final float pZoomFactor) {
-		this.mCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor
-				* pZoomFactor);
-	}
-
-	@Override
-	public void onPinchZoomFinished(final PinchZoomDetector pPinchZoomDetector,
-			final TouchEvent pTouchEvent, final float pZoomFactor) {
-		this.mCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor
-				* pZoomFactor);
-	}
-
-	@Override
-	public boolean onSceneTouchEvent(final Scene pScene,
-			final TouchEvent pSceneTouchEvent) {
-		this.mPinchZoomDetector.onTouchEvent(pSceneTouchEvent);
-
-		if (this.mPinchZoomDetector.isZooming()) {
-			this.mScrollDetector.setEnabled(false);
-		} else {
-			if (pSceneTouchEvent.isActionDown()) {
-				this.mScrollDetector.setEnabled(true);
-			}
-			this.mScrollDetector.onTouchEvent(pSceneTouchEvent);
-		}
-
-		return true;
-	}
-
-	// The main menu, accessed by Android menu button (in the Android device)
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-
-		// sub menu: simulated resources
-		SubMenu simulated = menu.addSubMenu("Add Simulated Resource").setIcon(
-				R.drawable.add);
-
-		// Simulated resources to add
-		simulated.add(GPR_RESOURCES, TV, Menu.NONE, "TV");
-		simulated.add(GPR_RESOURCES, DVD, Menu.NONE, "DVD");
-		simulated.add(GPR_RESOURCES, STOVE, Menu.NONE, "Smart Stove");
-		simulated.add(GPR_RESOURCES, LAMP, Menu.NONE, "Smart Lamp");
-		simulated.add(GPR_RESOURCES, BED, Menu.NONE, "Smart Bed");
-		simulated.add(GPR_RESOURCES, AR_CONDITIONER, Menu.NONE,
-				"Ar-conditioner");
-
-		simulated.add(GPR_RESOURCES, TEMPERATURE, Menu.NONE,
-				"Temperature Sensor");
-
-		simulated
-				.add(GPR_RESOURCES, LUMINOSITY, Menu.NONE, "Luminosity Sensor");
-
-		// Option to connect an icon to an external resource
-		menu.add(Menu.NONE, EXTERNAL, Menu.NONE, "Connect to External Resource")
-				.setIcon(R.drawable.connect);
-
-		// Option to open a settings screen of the application
-		menu.add("Settings").setIcon(R.drawable.settings);
-		// Option to load a different map file
-		menu.add("Load Map").setIcon(R.drawable.map);
-		// Option to create a logical expression (called context rule)
-		menu.add("Create rule").setIcon(R.drawable.thunder);
-
-		return super.onCreateOptionsMenu(menu);
-	}
-
-	// when user select an item from menu...
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-
-		// A resource was selected
-		// Call a configuration dialog and get some information about the
-		// resource. Pass only if the resource selected is not configured yet!
-		// (and if groupID == GPR_RESOURCES :D )
-
-		if (item.getGroupId() == GPR_RESOURCES && !resConfigured) {
-
-			callConfigDialog();
-			itemSelected = item;
-
-			// if the resource isn't already configured, exit the method
-			// probably it's not configured yet... just certifying,
-			// because the variable is modified in another thread too...
-			if (!resConfigured)
-				return false;
-		}
-
-		resConfigured = false;
-
-		// Process the menu items...
-		createResourceIcon(item.getItemId(), true);
-
-		return super.onOptionsItemSelected(item);
-	}
-
-	// @Override protected void onActivityResult(int requestCode, int
-	// resultCode, Intent data) {
-	// super.onActivityResult(requestCode, resultCode, data);
-	//
-	// //mAppManager.addResourceData((ResourceData)
-	// data.getSerializableExtra("resourceData");
-	// }
-
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -451,42 +323,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		resConf.showDialog();
 	}
 
-	// When the dialog is closed, call this call back
-	@Override
-	public void onDialogFinished(Dialog dialog) {
-
-		regData = new RegistryData(resConf.getName());
-		resConfigured = true;
-
-		onOptionsItemSelected(itemSelected);
-	}
-
-	// Executed when the activity successfully receives a list of registered
-	// resources
-	@Override
-	public void onGetResourceList(List<String> list) {
-
-		// Call a dialog to show the registered resource list
-		externalList.showDialog(list);
-	}
-
-	// It is called when user select an item from registered resources list
-	@Override
-	public void onRegisteredResourceChoosed(String resourceRAI) {
-
-		int type = -1;
-		regData = new RegistryData(resourceRAI);
-
-		// Toast.makeText(this, resourceRAI, Toast.LENGTH_LONG).show();
-		if (resourceRAI.contains("Stove")) {
-			type = STOVE;
-		}
-
-		createResourceIcon(type, false);
-
-	}
-
-	public void createResourceIcon(int iconType, boolean simulated) {
+	public void createResourceIcon(int iconType, boolean emulated) {
 
 		// init local variables
 
@@ -522,7 +359,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			IStove stove;
 
 			// create an agent if it's a simulated resource; a stub otherwise
-			if (simulated) {
+			if (emulated) {
 				stove = new Stove(regData.getResourceName());
 			} else {
 				stove = new StoveStub(regData.getResourceName());
@@ -542,7 +379,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			ILamp lamp;
 
 			// create an agent if it's a simulated resource; a stub otherwise
-			if (simulated) {
+			if (emulated) {
 				lamp = new Lamp(regData.getResourceName());
 			} else {
 				lamp = new LampStub(regData.getResourceName());
@@ -562,7 +399,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			ITelevision tv;
 
 			// create an agent if it's a simulated resource; a stub otherwise
-			if (simulated) {
+			if (emulated) {
 				tv = new Television(regData.getResourceName());
 			} else {
 				tv = new TelevisionStub(regData.getResourceName());
@@ -582,7 +419,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			IBed bed;
 
 			// create an agent if it's a simulated resource; a stub otherwise
-			if (simulated) {
+			if (emulated) {
 				bed = new Bed(regData.getResourceName());
 			} else {
 				bed = new BedStub(regData.getResourceName());
@@ -675,6 +512,275 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		return sprite;
 	}
 
+	// The main menu, accessed by Android menu button (in the Android device)
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+
+		// sub menu: simulated resources
+		SubMenu simulated = menu.addSubMenu("Add Simulated Resource").setIcon(
+				R.drawable.add);
+
+		// Simulated resources to add
+		simulated.add(GPR_RESOURCES, TV, Menu.NONE, "TV");
+		simulated.add(GPR_RESOURCES, DVD, Menu.NONE, "DVD");
+		simulated.add(GPR_RESOURCES, STOVE, Menu.NONE, "Smart Stove");
+		simulated.add(GPR_RESOURCES, LAMP, Menu.NONE, "Smart Lamp");
+		simulated.add(GPR_RESOURCES, BED, Menu.NONE, "Smart Bed");
+		simulated.add(GPR_RESOURCES, AR_CONDITIONER, Menu.NONE,
+				"Ar-conditioner");
+
+		simulated.add(GPR_RESOURCES, TEMPERATURE, Menu.NONE,
+				"Temperature Sensor");
+
+		simulated
+				.add(GPR_RESOURCES, LUMINOSITY, Menu.NONE, "Luminosity Sensor");
+
+		// Option to connect an icon to an external resource
+		menu.add(Menu.NONE, EXTERNAL, Menu.NONE, "Connect to External Resource")
+				.setIcon(R.drawable.connect);
+
+		// Option to open a settings screen of the application
+		menu.add("Settings").setIcon(R.drawable.settings);
+		// Option to load a different map file
+		menu.add("Load Map").setIcon(R.drawable.map);
+		// Option to create a logical expression (called context rule)
+		menu.add("Create rule").setIcon(R.drawable.thunder);
+
+		return super.onCreateOptionsMenu(menu);
+	}
+
+	// when user select an item from menu...
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+
+		// A resource was selected
+		// Call a configuration dialog and get some information about the
+		// resource. Pass only if the resource selected is not configured yet!
+		// (and if groupID == GPR_RESOURCES :D )
+
+		if (item.getGroupId() == GPR_RESOURCES && !resConfigured) {
+
+			callConfigDialog();
+			itemSelected = item;
+
+			// if the resource isn't already configured, exit the method
+			// probably it's not configured yet... just certifying,
+			// because the variable is modified in another thread too...
+			if (!resConfigured)
+				return false;
+		}
+
+		resConfigured = false;
+
+		// Process the menu items...
+		createResourceIcon(item.getItemId(), true);
+
+		return super.onOptionsItemSelected(item);
+	}
+	
+	// When the dialog is closed, call this call back
+	@Override
+	public void onDialogFinished(Dialog dialog) {
+
+		regData = new RegistryData(resConf.getName());
+		resConfigured = true;
+
+		onOptionsItemSelected(itemSelected);
+	}
+
+	// Executed when the activity successfully receives a list of registered
+	// resources
+	@Override
+	public void onGetResourceList(List<String> list) {
+
+		// Call a dialog to show the registered resource list
+		externalList.showDialog(list);
+	}
+
+	// It is called when user select an item from registered resources list
+	@Override
+	public void onRegisteredResourceChoosed(String resourceRAI) {
+
+		int type = -1;
+		regData = new RegistryData(resourceRAI);
+
+		// Toast.makeText(this, resourceRAI, Toast.LENGTH_LONG).show();
+		if (resourceRAI.contains("Stove")) {
+			type = STOVE;
+		} else if (resourceRAI.contains("Lamp")) {
+			type = LAMP;
+		} else if (resourceRAI.contains("Bed")) {
+			type = BED;
+		} else if (resourceRAI.contains("Television")) {
+			type = TV;
+		}
+
+		createResourceIcon(type, false);
+
+	}
+
+	// @Override protected void onActivityResult(int requestCode, int
+	// resultCode, Intent data) {
+	// super.onActivityResult(requestCode, resultCode, data);
+	//
+	// //mAppManager.addResourceData((ResourceData)
+	// data.getSerializableExtra("resourceData");
+	// }
+
+	// Detectors
+	@Override
+	public void onScrollStarted(final ScrollDetector pScollDetector,
+			final int pPointerID, final float pDistanceX, final float pDistanceY) {
+		
+		final float zoomFactor = this.mCamera.getZoomFactor();
+		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
+				/ zoomFactor);
+	}
+
+	@Override
+	public void onScroll(final ScrollDetector pScollDetector,
+			final int pPointerID, final float pDistanceX, final float pDistanceY) {
+		
+		final float zoomFactor = this.mCamera.getZoomFactor();
+		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
+				/ zoomFactor);
+	}
+
+	@Override
+	public void onScrollFinished(final ScrollDetector pScollDetector,
+			final int pPointerID, final float pDistanceX, final float pDistanceY) {
+		
+		final float zoomFactor = this.mCamera.getZoomFactor();
+		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
+				/ zoomFactor);
+	}
+
+	@Override
+	public void onPinchZoomStarted(final PinchZoomDetector pPinchZoomDetector,
+			final TouchEvent pTouchEvent) {
+		
+		this.mPinchZoomStartedCameraZoomFactor = this.mCamera.getZoomFactor();
+	}
+
+	@Override
+	public void onPinchZoom(final PinchZoomDetector pPinchZoomDetector,
+			final TouchEvent pTouchEvent, final float pZoomFactor) {
+		
+		this.mCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor
+				* pZoomFactor);
+	}
+
+	@Override
+	public void onPinchZoomFinished(final PinchZoomDetector pPinchZoomDetector,
+			final TouchEvent pTouchEvent, final float pZoomFactor) {
+		
+		this.mCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor
+				* pZoomFactor);
+	}
+
+	@Override
+	public boolean onSceneTouchEvent(final Scene pScene,
+			final TouchEvent pSceneTouchEvent) {
+		this.mPinchZoomDetector.onTouchEvent(pSceneTouchEvent);
+
+		if (this.mPinchZoomDetector.isZooming()) {
+			this.mScrollDetector.setEnabled(false);
+		} else {
+			if (pSceneTouchEvent.isActionDown()) {
+				this.mScrollDetector.setEnabled(true);
+			}
+			this.mScrollDetector.onTouchEvent(pSceneTouchEvent);
+		}
+		
+		this.mSurfaceGestureDetector.onTouchEvent(pSceneTouchEvent);
+
+		return true;
+	}
+	
+	private void setupGestureDetection() {
+
+		this.runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				// TODO Auto-generated method stub
+				MapActivity.this.mSurfaceGestureDetector = new SurfaceGestureDetector(
+						MapActivity.this, 1f) {
+
+					@Override
+					protected boolean onSwipeUp() {
+
+//						Toast.makeText(MapActivity.this, "onSwipeUp",
+//								Toast.LENGTH_SHORT).show();
+						return false;
+					}
+
+					@Override
+					protected boolean onSwipeRight() {
+
+//						Toast.makeText(MapActivity.this, "onSwipeRight",
+//								Toast.LENGTH_SHORT).show();
+						return false;
+					}
+
+					@Override
+					protected boolean onSwipeLeft() {
+
+//						Toast.makeText(MapActivity.this, "onSwipeLeft",
+//								Toast.LENGTH_SHORT).show();
+						return false;
+					}
+
+					@Override
+					protected boolean onSwipeDown() {
+
+//						Toast.makeText(MapActivity.this, "onSwipeDown",
+//								Toast.LENGTH_SHORT).show();
+						return false;
+					}
+
+					@Override
+					protected boolean onSingleTap() {
+
+//						Toast.makeText(MapActivity.this, "onSingleTap",
+//								Toast.LENGTH_SHORT).show();
+						return false;
+					}
+
+					@Override
+					protected boolean onDoubleTap() {
+
+						Log.d("SmartAndroid", "onDoubleTap");
+						
+						// Reset the zoom to 100%
+						MapActivity.this.mCamera.setZoomFactor(1f);
+//						Toast.makeText(MapActivity.this, "onDoubleTap",
+//								Toast.LENGTH_SHORT).show();
+						return true;
+					}
+
+					@Override
+					public boolean onManagedTouchEvent(
+							TouchEvent pSceneTouchEvent) {
+
+						return super.onManagedTouchEvent(pSceneTouchEvent);
+					}
+
+					@Override
+					public boolean onSceneTouchEvent(Scene pScene,
+
+					TouchEvent pSceneTouchEvent) {
+
+						return super
+								.onSceneTouchEvent(pScene, pSceneTouchEvent);
+					}
+				};
+
+				MapActivity.this.mSurfaceGestureDetector.setEnabled(true);
+			}
+		});
+	}
+
 	// It's not been used yet
 	private void setupQuickActions() {
 
@@ -712,5 +818,4 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 					}
 				});
 	}
-
 }
