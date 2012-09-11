@@ -87,7 +87,7 @@ public class InterfaceApplicationManager extends ResourceAgent {
 		// For each resource in the map...
 		for (Map.Entry<String, ResourceObject> entry : sceneObjects.entrySet()) {
 			
-			// Get the RAI
+			// Get the RAI (key of the map)
 			String key = entry.getKey();
 			
 			if (rai.equals(key)) {

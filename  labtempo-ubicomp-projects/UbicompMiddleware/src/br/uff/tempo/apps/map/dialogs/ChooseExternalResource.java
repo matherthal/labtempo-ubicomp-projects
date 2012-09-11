@@ -10,7 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.uff.tempo.R;
 
-public class ChooseExternalResource extends MapDialog implements AdapterView.OnItemClickListener {
+public class ChooseExternalResource extends MapDialog implements
+		AdapterView.OnItemClickListener {
 
 	private ListView list;
 	private ArrayAdapter<String> lvAdapter;
@@ -37,9 +38,10 @@ public class ChooseExternalResource extends MapDialog implements AdapterView.OnI
 
 	public void showDialog(List<String> resList) {
 
-		resourcesRAI = resList;
+		resourcesRAI = formatList(resList);
 
-		lvAdapter = new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, formatList(resList));
+		lvAdapter = new ArrayAdapter<String>(activity,
+				android.R.layout.simple_list_item_1, extractResourceNames(resourcesRAI));
 
 		list.setAdapter(lvAdapter);
 
@@ -54,9 +56,21 @@ public class ChooseExternalResource extends MapDialog implements AdapterView.OnI
 
 			if (!s.contains("management")) {
 
-				String[] names = s.split(":");
-				list.add(names[2]);
+				list.add(s);
 			}
+		}
+
+		return list;
+	}
+
+	public List<String> extractResourceNames(List<String> resList) {
+
+		List<String> list = new ArrayList<String>();
+
+		for (String s : resList) {
+
+			String[] names = s.split(":");
+			list.add(names[2]);
 		}
 
 		return list;
@@ -68,10 +82,11 @@ public class ChooseExternalResource extends MapDialog implements AdapterView.OnI
 	}
 
 	@Override
-	public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+			long id) {
 
 		String resourceRAI = resourcesRAI.get(position);
-		
+
 		IResourceChooser chooser = (IResourceChooser) activity;
 
 		chooser.onRegisteredResourceChoosed(resourceRAI);
