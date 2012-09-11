@@ -35,13 +35,9 @@ import android.os.Bundle;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.GestureDetector;
-import android.view.GestureDetector.OnDoubleTapListener;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.SubMenu;
-import android.view.SurfaceHolder;
 import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
@@ -50,6 +46,7 @@ import br.uff.tempo.apps.map.dialogs.IResourceChooser;
 import br.uff.tempo.apps.map.dialogs.IResourceListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.apps.map.dialogs.ResourceConfig;
+import br.uff.tempo.apps.map.log.LogActivity;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
 import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.map.objects.ResourceObject;
@@ -97,7 +94,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	public static final int TEMPERATURE = LAMP + 1;
 	public static final int LUMINOSITY = TEMPERATURE + 1;
 	public static final int EXTERNAL = LUMINOSITY + 1;
+	public static final int LOG = EXTERNAL + 1;
 
+	//constants to QuickAction (it's not been used yet)
 	public static final int ID_UNREG = 1;
 	public static final int ID_REMOVE = 2;
 	public static final int ID_INFO = 3;
@@ -200,7 +199,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		resConf = new ResourceConfig(this);
 		externalList = new ChooseExternalResource(this);
 
-		// Get an Interface Manager instance
+		// Get an Interface Manager instance and register it
 		mAppManager = InterfaceApplicationManager.getInstance();
 		mAppManager.identify();
 
@@ -444,6 +443,13 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			// the 'switch case', because we don't know what is the resource
 			// chose
 			return;
+			
+		case LOG:
+			
+			i = new Intent(this, LogActivity.class);
+			startActivity(i);
+			
+			return;
 		default:
 			// if receive an invalid option, exit method
 			// (and doesn't execute the lines above!)
@@ -545,6 +551,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		menu.add("Load Map").setIcon(R.drawable.map);
 		// Option to create a logical expression (called context rule)
 		menu.add("Create rule").setIcon(R.drawable.thunder);
+		
+		menu.add(Menu.NONE, LOG, Menu.NONE, "View Log").setIcon(R.drawable.log_icon);
 
 		return super.onCreateOptionsMenu(menu);
 	}
