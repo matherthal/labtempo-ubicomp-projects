@@ -2,15 +2,65 @@
 <map version="1.0" orientation="orthogonal" width="40" height="25" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="mytileset" tilewidth="32" tileheight="32">
   <image source="gfx/tiled.png"/>
+  <tile id="22">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="23">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="24">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="33">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="35">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="44">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="45">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
+  <tile id="46">
+   <properties>
+    <property name="block" value="true"/>
+   </properties>
+  </tile>
  </tileset>
  <layer name="Floor" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+2WURLCIAxEcyS9AND+9f4XUmbMzHYbQqhV/PBjpwqFPMgSuorI2tEGun1ZNf7yVH49LVWuNJHPUgb2X+DLYnMq38z8qhIwYZtqpv90D5Gtqsj+jMzg49wmOfpvFt/W0NX1hec/O64An/rxE3xaEzyx1yI1+gq+JH0+9dY9KM45q3Xu8Oxb6+3VtihfdubLjd+aH+ZD5iTtNY/w6fsRTyzwVBarRmCOrfyM8mWKjXUT2zxPcY5X6sezMcqHNRu/HxL9x/W3+EqD8x3/cf4wT638ePmP+qTIkV/bvLrNe4BewlrCY7wzgfPyOiwfe3y4Jq5tI7W1t88ZYrF/+P7txdpkz+vdn0mOaxz1weLExH7Oa4Sxx88+0VjZ6PP2gO/TSHyOEXl3odiRsZWnGFxn4o+8+048T+Wief6K6QG08GZCoA8AAA==
+   H4sIAAAAAAAAA+WWYQrDIAyFc6SdQG3+eZ/dnzGo9PFIou1KFfbjMek0fk1etJuIbB1V0OthNYbc4UuT+VBKv6vxMecK9e0p7bwr8VXj2Up8WNtZfOgtj0/l8OJMvq+KHL3RPHdHf/A+nI+0i8c6qDv4rDO156/3gBrbL/3r+ce6G1TO8ekeo8IYc5udMfok4mOuciF/SnEi4V7NS5gj9FePdTR/KvEdrcb+LP6/0rOr/uPcFYrBsa1exDnee+LcM/njuuK45aHCvsmYh2v5zkSf4rmC+cDzDp9ZdeQ5HNti4Pq3PCaKwX7htdmY4/Ehl9ejUf68frH6LBIzW3zoy17MCmutunp8eE9E/cletu6GEUarr6PatXVZ+r2fghgjivwa1S/6lvH2KU7cJxWdzWdUJr/Hv+kDwZvvKqAPAAA=
   </data>
  </layer>
  <layer name="Wall" width="40" height="25">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+2W0QqAIAxF9xfma/ha/Uz//y3pQyQL1DtNTRxcCtml4yYzRUQLIAXm5/i01Wp1AkLzifkI8JrO+STfk/Lx5wh8vfd38j0x8nxJia/4QryOz9V9j0h7nFsk9w6+7tcB4UuphwFrVuJc/IGPEn3E3kM9acknZcvhS5lLB7ifUnzofM7hk9S9xv0x+d58kpD4RuWT9Bflq33+asyXFnyx/xEuND9H7l64AFAkVPWgDwAA
+   H4sIAAAAAAAAA92WQQrAIAwE8wvrtXit/Yz/f0vNTaSou6IEA0svWTPGoHUicgFyYP6Mz2fdWQkQmi+VTwBvMM7H1DuVr/6Oei3z7Zw/y3waJ98vI7GKr8WrfNr32JCvOJ9Ofqkyyj4gfL1+hM4aq+ZilO9vz5b5WN4dfDO9ZPg0evfSW/ExdVKxBupB6lnnY8+J5dvxvs34WD4mGN+pfOz5InHy/O3kQ/5HIpE/I30bPkq+CtagDwAA
   </data>
  </layer>
+ <objectgroup name="Rooms" width="40" height="25">
+  <object name="Bedroom1" x="0" y="0" width="378" height="316"/>
+  <object name="Kitchen" x="379" y="0" width="455" height="349"/>
+  <object name="Laundry Room" x="832" y="-1" width="444" height="255"/>
+  <object name="Bathroom" x="2" y="319" width="283" height="190"/>
+  <object name="Bedroom2" x="0" y="513" width="382" height="286"/>
+  <object name="Dining Room" x="381" y="349" width="451" height="447"/>
+  <object name="Living Room" x="835" y="258" width="442" height="538"/>
+  <object name="Hallway" x="288" y="321" width="94" height="189"/>
+ </objectgroup>
 </map>
