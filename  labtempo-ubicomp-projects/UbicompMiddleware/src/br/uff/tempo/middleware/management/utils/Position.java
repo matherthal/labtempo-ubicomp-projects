@@ -2,27 +2,27 @@ package br.uff.tempo.middleware.management.utils;
 
 public class Position {
 
-	int x;
-	int y;
+	float x;
+	float y;
 
-	public Position(int x, int y) {
+	public Position(float x, float y) {
 		this.x = x;
 		this.y = y;
 	}
 
-	public int getX() {
+	public float getX() {
 		return x;
 	}
 
-	public int getY() {
+	public float getY() {
 		return y;
 	}
 
-	public void setX(int x) {
+	public void setX(float x) {
 		this.x = x;
 	}
 
-	public void setY(int y) {
+	public void setY(float y) {
 		this.y = y;
 	}
 
@@ -48,7 +48,7 @@ public class Position {
 	
 	// distancia der AB = raiz de ( Xa - Xb )^2 + ( Ya - Yb )^2
 	public double getDistance(Position position) {
-		return Math.sqrt(Math.pow(position.x-x, 2)+Math.pow(position.y-y, 2));
+		return Math.sqrt(Math.pow(position.x-x, 2) + Math.pow(position.y-y, 2));
 	}
 	
 	//proposital don't override toString

@@ -12,6 +12,12 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXLoader;
+import org.andengine.extension.tmx.TMXObject;
+import org.andengine.extension.tmx.TMXObjectGroup;
+import org.andengine.extension.tmx.TMXProperties;
+import org.andengine.extension.tmx.TMXProperty;
+import org.andengine.extension.tmx.TMXTile;
+import org.andengine.extension.tmx.TMXTileProperty;
 import org.andengine.extension.tmx.TMXTiledMap;
 import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.input.touch.TouchEvent;
@@ -53,6 +59,11 @@ import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.Bed;
 import br.uff.tempo.middleware.resources.Lamp;
 import br.uff.tempo.middleware.resources.Stove;
@@ -96,11 +107,13 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	public static final int EXTERNAL = LUMINOSITY + 1;
 	public static final int LOG = EXTERNAL + 1;
 
-	//constants to QuickAction (it's not been used yet)
+	// constants to QuickAction (it's not been used yet)
 	public static final int ID_UNREG = 1;
 	public static final int ID_REMOVE = 2;
 	public static final int ID_INFO = 3;
 	public static final int ID_SETTINGS = 4;
+	
+	public static final int PIXEL_PER_METER = 96;
 
 	// ===========================================================
 	// Fields
@@ -152,6 +165,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 	private FontManager fontManager;
 	private TextureManager textureManager;
+
+	private TMXLayer mapFloorLayer;
+	private TMXLayer mapWallLayer;
 
 	// ===========================================================
 	// Constructors
@@ -260,22 +276,23 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// to choose the file
 		try {
 			this.tiledMap = tmxLoader.loadFromAsset("tmx/casa_meiry.tmx");
-			// this.tiledMap = tmxLoader.loadFromAsset("tmx/house.tmx");
-			// this.tiledMap = tmxLoader.loadFromAsset("tmx/testTiled.tmx");
 		} catch (TMXLoadException e) {
 			e.printStackTrace();
 		}
-		final TMXLayer tmxLayer = this.tiledMap.getTMXLayers().get(0);
 
-		// Attach the map layers to the scene
+		mapFloorLayer = this.tiledMap.getTMXLayers().get(0);
+		mapWallLayer = this.tiledMap.getTMXLayers().get(1);
 
-		// wall layer
-		this.mScene.attachChild(tmxLayer);
+		// Attach the map layers to the scene (the order is important)
+
 		// background layer (floor)
-		this.mScene.attachChild(this.tiledMap.getTMXLayers().get(1));
+		this.mScene.attachChild(this.mapFloorLayer);
+		// wall layer
+		this.mScene.attachChild(this.mapWallLayer);
 
 		// Set the maximum and minimum bounds from Camera
-		this.mCamera.setBounds(0, 0, tmxLayer.getWidth(), tmxLayer.getHeight());
+		this.mCamera.setBounds(0, 0, this.mapFloorLayer.getWidth(),
+				this.mapFloorLayer.getHeight());
 		this.mCamera.setBoundsEnabled(true);
 
 		// Background is black...
@@ -288,8 +305,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// Scene must listen to touch events!
 		this.mScene.setOnSceneTouchListener(this);
 		this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
-		
+
 		setupGestureDetection();
+		pushMap();
 
 		return this.mScene;
 	}
@@ -306,7 +324,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	//
 	// return R.id.xmllayoutexample_rendersurfaceview;
 	// }
-	
+
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -443,12 +461,12 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			// the 'switch case', because we don't know what is the resource
 			// chose
 			return;
-			
+
 		case LOG:
-			
+
 			i = new Intent(this, LogActivity.class);
 			startActivity(i);
-			
+
 			return;
 		default:
 			// if receive an invalid option, exit method
@@ -517,6 +535,42 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		return sprite;
 	}
+	
+	public void pushMap() {
+		
+		//Get the TXM Groups from map (actually there's only one, so using get(0))
+		final TMXObjectGroup group = this.tiledMap.getTMXObjectGroups().get(0);
+		
+		IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+		
+		String rlRAI = discovery.search("ResourceLocation").get(0);
+		IResourceLocation rl = new ResourceLocationStub(rlRAI);
+		
+		final int mapHeight = this.mapFloorLayer.getHeight();
+		
+		for (TMXObject obj : group.getTMXObjects()) {
+			
+			String roomName = obj.getName();
+			
+			//[x0, y0] -> bottom-left corner
+			float x0 = pixelToMeter(obj.getX());
+			
+			//Y coordinate is transformed. System origin is in bottom-left corner
+			//The original on is in top-left corner
+			float y0 = pixelToMeter(mapHeight - (obj.getY() + obj.getHeight() ));
+			
+			//[x1, y1] -> top-right
+			float x1 = x0 + pixelToMeter(obj.getWidth());
+			float y1 = pixelToMeter(mapHeight - obj.getY());
+			
+			rl.addPlace(roomName, new Position(x0, y0), new Position(x1, y1));
+		}
+	}
+	
+	public float pixelToMeter(int pixel) {
+		
+		return ((float) pixel) / PIXEL_PER_METER;
+	}
 
 	// The main menu, accessed by Android menu button (in the Android device)
 	@Override
@@ -551,8 +605,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		menu.add("Load Map").setIcon(R.drawable.map);
 		// Option to create a logical expression (called context rule)
 		menu.add("Create rule").setIcon(R.drawable.thunder);
-		
-		menu.add(Menu.NONE, LOG, Menu.NONE, "View Log").setIcon(R.drawable.log_icon);
+
+		menu.add(Menu.NONE, LOG, Menu.NONE, "View Log").setIcon(
+				R.drawable.log_icon);
 
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -585,7 +640,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		return super.onOptionsItemSelected(item);
 	}
-	
+
 	// When the dialog is closed, call this call back
 	@Override
 	public void onDialogFinished(Dialog dialog) {
@@ -639,7 +694,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	@Override
 	public void onScrollStarted(final ScrollDetector pScollDetector,
 			final int pPointerID, final float pDistanceX, final float pDistanceY) {
-		
+
 		final float zoomFactor = this.mCamera.getZoomFactor();
 		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
 				/ zoomFactor);
@@ -648,7 +703,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	@Override
 	public void onScroll(final ScrollDetector pScollDetector,
 			final int pPointerID, final float pDistanceX, final float pDistanceY) {
-		
+
 		final float zoomFactor = this.mCamera.getZoomFactor();
 		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
 				/ zoomFactor);
@@ -657,7 +712,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	@Override
 	public void onScrollFinished(final ScrollDetector pScollDetector,
 			final int pPointerID, final float pDistanceX, final float pDistanceY) {
-		
+
 		final float zoomFactor = this.mCamera.getZoomFactor();
 		this.mCamera.offsetCenter(-pDistanceX / zoomFactor, -pDistanceY
 				/ zoomFactor);
@@ -666,14 +721,14 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	@Override
 	public void onPinchZoomStarted(final PinchZoomDetector pPinchZoomDetector,
 			final TouchEvent pTouchEvent) {
-		
+
 		this.mPinchZoomStartedCameraZoomFactor = this.mCamera.getZoomFactor();
 	}
 
 	@Override
 	public void onPinchZoom(final PinchZoomDetector pPinchZoomDetector,
 			final TouchEvent pTouchEvent, final float pZoomFactor) {
-		
+
 		this.mCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor
 				* pZoomFactor);
 	}
@@ -681,7 +736,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	@Override
 	public void onPinchZoomFinished(final PinchZoomDetector pPinchZoomDetector,
 			final TouchEvent pTouchEvent, final float pZoomFactor) {
-		
+
 		this.mCamera.setZoomFactor(this.mPinchZoomStartedCameraZoomFactor
 				* pZoomFactor);
 	}
@@ -699,12 +754,43 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			}
 			this.mScrollDetector.onTouchEvent(pSceneTouchEvent);
 		}
-		
+
+		//TODO use the code above in the future, to find a wall
+//		if (pSceneTouchEvent.isActionDown()) {
+//
+//			final float x = pSceneTouchEvent.getX();
+//			final float y = pSceneTouchEvent.getY();
+//
+//			final TMXTile currentTile = this.mapWallLayer.getTMXTileAt(x, y);
+//			int id = currentTile.getGlobalTileID();
+//
+//			try {
+//				
+//				TMXProperties<TMXTileProperty> prop = this.tiledMap
+//						.getTMXTileProperties(id);
+//
+//				if (prop != null && prop.containsTMXProperty("block", "true")) {
+//					this.runOnUiThread(new Runnable() {
+//
+//						@Override
+//						public void run() {
+//							Toast.makeText(MapActivity.this,
+//									"x = " + x + " | y = " + y + " has a wall",
+//									Toast.LENGTH_SHORT).show();
+//
+//						}
+//					});
+//				}
+//			} catch (Exception e) {
+//				// TODO: handle exception
+//			}
+//		}
+
 		this.mSurfaceGestureDetector.onTouchEvent(pSceneTouchEvent);
 
 		return true;
 	}
-	
+
 	private void setupGestureDetection() {
 
 		this.runOnUiThread(new Runnable() {
@@ -718,40 +804,40 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 					@Override
 					protected boolean onSwipeUp() {
 
-//						Toast.makeText(MapActivity.this, "onSwipeUp",
-//								Toast.LENGTH_SHORT).show();
+						// Toast.makeText(MapActivity.this, "onSwipeUp",
+						// Toast.LENGTH_SHORT).show();
 						return false;
 					}
 
 					@Override
 					protected boolean onSwipeRight() {
 
-//						Toast.makeText(MapActivity.this, "onSwipeRight",
-//								Toast.LENGTH_SHORT).show();
+						// Toast.makeText(MapActivity.this, "onSwipeRight",
+						// Toast.LENGTH_SHORT).show();
 						return false;
 					}
 
 					@Override
 					protected boolean onSwipeLeft() {
 
-//						Toast.makeText(MapActivity.this, "onSwipeLeft",
-//								Toast.LENGTH_SHORT).show();
+						// Toast.makeText(MapActivity.this, "onSwipeLeft",
+						// Toast.LENGTH_SHORT).show();
 						return false;
 					}
 
 					@Override
 					protected boolean onSwipeDown() {
 
-//						Toast.makeText(MapActivity.this, "onSwipeDown",
-//								Toast.LENGTH_SHORT).show();
+						// Toast.makeText(MapActivity.this, "onSwipeDown",
+						// Toast.LENGTH_SHORT).show();
 						return false;
 					}
 
 					@Override
 					protected boolean onSingleTap() {
 
-//						Toast.makeText(MapActivity.this, "onSingleTap",
-//								Toast.LENGTH_SHORT).show();
+						// Toast.makeText(MapActivity.this, "onSingleTap",
+						// Toast.LENGTH_SHORT).show();
 						return false;
 					}
 
@@ -759,11 +845,11 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 					protected boolean onDoubleTap() {
 
 						Log.d("SmartAndroid", "onDoubleTap");
-						
+
 						// Reset the zoom to 100%
 						MapActivity.this.mCamera.setZoomFactor(1f);
-//						Toast.makeText(MapActivity.this, "onDoubleTap",
-//								Toast.LENGTH_SHORT).show();
+						// Toast.makeText(MapActivity.this, "onDoubleTap",
+						// Toast.LENGTH_SHORT).show();
 						return true;
 					}
 

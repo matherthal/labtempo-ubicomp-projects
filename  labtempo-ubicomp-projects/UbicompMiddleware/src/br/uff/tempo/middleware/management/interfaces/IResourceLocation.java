@@ -18,7 +18,7 @@ public interface IResourceLocation {
 	public Place getLocal(Position position);
 
 	public Set<String> listLocations();
-	
+	public void addPlace(String name, Position lower, Position upper);
 	public Position getPosition(String place, String rai);
 
 }
