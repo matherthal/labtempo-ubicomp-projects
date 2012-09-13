@@ -95,22 +95,16 @@ public class Panel extends SurfaceView implements SurfaceHolder.Callback {
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
-			// on = !on;
-			if (lamp.isOn())
-				lamp.turnOff();
-			else
-				lamp.turnOn();
-
 			Log.d(TAG, "X = " + x + " and Y = " + y);
 
 			String msg;
 
 			if (lamp.isOn()) {
 				msg = "The lamp is on";
-				lamp.turnOn();
+				lamp.turnOff();
 			} else {
 				msg = "The lamp is off";
-				lamp.turnOff();
+				lamp.turnOn();
 			}
 
 			Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
