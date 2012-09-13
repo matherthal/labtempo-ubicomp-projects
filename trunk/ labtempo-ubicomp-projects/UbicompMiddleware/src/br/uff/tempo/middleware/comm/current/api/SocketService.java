@@ -58,13 +58,14 @@ public class SocketService {
 		InetAddress hostAddress = InetAddress.getByName(address);
 		DatagramPacket out = null;
 		out = new DatagramPacket(buf, msg_length, hostAddress,4000);
-		Log.d("sendReceive()", out.toString());
+		
 		s.send(out);
 
 		s.receive(dp);
 		String rcvd = new String(dp.getData());
+		rcvd = rcvd.substring(0, rcvd.lastIndexOf(";"));
 		s.close();
-		Log.d("SocketService", rcvd);
+		
 		return rcvd;
 	}
 
