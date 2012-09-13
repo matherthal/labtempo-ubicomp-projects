@@ -55,8 +55,7 @@ public class JSONHelper {
 		// Parse response string
 		Type collectionType = new TypeToken<HashMap<String, Object>>() {
 		}.getType();
-
-		Log.d("JSONHelper", "result = " + result);
+		
 		String[] resultData = result.split(";");
 		Map<String, Object> response = (new Gson()).fromJson(resultData[0], collectionType);
 		Object obj = response.get("result");
@@ -67,8 +66,7 @@ public class JSONHelper {
 		// Parse response string
 		Type collectionType = new TypeToken<HashMap<String, Object>>() {
 		}.getType();
-
-		Log.d("JSONHelper", "result = " + result);
+		
 		String[] resultData = result.split(";");
 		Map<String, Object> response = (new Gson()).fromJson(resultData[0], collectionType);
 		Object obj = response.get("result");

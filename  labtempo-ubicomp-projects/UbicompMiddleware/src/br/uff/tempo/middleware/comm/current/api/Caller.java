@@ -32,10 +32,16 @@ public class Caller implements Serializable {
 		try {
 			String local = ResourceAgentIdentifier.getLocalIpAddress();
 			String result = "";
-			if (calleeAgent.getPath().equals(local))
+			if (calleeAgent.getPath().equals(local)) {
+				Log.d("SmartAndroid", String.format("Sending LOCAL msg %s to %s", jsonString, calleeAgent.getRai()));
 				result = Dispatcher.getInstance().dispatch(calleeAgent.getRai(), jsonString);
-			else
+				Log.d("SmartAndroid", String.format("Receive LOCAL msg %s from %s", result, calleeAgent.getRai()));
+			} else {
+				Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", jsonString, calleeAgent.getRai()));
 				result = SocketService.sendReceive(calleeAgent.getPath(), calleeAgent.getRai() + ";" + jsonString + ";");
+				Log.d("SmartAndroid", String.format("Receive REMOTE msg %s from %s", result, calleeAgent.getRai()));
+			}
+			
 			return result;
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();

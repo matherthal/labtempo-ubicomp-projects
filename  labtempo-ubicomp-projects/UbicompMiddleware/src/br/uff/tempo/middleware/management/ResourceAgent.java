@@ -275,7 +275,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		for (Stakeholder stakeholder : stakeholders) {
 			if (stakeholder.getMethod().equals(method) || stakeholder.getMethod().equalsIgnoreCase("all")) {
 				new ResourceAgentStub(stakeholder.getRAI()).notificationHandler(this.getRAI(), method, value);
-				Log.d("SmartAndroid", String.format("notifyStakeholders() - stakeholder: %s method: %s value: %s was notified", stakeholder.getRAI(), method, value));
+				Log.d("SmartAndroid", String.format("notifying stakeholder: %s method: %s value: %s", stakeholder.getRAI(), method, value));
 			}
 		}
 	}
