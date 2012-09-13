@@ -13,10 +13,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
@@ -39,8 +41,19 @@ public class AppLampControlSystem extends Activity {
 	private IResourceDiscovery discovery;
 	private IResourceLocation location;
 	private Map<String, String> psDictionary = new HashMap<String, String>();
+	private Map<String, Tuple<String, Object>> lampDictionary = new HashMap<String, Tuple<String, Object>>();
 	private IPresenceSensor currPS = null;
-
+	Handler handler = new Handler() {
+		@Override
+		public void handleMessage(Message msg) {
+			Bundle b = msg.getData();
+			String strMsg = b.getString("toastMessage");
+			Toast.makeText(AppLampControlSystem.this, strMsg, Toast.LENGTH_LONG).show();
+			// EditText et = (EditText) findViewById(R.id.editTextAboutLamps);
+			// et.setText(et.getText() + "\n" + strMsg);
+		}
+	};
+	
 	// private Set<Lamp> lampSet = new HashSet<Lamp>();
 	// private Set<PresenceSensor> psSet = new HashSet<PresenceSensor>();
 	// private Set<Generic> actionSet = new HashSet<Generic>();
@@ -55,7 +68,8 @@ public class AppLampControlSystem extends Activity {
 			location = new ResourceLocationStub(discovery.search("ResourceLocation").get(0));
 
 			createEnvironment();
-			populateSpinner();
+			populateSpinnerPresence();
+			populateSpinnerBlockLamp();
 		}
 	}
 
@@ -75,14 +89,18 @@ public class AppLampControlSystem extends Activity {
 		if (places != null)
 			for (String place : places) {
 				// Create a lamp for this place
-				Lamp l = new Lamp("Lâmpada " + place);
+				String lampName = "Lâmpada " + place;
+				Lamp l = new Lamp(lampName);
 				// l.identify();
 				l.identifyInPlace(place, null);
 				final String lRAI = l.getRAI();
 				Log.i("Lamp", "New Lamp: " + lRAI);
 
-				// Put lamp in set to keep link
-				// lampSet.add(l);
+				// Put lamp in dictionary to populate the spinner
+				while (lampDictionary.containsKey(lampName))
+					// To avoid problems with names in dictionary
+					lampName = lampName + ".";
+				lampDictionary.put(lampName, new Tuple<String, Object>(lRAI, false));
 
 				// Create a presence sensor for this place
 				String psName = "Sensor de presença " + place;
@@ -91,12 +109,9 @@ public class AppLampControlSystem extends Activity {
 				ps.identifyInPlace(place, null);
 				Log.i("PresenceSensor", "New PresenceSensor: " + ps.getRAI());
 
-				// Put presence sensor in set to keep link
-				// psSet.add(ps);
-
-				// Put presence sensor in dicionary to populate the spinner
+				// Put presence sensor in dictionary to populate the spinner
 				while (psDictionary.containsKey(psName))
-					// To avoid problema with nomes in dictionary
+					// To avoid problems with names in dictionary
 					psName = psName + ".";
 				psDictionary.put(psName, ps.getRAI());
 
@@ -135,6 +150,14 @@ public class AppLampControlSystem extends Activity {
 						
 						// Get lamp to turn on or off
 						lamp = new LampStub(discovery.search(lRAI).get(0));
+						//Verify if lamp is blocked
+						String lName = lamp.getName();
+						Tuple tp = lampDictionary.get(lName);
+						if ((Boolean) tp.value) {
+							Log.i(TAG, "Lamp " + lName + " is blocked");
+							toastMessage("Lamp " + lName + " is blocked");
+							return;
+						}
 						// Test rule's identification
 						if (rai.equals(roomFullRAI))
 							lamp.turnOn();
@@ -144,28 +167,19 @@ public class AppLampControlSystem extends Activity {
 							return;
 						Log.i("Lamp", "RAI: " + lRAI + " / Is on: " + lamp.isOn());
 						if (lamp.isOn())
-							toastMessage("Lâmpada " + lRAI + " ligada");
+							toastMessage("Lâmpada " + lamp.getName() + " ligada");
 						else
-							toastMessage("Lâmpada " + lRAI + " desligada");
+							toastMessage("Lâmpada " + lamp.getName() + " desligada");
 					}
 				};
 				action.identify();
 				// Subscribing this action to both rules
 				riRoomFull.registerStakeholder(RuleInterpreter.RULE_TRIGGERED, action.getRAI());
 				riRoomEmpty.registerStakeholder(RuleInterpreter.RULE_TRIGGERED, action.getRAI());
-				// actionSet.add(action);
 			}
-		// for (String l : discovery.search("Lamp"))
-		// Log.i("LAMP", l);
-		// for (String p : discovery.search("PresenceSensor"))
-		// Log.i("PRESENCESENSOR", p);
-		// for (String g : discovery.search("Generic"))
-		// Log.i("GENERIC", g);
-		// for (String r : discovery.search("RuleInterpreter"))
-		// Log.i("RULE", r);
 	}
 
-	private void populateSpinner() {
+	private void populateSpinnerPresence() {
 		Spinner s = (Spinner) findViewById(R.id.spinnerPresenceSensors);
 		String[] array_spinner = new String[psDictionary.size()];
 		int counter = 0;
@@ -188,6 +202,49 @@ public class AppLampControlSystem extends Activity {
 				currPS = new PresenceSensorStub(psRAI);
 				currPS.setPresence(true);
 				Log.i("Spinner", "Set presence sensor " + currPS.getName() + " to true. Presence = " + currPS.getPresence());
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> parentView) {
+			}
+		});
+	}
+
+	private void populateSpinnerBlockLamp() {
+		Spinner s = (Spinner) findViewById(R.id.spinnerBlockLamp);
+		String[] array_spinner = new String[lampDictionary.size()];
+		int counter = 0;
+		for (String ps : lampDictionary.keySet()) {
+			array_spinner[counter] = ps;
+			counter++;
+		}
+		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, array_spinner);
+		s.setAdapter(adapter);
+
+		s.setOnItemSelectedListener(new OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+				String lName = parentView.getItemAtPosition(position).toString();
+				Tuple tp = lampDictionary.get(lName);
+				String lRAI = tp.key;
+				boolean blocked = (Boolean) tp.value;
+
+				String msg = "";
+				if (!blocked) {
+					lampDictionary.remove(lName);
+					tp.value = true;
+					lampDictionary.put(lName, tp);
+					msg = "Lamp " + lName + " is blocked";
+					Log.i("Spinner", msg);
+					toastMessage(msg);
+				} else {
+					lampDictionary.remove(lName);
+					tp.value = false;
+					lampDictionary.put(lName, tp);
+					msg = "Lamp " + lName + " is NOT blocked";
+					Log.i("Spinner", msg);
+					toastMessage(msg);
+				}
 			}
 
 			@Override
@@ -221,14 +278,4 @@ public class AppLampControlSystem extends Activity {
 		// send message to the handler with the current message handler
 		handler.sendMessage(msg);
 	}
-
-	private Activity a = this;
-	final Handler handler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			Bundle b = msg.getData();
-			String strMsg = b.getString("My Key");
-			Toast.makeText(a, strMsg, Toast.LENGTH_LONG).show();
-		}
-	};
 }
