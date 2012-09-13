@@ -8,8 +8,6 @@ import java.net.SocketException;
 
 import org.json.JSONException;
 
-import android.util.Log;
-
 public class CommandExecution extends Thread {
 
 	private DatagramSocket sk;
@@ -30,22 +28,16 @@ public class CommandExecution extends Thread {
 
 
 			String rcvd = new String(dgp.getData());
-
-			Log.d("Received value", rcvd);
 			
 			String[] call = rcvd.split(";");
 			
 			String calleeID = call[0];
 			String jsonstring = call[1];
 			
-			Log.d("Callee value", calleeID);
-			Log.d("JSON value", jsonstring);
-			
 			String result = dispatcher.dispatch(calleeID, jsonstring) + ";";
 			
 			byte[] bufsk = result.getBytes();
-			DatagramPacket out = new DatagramPacket(bufsk, bufsk.length,
-					dgp.getAddress(), dgp.getPort());
+			DatagramPacket out = new DatagramPacket(bufsk, bufsk.length, dgp.getAddress(), dgp.getPort());
 			
 			sk.send(out);
 			// sk.close();
