@@ -89,7 +89,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	// private static final int CAMERA_WIDTH = 720;
 	// private static final int CAMERA_HEIGHT = 480;
 
-	private static final String TAG = "Test";
+	private static final String TAG = "SmartAndroid";
 
 	// Time to vibrate (ms)
 	private static final long VIBRATE_TIME = 100;
@@ -112,7 +112,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	public static final int ID_REMOVE = 2;
 	public static final int ID_INFO = 3;
 	public static final int ID_SETTINGS = 4;
-	
+
 	public static final int PIXEL_PER_METER = 96;
 
 	// ===========================================================
@@ -259,7 +259,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		Log.d(TAG, "Creating scene");
 
-		setupQuickActions();
+		//setupQuickActions();
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 
 		this.mScene = new Scene();
@@ -369,7 +369,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// Smart Stove selected. Creates a new stove in the scene
 		case STOVE:
 
-			c = br.uff.tempo.apps.stove.StoveView.class;
+			c = br.uff.tempo.apps.simulators.stove.StoveView.class;
 			tr = this.mStoveTextureRegion;
 			resType = InterfaceApplicationManager.STOVE_DATA;
 
@@ -393,18 +393,22 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// Smart Lamp selected. Creates a new lamp in the scene
 		case LAMP:
 
+			c = br.uff.tempo.apps.simulators.lamp.LampView.class;
+			tr = this.mLampTextureRegion;
+			resType = InterfaceApplicationManager.LAMP_DATA;
+
 			ILamp lamp;
 
-			// create an agent if it's a simulated resource; a stub otherwise
+			// create an agent if it's a emulated resource; a stub otherwise
 			if (emulated) {
 				lamp = new Lamp(regData.getResourceName());
 			} else {
 				lamp = new LampStub(regData.getResourceName());
 			}
 
-			c = br.uff.tempo.apps.lamp.LampView.class;
-			tr = this.mLampTextureRegion;
-			resType = InterfaceApplicationManager.LAMP_DATA;
+			// simulated -> put an agent; not simulated -> put a stub (proxy to
+			// an agent)
+			bundle.putSerializable("agent", lamp);
 
 			resAg = lamp;
 
@@ -412,6 +416,10 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		// Smart TV selected. Creates a new TV in the scene
 		case TV:
+
+			c = br.uff.tempo.apps.simulators.tv.TvView.class;
+			tr = this.mTVTextureRegion;
+			resType = InterfaceApplicationManager.TV_DATA;
 
 			ITelevision tv;
 
@@ -422,9 +430,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 				tv = new TelevisionStub(regData.getResourceName());
 			}
 
-			c = br.uff.tempo.apps.tv.TvView.class;
-			tr = this.mTVTextureRegion;
-			resType = InterfaceApplicationManager.TV_DATA;
+			// simulated -> put an agent; not simulated -> put a stub (proxy to
+			// an agent)
+			bundle.putSerializable("agent", tv);
 
 			resAg = tv;
 
@@ -432,6 +440,10 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		// Smart Bed selected. Creates a new Bed in the scene
 		case BED:
+
+			c = br.uff.tempo.apps.simulators.bed.BedView.class;
+			tr = this.mBedTextureRegion;
+			resType = InterfaceApplicationManager.BED_DATA;
 
 			IBed bed;
 
@@ -442,9 +454,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 				bed = new BedStub(regData.getResourceName());
 			}
 
-			c = br.uff.tempo.apps.bed.BedView.class;
-			tr = this.mBedTextureRegion;
-			resType = InterfaceApplicationManager.BED_DATA;
+			// simulated -> put an agent; not simulated -> put a stub (proxy to
+			// an agent)
+			bundle.putSerializable("agent", bed);
 
 			resAg = bed;
 
@@ -535,40 +547,43 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		return sprite;
 	}
-	
+
 	public void pushMap() {
-		
-		//Get the TXM Groups from map (actually there's only one, so using get(0))
+
+		// Get the TXM Groups from map (actually there's only one, so using
+		// get(0))
 		final TMXObjectGroup group = this.tiledMap.getTMXObjectGroups().get(0);
-		
-		IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		
+
+		IResourceDiscovery discovery = new ResourceDiscoveryStub(
+				IResourceDiscovery.RDS_ADDRESS);
+
 		String rlRAI = discovery.search("ResourceLocation").get(0);
 		IResourceLocation rl = new ResourceLocationStub(rlRAI);
-		
+
 		final int mapHeight = this.mapFloorLayer.getHeight();
-		
+
 		for (TMXObject obj : group.getTMXObjects()) {
-			
+
 			String roomName = obj.getName();
-			
-			//[x0, y0] -> bottom-left corner
+
+			// [x0, y0] -> bottom-left corner
 			float x0 = pixelToMeter(obj.getX());
-			
-			//Y coordinate is transformed. System origin is in bottom-left corner
-			//The original on is in top-left corner
-			float y0 = pixelToMeter(mapHeight - (obj.getY() + obj.getHeight() ));
-			
-			//[x1, y1] -> top-right
+
+			// Y coordinate is transformed. System origin is in bottom-left
+			// corner
+			// The original on is in top-left corner
+			float y0 = pixelToMeter(mapHeight - (obj.getY() + obj.getHeight()));
+
+			// [x1, y1] -> top-right
 			float x1 = x0 + pixelToMeter(obj.getWidth());
 			float y1 = pixelToMeter(mapHeight - obj.getY());
-			
+
 			rl.addPlace(roomName, new Position(x0, y0), new Position(x1, y1));
 		}
 	}
-	
-	public float pixelToMeter(int pixel) {
-		
+
+	private float pixelToMeter(int pixel) {
+
 		return ((float) pixel) / PIXEL_PER_METER;
 	}
 
@@ -755,36 +770,36 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			this.mScrollDetector.onTouchEvent(pSceneTouchEvent);
 		}
 
-		//TODO use the code above in the future, to find a wall
-//		if (pSceneTouchEvent.isActionDown()) {
-//
-//			final float x = pSceneTouchEvent.getX();
-//			final float y = pSceneTouchEvent.getY();
-//
-//			final TMXTile currentTile = this.mapWallLayer.getTMXTileAt(x, y);
-//			int id = currentTile.getGlobalTileID();
-//
-//			try {
-//				
-//				TMXProperties<TMXTileProperty> prop = this.tiledMap
-//						.getTMXTileProperties(id);
-//
-//				if (prop != null && prop.containsTMXProperty("block", "true")) {
-//					this.runOnUiThread(new Runnable() {
-//
-//						@Override
-//						public void run() {
-//							Toast.makeText(MapActivity.this,
-//									"x = " + x + " | y = " + y + " has a wall",
-//									Toast.LENGTH_SHORT).show();
-//
-//						}
-//					});
-//				}
-//			} catch (Exception e) {
-//				// TODO: handle exception
-//			}
-//		}
+		// TODO use the code above in the future, to find a wall
+		// if (pSceneTouchEvent.isActionDown()) {
+		//
+		// final float x = pSceneTouchEvent.getX();
+		// final float y = pSceneTouchEvent.getY();
+		//
+		// final TMXTile currentTile = this.mapWallLayer.getTMXTileAt(x, y);
+		// int id = currentTile.getGlobalTileID();
+		//
+		// try {
+		//
+		// TMXProperties<TMXTileProperty> prop = this.tiledMap
+		// .getTMXTileProperties(id);
+		//
+		// if (prop != null && prop.containsTMXProperty("block", "true")) {
+		// this.runOnUiThread(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// Toast.makeText(MapActivity.this,
+		// "x = " + x + " | y = " + y + " has a wall",
+		// Toast.LENGTH_SHORT).show();
+		//
+		// }
+		// });
+		// }
+		// } catch (Exception e) {
+		// // TODO: handle exception
+		// }
+		// }
 
 		this.mSurfaceGestureDetector.onTouchEvent(pSceneTouchEvent);
 
@@ -875,6 +890,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		});
 	}
 
+	@Deprecated
 	// It's not been used yet
 	private void setupQuickActions() {
 
