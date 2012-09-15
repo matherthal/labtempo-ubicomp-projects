@@ -54,7 +54,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
-        <br.uff.tempo.apps.tv.Panel
+        <br.uff.tempo.apps.simulators.tv.TvPanel
             android:id="@+id/panel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />

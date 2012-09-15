@@ -1,4 +1,4 @@
-package br.uff.tempo.apps.stove;
+package br.uff.tempo.apps.simulators.stove;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -8,52 +8,53 @@ import android.graphics.Color;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 
-public class PanelOven extends Panel implements SurfaceHolder.Callback {
+public class StoveOvenPanel extends AbstractPanel {
 
-	private final String TAG = "Panel-StoveView";
+	private final String TAG = "Stove-PanelOven";
 
-	private IStove stove;
+	private IStove agent;
 
 	private Bitmap mBitmap;
 	private Bitmap mButtons;
+	
+	private int pointX;
+	private int pointY;
 
-	private ViewThread mThread;
-
-	public PanelOven(Context context) {
-		super(context);
-		init();
-	}
-
-	public PanelOven(Context context, AttributeSet attrs) {
+	public StoveOvenPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
 
 	protected void init() {
 
-		super.init();
-
-		stove = ((StoveView) getContext()).getStoveState();
+		super.init();		
+		
 		mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.oven);
 
 		mButtons = BitmapFactory.decodeResource(getResources(), R.drawable.oven_buttons);
 
-		mX -= mBitmap.getWidth() / 2;
-		mY -= mBitmap.getHeight() / 2;
+		// This will calculate the bitmap (x,y) coordinate, when its center is
+		// on screen center
+		pointX = getScreenCenterX()- mBitmap.getWidth() / 2;
+		pointY = getScreenCenterY() - mBitmap.getHeight() / 2;
+		
+		agent = (IStove) ((StoveView) getContext()).getAgent();
 	}
 
-	public void doDraw(Canvas canvas) {
+	@Override
+	public void onDraw(Canvas canvas) {
 
+		super.onDraw(canvas);
 		// draw the background color
 		canvas.drawColor(Color.BLACK);
 
 		// draw the stove bitmap
-		canvas.drawBitmap(mBitmap, mX, mY, null);
+		canvas.drawBitmap(mBitmap, pointX, pointY, null);
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
@@ -61,8 +62,6 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 		// get the touch coordinates
 		int x = (int) event.getX();
 		int y = (int) event.getY();
-
-		stove = ((StoveView) getContext()).getStoveState();
 
 		Log.d(TAG, "X = " + x + " and Y = " + y);
 
@@ -73,7 +72,7 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 			// Check which button has clicked
 
 			// get the pixel color of coordinate (x, y) (translated)
-			color = mButtons.getPixel(x - mX, y - mY);
+			color = mButtons.getPixel(x - pointX, y - pointY);
 
 			switch (color) {
 
@@ -81,12 +80,12 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 
 				Log.d(TAG, "Left Button");
 
-					if (stove.isOvenOn()) {
+					if (agent.isOvenOn()) {
 						msg = "off";
-						stove.setOvenTemperature(0f);
+						agent.setOvenTemperature(0f);
 					} else {
 						msg = "on";
-						stove.setOvenTemperature(100.0f);
+						agent.setOvenTemperature(100.0f);
 					}
 
 				Toast.makeText(getContext(), "Oven turned " + msg, Toast.LENGTH_SHORT).show();
@@ -107,9 +106,8 @@ public class PanelOven extends Panel implements SurfaceHolder.Callback {
 		} catch (IllegalArgumentException ex) {
 			Log.d(TAG, "Exception... " + ex);
 		}
-
-		// mX = x - mBitmap.getWidth() / 2;
-		// mY = y - mBitmap.getHeight() / 2;
+		
+		invalidate();
 
 		return super.onTouchEvent(event);
 	}
