@@ -1,6 +1,8 @@
 package br.uff.tempo.middleware.management.utils;
 
-public class Position {
+import java.io.Serializable;
+
+public class Position implements Serializable {
 
 	float x;
 	float y;

@@ -1,8 +1,10 @@
 package br.uff.tempo.middleware.management.utils;
 
+import java.io.Serializable;
+
 import br.uff.tempo.middleware.management.ResourceAgent;
 
-public class Stakeholder {
+public class Stakeholder implements Serializable {
 
 	private String method;
 	private String rai;
