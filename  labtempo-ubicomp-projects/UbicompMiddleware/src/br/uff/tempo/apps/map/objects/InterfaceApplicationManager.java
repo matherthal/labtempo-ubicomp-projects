@@ -77,10 +77,10 @@ public class InterfaceApplicationManager extends ResourceAgent {
 
 	// Called when a resource change the value of a context variable
 	@Override
-	public void notificationHandler(String rai, String method, Object value) {
+	public void notificationHandler(String raiFromEvent, String method, Object value) {
 		
 		Log.d("InterfaceManager", "Notification received from "
-				+ rai + ". Context variable modified: "
+				+ raiFromEvent + ". Context variable modified: "
 				+ method + " current value: " + value);
 		
 		// Verify which resource in the scene has caused the notification
@@ -88,9 +88,9 @@ public class InterfaceApplicationManager extends ResourceAgent {
 		for (Map.Entry<String, ResourceObject> entry : sceneObjects.entrySet()) {
 			
 			// Get the RAI (key of the map)
-			String key = entry.getKey();
+			String keyRAI = entry.getKey();
 			
-			if (rai.equals(key)) {
+			if (raiFromEvent.equals(keyRAI)) {
 				
 				// Get the resource object associated to that RAI
 				ResourceObject obj = entry.getValue();
