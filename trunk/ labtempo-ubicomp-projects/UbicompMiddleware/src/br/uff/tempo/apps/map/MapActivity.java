@@ -312,19 +312,6 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		return this.mScene;
 	}
 
-	// TODO: Try to use Android layouts to implement a Quick action
-	// @Override
-	// protected int getLayoutID() {
-	//
-	// return R.layout.andengine;
-	// }
-	//
-	// @Override
-	// protected int getRenderSurfaceViewID() {
-	//
-	// return R.id.xmllayoutexample_rendersurfaceview;
-	// }
-
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -548,6 +535,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		return sprite;
 	}
 
+	//TODO create a class that encapsulate all 'Place' classes
 	public void pushMap() {
 
 		// Get the TXM Groups from map (actually there's only one, so using
@@ -863,8 +851,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 						// Reset the zoom to 100%
 						MapActivity.this.mCamera.setZoomFactor(1f);
-						// Toast.makeText(MapActivity.this, "onDoubleTap",
-						// Toast.LENGTH_SHORT).show();
+						
 						return true;
 					}
 
