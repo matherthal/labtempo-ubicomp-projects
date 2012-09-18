@@ -117,7 +117,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		}
 	}
 
-	public ResourceBinder mBinder = new ResourceBinder();
+	//public ResourceBinder mBinder = new ResourceBinder();
 
 	public ResourceAgent() {// depreciated
 
@@ -188,7 +188,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public IBinder onBind(Intent intent) {
 		// this.register();
 		// TODO Auto-generated method stub
-		return mBinder;
+		return null;//mBinder;
 	}
 
 	@Override
