@@ -8,9 +8,6 @@ import br.uff.tempo.middleware.resources.interfaces.ILamp;
 
 public class LampView extends AbstractView {
 
-	private static final String TAG = "LampView";
-	private ILamp lamp;
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -36,7 +33,7 @@ public class LampView extends AbstractView {
 
 	@Override
 	public void createNewResourceAgent() {
-		super.setAgent(new Lamp("Lampada Quarto"));
+		super.setAgent(new Lamp("GeneralLamp"));
 	}
 
 }

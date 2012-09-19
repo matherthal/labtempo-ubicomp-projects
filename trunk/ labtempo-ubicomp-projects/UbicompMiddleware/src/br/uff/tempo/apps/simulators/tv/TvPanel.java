@@ -33,6 +33,7 @@ public class TvPanel extends AbstractPanel {
 		init();
 	}
 
+	@Override
 	protected final void init() {
 
 		mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.tv);
@@ -62,6 +63,7 @@ public class TvPanel extends AbstractPanel {
 
 	}
 
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
 		// get the touch coordinates
@@ -70,11 +72,9 @@ public class TvPanel extends AbstractPanel {
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 
+			invalidate();
 		}
-		
-		invalidate();
 
 		return true;
 	}
-
 }

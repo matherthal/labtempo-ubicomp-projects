@@ -22,17 +22,18 @@ public class StoveBurnersPanel extends AbstractPanel {
 	private Bitmap mFireTwo;
 	private Bitmap mFireThree;
 	private Bitmap mFireFour;
-	
+
 	private int pointX;
 	private int pointY;
 
 	private IStove stove;
 
-	public StoveBurnersPanel(Context context, AttributeSet attrs){
+	public StoveBurnersPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
 
+	@Override
 	protected final void init() {
 
 		super.init();
@@ -54,9 +55,9 @@ public class StoveBurnersPanel extends AbstractPanel {
 
 		// This will calculate the bitmap (x,y) coordinate, when its center is
 		// on screen center
-		pointX = getScreenCenterX()- mBitmap.getWidth() / 2;
+		pointX = getScreenCenterX() - mBitmap.getWidth() / 2;
 		pointY = getScreenCenterY() - mBitmap.getHeight() / 2;
-		
+
 		stove = (IStove) ((StoveView) getContext()).getAgent();
 	}
 
@@ -88,70 +89,73 @@ public class StoveBurnersPanel extends AbstractPanel {
 		Log.d(TAG, "PanelBurners Screen repainted");
 	}
 
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
-		// get the touch coordinates
-		int x = (int) event.getX();
-		int y = (int) event.getY();
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			// get the touch coordinates
+			int x = (int) event.getX();
+			int y = (int) event.getY();
 
-		Log.d(TAG, "X = " + x + " and Y = " + y);
+			Log.d(TAG, "X = " + x + " and Y = " + y);
 
-		int color;
+			int color;
 
-		try {
-			// Check which button has clicked
+			try {
+				// Check which button has clicked
 
-			// Get the pixel color of coordinate (x, y) (translated)
-			color = mButtons.getPixel(x - pointX, y - pointY);
+				// Get the pixel color of coordinate (x, y) (translated)
+				color = mButtons.getPixel(x - pointX, y - pointY);
 
-			int burnerIndex = -1;
+				int burnerIndex = -1;
 
-			switch (color) {
-			case Color.RED:
+				switch (color) {
+				case Color.RED:
 
-				burnerIndex = 0;
-				Log.d(TAG, "Burner 1");
+					burnerIndex = 0;
+					Log.d(TAG, "Burner 1");
 
-				break;
-			case Color.BLUE:
+					break;
+				case Color.BLUE:
 
-				burnerIndex = 1;
-				Log.d(TAG, "Burner 2");
+					burnerIndex = 1;
+					Log.d(TAG, "Burner 2");
 
-				break;
-			case Color.GREEN:
+					break;
+				case Color.GREEN:
 
-				burnerIndex = 2;
-				Log.d(TAG, "Burner 3");
+					burnerIndex = 2;
+					Log.d(TAG, "Burner 3");
 
-				break;
-			case Color.YELLOW:
+					break;
+				case Color.YELLOW:
 
-				burnerIndex = 3;
-				Log.d(TAG, "Burner 4");
+					burnerIndex = 3;
+					Log.d(TAG, "Burner 4");
 
-				break;
-			default:
-				Log.d(TAG, "Nothing...");
-			}
-
-			if (burnerIndex != -1) {
-				
-				Log.d(TAG, "A burner knob was clicled...");
-				
-				if (stove.isOnBurner(burnerIndex)) {
-					stove.turnOffBurner(burnerIndex);
-				} else {
-					stove.turnOnBurner(burnerIndex);
+					break;
+				default:
+					Log.d(TAG, "Nothing...");
 				}
+
+				if (burnerIndex != -1) {
+
+					Log.d(TAG, "A burner knob was clicled...");
+
+					if (stove.isOnBurner(burnerIndex)) {
+						stove.turnOffBurner(burnerIndex);
+					} else {
+						stove.turnOnBurner(burnerIndex);
+					}
+				}
+
+				Log.d(TAG, "Color Clicked = " + Integer.toHexString(color));
 				
 				invalidate();
+
+			} catch (IllegalArgumentException ex) {
+				Log.d(TAG, "Exception... " + ex);
 			}
-
-			Log.d(TAG, "Color Clicked = " + Integer.toHexString(color));
-
-		} catch (IllegalArgumentException ex) {
-			Log.d(TAG, "Exception... " + ex);
 		}
 
 		return super.onTouchEvent(event);

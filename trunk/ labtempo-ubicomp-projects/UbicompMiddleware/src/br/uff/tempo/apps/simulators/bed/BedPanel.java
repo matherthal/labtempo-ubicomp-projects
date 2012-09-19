@@ -31,6 +31,7 @@ public class BedPanel extends AbstractPanel {
 		init();
 	}
 
+	@Override
 	protected final void init() {
 
 		super.init();
@@ -55,13 +56,14 @@ public class BedPanel extends AbstractPanel {
 		canvas.drawBitmap(mBitmap, pointX, pointY, null);
 	}
 
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		
-		// get the touch coordinates
-		int x = (int) event.getX();
-		int y = (int) event.getY();
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			
+			// get the touch coordinates
+			int x = (int) event.getX();
+			int y = (int) event.getY();
 
 			occuped = !occuped;
 
@@ -83,4 +85,5 @@ public class BedPanel extends AbstractPanel {
 
 		return true;
 	}
+
 }

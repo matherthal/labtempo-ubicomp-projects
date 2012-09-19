@@ -21,7 +21,7 @@ public class StoveOvenPanel extends AbstractPanel {
 
 	private Bitmap mBitmap;
 	private Bitmap mButtons;
-	
+
 	private int pointX;
 	private int pointY;
 
@@ -30,19 +30,21 @@ public class StoveOvenPanel extends AbstractPanel {
 		init();
 	}
 
+	@Override
 	protected void init() {
 
-		super.init();		
-		
+		super.init();
+
 		mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.oven);
 
-		mButtons = BitmapFactory.decodeResource(getResources(), R.drawable.oven_buttons);
+		mButtons = BitmapFactory.decodeResource(getResources(),
+				R.drawable.oven_buttons);
 
 		// This will calculate the bitmap (x,y) coordinate, when its center is
 		// on screen center
-		pointX = getScreenCenterX()- mBitmap.getWidth() / 2;
+		pointX = getScreenCenterX() - mBitmap.getWidth() / 2;
 		pointY = getScreenCenterY() - mBitmap.getHeight() / 2;
-		
+
 		agent = (IStove) ((StoveView) getContext()).getAgent();
 	}
 
@@ -57,28 +59,30 @@ public class StoveOvenPanel extends AbstractPanel {
 		canvas.drawBitmap(mBitmap, pointX, pointY, null);
 	}
 
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 
-		// get the touch coordinates
-		int x = (int) event.getX();
-		int y = (int) event.getY();
+		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			// get the touch coordinates
+			int x = (int) event.getX();
+			int y = (int) event.getY();
 
-		Log.d(TAG, "X = " + x + " and Y = " + y);
+			Log.d(TAG, "X = " + x + " and Y = " + y);
 
-		int color;
-		String msg;
+			int color;
+			String msg;
 
-		try {
-			// Check which button has clicked
+			try {
+				// Check which button has clicked
 
-			// get the pixel color of coordinate (x, y) (translated)
-			color = mButtons.getPixel(x - pointX, y - pointY);
+				// get the pixel color of coordinate (x, y) (translated)
+				color = mButtons.getPixel(x - pointX, y - pointY);
 
-			switch (color) {
+				switch (color) {
 
-			case Color.RED:
+				case Color.RED:
 
-				Log.d(TAG, "Left Button");
+					Log.d(TAG, "Left Button");
 
 					if (agent.isOvenOn()) {
 						msg = "off";
@@ -88,28 +92,26 @@ public class StoveOvenPanel extends AbstractPanel {
 						agent.setOvenTemperature(100.0f);
 					}
 
-				Toast.makeText(getContext(), "Oven turned " + msg, Toast.LENGTH_SHORT).show();
-				break;
+					Toast.makeText(getContext(), "Oven turned " + msg,
+							Toast.LENGTH_SHORT).show();
+					break;
 
-			case Color.YELLOW:
+				case Color.YELLOW:
 
-				Log.d(TAG, "Right Button");
+					Log.d(TAG, "Right Button");
+					break;
 
-				break;
+				default:
+					Log.d(TAG, "Nothing...");
+				}
 
-			default:
-				Log.d(TAG, "Nothing...");
+				Log.d(TAG, "Color Clicked = " + Integer.toHexString(color));
+
+			} catch (IllegalArgumentException ex) {
+				Log.d(TAG, "Exception... " + ex);
 			}
-
-			Log.d(TAG, "Color Clicked = " + Integer.toHexString(color));
-
-		} catch (IllegalArgumentException ex) {
-			Log.d(TAG, "Exception... " + ex);
 		}
-		
-		invalidate();
 
 		return super.onTouchEvent(event);
 	}
-
 }
