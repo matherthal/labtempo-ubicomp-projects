@@ -29,4 +29,10 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 		return null;
 	}
 
+	@Override
+	public String getPath(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

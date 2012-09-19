@@ -1,6 +1,7 @@
 package br.uff.tempo.middleware.management;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
@@ -8,8 +9,11 @@ import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 public class ResourceRepository extends ResourceAgent implements IResourceRepository {
 	
 	private static final long serialVersionUID = 1L;
-
+	//FIXME swapped by directory
 	ArrayList<String> repository;
+	
+	Map<Integer,ResourceData> resourceTable;
+	ResourceDirectory directory;
 	private static ResourceRepository instance;
 
 	private ResourceRepository() {

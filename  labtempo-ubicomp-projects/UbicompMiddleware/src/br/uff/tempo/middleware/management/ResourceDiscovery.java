@@ -53,4 +53,10 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 		return null;
 	}
 
+	@Override
+	public String getPath(String id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

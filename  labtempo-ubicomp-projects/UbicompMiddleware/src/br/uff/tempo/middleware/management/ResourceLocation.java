@@ -25,7 +25,7 @@ public class ResourceLocation extends ResourceAgent implements
 
 	HashMap<String, Place> map;
 	HashMap<String, Position> resources;
-	HashMap<String, HashMap<String, Position>> base;
+	HashMap<String, HashMap<String, Position>> baseIndexer;
 
 	private ResourceLocation() {
 		setId(3);
@@ -40,7 +40,7 @@ public class ResourceLocation extends ResourceAgent implements
 
 		map = new HashMap<String, Place>();
 		resources = new HashMap<String, Position>();
-		base = new HashMap<String, HashMap<String, Position>>();
+		baseIndexer = new HashMap<String, HashMap<String, Position>>();
 		ResourceContainer.getInstance().add(this);
 		// loadBase();
 	}
@@ -65,7 +65,7 @@ public class ResourceLocation extends ResourceAgent implements
 		Place place = new Place(name, lower, upper);
 		//place.identify();
 		map.put(place.getName(), place);
-		base.put(place.getName(), new HashMap<String, Position>());
+		baseIndexer.put(place.getName(), new HashMap<String, Position>());
 		
 		Log.d("SmartAndroid", "New place added: " + name + ". Bottom-left corner at = [" + lower.getX() + " , " + lower.getY() + "] and top-right corner at [" + upper.getX() + " , " + upper.getY() + "]");
 	}
@@ -90,14 +90,14 @@ public class ResourceLocation extends ResourceAgent implements
 		ArrayList<Set<String>> setList = new ArrayList<Set<String>>();
 
 		if (query.equals("")) {
-			Set<String> setMap = base.keySet();
+			Set<String> setMap = baseIndexer.keySet();
 			Iterator<String> itSet = setMap.iterator();
 			while (itSet.hasNext()) {
-				Map<String, Position> raMap = base.get(itSet.next());
+				Map<String, Position> raMap = baseIndexer.get(itSet.next());
 				setList.add(raMap.keySet());
 			}
 		} else {
-			Map<String, Position> raMap = base.get(query);
+			Map<String, Position> raMap = baseIndexer.get(query);
 			setList.add(raMap.keySet());
 		}
 		for (Set<String> set : setList) {
@@ -155,14 +155,14 @@ public class ResourceLocation extends ResourceAgent implements
 
 	public void registerInPlace(String url, Position position) {
 		Place place = getLocal(position);
-		HashMap<String, Position> rAMap = base.get(place.getName());
+		HashMap<String, Position> rAMap = baseIndexer.get(place.getName());
 		rAMap.put(url, position);
 		resources.put(url, position);
 	}
 
 	public void registerInPlaceRelative(String url, Place place,
 			Position position) {
-		HashMap<String, Position> rAMap = base.get(place.getName());
+		HashMap<String, Position> rAMap = baseIndexer.get(place.getName());
 		float x = place.lower.getX() + position.getX();
 		float y = place.lower.getY() + position.getY();
 		Position rPos = new Position(x, y);
@@ -174,7 +174,7 @@ public class ResourceLocation extends ResourceAgent implements
 		float x = Float.valueOf((place.lower.getX() + place.upper.getX() / 2));
 		float y = Float.valueOf((place.lower.getY() + place.upper.getY() / 2));
 		Position position = new Position(x, y);
-		HashMap<String, Position> rAMap = base.get(place.getName());
+		HashMap<String, Position> rAMap = baseIndexer.get(place.getName());
 		rAMap.put(url, position);
 		resources.put(url, position);
 	}
@@ -185,7 +185,7 @@ public class ResourceLocation extends ResourceAgent implements
 
 	@Override
 	public Position getPosition(String place, String rai) {
-		return base.get(place).get(rai);
+		return baseIndexer.get(place).get(rai);
 	}
 
 	public ArrayList<String> queryByLocal(Position position) {
