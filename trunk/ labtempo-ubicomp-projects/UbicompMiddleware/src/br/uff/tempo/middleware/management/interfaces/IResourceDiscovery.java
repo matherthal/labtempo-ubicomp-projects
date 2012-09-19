@@ -12,6 +12,8 @@ public interface IResourceDiscovery {
 
 	public ArrayList<String> search(String query);// return URI of resources
 
+	public String getPath(String id);
+	
 	public ResourceAgent get(String rai);
 
 }

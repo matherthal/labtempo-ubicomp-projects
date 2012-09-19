@@ -7,56 +7,53 @@ public class Type {
 	
 	String name;
 	List<Type> subTypes;
-	List<String> resourcesName;
+	List<ResourceData> resources;
 
-	public Type(List<String> list) {
+	public Type(List<String> list, ResourceData resource) {
 		this();
 		if (list != null){
-			if (list.size()>1){
-				this.name = list.get(0);
-				initLists(list);
-			} else {
-				resourcesName.add(list.get(0));
-			}
-			
+			this.name = list.get(0);
+			initLists(list,resource);
+		} else {
+			resources.add(resource);
 		}
 	}
 
-	private Type(String name) {
+	public Type(String name) {
 		this.name = name;
 		subTypes = new ArrayList<Type>();
-		resourcesName = new ArrayList<String>();
+		resources = new ArrayList<ResourceData>();
 	}
 	
-	public Type() {
+	private Type() {
 		subTypes = new ArrayList<Type>();
-		resourcesName = new ArrayList<String>();
+		resources = new ArrayList<ResourceData>();
 	}
 
-	private void initLists(List<String> list) {
+	private void initLists(List<String> list, ResourceData resource) {
 		List<Type> subTypesTemp = subTypes;
 		Type aux = this;
-		for (int i = 1; i < list.size()-1; i++){
+		for (int i = 1; i < list.size(); i++){
 			aux = new Type(list.get(i));
 			subTypesTemp.add(aux);
 			subTypesTemp = aux.subTypes;
 		}
-		aux.resourcesName.add(list.get(list.size()-1));
+		aux.resources.add(resource);
 	}
 
 	public List<Type> getSubTypeList() {
 		return subTypes;
 	}
 
-	public void add(ArrayList<String> list, int begin) {
+	public void add(ArrayList<String> list, ResourceData resource, int begin) {
 		List<Type> subTypesTemp = this.subTypes;
 		Type aux = this;
-		for (int i = begin; i< list.size()-1; i++){
+		for (int i = begin; i< list.size(); i++){
 			aux = new Type(list.get(i));
 			subTypesTemp.add(aux);
 			subTypesTemp = aux.subTypes;
 		}
-		aux.resourcesName.add(list.get(list.size()-1));
+		aux.resources.add(resource);
 	}
 
 	public String getName() {
