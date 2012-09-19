@@ -45,7 +45,7 @@ public class Stove extends ResourceAgent implements IStove {
 
 	public Stove(String name) {
 		// FIXME: get correct id
-		this(name, new Position(0, 0));
+		this(name, null);
 	}
 	
 	public Stove(String name, Position position) {
