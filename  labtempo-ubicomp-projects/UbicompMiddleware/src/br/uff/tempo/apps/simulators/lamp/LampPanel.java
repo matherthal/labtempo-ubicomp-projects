@@ -29,6 +29,7 @@ public class LampPanel extends AbstractPanel {
 		init();
 	}
 
+	@Override
 	protected final void init() {
 
 		super.init();
@@ -58,14 +59,18 @@ public class LampPanel extends AbstractPanel {
 		else {
 			canvas.drawBitmap(mBitmapOff, pointX, pointY, null);
 		}
+		
+		Log.i(TAG, "onDraw from LampPanel called");
 	}
 
+	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// get the touch coordinates
-		int x = (int) event.getX();
-		int y = (int) event.getY();
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
+			
+			// get the touch coordinates
+			int x = (int) event.getX();
+			int y = (int) event.getY();
 
 			Log.d(TAG, "X = " + x + " and Y = " + y);
 
@@ -85,5 +90,4 @@ public class LampPanel extends AbstractPanel {
 
 		return true;
 	}
-
 }

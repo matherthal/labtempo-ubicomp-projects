@@ -10,9 +10,6 @@ import br.uff.tempo.middleware.resources.interfaces.IBed;
 
 public class BedView extends AbstractView {
 
-	private static final String TAG = "BedView"; 
-	private IBed bed;
-
 	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

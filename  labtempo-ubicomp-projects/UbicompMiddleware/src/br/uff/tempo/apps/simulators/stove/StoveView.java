@@ -37,7 +37,8 @@ public class StoveView extends AbstractView {
 	
 	@Override
 	public void createNewResourceAgent() {
-		super.setAgent(new Stove("SomeStove"));
+		//TODO get the name from a Dialog box
+		super.setAgent(new Stove("GeneralStove"));
 	}
 
 	@Override
