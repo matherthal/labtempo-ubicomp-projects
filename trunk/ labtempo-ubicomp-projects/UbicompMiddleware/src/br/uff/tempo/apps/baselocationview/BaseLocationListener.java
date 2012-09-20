@@ -48,7 +48,7 @@ public class BaseLocationListener extends Thread {
 	}
 
 	protected void updateBaseContent() {
-		Set<String> strList = rL.listLocations();
+		Set<String> strList = rL.getPlacesNames();
 		String result = "";
 		
 		if (strList != null) {
