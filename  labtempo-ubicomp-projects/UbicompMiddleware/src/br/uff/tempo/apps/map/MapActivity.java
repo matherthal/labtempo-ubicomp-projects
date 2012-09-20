@@ -14,10 +14,6 @@ import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXLoader;
 import org.andengine.extension.tmx.TMXObject;
 import org.andengine.extension.tmx.TMXObjectGroup;
-import org.andengine.extension.tmx.TMXProperties;
-import org.andengine.extension.tmx.TMXProperty;
-import org.andengine.extension.tmx.TMXTile;
-import org.andengine.extension.tmx.TMXTileProperty;
 import org.andengine.extension.tmx.TMXTiledMap;
 import org.andengine.extension.tmx.util.exception.TMXLoadException;
 import org.andengine.input.touch.TouchEvent;
@@ -58,12 +54,15 @@ import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
+import br.uff.tempo.middleware.management.Place;
+import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
+import br.uff.tempo.middleware.management.utils.Space;
 import br.uff.tempo.middleware.resources.Bed;
 import br.uff.tempo.middleware.resources.Lamp;
 import br.uff.tempo.middleware.resources.Stove;
@@ -112,8 +111,6 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	public static final int ID_REMOVE = 2;
 	public static final int ID_INFO = 3;
 	public static final int ID_SETTINGS = 4;
-
-	public static final int PIXEL_PER_METER = 96;
 
 	// ===========================================================
 	// Fields
@@ -259,7 +256,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		Log.d(TAG, "Creating scene");
 
-		//setupQuickActions();
+		// setupQuickActions();
 		this.mEngine.registerUpdateHandler(new FPSLogger());
 
 		this.mScene = new Scene();
@@ -535,7 +532,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		return sprite;
 	}
 
-	//TODO create a class that encapsulate all 'Place' classes
+	// TODO create a class that encapsulate all 'Place' classes
 	public void pushMap() {
 
 		// Get the TXM Groups from map (actually there's only one, so using
@@ -548,31 +545,35 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		String rlRAI = discovery.search("ResourceLocation").get(0);
 		IResourceLocation rl = new ResourceLocationStub(rlRAI);
 
+		final int mapWidth = this.mapFloorLayer.getWidth();
 		final int mapHeight = this.mapFloorLayer.getHeight();
+
+		// Create a new Space (a set of places) 
+		Space houseMap = new Space(Space.pixelToMeters(mapWidth,
+				Space.PIXEL_PER_METER), Space.pixelToMeters(mapHeight,
+				Space.PIXEL_PER_METER), Space.PIXEL_PER_METER);
 
 		for (TMXObject obj : group.getTMXObjects()) {
 
 			String roomName = obj.getName();
 
 			// [x0, y0] -> bottom-left corner
-			float x0 = pixelToMeter(obj.getX());
+			float x0 = houseMap.pixelToMeters(obj.getX());
 
 			// Y coordinate is transformed. System origin is in bottom-left
 			// corner
 			// The original on is in top-left corner
-			float y0 = pixelToMeter(mapHeight - (obj.getY() + obj.getHeight()));
+			float y0 = houseMap.invertYcoordinate(houseMap.pixelToMeters( obj.getY() + obj.getHeight() ));
 
 			// [x1, y1] -> top-right
-			float x1 = x0 + pixelToMeter(obj.getWidth());
-			float y1 = pixelToMeter(mapHeight - obj.getY());
+			float x1 = x0 + houseMap.pixelToMeters(obj.getWidth());
+			float y1 = houseMap.pixelToMeters(mapHeight - obj.getY());
 
-			rl.addPlace(roomName, new Position(x0, y0), new Position(x1, y1));
+			IPlace place = new Place(roomName, new Position(x0, y0), new Position(x1, y1));
+			houseMap.addPlace(place);
 		}
-	}
-
-	private float pixelToMeter(int pixel) {
-
-		return ((float) pixel) / PIXEL_PER_METER;
+		
+		rl.setMap(houseMap);
 	}
 
 	// The main menu, accessed by Android menu button (in the Android device)
@@ -851,7 +852,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 						// Reset the zoom to 100%
 						MapActivity.this.mCamera.setZoomFactor(1f);
-						
+
 						return true;
 					}
 
