@@ -20,6 +20,7 @@ import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.simulators.bed.BedView;
 import br.uff.tempo.apps.simulators.lamp.LampView;
 import br.uff.tempo.apps.simulators.stove.StoveView;
+import br.uff.tempo.apps.simulators.tracking.TrackingView;
 import br.uff.tempo.apps.simulators.tv.TvView;
 import br.uff.tempo.apps.tictactoe.TicTacToe;
 import br.uff.tempo.middleware.LogViewerActivity;
@@ -98,6 +99,9 @@ public class MainListView extends ListActivity {
 					startActivity(intent);
 				} else if (item.equals("SmartAndroid Debugger")) {
 					Intent intent = new Intent(MainListView.this, LogViewerActivity.class);
+					startActivity(intent);
+				} else if (item.equals("Simulador de Tracking")) {
+					Intent intent = new Intent(MainListView.this, TrackingView.class);
 					startActivity(intent);
 				} else {
 					Toast.makeText(MainListView.this, "Não existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();
