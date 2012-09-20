@@ -1,24 +1,45 @@
 package br.uff.tempo.middleware.management.interfaces;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Set;
-
-import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
+import br.uff.tempo.middleware.management.utils.Space;
 
 public interface IResourceLocation {
 
-	public ArrayList<String> search(String query);
+	void addPlace(IPlace place);
 
-	// return sorted list by proximity
-	public ArrayList<String> queryByLocal(Position position);
+	void addPlace(String name, Position lower, Position upper);
 
-	public Place get(ResourceAgent rA);
-	public Place getLocal(Position position);
+	ArrayList<String> search(String query);
 
-	public Set<String> listLocations();
-	public void addPlace(String name, Position lower, Position upper);
-	public Position getPosition(String place, String rai);
+	Set<String> getPlacesNames();
+
+	Position getPosition(String place, String rai);
+
+	IPlace getPlace(String name);
+
+	Collection<IPlace> getAllPlaces();
+
+	IPlace get(ResourceAgent rA);
+
+	IPlace getLocal(Position position);
+	
+	Space getMap();
+
+	void setMap(Space newSpace);
+
+	void setMap(Map<String, IPlace> newMap);
+
+	void registerInPlace(String url, Position position);
+
+	void registerInPlaceRelative(String url, IPlace place, Position position);
+	
+	void registerInPlaceMiddlePos(String url, IPlace place);
+	
+	ArrayList<String> queryByLocal(Position position);
 
 }

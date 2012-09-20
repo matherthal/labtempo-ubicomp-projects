@@ -85,7 +85,7 @@ public class AppLampControlSystem extends Activity {
 			tv.setText("É noite");
 
 		// For each place, create a Lamp and a Presence Sensor
-		Set<String> places = location.listLocations();
+		Set<String> places = location.getPlacesNames();
 		if (places != null)
 			for (String place : places) {
 				// Create a lamp for this place
