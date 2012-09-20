@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.json.JSONException;
 
+import android.util.Log;
 import br.uff.tempo.middleware.comm.current.api.Caller;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
@@ -30,6 +31,11 @@ public class Stub implements Serializable {
 			return JSONHelper.getMessage(ret);
 
 		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		} catch (Exception e) {
+			
+			Log.e("SmartAndroid", "Error by making a call: " + e.getMessage() + " - Stub");
 			e.printStackTrace();
 			return null;
 		}
