@@ -46,6 +46,7 @@
         <item name="item_counter">Counter</item>
         <item name="item_app_lamp_control_sys">Sistema de Controle de Lâmpadas</item>
         <item name="item_smartandroid_debugger">SmartAndroid Debugger</item>
+        <item name="item_smartandroid_debugger">Simulador de Tracking</item>
     </string-array>
 
     <!-- RuleActivity -->
