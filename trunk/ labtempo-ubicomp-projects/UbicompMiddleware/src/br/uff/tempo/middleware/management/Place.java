@@ -17,6 +17,7 @@ public class Place {
 		//super(name, "br.uff.tempo.middleware.management.Place", 0);
 		this.lower = lower;
 		this.upper = upper;
+		this.name = name;
 	}
 	
 	public String getName() {

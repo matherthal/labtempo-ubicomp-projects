@@ -569,6 +569,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			float y1 = houseMap.pixelToMeters(mapHeight - obj.getY());
 
 			Place place = new Place(roomName, new Position(x0, y0), new Position(x1, y1));
+			Log.i("SmartAndroid", "Created a new Place. lower = " + x0 + " " + y0 + " and Upper = " + x1 + " " + y1);
 			houseMap.addPlace(place);
 		}
 		
