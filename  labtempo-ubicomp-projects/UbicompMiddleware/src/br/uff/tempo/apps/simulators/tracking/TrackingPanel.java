@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.middleware.management.Place;
-import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
@@ -61,7 +60,7 @@ public class TrackingPanel extends AbstractPanel {
 		float mapHeight = homeMap.getHeight();
 
 		int i = 0;
-		for (IPlace place : homeMap.getAllPlaces()) {
+		for (Place place : homeMap.getAllPlaces()) {
 			
 			float left   = place.getLower().getX();
 			float top    = homeMap.invertYcoordinate(place.getUpper().getY());

@@ -55,7 +55,6 @@ import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
 import br.uff.tempo.middleware.management.Place;
-import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
@@ -569,7 +568,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			float x1 = x0 + houseMap.pixelToMeters(obj.getWidth());
 			float y1 = houseMap.pixelToMeters(mapHeight - obj.getY());
 
-			IPlace place = new Place(roomName, new Position(x0, y0), new Position(x1, y1));
+			Place place = new Place(roomName, new Position(x0, y0), new Position(x1, y1));
 			houseMap.addPlace(place);
 		}
 		

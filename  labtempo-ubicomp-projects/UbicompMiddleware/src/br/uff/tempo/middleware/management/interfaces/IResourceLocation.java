@@ -4,13 +4,15 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.Set;
+
+import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
 
 public interface IResourceLocation {
 
-	void addPlace(IPlace place);
+	void addPlace(Place place);
 
 	void addPlace(String name, Position lower, Position upper);
 
@@ -20,26 +22,25 @@ public interface IResourceLocation {
 
 	Position getPosition(String place, String rai);
 
-	IPlace getPlace(String name);
+	Place getPlace(String name);
 
-	Collection<IPlace> getAllPlaces();
+	Collection<Place> getAllPlaces();
 
-	IPlace get(ResourceAgent rA);
+	Place get(ResourceAgent rA);
 
-	IPlace getLocal(Position position);
+	Place getLocal(Position position);
 	
 	Space getMap();
 
 	void setMap(Space newSpace);
 
-	void setMap(Map<String, IPlace> newMap);
+	void setMap(Map<String, Place> newMap);
 
 	void registerInPlace(String url, Position position);
 
-	void registerInPlaceRelative(String url, IPlace place, Position position);
+	void registerInPlaceRelative(String url, Place place, Position position);
 	
-	void registerInPlaceMiddlePos(String url, IPlace place);
+	void registerInPlaceMiddlePos(String url, Place place);
 	
 	ArrayList<String> queryByLocal(Position position);
-
 }

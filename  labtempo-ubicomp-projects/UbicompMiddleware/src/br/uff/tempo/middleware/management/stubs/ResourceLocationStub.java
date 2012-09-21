@@ -7,8 +7,8 @@ import java.util.Map;
 import java.util.Set;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
+import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceAgent;
-import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
@@ -22,10 +22,10 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 	}
 
 	@Override
-	public void addPlace(IPlace place) {
+	public void addPlace(Place place) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
-		params.add(new Tuple<String, Object>(String.class.getName(), place));
+		params.add(new Tuple<String, Object>(Place.class.getName(), place));
 		
 		makeCall("addPlace", params);
 	}
@@ -67,39 +67,39 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 	}
 
 	@Override
-	public IPlace getPlace(String name) {
+	public Place getPlace(String name) {
 
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
 		params.add(new Tuple<String, Object>(String.class.getName(), name));
 
-		return (IPlace) makeCall("getPlace", params, IPlace.class);
+		return (Place) makeCall("getPlace", params, Place.class);
 	}
 
 	@Override
-	public Collection<IPlace> getAllPlaces() {
+	public Collection<Place> getAllPlaces() {
 
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
-		return (Collection<IPlace>) makeCall("getPlaces", params, Collection.class);
+		return (Collection<Place>) makeCall("getPlaces", params, Collection.class);
 	}
 
 	@Override
-	public IPlace get(ResourceAgent rA) {
+	public Place get(ResourceAgent rA) {
 
 		// Set params
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(ResourceAgent.class.getName(), rA));
 
-		return (IPlace) makeCall("get", params, IPlace.class);
+		return (Place) makeCall("get", params, Place.class);
 	}
 
 	@Override
-	public IPlace getLocal(Position position) {
+	public Place getLocal(Position position) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 
-		return (IPlace) makeCall("getLocal", params, IPlace.class);
+		return (Place) makeCall("getLocal", params, Place.class);
 	}
 
 	@Override
@@ -112,15 +112,15 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 	@Override
 	public void setMap(Space newSpace) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(Position.class.getName(), newSpace));
+		params.add(new Tuple<String, Object>(Space.class.getName(), newSpace));
 
 		makeCall("setMap", params);
 	}
 
 	@Override
-	public void setMap(Map<String, IPlace> newMap) {
+	public void setMap(Map<String, Place> newMap) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(Position.class.getName(), newMap));
+		params.add(new Tuple<String, Object>(Map.class.getName(), newMap));
 
 		makeCall("setMap", params);
 	}
@@ -128,29 +128,29 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 	@Override
 	public void registerInPlace(String url, Position position) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(Position.class.getName(), url));
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 
 		makeCall("registerInPlace", params);
 	}
 
 	@Override
-	public void registerInPlaceRelative(String url, IPlace place,
+	public void registerInPlaceRelative(String url, Place place,
 			Position position) {
 		
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(Position.class.getName(), url));
-		params.add(new Tuple<String, Object>(Position.class.getName(), place));
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(Place.class.getName(), place));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 
 		makeCall("registerInPlace", params);
 	}
 
 	@Override
-	public void registerInPlaceMiddlePos(String url, IPlace place) {
+	public void registerInPlaceMiddlePos(String url, Place place) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(Position.class.getName(), url));
-		params.add(new Tuple<String, Object>(Position.class.getName(), place));
+		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(Place.class.getName(), place));
 
 		makeCall("registerInPlaceMiddlePos", params);
 	}
@@ -162,5 +162,4 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 
 		return (ArrayList<String>) makeCall("queryByLocal", params);
 	}
-
 }

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import br.uff.tempo.middleware.management.interfaces.IPlace;
+import br.uff.tempo.middleware.management.Place;
 
 public class Space {
 
@@ -14,7 +14,7 @@ public class Space {
 	private float width;
 	private float height;
 
-	private Map<String, IPlace> map;
+	private Map<String, Place> map;
 	private int pixelFactor;
 
 	public Space() {
@@ -27,7 +27,7 @@ public class Space {
 	
 	public Space(float width, float height, int pixelFactor) {
 		
-		map = new HashMap<String, IPlace>();
+		map = new HashMap<String, Place>();
 		
 		this.width = width;
 		this.height = height;
@@ -39,11 +39,11 @@ public class Space {
 		return height - yCoordinate;
 	}
 		
-	public void addPlace(IPlace place) {
+	public void addPlace(Place place) {
 		map.put(place.getName(), place);
 	}
 	
-	public void removePlace(IPlace place) {
+	public void removePlace(Place place) {
 		map.remove(place.getName());
 	}
 	
@@ -77,12 +77,12 @@ public class Space {
 		return map.size();
 	}
 	
-	public IPlace getPlace(String name) {
+	public Place getPlace(String name) {
 		
 		return map.get(name);
 	}
 	
-	public Collection<IPlace> getAllPlaces() {
+	public Collection<Place> getAllPlaces() {
 		return map.values();
 	}
 	
@@ -90,11 +90,11 @@ public class Space {
 		return map.keySet();
 	}
 
-	public Map<String, IPlace> getPlaceMap() {
+	public Map<String, Place> getPlaceMap() {
 		return map;
 	}
 	
-	public void setPlaceMap(Map<String, IPlace> newMap) {
+	public void setPlaceMap(Map<String, Place> newMap) {
 		this.map = newMap;
 	}
 

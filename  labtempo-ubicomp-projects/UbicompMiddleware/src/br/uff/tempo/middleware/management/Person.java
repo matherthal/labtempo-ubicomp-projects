@@ -2,7 +2,6 @@ package br.uff.tempo.middleware.management;
 
 import java.util.List;
 
-import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
@@ -12,7 +11,7 @@ public class Person extends ResourceAgent {
 	private static final long serialVersionUID = 1L;
 
 	List<SmartObject> objects;
-	List<IPlace> recentLocal;
+	List<Place> recentLocal;
 	List<Position> recentPositions;
 	IResourceLocation rLS;
 	public Person(List<SmartObject> sensors, List<Position> recentPositions, String name, String type, int id){
