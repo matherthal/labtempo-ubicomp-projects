@@ -1,13 +1,12 @@
 package br.uff.tempo.middleware.management;
 
-import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.utils.Position;
 
-public class Place extends ResourceAgent implements IPlace {
+public class Place {
 	
 	private static final long serialVersionUID = 1L;
 
-	String name;
+	private String name;
 
 	Position lower;// left lower vertex
 	Position upper;// right upper vertex
@@ -16,11 +15,10 @@ public class Place extends ResourceAgent implements IPlace {
 												// the vertex
 	{
 		//super(name, "br.uff.tempo.middleware.management.Place", 0);
-		this.name = name;
 		this.lower = lower;
 		this.upper = upper;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
@@ -45,11 +43,11 @@ public class Place extends ResourceAgent implements IPlace {
 		this.upper = upper;
 	}
 
-	public boolean equalCorners(IPlace local) {
+	public boolean equalCorners(Place local) {
 		return this.upper.equals(local.getLower()) || this.getLower().equals(local.getUpper());
 	}
 
-	public boolean equalSide(IPlace local) {
+	public boolean equalSide(Place local) {
 		boolean equalRight = this.upper.getX() == local.getLower().getX();
 		boolean equalLeft = this.lower.getX() == local.getUpper().getX();
 		boolean equalUpper = false;
@@ -64,7 +62,7 @@ public class Place extends ResourceAgent implements IPlace {
 		return equalRight || equalLeft;
 	}
 
-	public boolean equalHeight(IPlace local) {
+	public boolean equalHeight(Place local) {
 		boolean equalUp = this.upper.getY() == local.getLower().getY();
 		boolean equalDown = this.lower.getY() == local.getUpper().getY();
 		boolean equalRight = false;
@@ -84,9 +82,4 @@ public class Place extends ResourceAgent implements IPlace {
 		return (position.compareTo(lower)==1 && position.compareTo(upper)==3); 
 	}
 	
-	
-	@Override
-	public void notificationHandler(String rai, String method, Object value) {
-		// TODO Auto-generated method stub
-	}
 }
