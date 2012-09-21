@@ -81,7 +81,7 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
-		return (Collection<Place>) makeCall("getPlaces", params, Collection.class);
+		return (Collection<Place>) makeCall("getAllPlaces", params, Collection.class);
 	}
 
 	@Override
@@ -106,7 +106,7 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 	public Space getMap() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		
-		return (Space) makeCall("getLocal", params, Space.class);
+		return (Space) makeCall("getMap", params, Space.class);
 	}
 	
 	@Override
