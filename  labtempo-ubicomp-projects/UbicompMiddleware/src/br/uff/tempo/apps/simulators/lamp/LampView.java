@@ -3,8 +3,8 @@ package br.uff.tempo.apps.simulators.lamp;
 import android.os.Bundle;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractView;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.Lamp;
-import br.uff.tempo.middleware.resources.interfaces.ILamp;
 
 public class LampView extends AbstractView {
 
@@ -32,8 +32,8 @@ public class LampView extends AbstractView {
 	}
 
 	@Override
-	public void createNewResourceAgent() {
-		super.setAgent(new Lamp("GeneralLamp"));
+	public IResourceAgent createNewResourceAgent() {
+		return new Lamp("GeneralLamp");
 	}
 
 }
