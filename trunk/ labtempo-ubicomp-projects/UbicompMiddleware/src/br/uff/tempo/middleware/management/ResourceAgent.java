@@ -119,9 +119,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 
 	//public ResourceBinder mBinder = new ResourceBinder();
 
-	public ResourceAgent() {// depreciated
+	public ResourceAgent() {
 
-		this("", "", 0);
+		this("GeneralAgent", "br.uff.tempo.middleware.management.ResourceAgent", 0);
 	}
 
 	public ResourceAgent(String type, int id) {

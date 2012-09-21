@@ -7,10 +7,20 @@ import java.util.Set;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IAggregator;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.utils.Position;
 
 public abstract class Aggregator extends ResourceAgent implements IAggregator {
 	
 	private static final long serialVersionUID = 1L;
+	
+
+	public Aggregator() {
+		super();
+	}
+	
+	public Aggregator(String name, String type, int id, Position position) {
+		super(name, type, id, position);
+	}
 	
 	// Set Interpreted Context Variables
 	// private Set<Interpreter> interpretedCVSet = new HashSet<Interpreter>();

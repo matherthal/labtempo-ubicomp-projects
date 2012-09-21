@@ -5,6 +5,7 @@ import java.util.Date;
 import br.uff.tempo.middleware.management.Aggregator;
 import br.uff.tempo.middleware.management.Interpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.IPerson;
 
 public class Person extends Aggregator implements IPerson {
@@ -31,6 +32,11 @@ public class Person extends Aggregator implements IPerson {
 		// ...
 		// Add interpreters
 		// ...
+	}
+	
+	public Person(String name, Position position) {
+		// FIXME: get correct id
+		super(name, "br.uff.tempo.middleware.resources.Person", 134, position);
 	}
 
 	@ContextVariable(name = "Nome")
