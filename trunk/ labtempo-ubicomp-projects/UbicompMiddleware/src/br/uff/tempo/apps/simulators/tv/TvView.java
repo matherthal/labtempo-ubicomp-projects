@@ -6,6 +6,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractView;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.Television;
 import br.uff.tempo.middleware.resources.interfaces.ITelevision;
 
@@ -88,8 +89,8 @@ public class TvView extends AbstractView implements OnClickListener {
 	}
 
 	@Override
-	public void createNewResourceAgent() {
-		super.setAgent(new Television("SomeTV"));		
+	public IResourceAgent createNewResourceAgent() {
+		return new Television("SomeTV");		
 	}
 
 }

@@ -91,7 +91,7 @@ public class ResourceAgentIdentifier implements Serializable {
 		} catch (SocketException ex) {
 			Log.e("ResourceAgent", ex.getMessage());
 		}
-		return "No IP Available";
+		return "127.0.0.1";
 	}
 
 }
