@@ -11,7 +11,7 @@ public class Person extends Aggregator implements IPerson {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private String name = "";
+	private String firstName = "";
 	private String lastName = "";
 	private Date birthday = null;
 	private boolean isSleeping = false;
@@ -35,7 +35,7 @@ public class Person extends Aggregator implements IPerson {
 
 	@ContextVariable(name = "Nome")
 	public String getName() {
-		return this.name;
+		return this.firstName;
 	}
 
 	@ContextVariable(name = "Dormindo")
