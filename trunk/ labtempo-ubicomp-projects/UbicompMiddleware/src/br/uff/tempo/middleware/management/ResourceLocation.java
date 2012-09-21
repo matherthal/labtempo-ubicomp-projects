@@ -10,7 +10,6 @@ import java.util.Set;
 
 import android.util.Log;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
-import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
@@ -27,7 +26,7 @@ public class ResourceLocation extends ResourceAgent implements
 
 	private static ResourceLocation instance;
 
-	HashMap<String, IPlace> map;
+	HashMap<String, Place> map;
 	HashMap<String, Position> resources;
 	HashMap<String, HashMap<String, Position>> baseIndexer;
 
@@ -41,8 +40,7 @@ public class ResourceLocation extends ResourceAgent implements
 				ResourceAgentIdentifier.getLocalIpAddress(),
 				"br.uff.tempo.middleware.management.ResourceLocation",
 				"ResourceLocation"));
-		
-		//map = new HashMap<String, IPlace>();
+
 		currentSpace = new Space();
 		resources = new HashMap<String, Position>();
 		baseIndexer = new HashMap<String, HashMap<String, Position>>();
@@ -71,21 +69,19 @@ public class ResourceLocation extends ResourceAgent implements
 	}
 
 	public void addPlace(String name, Position lower, Position upper) {
-		IPlace place = new Place(name, lower, upper);
-		//place.identify();
-		//map.put(place.getName(), place);
+		Place place = new Place(name, lower, upper);
 		addPlace(place);
 	}
 	
-	public void addPlace(IPlace place) {	
+	public void addPlace(Place place) {	
 		currentSpace.addPlace(place);
 		baseIndexer.put(place.getName(), new HashMap<String, Position>());
 		
 		Log.i("SmartAndroid", "New place added: " + place.getName() + ". Bottom-left corner at = [" + place.getLower().getX() + " , " + place.getLower().getY() + "] and top-right corner at [" + place.getUpper().getX() + " , " + place.getUpper().getY() + "]");
 	}
 
-	// public ArrayList<IPlace> search(ResourceAgent rA) {
-	// ArrayList<IPlace> result = new ArrayList<Place>();
+	// public ArrayList<Place> search(ResourceAgent rA) {
+	// ArrayList<Place> result = new ArrayList<Place>();
 	// Place current = get(rA);
 	// result.add(0, current);// current local is the nearest
 	// ArrayList<Place> localList = (ArrayList<Place>) map.values();
@@ -127,23 +123,23 @@ public class ResourceLocation extends ResourceAgent implements
 		return baseIndexer.get(place).get(rai);
 	}
 	
-	public IPlace getPlace(String name) {
+	public Place getPlace(String name) {
 		return currentSpace.getPlace(name);
 	}
 
 	@Override
-	public Collection<IPlace> getAllPlaces() {
+	public Collection<Place> getAllPlaces() {
 		return currentSpace.getAllPlaces();
 	}
 	
-	public IPlace get(ResourceAgent rA) {
+	public Place get(ResourceAgent rA) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public IPlace getLocal(Position position) {
+	public Place getLocal(Position position) {
 
-		for (IPlace local : currentSpace.getAllPlaces()) {
+		for (Place local : currentSpace.getAllPlaces()) {
 			if (local.contains(position)) {
 				return local;
 			}
@@ -151,11 +147,11 @@ public class ResourceLocation extends ResourceAgent implements
 		return null;
 	}
 	
-	private ArrayList<IPlace> getNeighbors(IPlace current,
-			ArrayList<IPlace> localList, ArrayList<IPlace> result) {
-		ArrayList<IPlace> neighborList = new ArrayList<IPlace>();
+	private ArrayList<Place> getNeighbors(Place current,
+			ArrayList<Place> localList, ArrayList<Place> result) {
+		ArrayList<Place> neighborList = new ArrayList<Place>();
 		if (localList.size() != 0) {
-			for (IPlace local : localList) {
+			for (Place local : localList) {
 				if (current.equalCorners(local) || current.equalSide(local)
 						|| current.equalHeight(local)) {
 					result.add(local);
@@ -163,7 +159,7 @@ public class ResourceLocation extends ResourceAgent implements
 				}
 			}
 			localList.remove(current);
-			for (IPlace local : neighborList) {
+			for (Place local : neighborList) {
 				result = getNeighbors(local, localList, result);
 			}
 		}
@@ -178,20 +174,20 @@ public class ResourceLocation extends ResourceAgent implements
 		this.currentSpace = newSpace;
 	}
 	
-	public void setMap(Map<String, IPlace> newMap) {
+	public void setMap(Map<String, Place> newMap) {
 		this.currentSpace.setPlaceMap(newMap);
 	}
 
 	public void registerInPlace(String url, Position position) {
 
-		IPlace place = getLocal(position);
+		Place place = getLocal(position);
 		HashMap<String, Position> rAMap = baseIndexer.get(place.getName());
 
 		rAMap.put(url, position);
 		resources.put(url, position);
 	}
 
-	public void registerInPlaceRelative(String url, IPlace place,
+	public void registerInPlaceRelative(String url, Place place,
 			Position position) {
 
 		HashMap<String, Position> rAMap = baseIndexer.get(place.getName());
@@ -203,7 +199,7 @@ public class ResourceLocation extends ResourceAgent implements
 		resources.put(url, rPos);
 	}
 
-	public void registerInPlaceMiddlePos(String url, IPlace place) {
+	public void registerInPlaceMiddlePos(String url, Place place) {
 		float x = Float.valueOf((place.getLower().getX() + place.getUpper().getX() / 2));
 		float y = Float.valueOf((place.getLower().getY() + place.getUpper().getY() / 2));
 		Position position = new Position(x, y);
