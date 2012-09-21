@@ -40,7 +40,7 @@ public class Stove extends ResourceAgent implements IStove {
 	private List<Float> burners;
 
 	public Stove() {
-		this("");
+		this("GeneralStove");
 	}
 
 	public Stove(String name) {
