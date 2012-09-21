@@ -3,6 +3,7 @@ package br.uff.tempo.apps.simulators.tracking;
 import android.os.Bundle;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractView;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.Person;
 
 public class TrackingView extends AbstractView {
@@ -31,8 +32,8 @@ public class TrackingView extends AbstractView {
 	}
 
 	@Override
-	public void createNewResourceAgent() {
-		super.setAgent(new Person());
+	public IResourceAgent createNewResourceAgent() {
+		return new Person();
 	}
 
 }

@@ -172,6 +172,8 @@ public class ResourceLocation extends ResourceAgent implements
 
 	public void setMap(Space newSpace) {
 		this.currentSpace = newSpace;
+		
+		Log.i("SmartAndroid", "New map setted. Height = " + newSpace.getHeight() + " Width = " + newSpace.getWidth());
 	}
 	
 	public void setMap(Map<String, Place> newMap) {

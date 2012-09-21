@@ -6,9 +6,9 @@ import java.util.Vector;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
-import android.view.Window;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractView;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.Stove;
 
 public class StoveView extends AbstractView {
@@ -36,9 +36,9 @@ public class StoveView extends AbstractView {
 	}
 	
 	@Override
-	public void createNewResourceAgent() {
+	public IResourceAgent createNewResourceAgent() {
 		//TODO get the name from a Dialog box
-		super.setAgent(new Stove("GeneralStove"));
+		return new Stove("SomeStove");
 	}
 
 	@Override

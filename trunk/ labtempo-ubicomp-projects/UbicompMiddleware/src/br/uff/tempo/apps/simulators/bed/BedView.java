@@ -5,8 +5,8 @@ import android.view.View;
 import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractView;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.Bed;
-import br.uff.tempo.middleware.resources.interfaces.IBed;
 
 public class BedView extends AbstractView {
 
@@ -19,9 +19,9 @@ public class BedView extends AbstractView {
 	}
 
 	@Override
-	public void createNewResourceAgent() {
+	public IResourceAgent createNewResourceAgent() {
 		
-		super.setAgent(new Bed("Cama"));
+		return new Bed("SomeBed");
 	}
 	
 	@Override

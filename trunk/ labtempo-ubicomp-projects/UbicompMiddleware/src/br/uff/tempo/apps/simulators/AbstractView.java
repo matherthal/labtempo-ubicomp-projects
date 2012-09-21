@@ -28,12 +28,12 @@ public abstract class AbstractView extends FragmentActivity {
 
 		// else, creates a new one
 		} else {
-			createNewResourceAgent();
+			agent = createNewResourceAgent();
 			agent.identify();
 		}
 	}
 
-	public abstract void createNewResourceAgent();
+	public abstract IResourceAgent createNewResourceAgent();
 
 	public IResourceAgent getAgent() {
 		return this.agent;
