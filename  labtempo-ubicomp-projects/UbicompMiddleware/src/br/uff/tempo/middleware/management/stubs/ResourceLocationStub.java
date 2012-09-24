@@ -110,11 +110,11 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 	}
 	
 	@Override
-	public void setMap(Space newSpace) {
+	public void insertMap(Space newSpace) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Space.class.getName(), newSpace));
 
-		makeCall("setMap", params);
+		makeCall("insertMap", params);
 	}
 
 	@Override

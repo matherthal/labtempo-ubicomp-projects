@@ -32,7 +32,7 @@ public interface IResourceLocation {
 	
 	Space getMap();
 
-	void setMap(Space newSpace);
+	void insertMap(Space newSpace);
 
 	void setMap(Map<String, Place> newMap);
 
