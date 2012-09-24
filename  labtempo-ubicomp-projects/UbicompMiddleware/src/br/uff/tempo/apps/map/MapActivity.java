@@ -573,7 +573,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			houseMap.addPlace(place);
 		}
 		
-		rl.setMap(houseMap);
+		rl.insertMap(houseMap);
 	}
 
 	// The main menu, accessed by Android menu button (in the Android device)
