@@ -14,6 +14,9 @@ public abstract class AbstractPanel extends View {
 	private int screenCenterX;
 	private int screenCenterY;
 	
+	private int screenWidth;
+	private int screenHeight;
+	
 	private Handler handler = new Handler();
 
 	public AbstractPanel(Context context, AttributeSet attrs) {
@@ -26,9 +29,13 @@ public abstract class AbstractPanel extends View {
 		DisplayMetrics metrics = new DisplayMetrics();
 		wm.getDefaultDisplay().getMetrics(metrics);
 
+		//get the screen length
+		screenWidth = metrics.widthPixels;
+		screenHeight = metrics.heightPixels;
+		
 		//get the screen center coordinates
-		screenCenterX = metrics.widthPixels / 2;
-		screenCenterY = metrics.heightPixels / 2;
+		screenCenterX = screenWidth / 2;
+		screenCenterY = screenHeight / 2;
 		
 		setupInterest();
 	}
@@ -61,5 +68,13 @@ public abstract class AbstractPanel extends View {
 
 	public int getScreenCenterY() {
 		return screenCenterY;
+	}
+	
+	public int getScreenWidth() {
+		return screenWidth;
+	}
+	
+	public int getScreenHeiht() {
+		return screenHeight;
 	}
 }
