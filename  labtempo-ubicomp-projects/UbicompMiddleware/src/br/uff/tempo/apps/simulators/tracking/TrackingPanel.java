@@ -1,16 +1,19 @@
 package br.uff.tempo.apps.simulators.tracking;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
+import android.widget.Toast;
+import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
@@ -27,8 +30,10 @@ public class TrackingPanel extends AbstractPanel {
 	private IResourceDiscovery rds;
 	private IPerson agent;
 	private Space homeMap;
-	private Rect[] rooms;
+	private Map<String, Rect> rooms;
 	private Paint paint;
+	
+	private int mode;
 
 	public TrackingPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -53,28 +58,37 @@ public class TrackingPanel extends AbstractPanel {
 		agent = (IPerson) ((TrackingView) getContext()).getAgent();
 		
 		paint = new Paint();
+		paint.setStyle(Paint.Style.STROKE);
 		paint.setColor(Color.rgb(0, 255, 0));
 		paint.setStrokeWidth(10);
+		
 		setupRooms();
 	}
 
 	private void setupRooms() {
 		
 		homeMap = rLocation.getMap();
-		rooms = new Rect[homeMap.getRoomsNumber()];
 		
+		rooms = new HashMap<String, Rect>();
+		updateRectangles();
+	}
+	
+	public void updateRectangles() {
+	
 		float mapWidth = homeMap.getWidth();
 		float mapHeight = homeMap.getHeight();
+		
+		int factor = (int) (getScreenWidth() / mapWidth);
 
 		int i = 0;
 		for (Place place : homeMap.getAllPlaces()) {
 			
-			int left   = homeMap.metersToPixel(place.getLower().getX());
-			int top    = homeMap.metersToPixel(homeMap.invertYcoordinate(place.getUpper().getY()));
-			int right  = homeMap.metersToPixel(place.getUpper().getX());
-			int bottom = homeMap.metersToPixel(homeMap.invertYcoordinate(place.getLower().getY()));
+			int left   = Space.metersToPixel(place.getLower().getX(), factor);
+			int top    = Space.metersToPixel(homeMap.invertYcoordinate(place.getUpper().getY()), factor);
+			int right  = Space.metersToPixel(place.getUpper().getX(), factor);
+			int bottom = Space.metersToPixel(homeMap.invertYcoordinate(place.getLower().getY()), factor);
 
-			rooms[i] = new Rect(left, top, right, bottom);
+			rooms.put(place.getName(), new Rect(left, top, right, bottom));
 			
 			i++;
 		}
@@ -85,7 +99,7 @@ public class TrackingPanel extends AbstractPanel {
 
 		super.onDraw(canvas);
 		
-		for (Rect rect : rooms) {
+		for (Rect rect : rooms.values()) {
 			
 			canvas.drawRect(rect, paint);
 		}
@@ -100,11 +114,22 @@ public class TrackingPanel extends AbstractPanel {
 			// get the touch coordinates
 			int x = (int) event.getX();
 			int y = (int) event.getY();
-
 		
+			for (Map.Entry<String, Rect> entry : rooms.entrySet()) {
+			
+				if (entry.getValue().contains(x, y)) {
+					
+					Toast.makeText(getContext(), entry.getKey(), Toast.LENGTH_SHORT).show();
+				}
+			}
+			
 			invalidate();
 		}
 
 		return true;
+	}
+
+	public void addPerson() {
+				
 	}
 }

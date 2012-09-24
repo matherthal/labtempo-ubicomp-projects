@@ -21,7 +21,9 @@
         android:label="@string/app_name" >
         <activity
             android:name=".apps.MainListView"
-            android:label="SmartAndroid" >
+            android:label="SmartAndroid"
+            android:configChanges="orientation" >
+            
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
