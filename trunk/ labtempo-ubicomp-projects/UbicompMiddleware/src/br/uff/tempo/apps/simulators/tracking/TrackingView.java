@@ -13,6 +13,8 @@ public class TrackingView extends AbstractView {
 	public static final int NEW_PERSON = 0;
 	public static final int TRACK = NEW_PERSON + 1;
 	
+	private static int i = 0;
+	
 	private TrackingPanel panel;
 	
 	/** Called when the activity is first created. */
@@ -39,7 +41,7 @@ public class TrackingView extends AbstractView {
 		switch (item.getItemId()) {
 		case NEW_PERSON:
 			
-			panel.addPerson();
+			panel.addPerson("user" + (++i));
 			
 			break;
 			
@@ -55,6 +57,6 @@ public class TrackingView extends AbstractView {
 
 	@Override
 	public IResourceAgent createNewResourceAgent() {
-		return new Person();
+		return null;
 	}
 }
