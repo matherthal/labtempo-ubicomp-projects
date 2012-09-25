@@ -29,7 +29,10 @@ public abstract class AbstractView extends FragmentActivity {
 		// else, creates a new one
 		} else {
 			agent = createNewResourceAgent();
-			agent.identify();
+			
+			if (agent != null) {
+				agent.identify();
+			}
 		}
 	}
 

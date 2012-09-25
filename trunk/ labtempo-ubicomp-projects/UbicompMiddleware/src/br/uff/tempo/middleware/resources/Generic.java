@@ -27,10 +27,15 @@ public class Generic extends ResourceAgent implements IGeneric {
 		this.name = name;
 		Log.i(TAG, "New Generic class. Name: " + name);
 
-		this.identify();
-		Log.i(TAG, "Generic stakeholder " + name + " identified");
-		ra.registerStakeholder(cv, this.getRAI());
-		Log.i(TAG, "Generic stakeholder " + name + " subscribed");
+		if (ra != null) {
+			
+			this.identify();
+			Log.i(TAG, "Generic stakeholder " + name + " identified");
+			
+			ra.registerStakeholder(cv, this.getRAI());
+			Log.i(TAG, "Generic stakeholder " + name + " subscribed");
+		}
+		
 	}
 
 	@Override
