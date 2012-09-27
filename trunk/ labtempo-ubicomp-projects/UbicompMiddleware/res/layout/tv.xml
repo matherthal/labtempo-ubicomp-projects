@@ -1,54 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_centerHorizontal="true" >
-
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/panel"
-        android:orientation="horizontal"
-        android:paddingBottom="1.0dip"
-        android:paddingLeft="4.0dip"
-        android:paddingRight="4.0dip"
-        android:paddingTop="5.0dip" >
-
-        <Button
-            android:id="@+id/btnChPlus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:text="@string/tvChPlus" />
-
-        <Button
-            android:id="@+id/btnChMinus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:text="@string/tvChMinus" />
-
-        <Button
-            android:id="@+id/btnVolPlus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:text="@string/tvVolPlus" />
-
-        <Button
-            android:id="@+id/btnVolMinus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:text="@string/tvVolMinus" />
-
-        <Button
-            android:id="@+id/btnTurnOnOff"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1.0"
-            android:text="@string/tvTurnOn" />
-    </LinearLayout>
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
 
     <FrameLayout
         android:layout_width="fill_parent"
@@ -60,4 +14,4 @@
             android:layout_height="fill_parent" />
     </FrameLayout>
 
-</RelativeLayout>
+</LinearLayout>

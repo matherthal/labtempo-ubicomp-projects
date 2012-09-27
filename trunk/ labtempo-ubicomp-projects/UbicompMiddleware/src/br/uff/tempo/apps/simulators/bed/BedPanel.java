@@ -86,4 +86,10 @@ public class BedPanel extends AbstractPanel {
 		return true;
 	}
 
+	@Override
+	public void onUpdate(String method, Object value) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

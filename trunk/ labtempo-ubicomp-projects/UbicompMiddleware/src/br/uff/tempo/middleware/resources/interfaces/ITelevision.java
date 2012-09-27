@@ -11,6 +11,12 @@ public interface ITelevision extends IResourceAgent {
 	 *            The message that will be showed in the screen
 	 */
 	public void showMessage(String text);
+	
+	/**
+	 * Gets the last TV message
+	 * @return
+	 */
+	public String getMessage();
 
 	/**
 	 * Gets the current TV channel

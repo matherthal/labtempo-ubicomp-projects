@@ -11,6 +11,7 @@ import br.uff.tempo.middleware.resources.Generic;
 
 public abstract class AbstractPanel extends View {	
 
+	private static int count = 0;
 	private int screenCenterX;
 	private int screenCenterY;
 	
@@ -45,15 +46,16 @@ public abstract class AbstractPanel extends View {
 		// When the agent change its state, redraw the screen
 		IResourceAgent res = ((AbstractView) getContext()).getAgent();
 		
-		new Generic("Stakeholder", res, "all") {
+		new Generic("StakeholderFromView" + (++count), res, "all") {
 			
 			@Override
-			public void notificationHandler(String rai, String method, Object value) {
+			public void notificationHandler(final String rai, final String method, final Object value) {
 				
 				handler.post(new Runnable() {
 					
 					@Override
 					public void run() {
+						AbstractPanel.this.onUpdate(method, value);
 						AbstractPanel.this.invalidate();	
 					}
 				});
@@ -61,7 +63,9 @@ public abstract class AbstractPanel extends View {
 			}
 		};
 	}
-
+	
+	public abstract void onUpdate(String method, Object value);
+	
 	public int getScreenCenterX() {
 		return screenCenterX;
 	}
