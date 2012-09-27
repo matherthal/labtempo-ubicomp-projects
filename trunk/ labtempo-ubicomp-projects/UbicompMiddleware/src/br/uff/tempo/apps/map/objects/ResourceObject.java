@@ -93,7 +93,9 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 
 	private void cancelTimer() {
 
-		mLongPressTimer.cancel();
+		if (mLongPressTimer != null) {
+			mLongPressTimer.cancel();
+		}
 		mLongPressed = false;
 	}
 
