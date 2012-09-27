@@ -24,6 +24,14 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 
 		makeCall("showMessage", params);
 	}
+	
+	@Override
+	public String getMessage() {
+		
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+
+		return (String) makeCall("getMessage", params);
+	}
 
 	@Override
 	public int getChannel() {
@@ -113,5 +121,4 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 
 		makeCall("decVolume", params);
 	}
-
 }

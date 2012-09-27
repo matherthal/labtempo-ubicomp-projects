@@ -160,4 +160,10 @@ public class StoveBurnersPanel extends AbstractPanel {
 
 		return super.onTouchEvent(event);
 	}
+
+	@Override
+	public void onUpdate(String method, Object value) {
+		// TODO Auto-generated method stub
+		
+	}
 }

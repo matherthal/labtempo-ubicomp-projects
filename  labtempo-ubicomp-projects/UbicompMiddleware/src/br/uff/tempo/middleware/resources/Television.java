@@ -11,6 +11,8 @@ public class Television extends ResourceAgent implements ITelevision {
 	private int channel;
 	private int volume;
 	private boolean on;
+	
+	private String message = "";
 
 	public Television(String name) {
 
@@ -24,8 +26,14 @@ public class Television extends ResourceAgent implements ITelevision {
 
 	@Override
 	public void showMessage(String text) {
-		// TODO Auto-generated method stub
-
+		this.message = text;
+		
+		notifyStakeholders("showMessage", text);
+	}
+	
+	@Override
+	public String getMessage() {
+		return this.message;
 	}
 
 	// begin - tv attribute
@@ -39,6 +47,7 @@ public class Television extends ResourceAgent implements ITelevision {
 	public void setChannel(int channel) {
 
 		this.channel = channel;
+		notifyStakeholders("channel", channel);
 	}
 
 	@Override
@@ -51,6 +60,7 @@ public class Television extends ResourceAgent implements ITelevision {
 	public void setOn(boolean on) {
 
 		this.on = on;
+		notifyStakeholders("isOn", on);
 	}
 
 	@Override
@@ -63,6 +73,7 @@ public class Television extends ResourceAgent implements ITelevision {
 	public void setVolume(int volume) {
 
 		this.volume = volume;
+		notifyStakeholders("volume", volume);
 	}
 
 	@Override

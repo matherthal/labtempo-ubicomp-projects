@@ -198,6 +198,12 @@ public class TrackingPanel extends AbstractPanel {
 
 		invalidate();
 	}
+
+	@Override
+	public void onUpdate(String method, Object value) {
+		// TODO Auto-generated method stub
+		
+	}
 }
 
 class Circle {
