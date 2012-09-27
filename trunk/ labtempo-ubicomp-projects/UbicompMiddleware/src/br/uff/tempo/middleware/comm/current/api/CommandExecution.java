@@ -27,7 +27,7 @@ public class CommandExecution extends Thread {
 		try {
 
 
-			String rcvd = new String(dgp.getData());
+			String rcvd = new String(dgp.getData(), 0, dgp.getLength(), "US-ASCII");
 			
 			String[] call = rcvd.split(";");
 			
