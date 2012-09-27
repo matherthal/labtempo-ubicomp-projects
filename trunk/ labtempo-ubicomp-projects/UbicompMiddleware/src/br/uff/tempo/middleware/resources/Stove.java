@@ -117,8 +117,10 @@ public class Stove extends ResourceAgent implements IStove {
 	@Override
 	public void setOvenTemperature(float newTemperature) {
 		this.ovenTemp = newTemperature;
-		this.ovenOn = true;
 		
+		this.ovenOn = newTemperature > 0f;
+
+		notifyStakeholders(CV_OVEN_ON, this.ovenOn);
 		notifyStakeholders(CV_OVEN_TEMPERATURE, newTemperature);
 	}
 
