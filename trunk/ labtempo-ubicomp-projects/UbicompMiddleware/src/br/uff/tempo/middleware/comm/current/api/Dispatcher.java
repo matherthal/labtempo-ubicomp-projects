@@ -1,5 +1,6 @@
 package br.uff.tempo.middleware.comm.current.api;
 
+import java.io.StringReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
@@ -26,6 +27,7 @@ import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.google.gson.stream.JsonReader;
 
 public class Dispatcher extends Thread {
 	// Dispatcher is a Singleton
@@ -115,6 +117,10 @@ public class Dispatcher extends Thread {
 		Gson gson = new Gson();
 		Type collectionType = new TypeToken<HashMap<String, Object>>() {
 		}.getType();
+		
+		JsonReader reader = new JsonReader(new StringReader(call));
+		reader.setLenient(true);
+		
 		return gson.fromJson(call, collectionType);
 	}
 
