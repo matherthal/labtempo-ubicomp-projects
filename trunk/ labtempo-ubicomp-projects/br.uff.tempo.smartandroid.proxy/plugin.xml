@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+	<extension
+	      point="org.eclipse.ui.menus">
+	      <menuContribution
+             locationURI="popup:org.eclipse.jdt.ui.PackageExplorer">
+             
+             <menu
+                    label="SmartAndroid"
+			 		id="br.uff.tempo.smartandroid.menu"
+                	mnemonic="A">
+                	
+                	<command
+	                   commandId="br.uff.tempo.smartandroid.proxy.Create"
+	                   label="Generate SmartAndroid Proxy"
+	                   style="push">
+	                   <visibleWhen
+	                         checkEnabled="false">
+	                         <with
+	                               variable="activeMenuSelection">
+	
+								<iterate
+	                         			ifEmpty="false"
+	                         			operator="or">
+	                         		<adapt
+	                         			type="org.eclipse.jdt.core.ICompilationUnit">
+	                         		</adapt>                         
+	                         	</iterate>
+	                         </with>
+	
+	                   </visibleWhen>
+	             </command>
+             </menu>
+             
+	      </menuContribution>
+	</extension>
+	<extension
+	      point="org.eclipse.ui.commands">
+	      <command
+	      	 defaultHandler="br.uff.tempo.smartandroid.proxy.handler.CreateHandler"
+             id="br.uff.tempo.smartandroid.proxy.Create"
+             name="Create">             
+	      </command>
+	</extension>
+
+</plugin>
