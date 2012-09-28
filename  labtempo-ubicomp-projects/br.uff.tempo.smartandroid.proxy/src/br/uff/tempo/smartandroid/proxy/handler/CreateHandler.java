@@ -8,11 +8,14 @@ import java.io.IOException;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.IParameter;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
+import org.eclipse.jdt.core.ILocalVariable;
+import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
@@ -50,7 +53,7 @@ public class CreateHandler extends AbstractHandler {
 				for (IType type : comp.getAllTypes()) {
 
 					if (doesImplementResourceAgent(type)) {
-						createProxy(comp);
+						createProxy(comp, type);
 					} else {
 						MessageDialog.openInformation(shell, "Info",
 								type.getElementName() + " must implement "
@@ -69,11 +72,11 @@ public class CreateHandler extends AbstractHandler {
 		return null;
 	}
 
-	private void createProxy(ICompilationUnit comp) {
-		createOutput(comp);
+	private void createProxy(ICompilationUnit comp, IType type) {
+		createOutput(comp, type);
 	}
 
-	private void createOutput(ICompilationUnit cu) {
+	private void createOutput(ICompilationUnit cu, IType type) {
 		String directory;
 		IResource res = cu.getResource();
 		boolean newDirectory = true;
@@ -90,7 +93,7 @@ public class CreateHandler extends AbstractHandler {
 		}
 		if (directory != null && directory.length() > 0) {
 			setPersistentProperty(res, path, directory);
-			write(directory, cu);
+			write(directory, cu, type);
 		}
 	}
 
@@ -111,7 +114,7 @@ public class CreateHandler extends AbstractHandler {
 		}
 	}
 
-	private void write(String dir, ICompilationUnit cu) {
+	private void write(String dir, ICompilationUnit cu, IType type) {
 		try {
 			
 			String test = cu.getCorrespondingResource().getName();
@@ -135,11 +138,24 @@ public class CreateHandler extends AbstractHandler {
 			//write the necessary imports
 			
 			//Java File representing the Proxy (Stub)
-			writer.write("public class " + className + " { extends " + SUPER_CLASS + " implements " + name[0] + "\n");
+			writer.write("public class " + className + " extends " + SUPER_CLASS + " implements " + name[0] + " {\n");
 			
-			//write the class methods;			
+			//write the class methods;	
 			
-			writer.write("}");		
+			for (IMethod met : type.getMethods()) {
+				
+				writer.write("@Override\n");
+				writer.write("public " + met.getReturnType() + " " + met.getElementName() + "(");
+				
+				for (ILocalVariable param: met.getParameters()) {
+					
+					writer.write(param.getElementName() + ", ");
+				}
+				
+				writer.write(") {}\n");
+			}
+			
+			writer.write("}");
 			
 			writer.flush();
 		} catch (JavaModelException e) {
