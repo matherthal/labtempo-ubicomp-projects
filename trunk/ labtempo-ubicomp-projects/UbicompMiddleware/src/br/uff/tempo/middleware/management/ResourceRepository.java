@@ -19,6 +19,7 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	private ResourceRepository() {
 		setId(0);
 
+		directory = ResourceDirectory.getInstance();
 		setRAI(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), ResourceRepository.class.getName(), "ResourceRepository"));
 
 		setName("ResourceRepository");
@@ -62,7 +63,7 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		repository.add(url);
 		return true;
 	}
-
+	
 	public boolean remove(String url) {
 		repository.remove(url);
 		return true;
