@@ -8,10 +8,11 @@ import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceDirectory {
 
-	public static final int NAME = 0;  
-	public static final int TYPE = 1;
-	public static final int POSITION = 2;
-	public static final int PLACE = 3;
+	public static final int RAI = 0;
+	public static final int NAME = 1;  
+	public static final int TYPE = 2;
+	public static final int POSITION = 3;
+	public static final int PLACE = 4;
 	
 	Type directory;
 	
@@ -27,6 +28,10 @@ public class ResourceDirectory {
 		return instance;
 	}
 	
+	/**
+	 * Part of CRUD
+	 * @param resource is a ResourceAgent data
+	 */
 	public void create(ResourceData resource) {
 		ArrayList<String> list = extractType(resource.getType());		
 		Type typeBase = directory;
@@ -54,6 +59,7 @@ public class ResourceDirectory {
 			}		
 		}
 	}
+	
 	/**
 	 * Part of CRUD
 	 * @param attribute is value of target variable of query
@@ -63,6 +69,8 @@ public class ResourceDirectory {
 	public List<ResourceData> read(int attribute, String query){
 		List<ResourceData> result = new ArrayList<ResourceData>();
 		switch (attribute) {
+			case RAI:
+				result = getByRai(query);
 			case NAME:
 				result = searchByName(query);
 				break;
@@ -76,8 +84,38 @@ public class ResourceDirectory {
 		return result;
 	}
 	
+	private List<ResourceData> getByRai(String query) {
+		return raiTreeSearch(query, directory);
+	}
 
-	
+	private List<ResourceData> raiTreeSearch(String rai, Type type) {
+		List<ResourceData> result = new ArrayList<ResourceData>();
+		ResourceData resource = null;
+		if ((resource = getRai(rai, type.resources)) != null){
+			result.add(resource);
+			return result;
+		} else {
+			List<Type> subTypes = type.getSubTypeList();
+			if (subTypes != null){
+				for (Type subType : subTypes){
+					if ((result = raiTreeSearch(rai,subType)) != null ){
+						return result;
+					}
+				}
+			}
+			return null;
+		}
+	}
+
+	private ResourceData getRai(String rai, List<ResourceData> resources) {
+		for (ResourceData resource : resources){
+			if (resource.getRai().equals(rai)){
+				return resource;
+			}
+		}
+		return null;
+	}
+
 	private List<ResourceData> searchByPlace(String query) {
 		ResourceLocation rL = ResourceLocation.getInstance();
 		List<String> raiList = rL.search(query);
@@ -173,5 +211,28 @@ public class ResourceDirectory {
 		}
 		return result;
 	}
+	
+	/**
+	 * Part of CRUD
+	 * @param resource is a ResourceAgent new data
+	 */
+	public void update(ResourceData resource){
+		List<ResourceData> result;
+		if ((result = read(RAI, resource.getRai()))!= null){
+			result.set(0, resource);
+		}
+	}
+	
+	/**
+	 * Part of CRUD
+	 * @param resource is ResourceAgent data to be removed
+	 */
+	public void delete(ResourceData resource){
+		List<ResourceData> result;
+		if ((result = read(RAI, resource.getRai()))!= null){
+			result.set(0,null);
+		}
+	}
+	
 	
 }
