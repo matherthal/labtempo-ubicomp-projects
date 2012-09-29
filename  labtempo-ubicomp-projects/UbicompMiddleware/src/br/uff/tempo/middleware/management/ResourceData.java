@@ -4,12 +4,14 @@ import br.uff.tempo.middleware.management.utils.Position;
 
 public class ResourceData {
 
+	String rai;
 	String name;
 	String type;
 	Position position;
 	Place place;
 	
-	public ResourceData (String name, String type,	Position position,	Place place){
+	public ResourceData (String rai, String name, String type,	Position position,	Place place){
+		this.rai = rai;
 		this.name = name;
 		this.type = type;
 		this.position = position;
@@ -38,6 +40,10 @@ public class ResourceData {
 
 	public String getType() {
 		return type;
+	}
+	
+	public String getRai() {
+		return rai;
 	}
 
 }

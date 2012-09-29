@@ -293,6 +293,11 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public void registerStakeholder(String method, String rai) {
 		stakeholders.add(new Stakeholder(method, rai));
 	}
+	
+	public void removeStakeholder(String method, String rai) {
+		stakeholders.remove(new Stakeholder(method, rai));
+	}
+
 
 	// @Override
 	// public boolean registerStakeholder(String method, ResourceAgent rA) {
