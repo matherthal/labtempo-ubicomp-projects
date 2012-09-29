@@ -153,4 +153,13 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	// return false;
 	// }
 
+	@Override
+	public void removeStakeholder(String method, String rai) {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+		params.add(new Tuple<String, Object>(String.class.getName(), method));
+		params.add(new Tuple<String, Object>(String.class.getName(), rai));
+
+		makeCall("removeStakeholders", params);	
+	}
+
 }

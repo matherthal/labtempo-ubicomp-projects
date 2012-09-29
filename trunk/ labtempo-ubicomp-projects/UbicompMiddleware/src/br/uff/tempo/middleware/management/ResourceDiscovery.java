@@ -30,6 +30,7 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 	}
 
 	public ArrayList<String> queryByLocal(String query) {
+		
 		return null;
 	}
 

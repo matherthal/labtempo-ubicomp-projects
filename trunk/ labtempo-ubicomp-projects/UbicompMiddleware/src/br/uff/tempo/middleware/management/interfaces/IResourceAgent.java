@@ -48,6 +48,8 @@ public interface IResourceAgent extends Serializable {
 	}
 
 	public void registerStakeholder(String method, String rai);
+	
+	public void removeStakeholder(String method, String rai);
 
 	public void notificationHandler(String rai, String method, Object value);
 

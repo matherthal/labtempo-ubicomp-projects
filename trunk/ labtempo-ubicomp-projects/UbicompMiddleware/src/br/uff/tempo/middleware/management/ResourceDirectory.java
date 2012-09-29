@@ -15,13 +15,13 @@ public class ResourceDirectory {
 	
 	Type directory;
 	
-	ResourceDirectory instance;
+	private static ResourceDirectory instance;
 	
 	private ResourceDirectory() {
 		directory = new Type("\\");
 	}
 	
-	public ResourceDirectory getInstance() {
+	public static ResourceDirectory getInstance() {
 		if (instance == null)
 			return instance = new ResourceDirectory();
 		return instance;
