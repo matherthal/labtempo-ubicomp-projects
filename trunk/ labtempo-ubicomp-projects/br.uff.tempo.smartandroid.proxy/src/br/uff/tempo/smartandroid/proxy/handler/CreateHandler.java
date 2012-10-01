@@ -276,7 +276,7 @@ public class CreateHandler extends AbstractHandler {
 			str.append("\t\tparams.add(new Tuple<String, Object>(");
 
 			// key
-			str.append("\"" + Signature.toString(parameterTypes[i]) + "\"");
+			str.append(Signature.toString(parameterTypes[i]) + ".class.getName()");
 			str.append(", ");
 			// value
 			str.append(parameterNames[i]);
@@ -288,6 +288,8 @@ public class CreateHandler extends AbstractHandler {
 
 		str.append("\n\t\t");
 		
+		String retClass = "";
+		
 		if (!returnType.equalsIgnoreCase("void")) {
 			str.append("return ");
 
@@ -298,9 +300,11 @@ public class CreateHandler extends AbstractHandler {
 			}
 
 			str.append("(" + returnType + ") ");
+			
+			retClass = ", " + returnType + ".class";
 		}
 
-		str.append("makeCall(\"" + met.getElementName() + "\", params);\n");
+		str.append("makeCall(\"" + met.getElementName() + "\", params" + retClass + ");\n");
 
 		// end method body
 		str.append("\t}\n\n");
