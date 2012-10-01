@@ -12,6 +12,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IResource;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 import org.eclipse.jdt.core.ICompilationUnit;
@@ -35,7 +36,8 @@ public class CreateHandler extends AbstractHandler {
 
 	private static final String[] STUB_IMPORTS = { "java.util.List",
 			"java.util.ArrayList",
-			"br.uff.tempo.middleware.comm.current.api.Tuple" };
+			"br.uff.tempo.middleware.comm.current.api.Tuple",
+			"br.uff.tempo.middleware.management.stubs.ResourceAgentStub" };
 
 	private static final Map<String, String> PRIMITIVE_TYPES = Collections
 			.unmodifiableMap(new HashMap<String, String>() {
@@ -52,7 +54,6 @@ public class CreateHandler extends AbstractHandler {
 			});
 
 	private Shell shell;
-	private QualifiedName path = new QualifiedName("stubs", "path");
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
@@ -72,6 +73,8 @@ public class CreateHandler extends AbstractHandler {
 
 				for (IType type : comp.getAllTypes()) {
 
+					// TODO Review this method. It doesn't get the interface if
+					// it extends a class that extends 'MY_CLASS'
 					if (doesImplementResourceAgent(type)) {
 						createProxy(comp, type);
 					} else {
@@ -93,54 +96,30 @@ public class CreateHandler extends AbstractHandler {
 	}
 
 	private void createProxy(ICompilationUnit comp, IType type) {
-		createOutput(comp, type);
+
+		write(comp, type);
 	}
 
-	private void createOutput(ICompilationUnit cu, IType type) {
-		String directory;
-		IResource res = cu.getResource();
-		boolean newDirectory = true;
-		directory = getPersistentProperty(res, path);
-
-		if (directory != null && directory.length() > 0) {
-			newDirectory = !(MessageDialog.openQuestion(shell, "Question",
-					"Use the previous output directory?"));
-		}
-		if (newDirectory) {
-			DirectoryDialog fileDialog = new DirectoryDialog(shell);
-			directory = fileDialog.open();
-
-		}
-		if (directory != null && directory.length() > 0) {
-			setPersistentProperty(res, path, directory);
-			write(directory, cu, type);
-		}
-	}
-
-	protected String getPersistentProperty(IResource res, QualifiedName qn) {
+	private void write(ICompilationUnit cu, IType type) {
 		try {
-			return res.getPersistentProperty(qn);
-		} catch (CoreException e) {
-			return "";
-		}
-	}
 
-	protected void setPersistentProperty(IResource res, QualifiedName qn,
-			String value) {
-		try {
-			res.setPersistentProperty(qn, value);
-		} catch (CoreException e) {
-			e.printStackTrace();
-		}
-	}
+			String dir = cu.getPath().makeAbsolute().toOSString();
+			String workspaceLocation = ResourcesPlugin.getWorkspace().getRoot()
+					.getLocation().toOSString();
 
-	private void write(String dir, ICompilationUnit cu, IType type) {
-		try {
+			String parsedPath = splitAndConcat(dir, File.separator,
+					File.separator, "stubs");
+
+			String location = workspaceLocation + parsedPath;
 
 			String test = cu.getCorrespondingResource().getName();
 
 			// Need
 			String[] name = test.split("\\.");
+
+			// the pattern is -> an interface starts with 'I'.
+			// if there is an 'I' char followed by an upper-case letter
+			// ignore this 'I'
 
 			String className = name[0];
 
@@ -151,18 +130,35 @@ public class CreateHandler extends AbstractHandler {
 
 			className = className + "Stub";
 
-			String javaFile = dir + File.separator + className + ".java";
+			String javaFile = location + File.separator + className + ".java";
+
+			// create the directory
+			(new File(location)).mkdir();
 
 			FileWriter output = new FileWriter(javaFile);
 			BufferedWriter writer = new BufferedWriter(output);
 
+			// it will be concat the expressions to create the Java file
 			StringBuilder str = new StringBuilder();
-			// write the necessary imports
-			str.append(createImports(cu));
 
-			// Java File representing the Proxy (Stub)
+			String interfaceFullName = type
+					.getFullyQualifiedParameterizedName();
+
+			// wirte the package declaration
+			str.append(createPackage(interfaceFullName));
+
+			// write the necessary imports
+			str.append(createImports(cu, interfaceFullName));
+
+			// write the class signature
 			str.append("public class " + className + " extends " + SUPER_CLASS
 					+ " implements " + name[0] + " {\n\n");
+
+			// write the fields
+			str.append("\tprivate static final long serialVersionUID = 1L;\n\n");
+
+			// write the constructor method
+			str.append(createConstructor(className));
 
 			// write the class methods;
 			for (IMethod met : type.getMethods()) {
@@ -180,17 +176,6 @@ public class CreateHandler extends AbstractHandler {
 
 			String source = str.toString();
 
-//			// Formating source code (like ctrl + shif + F)
-//			CodeFormatter cf = new DefaultCodeFormatter();
-//
-//			TextEdit te = cf.format(CodeFormatter.K_UNKNOWN, source, 0,
-//					source.length(), 0, null);
-//			IDocument doc = new Document(source);
-//			
-//			if (te != null) {
-//				te.apply(doc);
-//			}
-
 			// Write the source code in the java file
 			writer.write(source);
 			writer.flush();
@@ -203,31 +188,63 @@ public class CreateHandler extends AbstractHandler {
 
 	}
 
-	private String createImports(ICompilationUnit cu) throws JavaModelException {
+	private String createPackage(String interfaceFullName)
+			throws JavaModelException {
 
 		StringBuilder str = new StringBuilder();
 
+		str.append("package ");
+
+		str.append(splitAndConcat(interfaceFullName, "\\.", ".", "stubs;\n\n"));
+
+		return str.toString();
+	}
+
+	private String createImports(ICompilationUnit cu, String interfaceFullName)
+			throws JavaModelException {
+
+		StringBuilder str = new StringBuilder();
+
+		// imports for the stub stuff
 		for (String imp : STUB_IMPORTS) {
 			str.append("import " + imp + ";\n");
 		}
 
+		// import for interface implemented
+		str.append("import " + interfaceFullName + ";\n");
+
+		// imports from the interface implemented
 		for (IImportDeclaration id : cu.getImports()) {
 
+			//check for duplicates
 			boolean declared = false;
 
 			String imp = id.getElementName();
 
 			for (String si : STUB_IMPORTS) {
-				if (imp.equals(si)) {
+				if (imp.equals(si) || imp.contains("IResourceAgent")) {
 					declared = true;
 					break;
 				}
 			}
 
 			if (!declared) {
-				str.append("import " + imp + ";\n\n");
+				str.append("import " + imp + ";\n");
 			}
 		}
+
+		str.append("\n");
+
+		return str.toString();
+	}
+
+	private String createConstructor(String className) {
+
+		StringBuilder str = new StringBuilder();
+
+		str.append("\tpublic " + className + " (String rai) {\n");
+		str.append("\t\tsuper(rai);\n");
+		str.append("\t}\n\n");
 
 		return str.toString();
 	}
@@ -276,7 +293,8 @@ public class CreateHandler extends AbstractHandler {
 			str.append("\t\tparams.add(new Tuple<String, Object>(");
 
 			// key
-			str.append(Signature.toString(parameterTypes[i]) + ".class.getName()");
+			str.append(Signature.toString(parameterTypes[i])
+					+ ".class.getName()");
 			str.append(", ");
 			// value
 			str.append(parameterNames[i]);
@@ -287,9 +305,9 @@ public class CreateHandler extends AbstractHandler {
 		String returnType = Signature.toString(met.getReturnType());
 
 		str.append("\n\t\t");
-		
+
 		String retClass = "";
-		
+
 		if (!returnType.equalsIgnoreCase("void")) {
 			str.append("return ");
 
@@ -300,14 +318,38 @@ public class CreateHandler extends AbstractHandler {
 			}
 
 			str.append("(" + returnType + ") ");
-			
+
 			retClass = ", " + returnType + ".class";
 		}
 
-		str.append("makeCall(\"" + met.getElementName() + "\", params" + retClass + ");\n");
+		str.append("makeCall(\"" + met.getElementName() + "\", params"
+				+ retClass + ");\n");
 
 		// end method body
 		str.append("\t}\n\n");
+
+		return str.toString();
+	}
+
+	private String splitAndConcat(String unparsedStr, String splitSeparator,
+			String concatSeparator, String end) {
+
+		StringBuilder str = new StringBuilder();
+
+		String[] separedStr = unparsedStr.split(splitSeparator);
+
+		int tam = separedStr.length - 2;
+
+		if (!separedStr[separedStr.length - 2].equalsIgnoreCase("interfaces")) {
+			tam++;
+		}
+
+		for (int i = 0; i < tam; i++) {
+
+			str.append(separedStr[i] + concatSeparator);
+		}
+
+		str.append(end);
 
 		return str.toString();
 	}
