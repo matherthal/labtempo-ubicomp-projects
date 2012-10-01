@@ -27,13 +27,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.jdt.core.formatter.CodeFormatter;
-import org.eclipse.jdt.internal.formatter.DefaultCodeFormatter;
-import org.eclipse.text.edits.MalformedTreeException;
-import org.eclipse.text.edits.TextEdit;
-import org.eclipse.jface.text.BadLocationException;
-import org.eclipse.jface.text.Document;
-import org.eclipse.jface.text.IDocument;
 
 public class CreateHandler extends AbstractHandler {
 
@@ -203,8 +196,6 @@ public class CreateHandler extends AbstractHandler {
 			writer.flush();
 
 		} catch (JavaModelException e) {
-			e.printStackTrace();
-		} catch (MalformedTreeException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
