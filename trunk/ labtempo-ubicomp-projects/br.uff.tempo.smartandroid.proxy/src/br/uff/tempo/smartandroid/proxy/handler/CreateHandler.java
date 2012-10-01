@@ -4,33 +4,60 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IParameter;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
-import org.eclipse.jdt.core.IClassFile;
 import org.eclipse.jdt.core.ICompilationUnit;
-import org.eclipse.jdt.core.ILocalVariable;
+import org.eclipse.jdt.core.IImportDeclaration;
 import org.eclipse.jdt.core.IMethod;
 import org.eclipse.jdt.core.IType;
 import org.eclipse.jdt.core.ITypeHierarchy;
 import org.eclipse.jdt.core.JavaModelException;
+import org.eclipse.jdt.core.Signature;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.jdt.core.formatter.CodeFormatter;
+import org.eclipse.jdt.internal.formatter.DefaultCodeFormatter;
+import org.eclipse.text.edits.MalformedTreeException;
+import org.eclipse.text.edits.TextEdit;
+import org.eclipse.jface.text.BadLocationException;
+import org.eclipse.jface.text.Document;
+import org.eclipse.jface.text.IDocument;
 
 public class CreateHandler extends AbstractHandler {
 
 	private static final String MY_CLASS = "IResourceAgent";
 	private static final String SUPER_CLASS = "ResourceAgentStub";
-	
+
+	private static final String[] STUB_IMPORTS = { "java.util.List",
+			"java.util.ArrayList",
+			"br.uff.tempo.middleware.comm.current.api.Tuple" };
+
+	private static final Map<String, String> PRIMITIVE_TYPES = Collections
+			.unmodifiableMap(new HashMap<String, String>() {
+				{
+					put("int", "Integer");
+					put("boolean", "Boolean");
+					put("float", "Float");
+					put("double", "Double");
+					put("short", "Short");
+					put("long", "Long");
+					put("byte", "Byte");
+					put("char", "Character");
+				}
+			});
+
 	private Shell shell;
 	private QualifiedName path = new QualifiedName("stubs", "path");
 
@@ -116,53 +143,178 @@ public class CreateHandler extends AbstractHandler {
 
 	private void write(String dir, ICompilationUnit cu, IType type) {
 		try {
-			
+
 			String test = cu.getCorrespondingResource().getName();
-			
+
 			// Need
 			String[] name = test.split("\\.");
-			
+
 			String className = name[0];
-			
-			if (className.charAt(0) == 'I' && Character.isUpperCase(className.charAt(1))) {
+
+			if (className.charAt(0) == 'I'
+					&& Character.isUpperCase(className.charAt(1))) {
 				className = className.substring(1);
 			}
-			
+
 			className = className + "Stub";
-			
-			String htmlFile = dir + File.separator + className + ".java";
-			
-			FileWriter output = new FileWriter(htmlFile);
+
+			String javaFile = dir + File.separator + className + ".java";
+
+			FileWriter output = new FileWriter(javaFile);
 			BufferedWriter writer = new BufferedWriter(output);
-			
-			//write the necessary imports
-			
-			//Java File representing the Proxy (Stub)
-			writer.write("public class " + className + " extends " + SUPER_CLASS + " implements " + name[0] + " {\n");
-			
-			//write the class methods;	
-			
+
+			StringBuilder str = new StringBuilder();
+			// write the necessary imports
+			str.append(createImports(cu));
+
+			// Java File representing the Proxy (Stub)
+			str.append("public class " + className + " extends " + SUPER_CLASS
+					+ " implements " + name[0] + " {\n\n");
+
+			// write the class methods;
 			for (IMethod met : type.getMethods()) {
-				
-				writer.write("@Override\n");
-				writer.write("public " + met.getReturnType() + " " + met.getElementName() + "(");
-				
-				for (ILocalVariable param: met.getParameters()) {
-					
-					writer.write(param.getElementName() + ", ");
-				}
-				
-				writer.write(") {}\n");
+
+				// write method signature (return type, name, params-type and
+				// params-name)
+				str.append(createMethodDeclaration(met));
+
+				// write the method body
+				str.append(createMethodBody(met));
 			}
-			
-			writer.write("}");
-			
+
+			// end
+			str.append("}\n");
+
+			String source = str.toString();
+
+//			// Formating source code (like ctrl + shif + F)
+//			CodeFormatter cf = new DefaultCodeFormatter();
+//
+//			TextEdit te = cf.format(CodeFormatter.K_UNKNOWN, source, 0,
+//					source.length(), 0, null);
+//			IDocument doc = new Document(source);
+//			
+//			if (te != null) {
+//				te.apply(doc);
+//			}
+
+			// Write the source code in the java file
+			writer.write(source);
 			writer.flush();
+
 		} catch (JavaModelException e) {
+			e.printStackTrace();
+		} catch (MalformedTreeException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
+	}
+
+	private String createImports(ICompilationUnit cu) throws JavaModelException {
+
+		StringBuilder str = new StringBuilder();
+
+		for (String imp : STUB_IMPORTS) {
+			str.append("import " + imp + ";\n");
+		}
+
+		for (IImportDeclaration id : cu.getImports()) {
+
+			boolean declared = false;
+
+			String imp = id.getElementName();
+
+			for (String si : STUB_IMPORTS) {
+				if (imp.equals(si)) {
+					declared = true;
+					break;
+				}
+			}
+
+			if (!declared) {
+				str.append("import " + imp + ";\n\n");
+			}
+		}
+
+		return str.toString();
+	}
+
+	private String createMethodDeclaration(IMethod met)
+			throws IllegalArgumentException, JavaModelException {
+
+		String comma = "";
+		StringBuilder str = new StringBuilder();
+
+		str.append("\t@Override\n");
+
+		str.append("\tpublic " + Signature.toString(met.getReturnType()) + " "
+				+ met.getElementName() + "(");
+
+		String[] parameterTypes = met.getParameterTypes();
+		String[] parameterNames = met.getParameterNames();
+
+		for (int i = 0; i < met.getParameterTypes().length; i++) {
+
+			str.append(comma);
+			str.append(Signature.toString(parameterTypes[i]));
+			str.append(" ");
+			str.append(parameterNames[i]);
+			comma = ", ";
+		}
+
+		str.append(")");
+
+		return str.toString();
+	}
+
+	private String createMethodBody(IMethod met)
+			throws IllegalArgumentException, JavaModelException {
+
+		StringBuilder str = new StringBuilder();
+
+		str.append(" {\n");
+		str.append("\t\tList<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();\n");
+
+		String[] parameterTypes = met.getParameterTypes();
+		String[] parameterNames = met.getParameterNames();
+
+		for (int i = 0; i < met.getParameterTypes().length; i++) {
+
+			str.append("\t\tparams.add(new Tuple<String, Object>(");
+
+			// key
+			str.append("\"" + Signature.toString(parameterTypes[i]) + "\"");
+			str.append(", ");
+			// value
+			str.append(parameterNames[i]);
+
+			str.append("));\n");
+		}
+
+		String returnType = Signature.toString(met.getReturnType());
+
+		str.append("\n\t\t");
+		
+		if (!returnType.equalsIgnoreCase("void")) {
+			str.append("return ");
+
+			// if the return type is a primitive data type, gets its wrapper
+			// class
+			if (PRIMITIVE_TYPES.containsKey(returnType)) {
+				returnType = PRIMITIVE_TYPES.get(returnType);
+			}
+
+			str.append("(" + returnType + ") ");
+		}
+
+		str.append("makeCall(\"" + met.getElementName() + "\", params);\n");
+
+		// end method body
+		str.append("\t}\n\n");
+
+		return str.toString();
 	}
 
 	private boolean doesImplementResourceAgent(IType type)
