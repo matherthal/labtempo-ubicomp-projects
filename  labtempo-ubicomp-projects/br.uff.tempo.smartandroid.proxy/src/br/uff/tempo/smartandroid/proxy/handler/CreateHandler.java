@@ -335,6 +335,10 @@ public class CreateHandler extends AbstractHandler {
 			String concatSeparator, String end) {
 
 		StringBuilder str = new StringBuilder();
+		
+		if (splitSeparator.equals("\\")) {
+			splitSeparator = "\\" + splitSeparator;
+		}
 
 		String[] separedStr = unparsedStr.split(splitSeparator);
 
