@@ -14,6 +14,7 @@ import br.uff.tempo.middleware.management.utils.Position;
 public class Person extends ResourceAgent {
 
 	public static final long DEFAULT_PERIOD = 1000;
+	public static final float DEFAULT_THRESHOLD = 1.0f;
 	public static final int DEFAUT_WINDOW_SIZE = 20;
 	private static final long serialVersionUID = 1L;
 	private static final String CV_POSITION = "position";
@@ -23,7 +24,7 @@ public class Person extends ResourceAgent {
 	private long period; // milliseconds
 	private int windowSize;
 
-	Position lastPos;
+	Position lastPos = new Position(0f,0f);
 
 	List<SmartObject> objects;
 	List<Place> recentLocal;
@@ -51,21 +52,21 @@ public class Person extends ResourceAgent {
 
 		this.windowSize = DEFAUT_WINDOW_SIZE;
 
-		this.timer = new Timer();
-
-		timer.schedule(new TimerTask() {
-
-			@Override
-			public void run() {
-
-				while (true) {
-					if (lastPos != null) {
-						notifyStakeholders(CV_POSITION, lastPos);
-						lastPos = null;
-					}
-				}
-			}
-		}, this.period);
+//		this.timer = new Timer();
+//
+//		timer.schedule(new TimerTask() {
+//
+//			@Override
+//			public void run() {
+//
+//				while (true) {
+//					if (lastPos != null) {
+//						notifyStakeholders(CV_POSITION, lastPos);
+//						lastPos = null;
+//					}
+//				}
+//			}
+//		}, this.period);
 	}
 
 	public void updateRecentLocal() {
@@ -114,9 +115,11 @@ public class Person extends ResourceAgent {
 
 		recentPositions.add(position);
 
+		if (position.getDistance(lastPos) > DEFAULT_THRESHOLD) {
+			notifyStakeholders(CV_POSITION, position);
+		}
+		
 		lastPos = position;
-
-		// notifyStakeholders(CV_POSITION, position);
 	}
 
 	public boolean removePosition(Position position) {
