@@ -64,6 +64,11 @@ public abstract class AbstractPanel extends View {
 		};
 	}
 	
+	/**
+	 * Called when occurs a change in any context variable from current Agent.
+	 * @param method Context variable changed.
+	 * @param value Current value from the context variable changed.
+	 */
 	public abstract void onUpdate(String method, Object value);
 	
 	public int getScreenCenterX() {

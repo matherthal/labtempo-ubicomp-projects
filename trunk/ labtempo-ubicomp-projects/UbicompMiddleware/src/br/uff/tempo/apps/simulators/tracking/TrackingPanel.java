@@ -16,11 +16,13 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;
 import br.uff.tempo.apps.simulators.AbstractPanel;
+import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
 import br.uff.tempo.middleware.resources.interfaces.IPerson;
 
@@ -34,17 +36,18 @@ public class TrackingPanel extends AbstractPanel {
 
 	private Space homeMap;
 	private Map<String, Rect> rooms;
-	private List<Circle> users;
+	private List<Avatar> users;
 
 	private Paint paint;
 
 	private int counter = 0;
 
-	private Circle currentUser;
+	private Avatar currentUser;
 	private boolean caught;
 
 	private int[] colors = { Color.BLUE, Color.GREEN, Color.CYAN, Color.GRAY,
 			Color.MAGENTA, Color.RED, Color.YELLOW };
+	private int factor;
 
 	public TrackingPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -56,21 +59,22 @@ public class TrackingPanel extends AbstractPanel {
 
 		super.init();
 
-		rds = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		List<String> result = rds.search("ResourceLocation");
-
-		if (result != null) {
-			rLocation = new ResourceLocationStub(result.get(0));
-		} else {
-			Log.e(TAG, "ResourceLocation doesn't exist...");
-		}
-
 		paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setColor(Color.WHITE);
 		paint.setStrokeWidth(10);
 
-		setupRooms();
+		rds = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+		List<String> result = rds.search("ResourceLocation");
+
+		if (result != null) {
+			rLocation = new ResourceLocationStub(result.get(0));
+
+			setupRooms();
+
+		} else {
+			Log.e(TAG, "ResourceLocation doesn't exist...");
+		}
 	}
 
 	private void setupRooms() {
@@ -78,7 +82,7 @@ public class TrackingPanel extends AbstractPanel {
 		homeMap = rLocation.getMap();
 
 		rooms = new HashMap<String, Rect>();
-		users = new LinkedList<Circle>();
+		users = new LinkedList<Avatar>();
 		updateRectangles();
 	}
 
@@ -90,7 +94,7 @@ public class TrackingPanel extends AbstractPanel {
 		int factorW = (int) (getScreenWidth() / mapWidth);
 		int factorH = (int) (getScreenHeiht() / mapHeight);
 
-		int factor = factorW < factorH ? factorW : factorH;
+		factor = factorW < factorH ? factorW : factorH;
 
 		int i = 0;
 		for (Place place : homeMap.getAllPlaces()) {
@@ -106,6 +110,10 @@ public class TrackingPanel extends AbstractPanel {
 
 			i++;
 		}
+
+		for (Avatar usr : users) {
+			usr.setPixalFactor(factor);
+		}
 	}
 
 	@Override
@@ -118,7 +126,7 @@ public class TrackingPanel extends AbstractPanel {
 			canvas.drawRect(rect, paint);
 		}
 
-		for (Circle circ : users) {
+		for (Avatar circ : users) {
 			canvas.drawCircle(circ.getCenterX(), circ.getCenterY(),
 					circ.getRadius(), circ.getPaint());
 		}
@@ -135,11 +143,11 @@ public class TrackingPanel extends AbstractPanel {
 
 			Log.d("TrackingPanel", "Action DOWN");
 
-			Iterator<Circle> it = users.iterator();
+			Iterator<Avatar> it = users.iterator();
 
 			while (it.hasNext()) {
 
-				Circle c = it.next();
+				Avatar c = it.next();
 
 				if (c.contains(x, y)) {
 
@@ -155,12 +163,12 @@ public class TrackingPanel extends AbstractPanel {
 			Log.d("TrackingPanel", "Action MOVE");
 
 			if (caught) {
-				
+
 				Log.d("TrackingPanel", "Moving " + currentUser.getName()
 						+ " from [" + currentUser.getCenterX() + " "
 						+ currentUser.getCenterY() + "] to [" + x + " " + y
 						+ "]");
-				
+
 				currentUser.setCenter(x, y);
 			}
 
@@ -190,8 +198,9 @@ public class TrackingPanel extends AbstractPanel {
 		Paint p = new Paint();
 		p.setColor(colors[counter]);
 
-		Circle usr = new Circle(name, getScreenCenterX(), getScreenCenterY(),
+		Avatar usr = new Avatar(name, getScreenCenterX(), getScreenCenterY(),
 				RADIUS, p);
+
 		users.add(usr);
 
 		counter = (counter + 1) % colors.length;
@@ -202,32 +211,35 @@ public class TrackingPanel extends AbstractPanel {
 	@Override
 	public void onUpdate(String method, Object value) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }
 
-class Circle {
+class Avatar {
 
 	private int centerX;
 	private int centerY;
 	private int radius;
 	private Paint paint;
 	private Rect rect;
+	private Person person;
+
+	private int pixelFactor = 0;
 
 	private final int DELTA = 10;
 	private int len;
 
 	private String name;
 
-	public Circle(int centerX, int centerY, int radius) {
+	public Avatar(int centerX, int centerY, int radius) {
 		this(null, centerX, centerY, radius, null);
 	}
 
-	public Circle(int centerX, int centerY, int radius, Paint paint) {
+	public Avatar(int centerX, int centerY, int radius, Paint paint) {
 		this(null, centerX, centerY, radius, paint);
 	}
 
-	public Circle(String name, int centerX, int centerY, int radius, Paint paint) {
+	public Avatar(String name, int centerX, int centerY, int radius, Paint paint) {
 		this.centerX = centerX;
 		this.centerY = centerY;
 		this.radius = radius;
@@ -238,11 +250,34 @@ class Circle {
 		len = radius + DELTA;
 		rect = new Rect(centerX - len, centerY - len, centerX + len, centerY
 				+ len);
+
+		this.person = new Person(this.name);
 	}
 
 	public boolean contains(int x, int y) {
 
 		return rect.contains(x, y);
+	}	
+
+	public void setPixalFactor(int factor) {
+		this.pixelFactor = factor;
+	}
+
+	public void setCenter(int centerX, int centerY) {
+
+		this.centerX = centerX;
+		this.centerY = centerY;
+
+		rect.offsetTo(centerX - len, centerY - len);
+
+		float x = Space.pixelToMeters(centerX, pixelFactor);
+		float y = Space.pixelToMeters(centerY, pixelFactor);
+
+		this.person.addPosition(new Position(x, y));
+	}
+
+	public int getCenterY() {
+		return centerY;
 	}
 
 	public String getName() {
@@ -263,25 +298,6 @@ class Circle {
 
 	public int getCenterX() {
 		return centerX;
-	}
-
-	public void setCenter(int centerX, int centerY) {
-		setCenterX(centerX);
-		setCenterY(centerY);
-
-		rect.offsetTo(centerX - len, centerY - len);
-	}
-
-	public void setCenterX(int centerX) {
-		this.centerX = centerX;
-	}
-
-	public int getCenterY() {
-		return centerY;
-	}
-
-	public void setCenterY(int centerY) {
-		this.centerY = centerY;
 	}
 
 	public int getRadius() {
