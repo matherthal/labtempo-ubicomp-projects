@@ -7,17 +7,18 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import br.uff.tempo.apps.map.objects.ResourceObject;
+import br.uff.tempo.middleware.management.interfaces.IPerson;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
 
-public class Person extends ResourceAgent {
+public class Person extends ResourceAgent implements IPerson {
 
 	public static final long DEFAULT_PERIOD = 1000;
 	public static final float DEFAULT_THRESHOLD = 1.0f;
 	public static final int DEFAUT_WINDOW_SIZE = 20;
 	private static final long serialVersionUID = 1L;
-	private static final String CV_POSITION = "position";
+	public static final String CV_POSITION = "position";
 
 	private Timer timer;
 
