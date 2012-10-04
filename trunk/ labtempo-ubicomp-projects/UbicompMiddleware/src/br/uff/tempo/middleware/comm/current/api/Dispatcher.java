@@ -178,6 +178,8 @@ public class Dispatcher extends Thread {
 		try {
 			return method.invoke(rA, args);
 		} catch (InvocationTargetException e) {
+			
+			Log.e("SmartAndroid", "Exception in execute method from Dispacher: " + e);
 			return null;
 		}
 	}
