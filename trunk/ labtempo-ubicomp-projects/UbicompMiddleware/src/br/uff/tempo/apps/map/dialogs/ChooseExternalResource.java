@@ -54,7 +54,7 @@ public class ChooseExternalResource extends MapDialog implements
 
 		for (String s : resList) {
 
-			if (!s.contains("management")) {
+			if (!s.contains("Resource")) {
 
 				list.add(s);
 			}
