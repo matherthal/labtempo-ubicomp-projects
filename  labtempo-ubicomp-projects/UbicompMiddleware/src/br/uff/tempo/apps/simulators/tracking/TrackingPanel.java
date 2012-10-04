@@ -25,7 +25,6 @@ import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
 
-
 public class TrackingPanel extends AbstractPanel {
 
 	private static final int RADIUS = 10;
@@ -177,14 +176,18 @@ public class TrackingPanel extends AbstractPanel {
 			caught = false;
 			Log.d("TrackingPanel", "Action UP");
 
-			for (Map.Entry<String, Rect> entry : rooms.entrySet()) {
+//			for (Map.Entry<String, Rect> entry : rooms.entrySet()) {
+//
+//				if (entry.getValue().contains(x, y)) {
+//
+//					Toast.makeText(getContext(), entry.getKey(),
+//							Toast.LENGTH_SHORT).show();
+//					break;
+//				}
+//			}
 
-				if (entry.getValue().contains(x, y)) {
-
-					Toast.makeText(getContext(), entry.getKey(),
-							Toast.LENGTH_SHORT).show();
-					break;
-				}
+			if (currentUser != null) {
+				currentUser.storePosition();
 			}
 		}
 
@@ -200,6 +203,9 @@ public class TrackingPanel extends AbstractPanel {
 
 		Avatar usr = new Avatar(name, getScreenCenterX(), getScreenCenterY(),
 				RADIUS, p);
+
+		usr.setPixalFactor(factor);
+		usr.setSpace(homeMap);
 
 		users.add(usr);
 
@@ -225,6 +231,7 @@ class Avatar {
 	private Person person;
 
 	private int pixelFactor = 0;
+	private Space houseMap;
 
 	private final int DELTA = 10;
 	private int len;
@@ -252,28 +259,40 @@ class Avatar {
 				+ len);
 
 		this.person = new Person(this.name);
+		this.person.identify();
 	}
 
 	public boolean contains(int x, int y) {
 
 		return rect.contains(x, y);
-	}	
-
-	public void setPixalFactor(int factor) {
-		this.pixelFactor = factor;
 	}
 
+	public void storePosition() {
+
+		float x = Space.pixelToMeters(centerX, pixelFactor);
+		float y = houseMap.invertYcoordinate(Space.pixelToMeters(centerY,
+				pixelFactor));
+
+		Log.i("SmartAndroid", "[" + x + ", " + y + "]");
+		
+		this.person.addPosition(new Position(x, y));
+	}
+
+	// Getters and Setters
 	public void setCenter(int centerX, int centerY) {
 
 		this.centerX = centerX;
 		this.centerY = centerY;
 
 		rect.offsetTo(centerX - len, centerY - len);
+	}
 
-		float x = Space.pixelToMeters(centerX, pixelFactor);
-		float y = Space.pixelToMeters(centerY, pixelFactor);
+	public void setPixalFactor(int factor) {
+		this.pixelFactor = factor;
+	}
 
-		this.person.addPosition(new Position(x, y));
+	public void setSpace(Space space) {
+		this.houseMap = space;
 	}
 
 	public int getCenterY() {
