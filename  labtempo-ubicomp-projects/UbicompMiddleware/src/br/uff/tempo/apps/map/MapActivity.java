@@ -29,10 +29,17 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.atlas.bitmap.BuildableBitmapTextureAtlas;
+import org.andengine.opengl.texture.atlas.bitmap.source.IBitmapTextureAtlasSource;
+import org.andengine.opengl.texture.atlas.buildable.builder.BlackPawnTextureAtlasBuilder;
+import org.andengine.opengl.texture.atlas.buildable.builder.ITextureAtlasBuilder.TextureAtlasBuilderException;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.debug.Debug;
 
 import android.app.Dialog;
 import android.content.Intent;
@@ -137,13 +144,23 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	private TMXTiledMap tiledMap;
 
 	// The image atlas (an object that "contains" every image)
-	private BitmapTextureAtlas mBitmapTextureAtlas;
+	private BuildableBitmapTextureAtlas mTiledTextureAtlas;
+	private BuildableBitmapTextureAtlas mBuildableTexture;
 
 	// Texture Regions
 	private TextureRegion mStoveTextureRegion;
 	private TextureRegion mTVTextureRegion;
 	private TextureRegion mBedTextureRegion;
 	private TextureRegion mLampTextureRegion;
+	// People
+	private TiledTextureRegion mPersonBaldMan;
+	private TiledTextureRegion mPersonBlondMan;
+	private TiledTextureRegion mPersonManInTie;
+	private TiledTextureRegion mPersonBlondGirl;
+	private TiledTextureRegion mPersonRedHeadedGirl;
+	private TiledTextureRegion mPersonBlondGuy;
+	private TiledTextureRegion mPersonGrayGuy;
+	private TiledTextureRegion mPersonNurse;
 
 	// Camera size
 	private int mCameraWidth;
@@ -173,9 +190,11 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 	private TMXLayer mapFloorLayer;
 	private TMXLayer mapWallLayer;
-	
-	//House map
+
+	// House map
 	private Space houseMap;
+
+	
 
 	// ===========================================================
 	// Constructors
@@ -229,37 +248,47 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		this.mEngine.enableVibrator(this);
 
+		// Now using an algorithm to automatically place the TextureSources on a
+		// Texture, so you don't have to care about the actual position anymore
+		this.mBuildableTexture = new BuildableBitmapTextureAtlas(
+				this.getTextureManager(), 512, 512, TextureOptions.DEFAULT);
+		
+		this.mTiledTextureAtlas = new BuildableBitmapTextureAtlas(
+				this.getTextureManager(), 512, 512, TextureOptions.NEAREST);
+
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
-		// It's like a catalog of images. The TextureRegion's objects are placed
-		// onto the BitmapAtlas
-		// Be careful with these integers! They are the TerxtureRegion
-		// coordinates (pixels) in the atlas
-
-		this.mBitmapTextureAtlas = new BitmapTextureAtlas(
-				this.getTextureManager(), 127, 285, TextureOptions.BILINEAR);
-
-		// the stove image is in position (0,0) in the atlas
+		// the stove image
 		this.mStoveTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(this.mBitmapTextureAtlas, this,
-						"stove_small.png", 0, 0);
+				.createFromAsset(this.mBuildableTexture, this,
+						"stove_small.png");
 
-		// the tv image is at the position (0,52) in the atlas
+		// the tv image
 		this.mTVTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(this.mBitmapTextureAtlas, this,
-						"tv_small.png", 0, 52);
+				.createFromAsset(this.mBuildableTexture, this, "tv_small.png");
 
-		// the bed image is at the position (0,75) in the atlas
+		// the bed image
 		this.mBedTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(this.mBitmapTextureAtlas, this,
-						"bed_small.png", 0, 75);
+				.createFromAsset(this.mBuildableTexture, this, "bed_small.png");
 
-		// the lamp image is at the position (0, 253) in the atlas
+		// the lamp image
 		this.mLampTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createFromAsset(this.mBitmapTextureAtlas, this,
-						"lamp_inactive.png", 0, 253);
+				.createFromAsset(this.mBuildableTexture, this,
+						"lamp_inactive.png");
 
-		this.mBitmapTextureAtlas.load();
+		// All People sprites are 96x128 pixels
+		this.mPersonBaldMan = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(this.mBuildableTexture, this,
+						"man_bald.png", 3, 4);
+
+		try {
+			this.mBuildableTexture.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
+			this.mBuildableTexture.load();
+			
+		} catch (TextureAtlasBuilderException e) {
+			Debug.e(e);
+		}
+
 	}
 
 	@Override
@@ -352,7 +381,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		Class c = null;
 
 		// The resource icon (image)
-		TextureRegion tr = null;
+		ITextureRegion tr = null;
 
 		// Reference to resource to be created
 		IResourceAgent resAg = null;
@@ -462,7 +491,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		case PERSON:
 
 			c = br.uff.tempo.apps.simulators.bed.BedView.class;
-			tr = this.mBedTextureRegion;
+			tr = this.mPersonBaldMan;
 			resType = PERSON;
 
 			IPerson person;
@@ -523,7 +552,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		mAppManager.addResource(resAg.getRAI(), res);
 	}
 
-	private Sprite createSprite(final TextureRegion pTextureRegion,
+	private Sprite createSprite(final ITextureRegion pTextureRegion,
 			final Intent intent, final int dataType) {
 
 		// Create a new Sprite that shows pTextureImage as graphical
@@ -543,11 +572,11 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			AnimatedResourceObject aro = new AnimatedResourceObject(x, y,
 					(ITiledTextureRegion) pTextureRegion, vbom, fm, tm);
-			
+
 			aro.setSpace(houseMap);
-			
+
 			sprite = aro;
-			
+
 		} else {
 			sprite = new ResourceObject(x, y, pTextureRegion, vbom, fm, tm) {
 
