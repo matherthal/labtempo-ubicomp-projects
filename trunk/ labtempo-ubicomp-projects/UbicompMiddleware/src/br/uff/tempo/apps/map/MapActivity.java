@@ -9,6 +9,7 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.IOnSceneTouchListener;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.util.FPSLogger;
 import org.andengine.extension.tmx.TMXLayer;
 import org.andengine.extension.tmx.TMXLoader;
@@ -28,7 +29,9 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
+import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import android.app.Dialog;
@@ -49,15 +52,20 @@ import br.uff.tempo.apps.map.dialogs.IResourceListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.apps.map.dialogs.ResourceConfig;
 import br.uff.tempo.apps.map.log.LogActivity;
+import br.uff.tempo.apps.map.objects.AnimatedResourceObject;
+import br.uff.tempo.apps.map.objects.INotificationBoxReceiver;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
 import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
+import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.Place;
+import br.uff.tempo.middleware.management.interfaces.IPerson;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
+import br.uff.tempo.middleware.management.stubs.PersonStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
@@ -95,7 +103,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	// TODO: Put these constants in a separate file
 	public static final int GPR_RESOURCES = 10;
 	public static final int STOVE = GPR_RESOURCES + 1;
-	public static final int TV = STOVE + 1;
+	public static final int PERSON = STOVE + 1;
+	public static final int TV = PERSON + 1;
 	public static final int AR_CONDITIONER = TV + 1;
 	public static final int DVD = AR_CONDITIONER + 1;
 	public static final int BED = DVD + 1;
@@ -164,6 +173,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 	private TMXLayer mapFloorLayer;
 	private TMXLayer mapWallLayer;
+	
+	//House map
+	private Space houseMap;
 
 	// ===========================================================
 	// Constructors
@@ -303,6 +315,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
 
 		setupGestureDetection();
+
+		// TODO Test if it is called again, when screen rotate...
 		pushMap();
 
 		return this.mScene;
@@ -354,7 +368,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			c = br.uff.tempo.apps.simulators.stove.StoveView.class;
 			tr = this.mStoveTextureRegion;
-			resType = InterfaceApplicationManager.STOVE_DATA;
+			resType = STOVE;
 
 			IStove stove;
 
@@ -378,7 +392,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			c = br.uff.tempo.apps.simulators.lamp.LampView.class;
 			tr = this.mLampTextureRegion;
-			resType = InterfaceApplicationManager.LAMP_DATA;
+			resType = LAMP;
 
 			ILamp lamp;
 
@@ -402,7 +416,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			c = br.uff.tempo.apps.simulators.tv.TvView.class;
 			tr = this.mTVTextureRegion;
-			resType = InterfaceApplicationManager.TV_DATA;
+			resType = TV;
 
 			ITelevision tv;
 
@@ -426,7 +440,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			c = br.uff.tempo.apps.simulators.bed.BedView.class;
 			tr = this.mBedTextureRegion;
-			resType = InterfaceApplicationManager.BED_DATA;
+			resType = BED;
 
 			IBed bed;
 
@@ -442,6 +456,29 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			bundle.putSerializable("agent", bed);
 
 			resAg = bed;
+
+			break;
+
+		case PERSON:
+
+			c = br.uff.tempo.apps.simulators.bed.BedView.class;
+			tr = this.mBedTextureRegion;
+			resType = PERSON;
+
+			IPerson person;
+
+			// create an agent if it's a simulated resource; a stub otherwise
+			if (emulated) {
+				person = new Person(regData.getResourceName());
+			} else {
+				person = new PersonStub(regData.getResourceName());
+			}
+
+			// simulated -> put an agent; not simulated -> put a stub (proxy to
+			// an agent)
+			bundle.putSerializable("agent", person);
+
+			resAg = person;
 
 			break;
 
@@ -480,50 +517,69 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		i.putExtras(bundle);
 
 		// create an icon in the map, according to the parameters
-		ResourceObject res = createSprite(tr, i, resType);
+		INotificationBoxReceiver res = (INotificationBoxReceiver) createSprite(
+				tr, i, resType);
 
 		mAppManager.addResource(resAg.getRAI(), res);
 	}
 
-	private ResourceObject createSprite(final TextureRegion pTextureRegion,
+	private Sprite createSprite(final TextureRegion pTextureRegion,
 			final Intent intent, final int dataType) {
 
 		// Create a new Sprite that shows pTextureImage as graphical
 		// representation
 		// It's initially positioned at center screen
-		ResourceObject sprite = new ResourceObject(this.mCameraWidth / 2,
-				this.mCameraHeight / 2, pTextureRegion,
-				this.getVertexBufferObjectManager(), this.getFontManager(),
-				this.getTextureManager()) {
 
-			@Override
-			public void onLongPress(TouchEvent pSceneTouchEvent) {
+		Sprite sprite = null;
 
-				// Can freely move the resource in the screen
-				this.setPosition(pSceneTouchEvent.getX() - this.getWidth() / 2,
-						pSceneTouchEvent.getY() - this.getHeight() / 2);
-			}
+		VertexBufferObjectManager vbom = this.getVertexBufferObjectManager();
+		FontManager fm = this.getFontManager();
+		TextureManager tm = this.getTextureManager();
 
-			@Override
-			public void onTap(TouchEvent pSceneTouchEvent) {
+		float x = this.mCameraWidth / 2;
+		float y = this.mCameraHeight / 2;
 
-				// Start the resource app (e.g. stove, tv)
-				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+		if (dataType == PERSON) {
 
-				Log.d("IPGAP",
-						"A resource was selected. Opening the Application");
+			AnimatedResourceObject aro = new AnimatedResourceObject(x, y,
+					(ITiledTextureRegion) pTextureRegion, vbom, fm, tm);
+			
+			aro.setSpace(houseMap);
+			
+			sprite = aro;
+			
+		} else {
+			sprite = new ResourceObject(x, y, pTextureRegion, vbom, fm, tm) {
 
-				MapActivity.this.startActivity(intent);
-			}
+				@Override
+				public void onLongPress(TouchEvent pSceneTouchEvent) {
 
-			@Override
-			public void onStartLongPress(TouchEvent pSceneTouchEvent) {
+					// Can freely move the resource in the screen
+					this.setPosition(pSceneTouchEvent.getX() - this.getWidth()
+							/ 2, pSceneTouchEvent.getY() - this.getHeight() / 2);
+				}
 
-				// When start the long press event, vibrate the device for
-				// 'VIBRATE_TIME' ms
-				MapActivity.this.mEngine.vibrate(VIBRATE_TIME);
-			}
-		};
+				@Override
+				public void onTap(TouchEvent pSceneTouchEvent) {
+
+					// Start the resource app (e.g. stove, tv)
+					intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+					Log.d("IPGAP",
+							"A resource was selected. Opening the Application");
+
+					MapActivity.this.startActivity(intent);
+				}
+
+				@Override
+				public void onStartLongPress(TouchEvent pSceneTouchEvent) {
+
+					// When start the long press event, vibrate the device for
+					// 'VIBRATE_TIME' ms
+					MapActivity.this.mEngine.vibrate(VIBRATE_TIME);
+				}
+			};
+		}
 
 		this.mScene.attachChild(sprite);
 		this.mScene.registerTouchArea(sprite);
@@ -531,7 +587,6 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		return sprite;
 	}
 
-	// TODO create a class that encapsulate all 'Place' classes
 	public void pushMap() {
 
 		// Get the TXM Groups from map (actually there's only one, so using
@@ -547,8 +602,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		final int mapWidth = this.mapFloorLayer.getWidth();
 		final int mapHeight = this.mapFloorLayer.getHeight();
 
-		// Create a new Space (a set of places) 
-		Space houseMap = new Space(Space.pixelToMeters(mapWidth,
+		// Create a new Space (a set of places)
+		houseMap = new Space(Space.pixelToMeters(mapWidth,
 				Space.PIXEL_PER_METER), Space.pixelToMeters(mapHeight,
 				Space.PIXEL_PER_METER), Space.PIXEL_PER_METER);
 
@@ -562,17 +617,20 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			// Y coordinate is transformed. System origin is in bottom-left
 			// corner
 			// The original on is in top-left corner
-			float y0 = houseMap.invertYcoordinate(houseMap.pixelToMeters( obj.getY() + obj.getHeight() ));
+			float y0 = houseMap.invertYcoordinate(houseMap.pixelToMeters(obj
+					.getY() + obj.getHeight()));
 
 			// [x1, y1] -> top-right
 			float x1 = x0 + houseMap.pixelToMeters(obj.getWidth());
 			float y1 = houseMap.pixelToMeters(mapHeight - obj.getY());
 
-			Place place = new Place(roomName, new Position(x0, y0), new Position(x1, y1));
-			Log.i("SmartAndroid", "Created a new Place. lower = " + x0 + " " + y0 + " and Upper = " + x1 + " " + y1);
+			Place place = new Place(roomName, new Position(x0, y0),
+					new Position(x1, y1));
+			Log.i("SmartAndroid", "Created a new Place. lower = " + x0 + " "
+					+ y0 + " and Upper = " + x1 + " " + y1);
 			houseMap.addPlace(place);
 		}
-		
+
 		rl.insertMap(houseMap);
 	}
 
@@ -671,6 +729,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		int type = -1;
 		regData = new RegistryData(resourceRAI);
 
+		// TODO Add middleware support to get the resource types
 		// Toast.makeText(this, resourceRAI, Toast.LENGTH_LONG).show();
 		if (resourceRAI.contains("Stove")) {
 			type = STOVE;
@@ -680,6 +739,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			type = BED;
 		} else if (resourceRAI.contains("Television")) {
 			type = TV;
+		} else if (resourceRAI.contains("Person")) {
+			type = PERSON;
 		}
 
 		createResourceIcon(type, false);
@@ -801,7 +862,6 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
 				MapActivity.this.mSurfaceGestureDetector = new SurfaceGestureDetector(
 						MapActivity.this, 1f) {
 

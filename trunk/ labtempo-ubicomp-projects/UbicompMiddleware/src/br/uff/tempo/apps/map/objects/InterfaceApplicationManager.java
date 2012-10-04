@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
+import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.utils.Position;
 
 /**
  * This class manages resource agents, stubs and other kind of data from
@@ -21,16 +23,11 @@ public class InterfaceApplicationManager extends ResourceAgent {
 	// Constants
 	// ===========================================================
 
-	public static final int STOVE_DATA = 0;
-	public static final int TV_DATA = STOVE_DATA + 1;
-	public static final int BED_DATA = TV_DATA + 1;
-	public static final int LAMP_DATA = BED_DATA + 1;
-
 	// ===========================================================
 	// Fields
 	// ===========================================================
 	
-	private Map<String, ResourceObject> sceneObjects;
+	private Map<String, INotificationBoxReceiver> sceneObjects;
 
 	// used with singleton pattern
 	private static InterfaceApplicationManager obj = null;
@@ -44,7 +41,7 @@ public class InterfaceApplicationManager extends ResourceAgent {
 		super("InterfaceManager",
 				"br.uff.tempo.apps.map.objects.InterfaceApplicationManager", 37);
 		
-		sceneObjects = new HashMap<String, ResourceObject>();
+		sceneObjects = new HashMap<String, INotificationBoxReceiver>();
 	}
 
 	// ===========================================================
@@ -61,12 +58,12 @@ public class InterfaceApplicationManager extends ResourceAgent {
 		return obj;
 	}
 	
-	public void addResource(String rai, ResourceObject obj) {
+	public void addResource(String rai, INotificationBoxReceiver obj) {
 		
 		sceneObjects.put(rai, obj);
 	}
 	
-	public ResourceObject getResource(String rai) {
+	public INotificationBoxReceiver getResource(String rai) {
 		
 		return sceneObjects.get(rai);
 	}
@@ -85,7 +82,7 @@ public class InterfaceApplicationManager extends ResourceAgent {
 		
 		// Verify which resource in the scene has caused the notification
 		// For each resource in the map...
-		for (Map.Entry<String, ResourceObject> entry : sceneObjects.entrySet()) {
+		for (Map.Entry<String, INotificationBoxReceiver> entry : sceneObjects.entrySet()) {
 			
 			// Get the RAI (key of the map)
 			String keyRAI = entry.getKey();
@@ -93,10 +90,17 @@ public class InterfaceApplicationManager extends ResourceAgent {
 			if (raiFromEvent.equals(keyRAI)) {
 				
 				// Get the resource object associated to that RAI
-				ResourceObject obj = entry.getValue();
+				INotificationBoxReceiver obj = entry.getValue();
 				
 				// Create a pop up message showing the context variable changed and its current value
 				obj.showMessage(method + " = " + value.toString());
+				
+				if (method.equals(Person.CV_POSITION) && obj instanceof AnimatedResourceObject) {
+					
+					AnimatedResourceObject anim = (AnimatedResourceObject) obj;
+					
+					anim.updatePosition((Position) value);
+				}
 				
 				break;
 			}

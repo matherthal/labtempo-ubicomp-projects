@@ -13,7 +13,7 @@ import org.andengine.util.color.Color;
 import android.content.Intent;
 
 //implementing long press by hands!
-public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite {
+public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite implements INotificationBoxReceiver {
 
 	// min time that represents a long press event
 	private static final int LONGPRESS_THRESHOLD = 500;
@@ -36,20 +36,29 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 		this.attachChild(nbox);
 	}
 	
+	
+	// ===========================================================
+	// Methods
+	// ===========================================================
+	
+	@Override
 	public void showMessage(String message) {
 	
 		nbox.show(message);
 	}
 
+	@Override
 	public void setNotificationBoxColor(Color color) {
 		nbox.setColor(color);
 	}
-
+	
+	@Override
 	public void setNotificationBoxVisible(boolean visible) {
 
 		nbox.setVisible(visible);
 	}
 
+	@Override
 	public boolean onAreaTouched(final TouchEvent pSceneTouchEvent,
 			float pTouchAreaLocalX, float pTouchAreaLocalY) {
 
