@@ -24,7 +24,7 @@ import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
-import br.uff.tempo.middleware.resources.interfaces.IPerson;
+
 
 public class TrackingPanel extends AbstractPanel {
 
