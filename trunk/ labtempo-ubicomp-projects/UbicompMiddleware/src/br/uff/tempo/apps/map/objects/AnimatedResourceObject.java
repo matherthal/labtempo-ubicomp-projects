@@ -17,7 +17,7 @@ import br.uff.tempo.middleware.management.utils.Space;
 public class AnimatedResourceObject extends AnimatedSprite implements
 		INotificationBoxReceiver {
 
-	private static final float DEFAULT_DURATION = 10;
+	private static final float DEFAULT_DURATION = 5;
 
 	private NotificationBox nbox;
 	private Space space;
@@ -48,7 +48,7 @@ public class AnimatedResourceObject extends AnimatedSprite implements
 		int pX = space.metersToPixel(x);
 		int pY = space.metersToPixel(space.invertYcoordinate(y));
 
-		final Path path = new Path(1).to(x, y);
+		final Path path = new Path(2).to(getX(), getY()).to(pX, pY);
 
 		this.registerEntityModifier(new PathModifier(DEFAULT_DURATION, path,
 				null, new IPathModifierListener() {
@@ -58,29 +58,23 @@ public class AnimatedResourceObject extends AnimatedSprite implements
 							final PathModifier pPathModifier,
 							final IEntity pEntity, final int pWaypointIndex) {
 
-						switch (pWaypointIndex) {
-						case 0:
-							AnimatedResourceObject.this.animate(new long[] {
-									200, 200, 200 }, 6, 8, true);
-							break;
-
-						case 1:
-
-							AnimatedResourceObject.this.animate(new long[] {
-									200, 200, 200 }, 3, 5, true);
-							break;
-
-						case 2:
-
-							AnimatedResourceObject.this.animate(new long[] {
-									200, 200, 200 }, 0, 2, true);
-							break;
-
-						case 3:
-
-							AnimatedResourceObject.this.animate(new long[] {
-									200, 200, 200 }, 9, 11, true);
-							break;
+						final int nextWaypoint = (pWaypointIndex >= pPathModifier.getPath().getLength()) ? 0 : pWaypointIndex + 1;
+						final float pathX = pPathModifier.getPath().getCoordinatesX()[nextWaypoint];
+						final float pathY = pPathModifier.getPath().getCoordinatesY()[nextWaypoint];
+						final AnimatedSprite sprite = (AnimatedSprite)pEntity;
+						
+						if (pathX > sprite.getX()){
+							// Right
+							sprite.animate(new long[]{200, 200, 200}, 6, 8, true);
+						}else if (pathX < sprite.getX()){
+							// Left
+							sprite.animate(new long[]{200, 200, 200}, 3, 5, true);
+						}else if (pathY > sprite.getY()){
+							// Down
+							sprite.animate(new long[]{200, 200, 200}, 0, 2, true);
+						}else if (pathY < sprite.getY()){
+							// Up
+							sprite.animate(new long[]{200, 200, 200}, 9, 11, true);
 						}
 					}
 
@@ -88,7 +82,7 @@ public class AnimatedResourceObject extends AnimatedSprite implements
 					public void onPathWaypointFinished(
 							final PathModifier pPathModifier,
 							final IEntity pEntity, final int pWaypointIndex) {
-						// TODO Auto-generated method stub
+						
 
 					}
 
@@ -103,7 +97,8 @@ public class AnimatedResourceObject extends AnimatedSprite implements
 					public void onPathFinished(
 							final PathModifier pPathModifier,
 							final IEntity pEntity) {
-						// TODO Auto-generated method stub
+						
+						((AnimatedSprite)pEntity).stopAnimation(1);
 
 					}
 				}));
