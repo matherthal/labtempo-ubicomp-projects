@@ -57,4 +57,8 @@ public class Position implements Serializable {
 	public String print() {
 		return "{x="+x+", y="+y+"}";
 	}
+	
+	public String toString() {
+		return print();
+	}
 }
