@@ -22,9 +22,9 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 
 	public void notificationHandler(String rai, String method, Object value) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>("java.lang.String", rai));
-		params.add(new Tuple<String, Object>("java.lang.String", method));
-		params.add(new Tuple<String, Object>("java.lang.Object", value));
+		params.add(new Tuple<String, Object>(String.class.getName(), rai));
+		params.add(new Tuple<String, Object>(String.class.getName(), method));
+		params.add(new Tuple<String, Object>(value.getClass().getName(), value));
 
 		makeCall("notificationHandler", params);
 	}
@@ -39,8 +39,8 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	public void registerStakeholder(String method, String rai) {
 		// Set params
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>("java.lang.String", method));
-		params.add(new Tuple<String, Object>("java.lang.String", rai));
+		params.add(new Tuple<String, Object>(String.class.getName(), method));
+		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
 		makeCall("registerStakeholder", params);
 	}
@@ -49,7 +49,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	public int getId() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
-		return (Integer) makeCall("getName", params);
+		return (Integer) makeCall("getName", params, int.class);
 	}
 
 	@Override
