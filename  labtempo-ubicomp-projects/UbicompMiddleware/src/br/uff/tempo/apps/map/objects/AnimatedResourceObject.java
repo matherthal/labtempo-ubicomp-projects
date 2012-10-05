@@ -47,6 +47,9 @@ public class AnimatedResourceObject extends AnimatedSprite implements
 
 		int pX = space.metersToPixel(x);
 		int pY = space.metersToPixel(space.invertYcoordinate(y));
+		
+		pX -= this.getWidth() / 2;
+		pY -= this.getHeight();
 
 		final Path path = new Path(2).to(getX(), getY()).to(pX, pY);
 
