@@ -61,7 +61,7 @@ public class TrackingPanel extends AbstractPanel {
 		paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setColor(Color.WHITE);
-		paint.setStrokeWidth(10);
+		paint.setStrokeWidth(dpTopixel(10));
 
 		rds = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 		List<String> result = rds.search("ResourceLocation");
@@ -89,9 +89,12 @@ public class TrackingPanel extends AbstractPanel {
 
 		float mapWidth = homeMap.getWidth();
 		float mapHeight = homeMap.getHeight();
-
-		int factorW = (int) (getScreenWidth() / mapWidth);
-		int factorH = (int) (getScreenHeiht() / mapHeight);
+		
+		float sWidth = getScreenWidth();
+		float sHeight = getScreenHeight();
+		
+		int factorW = (int) (sWidth / mapWidth + 0.5f);
+		int factorH = (int) (sHeight / mapHeight + 0.5f);
 
 		factor = factorW < factorH ? factorW : factorH;
 
@@ -173,7 +176,6 @@ public class TrackingPanel extends AbstractPanel {
 
 		} else if (event.getAction() == MotionEvent.ACTION_UP) {
 
-			caught = false;
 			Log.d("TrackingPanel", "Action UP");
 
 //			for (Map.Entry<String, Rect> entry : rooms.entrySet()) {
@@ -186,9 +188,11 @@ public class TrackingPanel extends AbstractPanel {
 //				}
 //			}
 
-			if (currentUser != null) {
+			if (currentUser != null && caught) {
 				currentUser.storePosition();
 			}
+			
+			caught = false;
 		}
 
 		invalidate();
@@ -202,7 +206,7 @@ public class TrackingPanel extends AbstractPanel {
 		p.setColor(colors[counter]);
 
 		Avatar usr = new Avatar(name, getScreenCenterX(), getScreenCenterY(),
-				RADIUS, p);
+				dpTopixel(RADIUS), p);
 
 		usr.setPixalFactor(factor);
 		usr.setSpace(homeMap);
@@ -271,7 +275,7 @@ class Avatar {
 
 		float x = Space.pixelToMeters(centerX, pixelFactor);
 		float y = houseMap.invertYcoordinate(Space.pixelToMeters(centerY,
-				pixelFactor));
+				pixelFactor));		
 
 		Log.i("SmartAndroid", "[" + x + ", " + y + "]");
 		
