@@ -19,6 +19,7 @@ public abstract class AbstractPanel extends View {
 	private int screenHeight;
 	
 	private Handler handler = new Handler();
+	private float scale;
 
 	public AbstractPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -37,6 +38,8 @@ public abstract class AbstractPanel extends View {
 		//get the screen center coordinates
 		screenCenterX = screenWidth / 2;
 		screenCenterY = screenHeight / 2;
+		
+		scale = getResources().getDisplayMetrics().density;
 		
 		setupInterest();
 	}
@@ -71,6 +74,14 @@ public abstract class AbstractPanel extends View {
 	 */
 	public abstract void onUpdate(String method, Object value);
 	
+	public float getDensity() {
+		return scale;
+	}
+	
+	public int dpTopixel(float dp) {
+		return (int) (dp * scale + 0.5f);
+	}
+
 	public int getScreenCenterX() {
 		return screenCenterX;
 	}
@@ -83,7 +94,7 @@ public abstract class AbstractPanel extends View {
 		return screenWidth;
 	}
 	
-	public int getScreenHeiht() {
+	public int getScreenHeight() {
 		return screenHeight;
 	}
 }
