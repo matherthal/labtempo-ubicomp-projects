@@ -8,8 +8,9 @@ public class Position implements Serializable {
 	float y;
 
 	public Position(float x, float y) {
-		this.x = x;
-		this.y = y;
+		
+		this.x = roundTo2(x);
+		this.y = roundTo2(y);
 	}
 
 	public float getX() {
@@ -48,9 +49,37 @@ public class Position implements Serializable {
 		return result;
 	}
 	
+	private static float roundTo(float value, long factor) {
+		
+		value = value * factor;
+	    long tmp = Math.round(value);
+	    
+	    return (float) tmp / factor;
+	}
+	
+	public static float roundTo(float value, int places) {
+
+		if (places < 0) {
+			throw new IllegalArgumentException("Number of places can't be < 0");
+		}
+		
+	    long factor = (places == 1) ? 10 : (long) Math.pow(10, places);
+	    
+	    return roundTo(value, factor);
+	}
+	
+	public static float roundTo2(float value) {
+		
+		return roundTo(value, 100L);
+	}
+	
 	// distancia der AB = raiz de ( Xa - Xb )^2 + ( Ya - Yb )^2
 	public double getDistance(Position position) {
-		return Math.sqrt(Math.pow(position.x-x, 2) + Math.pow(position.y-y, 2));
+		
+		float a = position.x - x;
+		float b = position.y - y;
+		
+		return roundTo2((float) Math.sqrt(a * a + b * b));
 	}
 	
 	//proposital don't override toString
