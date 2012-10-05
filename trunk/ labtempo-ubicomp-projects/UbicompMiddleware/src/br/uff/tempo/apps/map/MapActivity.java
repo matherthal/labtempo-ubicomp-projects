@@ -279,7 +279,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// All People sprites are 96x128 pixels
 		this.mPersonBaldMan = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(this.mBuildableTexture, this,
-						"man_bald.png", 3, 4);
+						"man_bald_big.png", 3, 4);
 
 		try {
 			this.mBuildableTexture.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
@@ -632,9 +632,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		final int mapHeight = this.mapFloorLayer.getHeight();
 
 		// Create a new Space (a set of places)
-		houseMap = new Space(Space.pixelToMeters(mapWidth,
-				Space.PIXEL_PER_METER), Space.pixelToMeters(mapHeight,
-				Space.PIXEL_PER_METER), Space.PIXEL_PER_METER);
+		houseMap = new Space(mapWidth, mapHeight);
 
 		for (TMXObject obj : group.getTMXObjects()) {
 
