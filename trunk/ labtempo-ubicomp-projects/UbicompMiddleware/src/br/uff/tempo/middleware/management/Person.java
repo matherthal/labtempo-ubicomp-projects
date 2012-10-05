@@ -16,6 +16,7 @@ public class Person extends ResourceAgent implements IPerson {
 
 	public static final long DEFAULT_PERIOD = 1000;
 	public static final float DEFAULT_THRESHOLD = 1.0f;
+	public static final float EPSLON = 0.01f;
 	public static final int DEFAUT_WINDOW_SIZE = 20;
 	private static final long serialVersionUID = 1L;
 	public static final String CV_POSITION = "position";
@@ -116,7 +117,8 @@ public class Person extends ResourceAgent implements IPerson {
 
 		recentPositions.add(position);
 
-		if (position.getDistance(lastPos) > DEFAULT_THRESHOLD) {
+		// float point number comparison is error probe. Using an epslon to avoid rounding errors
+		if (Math.abs(position.getDistance(lastPos) - DEFAULT_THRESHOLD) >= EPSLON) {
 			notifyStakeholders(CV_POSITION, position);
 		}
 		
