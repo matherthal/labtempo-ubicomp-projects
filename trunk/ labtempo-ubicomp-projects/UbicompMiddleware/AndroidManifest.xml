@@ -41,6 +41,7 @@
         <activity android:name=".apps.onoffsample.OnOffView" />
         <activity android:name=".apps.counter.CounterView" />
         <activity android:name=".apps.onOffCounter.CounterApp" />
+        <activity android:name=".apps.reminder.ReminderActivity" />
 
         <!-- Rule -->
         <activity

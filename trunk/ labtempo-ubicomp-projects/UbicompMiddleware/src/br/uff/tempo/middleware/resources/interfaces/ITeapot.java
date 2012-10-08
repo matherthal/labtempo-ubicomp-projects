@@ -1,6 +1,8 @@
 package br.uff.tempo.middleware.resources.interfaces;
 
-public interface ITeapot {
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+
+public interface ITeapot extends IResourceAgent{
 	public float temperature = 0.0f;
 
 	public float getTemperature();
