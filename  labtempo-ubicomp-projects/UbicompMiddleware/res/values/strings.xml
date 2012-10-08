@@ -47,6 +47,13 @@
         <item name="item_app_lamp_control_sys">Sistema de Controle de Lâmpadas</item>
         <item name="item_smartandroid_debugger">SmartAndroid Debugger</item>
         <item name="item_smartandroid_debugger">Simulador de Tracking</item>
+        <item name="item_reminder">Plano de Cuidados</item>
+    </string-array>
+    
+    <string-array name="freq_array">
+        <item name="item_dias">Dias</item>
+        <item name="item_horas">Horas</item>
+        <item name="item_semanas">Semanas</item>
     </string-array>
 
     <!-- RuleActivity -->
@@ -126,5 +133,12 @@
     <!-- Begin Debugger app -->
     <string name="debugger_name">SmartAndroid Debugger</string>
 	<!-- End Debugger app -->
+    <string name="dias">Dias</string>
+    <string name="horas">Horas</string>
+    <string name="semanas">Semanas</string>
+    <string name="description">Descrição</string>
+    <string name="hour">Horário</string>
+    <string name="freq">Frequência</string>
+    <string name="register">Cadastrar</string>
 
 </resources>

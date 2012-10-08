@@ -16,6 +16,7 @@ import br.uff.tempo.apps.counter.CounterView;
 import br.uff.tempo.apps.map.MapActivity;
 import br.uff.tempo.apps.onOffCounter.CounterApp;
 import br.uff.tempo.apps.onoffsample.OnOffView;
+import br.uff.tempo.apps.reminder.ReminderActivity;
 import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.simulators.bed.BedView;
 import br.uff.tempo.apps.simulators.lamp.LampView;
@@ -102,6 +103,9 @@ public class MainListView extends ListActivity {
 					startActivity(intent);
 				} else if (item.equals("Simulador de Tracking")) {
 					Intent intent = new Intent(MainListView.this, TrackingView.class);
+					startActivity(intent);
+				} else if (item.equals("Plano de Cuidados")) {
+					Intent intent = new Intent(MainListView.this, ReminderActivity.class);
 					startActivity(intent);
 				} else {
 					Toast.makeText(MainListView.this, "Não existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();
