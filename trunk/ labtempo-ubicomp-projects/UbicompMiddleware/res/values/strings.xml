@@ -140,5 +140,11 @@
     <string name="hour">Horário</string>
     <string name="freq">Frequência</string>
     <string name="register">Cadastrar</string>
+    <string name="map_prefs_title_rdsAddress">Resource Discovery Address</string>
+    <string name="map_prefs_summary_rdsAddress">URL of Resource Discovery Service</string>
+    <string name="map_prefs_title_regResources">Setup Registered Resources</string>
+    <string name="map_prefs_summary_regResources">Edit Properties from Registered Resources</string>
+    <string name="map_prefs_title_categoryResources">Resources Settings</string>
+    <string name="map_prefs_title_categoryMap">Application Settings</string>
 
 </resources>
