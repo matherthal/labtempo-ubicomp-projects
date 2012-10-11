@@ -4,6 +4,7 @@ import java.util.List;
 
 public interface InterestAPI {
 	
+	
 	// 1st step
 	
 	
@@ -11,17 +12,18 @@ public interface InterestAPI {
 	
 	public Object callService(String serviceName, String rai) throws Exception;
 	
-	// notifyStakeholders
-	public void sendMessageTo(String rai, String contextVariable, String value) throws Exception;
-
 	// registerStakeholders
 	public void registerInterest(String contextVariable, String rai, Callable callback) throws Exception;
+	
+	// notifyStakeholders
+	public void sendMessageTo(String rai, String contextVariable, String value) throws Exception;
 
 	// removeStakeholders
 	public void removeInterest(String contextVariable, String rai) throws Exception;
 	
 	
 	// 2nd step
+
 	
 	public Object fetchContextVariable(String contextVariable) throws Exception;
 	
