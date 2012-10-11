@@ -66,6 +66,7 @@ import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
+import br.uff.tempo.apps.map.settings.MapSettings;
 import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.interfaces.IPerson;
@@ -120,6 +121,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	public static final int LUMINOSITY = TEMPERATURE + 1;
 	public static final int EXTERNAL = LUMINOSITY + 1;
 	public static final int LOG = EXTERNAL + 1;
+	public static final int SETTINGS = LOG + 1;
 
 	// constants to QuickAction (it's not been used yet)
 	public static final int ID_UNREG = 1;
@@ -529,6 +531,13 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			startActivity(i);
 
 			return;
+			
+		case SETTINGS:
+			
+			i = new Intent(this, MapSettings.class);
+			startActivity(i);
+			
+			return;
 		default:
 			// if receive an invalid option, exit method
 			// (and doesn't execute the lines above!)
@@ -689,7 +698,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 				.setIcon(R.drawable.connect);
 
 		// Option to open a settings screen of the application
-		menu.add("Settings").setIcon(R.drawable.settings);
+		menu.add(Menu.NONE, SETTINGS, Menu.NONE, "Settings").setIcon(R.drawable.settings);
 		// Option to load a different map file
 		menu.add("Load Map").setIcon(R.drawable.map);
 		// Option to create a logical expression (called context rule)
