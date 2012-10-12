@@ -41,7 +41,7 @@ public class TrackingView extends AbstractView {
 		switch (item.getItemId()) {
 		case NEW_PERSON:
 			
-			panel.addPerson("user" + (++i));
+			panel.addPerson("User" + (++i));
 			
 			break;
 			
