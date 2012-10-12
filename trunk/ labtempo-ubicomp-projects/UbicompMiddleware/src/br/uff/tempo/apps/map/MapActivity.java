@@ -196,8 +196,6 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	// House map
 	private Space houseMap;
 
-	
-
 	// ===========================================================
 	// Constructors
 	// ===========================================================
@@ -229,7 +227,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 				this.mCameraHeight);
 
 		final EngineOptions engineOptions = new EngineOptions(true,
-				ScreenOrientation.LANDSCAPE_FIXED, new RatioResolutionPolicy(
+				ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(
 						this.mCameraWidth, this.mCameraHeight), this.mCamera);
 
 		return engineOptions;
@@ -254,7 +252,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// Texture, so you don't have to care about the actual position anymore
 		this.mBuildableTexture = new BuildableBitmapTextureAtlas(
 				this.getTextureManager(), 512, 512, TextureOptions.DEFAULT);
-		
+
 		this.mTiledTextureAtlas = new BuildableBitmapTextureAtlas(
 				this.getTextureManager(), 512, 512, TextureOptions.NEAREST);
 
@@ -284,9 +282,11 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 						"man_bald_big.png", 3, 4);
 
 		try {
-			this.mBuildableTexture.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(0, 0, 1));
+			this.mBuildableTexture
+					.build(new BlackPawnTextureAtlasBuilder<IBitmapTextureAtlasSource, BitmapTextureAtlas>(
+							0, 0, 1));
 			this.mBuildableTexture.load();
-			
+
 		} catch (TextureAtlasBuilderException e) {
 			Debug.e(e);
 		}
@@ -580,7 +580,21 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		if (dataType == PERSON) {
 
 			AnimatedResourceObject aro = new AnimatedResourceObject(x, y,
-					(ITiledTextureRegion) pTextureRegion, vbom, fm, tm);
+					(ITiledTextureRegion) pTextureRegion, vbom, fm, tm) {
+
+				@Override
+				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
+						float pTouchAreaLocalX, float pTouchAreaLocalY) {
+
+					IPerson ag = (IPerson) intent.getExtras().getSerializable(
+							"agent");
+					String message = ag.getName();
+					this.showMessage(message);
+
+					return super.onAreaTouched(pSceneTouchEvent,
+							pTouchAreaLocalX, pTouchAreaLocalY);
+				}
+			};
 
 			aro.setSpace(houseMap);
 
