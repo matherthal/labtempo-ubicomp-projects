@@ -43,7 +43,11 @@ import org.andengine.util.debug.Debug;
 
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -94,7 +98,7 @@ import br.uff.tempo.middleware.resources.stubs.TelevisionStub;
 public class MapActivity extends /* SimpleLayoutGameActivity */
 SimpleBaseGameActivity implements IOnSceneTouchListener,
 		IScrollDetectorListener, IPinchZoomDetectorListener, IResourceChooser,
-		IResourceListGetter {
+		IResourceListGetter, OnSharedPreferenceChangeListener {
 
 	// ===========================================================
 	// Constants
@@ -163,7 +167,13 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	private TiledTextureRegion mPersonBlondGuy;
 	private TiledTextureRegion mPersonGrayGuy;
 	private TiledTextureRegion mPersonNurse;
-
+	
+	// Shared preferences
+	private SharedPreferences prefs;
+	
+	// RDS Address from the preferences
+	private String rdsAddress;
+	
 	// Camera size
 	private int mCameraWidth;
 	private int mCameraHeight;
@@ -290,7 +300,18 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		} catch (TextureAtlasBuilderException e) {
 			Debug.e(e);
 		}
-
+		
+		// Setup preferences
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs.registerOnSharedPreferenceChangeListener(this);
+		
+		//Add a default value for the preference "rdsAddress"
+		Editor ed = prefs.edit();
+		ed.putString("rdsAddress", IResourceDiscovery.RDS_IP);
+		ed.commit();
+		
+		// Save this value to memory
+		MapSettings.setAddress(prefs.getString("rdsAddress", null));
 	}
 
 	@Override
@@ -517,7 +538,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			// Starts a middleware operation, listing all registered resources
 			// ("")
-			MiddlewareOperation m = new MiddlewareOperation(this, "");
+			MiddlewareOperation m = new MiddlewareOperation(this, "", MapSettings.getRDSAddress());
 			m.execute(null);
 
 			// An external resource... we must exit this method, not only
@@ -795,6 +816,15 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		createResourceIcon(type, false);
 
+	}
+	
+	// It is called when a preference is changed 
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+	
+		// Save the new preference to memory
+		MapSettings.setAddress(sharedPreferences.getString("rdsAddress", null));
 	}
 
 	// @Override protected void onActivityResult(int requestCode, int
