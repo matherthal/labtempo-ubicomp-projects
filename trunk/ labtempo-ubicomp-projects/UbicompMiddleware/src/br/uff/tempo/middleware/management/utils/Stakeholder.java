@@ -26,4 +26,18 @@ public class Stakeholder implements Serializable {
 	public String getRAI() {
 		return rai;
 	}
+	
+	@Override
+	public boolean equals(Object obj) {
+	
+		if (this == obj)
+			return true;
+		
+		if (!(obj instanceof Stakeholder))
+			return false;
+		
+		Stakeholder sh = (Stakeholder) obj;
+		
+		return this.rai.equals(sh.rai) && this.method.equals(sh.method);
+	}
 }
