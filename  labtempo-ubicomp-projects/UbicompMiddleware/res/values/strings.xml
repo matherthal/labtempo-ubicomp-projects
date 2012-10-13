@@ -10,7 +10,7 @@
     <string name="textView_log">Log: </string>
 
     <!-- From Layout resource_config.xml -->
-    <string name="title_config_res">Create new Resource</string>
+    <string name="title_config_res">Choose a Resource</string>
     <string name="tv_config_res_name">Resource Name: </string>
     <string name="btn_config_res_ok">OK</string>
     <string name="btn_config_res_cancel">Cancel</string>
@@ -142,9 +142,11 @@
     <string name="register">Cadastrar</string>
     <string name="map_prefs_title_rdsAddress">Resource Discovery Address</string>
     <string name="map_prefs_summary_rdsAddress">URL of Resource Discovery Service</string>
-    <string name="map_prefs_title_regResources">Setup Registered Resources</string>
-    <string name="map_prefs_summary_regResources">Edit Properties from Registered Resources</string>
+    <string name="map_prefs_title_regResources">Unregister Resources</string>
+    <string name="map_prefs_summary_regResources">Unregister Resources from Registry Service</string>
     <string name="map_prefs_title_categoryResources">Resources Settings</string>
     <string name="map_prefs_title_categoryMap">Application Settings</string>
+    <string name="map_prefs_title_resStakeholders">Setup Stakeholders</string>
+    <string name="map_prefs_summary_resStakeholders">Add or Remove Stakeholders from an Agent Interest</string>
 
 </resources>
