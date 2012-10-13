@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import br.uff.tempo.R;
-import br.uff.tempo.apps.map.dialogs.ChooseExternalResource;
+import br.uff.tempo.apps.map.dialogs.ChooseResource;
 import br.uff.tempo.apps.map.dialogs.IResourceChooser;
 import br.uff.tempo.apps.map.dialogs.IResourceListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
@@ -38,7 +38,7 @@ public class CounterApp extends Activity implements IResourceChooser, IResourceL
 	private TextView tvName;
 
 	// My Dialog
-	private ChooseExternalResource dialog;
+	private ChooseResource dialog;
 
 	// Resource Discovery Service
 	private IResourceDiscovery rds;
@@ -52,7 +52,7 @@ public class CounterApp extends Activity implements IResourceChooser, IResourceL
 		super.onCreate(savedInstanceState);
 
 		// instantiate the dialog list
-		dialog = new ChooseExternalResource(this);
+		dialog = new ChooseResource(this);
 
 		// get an reference to the Resource Discovery Service
 		rds = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
