@@ -57,7 +57,7 @@ import android.view.SubMenu;
 import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
-import br.uff.tempo.apps.map.dialogs.ChooseExternalResource;
+import br.uff.tempo.apps.map.dialogs.ChooseResource;
 import br.uff.tempo.apps.map.dialogs.IResourceChooser;
 import br.uff.tempo.apps.map.dialogs.IResourceListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
@@ -186,7 +186,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 	// Dialog wrappers
 	private ResourceConfig resConf;
-	private ChooseExternalResource externalList;
+	private ChooseResource externalList;
 
 	// Information about the resource that will be created
 	private RegistryData regData;
@@ -250,7 +250,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		// Create the dialogs
 		resConf = new ResourceConfig(this);
-		externalList = new ChooseExternalResource(this);
+		externalList = new ChooseResource(this);
 
 		// Get an Interface Manager instance and register it
 		mAppManager = InterfaceApplicationManager.getInstance();

@@ -10,14 +10,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.uff.tempo.R;
 
-public class ChooseExternalResource extends MapDialog implements
+public class ChooseResource extends MapDialog implements
 		AdapterView.OnItemClickListener {
 
 	private ListView list;
 	private ArrayAdapter<String> lvAdapter;
 	private List<String> resourcesRAI;
 
-	public ChooseExternalResource(final Activity act) {
+	public ChooseResource(final Activity act) {
 
 		super(act, R.layout.registered_resource_list, R.string.title_config_res);
 
@@ -28,7 +28,7 @@ public class ChooseExternalResource extends MapDialog implements
 
 				// Get the reference to the list view
 				list = (ListView) dialog.findViewById(R.id.list_registered);
-				list.setOnItemClickListener(ChooseExternalResource.this);
+				list.setOnItemClickListener(ChooseResource.this);
 
 				// Cancel the dialog if you touch outside its area.
 				dialog.setCanceledOnTouchOutside(true);
