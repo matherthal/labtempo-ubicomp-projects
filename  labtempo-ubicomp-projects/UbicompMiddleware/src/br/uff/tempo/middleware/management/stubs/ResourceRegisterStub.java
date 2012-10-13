@@ -37,7 +37,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
-		return (Boolean) makeCall("register", params);
+		return (Boolean) makeCall("unregister", params);
 	}
 
 	@Override
