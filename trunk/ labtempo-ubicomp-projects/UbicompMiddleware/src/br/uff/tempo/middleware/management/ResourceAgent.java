@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
+import br.uff.tempo.middleware.comm.common.Callable;
 import br.uff.tempo.middleware.comm.current.api.Caller;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
@@ -23,7 +24,7 @@ import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
-public abstract class ResourceAgent extends Service implements IResourceAgent, Serializable {
+public abstract class ResourceAgent extends Service implements IResourceAgent, Serializable, Callable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -157,11 +158,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		// initResource();
 		
 		this.registerDefaultInterests();
-	}
-
-	private void registerDefaultInterests() {
-		// TODO: André - add default interests related with context variables and services
-		// TODO: André - find methods annotated with @ContextVariable and @Service and register in communication API
 	}
 
 	@Override
@@ -311,6 +307,21 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public String change(String id, String method, Object value) throws JSONException {
 		return JSONHelper.createChange(id, method, value);
 	}
-	
 
+	private void registerDefaultInterests() {
+//		InterestAPI ia = InterestAPIImpl.getInstance();
+//		try {
+//			ia.registerInterest(this.rai + "://ContextVariable", this);
+//			ia.registerInterest(this.rai + "://Service", this);
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		// TODO: André - add default interests related with context variables and services
+		// TODO: André - find methods annotated with @ContextVariable and @Service and register in communication API
+	}
+	
+	@Override
+	public Object call(String rai, String interest, String message) {
+		return null;
+	}
 }

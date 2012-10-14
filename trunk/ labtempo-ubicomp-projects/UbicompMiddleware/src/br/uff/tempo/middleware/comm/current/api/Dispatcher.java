@@ -88,7 +88,7 @@ public class Dispatcher extends Thread {
 		return instance;
 	}
 
-	public String dispatch(String calleeID, String msg) throws ClassNotFoundException, JSONException, IllegalArgumentException,
+	public String dispatch(String calleeID, String msg) throws ClassNotFoundException, IllegalArgumentException,
 			IllegalAccessException, InvocationTargetException {
 		update();
 
@@ -172,7 +172,7 @@ public class Dispatcher extends Thread {
 		return args;
 	}
 
-	private Object execute(String resource, Method method, Object[] args) throws JSONException, IllegalArgumentException,
+	private Object execute(String resource, Method method, Object[] args) throws IllegalArgumentException,
 			IllegalAccessException {
 		ResourceAgent rA = instances.get(resource);
 		try {

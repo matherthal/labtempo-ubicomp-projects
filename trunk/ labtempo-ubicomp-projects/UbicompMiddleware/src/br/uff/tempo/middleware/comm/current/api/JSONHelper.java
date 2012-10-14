@@ -9,7 +9,6 @@ import java.util.Map;
 
 import org.json.JSONException;
 
-import android.util.Log;
 import android.view.View;
 
 import com.google.gson.Gson;
@@ -93,7 +92,7 @@ public class JSONHelper {
 		return new Gson().fromJson(json, type);
 	}
 
-	public static String createReply(Object msg) throws JSONException {
+	public static String createReply(Object msg) {
 		// FIXME: Can I return anything?
 
 		String msgStr = new Gson().toJson(msg);

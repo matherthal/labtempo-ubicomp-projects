@@ -2,14 +2,15 @@ package br.uff.tempo.middleware.comm.interest.api;
 
 import java.net.SocketException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import ufrj.coppe.lcp.repa.PrefixAddress;
 import ufrj.coppe.lcp.repa.RepaMessage;
 import android.util.Log;
+import br.uff.tempo.middleware.comm.common.Callable;
+import br.uff.tempo.middleware.comm.common.InterestAPI;
+import br.uff.tempo.middleware.e.SmartAndroidException;
 
 public class InterestAPIImpl implements InterestAPI {
 	
@@ -40,27 +41,35 @@ public class InterestAPIImpl implements InterestAPI {
 	}
 
 	private static String dispatchRepaMessage(RepaMessage message) {
-		BlockingQueue<Callable> callbacks = myInterests.get(message.getInterest());
+		String messageContent = new String(message.getData());
 		
+		if (messageContent.contains("jsonrpc\":\"2.0")) {
+			return dispatchJSONRPC(messageContent);
+		}
+		
+		BlockingQueue<Callable> callbacks = myInterests.get(message.getInterest());
 		Log.d("SmartAndroid", "Vou chamar os callbacks");
 		for (Callable callback : callbacks) {
-			callback.call(message.getInterest(), new String(message.getData()), message.getPrefix().getPrefix());
+			callback.call(null, message.getInterest(), messageContent);
 		}
 		Log.d("SmartAndroid", "Fim das chamadas aos callbacks");
 		
 		return null;
 	}
-	
-	public int getMyAddress() throws Exception {
-		return this.commREPAD.getRepaNodeAdress().getPrefix();
-	}
 
-	public void sendMessage(String interest, String value) throws Exception {
-		this.commREPAD.repaSend(new RepaMessage(interest, value));
-	}
-	
-	public void sendMessageTo(int address, String interest, String value) throws Exception {
-		this.commREPAD.repaSend(new RepaMessage(interest, value, new PrefixAddress(address)));
+	private static String dispatchJSONRPC(String messageContent) {
+		String[] msgTokens = messageContent.split(";");
+		
+		String raiFrom = msgTokens[0];
+		String jsonRPCString = msgTokens[1];
+		
+		String response = null;
+		try {
+			response = NewDispatcher.getInstance().dispatch(raiFrom, jsonRPCString) + ";";
+		} catch (SmartAndroidException e) {
+			e.printStackTrace();
+		}
+		return response;
 	}
 	
 	public void addInterest(String interest, Callable callback) throws Exception {
@@ -77,13 +86,6 @@ public class InterestAPIImpl implements InterestAPI {
 		Log.d("SmartAndroid", "Chamando registro de interesse da repa para o interesse: " + interest);
 		this.commREPAD.registerInterest(interest);
 	}
-
-	public void removeInterest(String interest) throws Exception {
-		// TODO: remover a minha referencia e se não tiver mais ninguem remover de fato o interesse
-		
-//		myInterests.remove(interest);
-//		this.commREPAD.unregisterInterest(interest);
-	}
 	
 	public void removeInterestCallback(String interest, Callable callback) throws Exception {
 		for (Callable c : myInterests.get(interest)) {
@@ -93,30 +95,67 @@ public class InterestAPIImpl implements InterestAPI {
 			}
 		}
 	}
+
+	@Override
+	public void sendMessage(String contextVariable, String value) throws Exception {
+		this.commREPAD.repaSend(new RepaMessage(contextVariable, value));
+	}
 	
-	public void removeAllInterests() throws Exception {
-		// TODO: remover todos os interesses da minha referência
-//		myInterests.clear();
-//		this.gateway.getRepaSocket().unregisterAll();
-	}
-
-	public List<String> getListInterests() throws Exception {
-		// TODO: listar todos os interesses da minha instancia
-//		return this.gateway.getRepaSocket().getListInterests();
+	@Override
+	public Object fetchContextVariable(String contextVariable, String rai) throws Exception {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-	public List<Integer> getListNodes() throws Exception {
-//		List<Integer> listNodes = new ArrayList<Integer>();
-//		
-//		List<PrefixAddress> listPrefixAddressNodes = this.gateway.getRepaSocket().getListNodes();
-//		
-//		if (listPrefixAddressNodes != null) {
-//			for (PrefixAddress prefixAddress : listPrefixAddressNodes) {
-//				listNodes.add(prefixAddress.getPrefix());
-//			}
-//		}
-//		
+	@Override
+	public Object callService(String serviceName, String rai) throws Exception {
+		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public void registerInterest(String interest, String rai, Callable callback) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void sendMessageTo(String rai, String contextVariable, String value) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void removeInterest(String contextVariable, String rai) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Object fetchContextVariable(String contextVariable) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void registerInterest(String interest, Callable callback) throws Exception {
+		if (myInterests.get(interest) == null) {
+			Log.d("SmartAndroid", "Adicionando o primeiro callback do interesse: " + interest);
+			// first callback
+			myInterests.put(interest, new LinkedBlockingQueue<Callable>(Arrays.asList(callback)));
+		} else {
+			Log.d("SmartAndroid", "Adicionando um novo callback do interesse: " + interest);
+			// add new callback of the same interest
+			myInterests.get(interest).add(callback);	
+		}
+
+		Log.d("SmartAndroid", "Chamando registro de interesse da repa para o interesse: " + interest);
+		this.commREPAD.registerInterest(interest);
+	}
+
+	@Override
+	public void removeInterest(String contextVariable) throws Exception {
+		// TODO Auto-generated method stub
+		
 	}
 }
