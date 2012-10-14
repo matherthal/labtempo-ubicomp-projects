@@ -38,15 +38,29 @@ public class ChooseResource extends MapDialog implements
 
 	public void showDialog(List<String> resList) {
 
-		resourcesRAI = formatList(resList);
+		this.showDialog(resList, true);
+	}
+	
+	public void showDialog(List<String> resList, boolean isRai) {
 
+		List<String> names;
+		
+		if (isRai) {
+			resourcesRAI = formatList(resList);
+			names = extractResourceNames(resourcesRAI);
+		} else {
+			resourcesRAI = resList;
+			names = resList;
+		}
+		
 		lvAdapter = new ArrayAdapter<String>(activity,
-				android.R.layout.simple_list_item_1, extractResourceNames(resourcesRAI));
+				android.R.layout.simple_list_item_1, names);
 
 		list.setAdapter(lvAdapter);
 
 		super.showDialog();
 	}
+
 
 	public List<String> formatList(List<String> resList) {
 
