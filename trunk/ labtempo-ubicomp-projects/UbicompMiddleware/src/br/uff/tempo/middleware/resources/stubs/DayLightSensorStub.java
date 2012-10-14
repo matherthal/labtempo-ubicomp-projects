@@ -20,14 +20,14 @@ public class DayLightSensorStub extends ResourceAgentStub implements IDayLightSe
 	@ContextVariable(name = "É dia")
 	public boolean isDay() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		return (Boolean) makeCall(DayLightSensor.CV_ISDAY, params);
+		return (Boolean) makeCall(DayLightSensor.CV_ISDAY, params, Boolean.class);
 	}
 
 	@Override
 	@ContextVariable(name = "Quantidade de luz")
 	public float lightAmount() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		return (Float) makeCall(DayLightSensor.CV_LIGHTAMOUNT, params);
+		return (Float) makeCall(DayLightSensor.CV_LIGHTAMOUNT, params, float.class);
 	}
 
 	@Override

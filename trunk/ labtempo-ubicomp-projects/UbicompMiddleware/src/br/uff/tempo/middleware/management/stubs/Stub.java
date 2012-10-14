@@ -1,6 +1,7 @@
 package br.uff.tempo.middleware.management.stubs;
 
 import java.io.Serializable;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import org.json.JSONException;
@@ -42,6 +43,22 @@ public class Stub implements Serializable {
 	}
 	
 	public Object makeCall(String methodName, List<Tuple<String, Object>> params, Class returnType) {
+
+		try {
+			// Create message
+			String msg = JSONHelper.createMethodCall(methodName, params);
+
+			// Get answer from remote method call and return
+			String ret = caller.sendMessage(msg);
+			return JSONHelper.getMessage(ret,returnType);
+
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Object makeCall(String methodName, List<Tuple<String, Object>> params, Type returnType) {
 
 		try {
 			// Create message

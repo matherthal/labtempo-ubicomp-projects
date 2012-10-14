@@ -22,7 +22,7 @@ public class BedStub extends ResourceAgentStub implements IBed {
 	@Override
 	public boolean occupied() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		return (Boolean) makeCall("hasSomeoneIn", params);
+		return (Boolean) makeCall("hasSomeoneIn", params, Boolean.class);
 	}
 
 	@Override

@@ -1,13 +1,18 @@
 package br.uff.tempo.middleware.management.stubs;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.json.JSONException;
 
+import com.google.gson.reflect.TypeToken;
+
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.utils.Stakeholder;
 
 public class ResourceAgentStub extends Stub implements IResourceAgent {
 	
@@ -32,7 +37,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	public String getResourceClassName() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
-		return makeCall("getResourceClassName", params).toString();
+		return (String) makeCall("getResourceClassName", params, String.class);
 	}
 
 	@Override
@@ -45,6 +50,16 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		makeCall("registerStakeholder", params);
 	}
 
+	@Override
+	public List<Stakeholder> getStakeholders() {
+		
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+		Type type = new TypeToken<List<Stakeholder>>() {
+		}.getType();
+
+		return (List<Stakeholder>) makeCall("getStakeholders", params, type);		
+	}
+	
 	@Override
 	public int getId() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
@@ -64,7 +79,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	public String getName() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
-		return makeCall("getName", params).toString();
+		return (String) makeCall("getName", params, String.class);
 	}
 
 	@Override
@@ -77,9 +92,11 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 
 	@Override
 	public String getRAI() {
-		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-
-		return makeCall("getRAI", params).toString();
+//		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+//
+//		return makeCall("getRAI", params).toString();
+		
+		return rai;
 	}
 
 	@Override
@@ -93,7 +110,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	@Override
 	public String getType() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		return makeCall("getType", params).toString();
+		return (String) makeCall("getType", params, String.class);
 	}
 
 	@Override
@@ -126,7 +143,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	public boolean isRegistered() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
-		return (Boolean) makeCall("isRegistered", params);
+		return (Boolean) makeCall("isRegistered", params, Boolean.class);
 	}
 
 	@Override
@@ -159,7 +176,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		params.add(new Tuple<String, Object>(String.class.getName(), method));
 		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
-		makeCall("removeStakeholders", params);	
+		makeCall("removeStakeholder", params);	
 	}
 
 }

@@ -30,7 +30,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 		
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
-		return (String) makeCall("getMessage", params);
+		return (String) makeCall("getMessage", params, String.class);
 	}
 
 	@Override
@@ -39,7 +39,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		// params.add(new Tuple<String, Object>("text", text));
 
-		return (Integer) makeCall("getChannel", params);
+		return (Integer) makeCall("getChannel", params, int.class);
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		// params.add(new Tuple<String, Object>("text", text));
 
-		return (Boolean) makeCall("isOn", params);
+		return (Boolean) makeCall("isOn", params, boolean.class);
 	}
 
 	@Override
@@ -74,7 +74,7 @@ public class TelevisionStub extends ResourceAgentStub implements ITelevision {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		// params.add(new Tuple<String, Object>("text", text));
 
-		return (Integer) makeCall("getVolume", params);
+		return (Integer) makeCall("getVolume", params, int.class);
 	}
 
 	@Override

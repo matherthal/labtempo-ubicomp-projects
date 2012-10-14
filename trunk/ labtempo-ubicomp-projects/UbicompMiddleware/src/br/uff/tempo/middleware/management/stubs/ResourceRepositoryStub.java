@@ -1,7 +1,10 @@
 package br.uff.tempo.middleware.management.stubs;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.gson.reflect.TypeToken;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
@@ -20,7 +23,7 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
-		return (String) makeCall("get", params);
+		return (String) makeCall("get", params, String.class);
 
 	}
 
@@ -30,7 +33,7 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
-		return (Boolean) makeCall("add", params);
+		return (Boolean) makeCall("add", params, Boolean.class);
 
 	}
 
@@ -40,7 +43,7 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
-		return (Boolean) makeCall("remove", params);
+		return (Boolean) makeCall("remove", params, Boolean.class);
 
 	}
 
@@ -55,7 +58,7 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
-		return (Boolean) makeCall("update", params);
+		return (Boolean) makeCall("update", params, Boolean.class);
 	}
 
 	public ArrayList<String> getSubList(String url) {
@@ -63,8 +66,11 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 		// Set params
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		
+		Type type = new TypeToken<ArrayList<String>>() {
+		}.getType();
 
-		return (ArrayList<String>) makeCall("getSubList", params);
+		return (ArrayList<String>) makeCall("getSubList", params, type);
 	}
 
 }

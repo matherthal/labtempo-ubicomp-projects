@@ -17,7 +17,8 @@ import com.google.gson.reflect.TypeToken;
 
 public class JSONHelper {
 
-	public static String createMethodCall(String method, List<Tuple<String, Object>> params) throws JSONException {
+	public static String createMethodCall(String method,
+			List<Tuple<String, Object>> params) throws JSONException {
 
 		Map<String, Object> methodCall = new HashMap<String, Object>();
 		List<Object> jsonparams = new ArrayList<Object>();
@@ -26,9 +27,9 @@ public class JSONHelper {
 		Iterator<Tuple<String, Object>> iterator = params.iterator();
 
 		Tuple<String, Object> tp;
-		
+
 		try {
-			while (iterator.hasNext()) {	
+			while (iterator.hasNext()) {
 				tp = iterator.next();
 				Class type = Class.forName(tp.key);
 				jsonparams.add(tp.value);
@@ -38,7 +39,6 @@ public class JSONHelper {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
 
 		methodCall.put("jsonrpc", "2.0");
 		methodCall.put("method", method);
@@ -51,41 +51,62 @@ public class JSONHelper {
 		return (new Gson()).toJson(methodCall, collectionType);
 	}
 
+	// deserialize
+	private static String deserialize(String result) {
+
+		// Parse response string
+		Type collectionType = new TypeToken<HashMap<String, String>>() {
+		}.getType();
+
+		String[] resultData = result.split(";");
+		Map<String, String> response = (new Gson()).fromJson(resultData[0],
+				collectionType);
+		return response.get("result");
+	}
+
 	public static Object getMessage(String result) throws JSONException {
 		// Parse response string
-		Type collectionType = new TypeToken<HashMap<String, Object>>() {
+		Type collectionType = new TypeToken<HashMap<String, String>>() {
 		}.getType();
-		
+
 		String[] resultData = result.split(";");
-		Map<String, Object> response = (new Gson()).fromJson(resultData[0], collectionType);
-		Object obj = response.get("result");
+		Map<String, String> response = (new Gson()).fromJson(resultData[0],
+				collectionType);
+		String json = response.get("result");
+		
+		Object obj = new Gson().fromJson(json, Object.class);
+
 		return obj;
 	}
-	
-	public static Object getMessage(String result, Class type) throws JSONException {
-		// Parse response string
-		Type collectionType = new TypeToken<HashMap<String, Object>>() {
-		}.getType();
+
+	public static Object getMessage(String result, Class type)
+			throws JSONException {
 		
-		String[] resultData = result.split(";");
-		Map<String, Object> response = (new Gson()).fromJson(resultData[0], collectionType);
-		Object obj = response.get("result");
-		Object resultObj = new Gson().fromJson(obj.toString(), type);
-		return resultObj;
+		String json = deserialize(result);
+		return new Gson().fromJson(json, type);
+	}
+	
+	public static Object getMessage(String result, Type type)
+			throws JSONException {
+		
+		String json = deserialize(result);
+		return new Gson().fromJson(json, type);
 	}
 
 	public static String createReply(Object msg) throws JSONException {
 		// FIXME: Can I return anything?
 
-		Map<String, Object> response = new HashMap<String, Object>();
-		response.put("result", msg);
+		String msgStr = new Gson().toJson(msg);
+		Map<String, String> response = new HashMap<String, String>();
+		response.put("result", msgStr);
 		response.put("id", "0"); // we don't really use this so value is always
 									// zero
 		String resultMsg;
 		try {
 			resultMsg = (new Gson()).toJson(response);
 		} catch (Exception e) {
-			String result = (new Gson()).toJson(response.get("result"), View.class);
+			String result = (new Gson()).toJson(response.get("result"),
+					View.class);
 			response.put("result", result);
 			resultMsg = (new Gson()).toJson(response);
 		}
@@ -94,6 +115,7 @@ public class JSONHelper {
 		// The response string can now be sent back to the client...
 	}
 
+	@Deprecated
 	public static String createChange(String id, String method, Object value) {
 		Map<String, Object> change = new HashMap<String, Object>();
 		change.put("jsonobject", "2.0");
@@ -105,11 +127,13 @@ public class JSONHelper {
 		return (new Gson()).toJson(change, collectionType);
 	}
 
+	@Deprecated
 	public static Object getChange(String what, String change) {
 		Type collectionType = new TypeToken<HashMap<String, Object>>() {
 		}.getType();
 
-		Map<String, Object> changeObj = (new Gson()).fromJson(change, collectionType);
+		Map<String, Object> changeObj = (new Gson()).fromJson(change,
+				collectionType);
 		return changeObj.get(what);
 	}
 

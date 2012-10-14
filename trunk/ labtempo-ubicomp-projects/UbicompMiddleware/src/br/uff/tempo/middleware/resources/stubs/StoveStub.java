@@ -21,7 +21,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		// params.add(new Tuple<String, Object>("burnerIndex", burnerIndex));
 
-		return (Boolean) makeCall("turnOnBurner", params);
+		return (Boolean) makeCall("turnOnBurner", params, boolean.class);
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), burnerIndex));
 
-		return (Boolean) makeCall("isOnBurner", params);
+		return (Boolean) makeCall("isOnBurner", params, boolean.class);
 
 	}
 
@@ -101,7 +101,7 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 	@Override
 	public boolean isOvenOn() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		return (Boolean) makeCall("isOvenOn", params);
+		return (Boolean) makeCall("isOvenOn", params, boolean.class);
 	}
 
 }

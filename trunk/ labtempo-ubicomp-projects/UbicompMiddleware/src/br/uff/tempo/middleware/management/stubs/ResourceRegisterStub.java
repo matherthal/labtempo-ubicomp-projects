@@ -29,7 +29,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
-		return (Boolean) makeCall("register", params);
+		return (Boolean) makeCall("register", params, Boolean.class);
 	}
 
 	public boolean unregister(String url) {
@@ -37,7 +37,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 
-		return (Boolean) makeCall("unregister", params);
+		return (Boolean) makeCall("unregister", params, Boolean.class);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 		
-		return (Boolean) makeCall("registerLocation", params);		
+		return (Boolean) makeCall("registerLocation", params, Boolean.class);		
 	}
 
 	@Override
@@ -56,7 +56,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 		params.add(new Tuple<String, Object>(String.class.getName(), placeName));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 		
-		return (Boolean) makeCall("registerInPlace", params);	
+		return (Boolean) makeCall("registerInPlace", params, Boolean.class);	
 	}
 
 }
