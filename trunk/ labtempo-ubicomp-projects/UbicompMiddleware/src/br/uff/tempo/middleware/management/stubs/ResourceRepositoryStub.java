@@ -4,10 +4,10 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gson.reflect.TypeToken;
-
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
+
+import com.google.gson.reflect.TypeToken;
 
 public class ResourceRepositoryStub extends ResourceAgentStub implements IResourceRepository {
 	

@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Timer;
-import java.util.TimerTask;
 
-import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.middleware.management.interfaces.IPerson;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;

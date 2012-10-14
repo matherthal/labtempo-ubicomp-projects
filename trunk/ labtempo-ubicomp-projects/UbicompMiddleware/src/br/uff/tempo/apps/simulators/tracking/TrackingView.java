@@ -6,7 +6,6 @@ import android.view.MenuItem;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractView;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
-import br.uff.tempo.middleware.resources.Person;
 
 public class TrackingView extends AbstractView {
 	

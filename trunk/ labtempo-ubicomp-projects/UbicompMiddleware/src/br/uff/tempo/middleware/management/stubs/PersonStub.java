@@ -1,11 +1,11 @@
 package br.uff.tempo.middleware.management.stubs;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+
 import br.uff.tempo.middleware.comm.current.api.Tuple;
-import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
-import br.uff.tempo.middleware.management.interfaces.IPerson;
 import br.uff.tempo.middleware.management.SmartObject;
+import br.uff.tempo.middleware.management.interfaces.IPerson;
 import br.uff.tempo.middleware.management.utils.Position;
 
 public class PersonStub extends ResourceAgentStub implements IPerson {

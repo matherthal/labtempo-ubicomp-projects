@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.json.JSONException;
-
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
@@ -83,13 +81,6 @@ public interface IResourceAgent extends Serializable {
 
 	public boolean identify();
 
-	@Deprecated()
-	public void notifyStakeholders(String change) throws JSONException;
-
 	public void notifyStakeholders(String method, Object value);
-
-	// TODO Not so good solution... We need to improve this.
-	// public ResourceData getData();
-	// public void updateData(ResourceData state);
-	// public boolean registerStakeholder(String method, ResourceAgent rA);
+	
 }

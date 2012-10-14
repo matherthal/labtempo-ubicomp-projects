@@ -14,7 +14,6 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.widget.Toast;
 import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.Place;

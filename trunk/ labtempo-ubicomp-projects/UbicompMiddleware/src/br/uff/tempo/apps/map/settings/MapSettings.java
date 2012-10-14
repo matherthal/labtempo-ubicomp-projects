@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
-import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
 import br.uff.tempo.apps.map.dialogs.IResourceChooser;

@@ -6,8 +6,6 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
-import org.json.JSONException;
-
 public class CommandExecution extends Thread {
 
 	private DatagramSocket sk;

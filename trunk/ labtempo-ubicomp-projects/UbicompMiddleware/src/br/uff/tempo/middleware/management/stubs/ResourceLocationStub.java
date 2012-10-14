@@ -3,12 +3,9 @@ package br.uff.tempo.middleware.management.stubs;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import com.google.gson.reflect.TypeToken;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.Place;
@@ -16,6 +13,8 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
+
+import com.google.gson.reflect.TypeToken;
 
 public class ResourceLocationStub extends Stub implements IResourceLocation {
 

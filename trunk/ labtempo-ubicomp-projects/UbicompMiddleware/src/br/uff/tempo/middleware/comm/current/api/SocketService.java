@@ -10,8 +10,6 @@ import java.net.SocketException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import android.util.Log;
-
 public class SocketService {
 
 	private static final int SERVER_PORT = 10006;

@@ -2,17 +2,14 @@ package br.uff.tempo.middleware.management.stubs;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
-import org.json.JSONException;
-
-import com.google.gson.reflect.TypeToken;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
+
+import com.google.gson.reflect.TypeToken;
 
 public class ResourceAgentStub extends Stub implements IResourceAgent {
 	
@@ -150,13 +147,6 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	public boolean identify() {
 		// TODO Auto-generated method stub
 		return false;
-	}
-
-	@Override
-	@Deprecated()
-	public void notifyStakeholders(String change) throws JSONException {
-		// TODO Auto-generated method stub
-
 	}
 	
 	@Override

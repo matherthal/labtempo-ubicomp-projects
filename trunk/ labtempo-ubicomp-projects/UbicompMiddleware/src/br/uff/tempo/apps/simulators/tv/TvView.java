@@ -1,9 +1,6 @@
 package br.uff.tempo.apps.simulators.tv;
 
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractView;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
