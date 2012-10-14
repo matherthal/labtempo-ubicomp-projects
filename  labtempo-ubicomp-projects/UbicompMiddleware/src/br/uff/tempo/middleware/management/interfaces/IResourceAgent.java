@@ -6,10 +6,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONException;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.utils.Stakeholder;
 
 public interface IResourceAgent extends Serializable {
 	public String getResourceClassName();
@@ -48,6 +50,8 @@ public interface IResourceAgent extends Serializable {
 	}
 
 	public void registerStakeholder(String method, String rai);
+	
+	public List<Stakeholder> getStakeholders();
 	
 	public void removeStakeholder(String method, String rai);
 
