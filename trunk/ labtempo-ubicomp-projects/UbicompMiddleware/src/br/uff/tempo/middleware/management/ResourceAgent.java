@@ -2,6 +2,7 @@ package br.uff.tempo.middleware.management;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONException;
 
@@ -146,11 +147,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		this.name = name;
 		rai = "";
 
-		// WifiManager wifiManager = (WifiManager)
-		// getSystemService(WIFI_SERVICE);
-
-		// WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-		String ipAddress = ResourceAgentIdentifier.getLocalIpAddress(); // Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
+		String ipAddress = ResourceAgentIdentifier.getLocalIpAddress();
 
 		rai = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);
 
@@ -271,6 +268,11 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		}
 	}
 	
+	public List<Stakeholder> getStakeholders() {
+		
+		return stakeholders; 
+	}
+	
 	public void notifyStakeholders(String method, Object value) {
 		for (Stakeholder stakeholder : stakeholders) {
 			if (stakeholder.getMethod().equals(method) || stakeholder.getMethod().equalsIgnoreCase("all")) {
@@ -295,6 +297,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 	
 	public void removeStakeholder(String method, String rai) {
+		Log.i("SmartAndroid", "[" + rai + ", " + method + "] is removed as Stakeholder from " + getName());
 		stakeholders.remove(new Stakeholder(method, rai));
 	}
 
