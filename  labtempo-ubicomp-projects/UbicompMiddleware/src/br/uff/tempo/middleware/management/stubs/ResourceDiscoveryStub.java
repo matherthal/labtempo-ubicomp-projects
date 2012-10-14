@@ -21,7 +21,7 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), query));
 
-		return (ArrayList<String>) makeCall("search", params);
+		return (ArrayList<String>) makeCall("search", params, ArrayList.class);
 	}
 
 	public ResourceAgent get(String rai) {
