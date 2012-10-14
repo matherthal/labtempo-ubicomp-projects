@@ -35,6 +35,10 @@ public abstract class MapDialog implements OnCancelListener, OnClickListener {
 
 		dialog.show();
 	}
+	
+	public void dismiss() {
+		this.dialog.dismiss();
+	}
 
 	@Override
 	public void onCancel(DialogInterface dialog) {
