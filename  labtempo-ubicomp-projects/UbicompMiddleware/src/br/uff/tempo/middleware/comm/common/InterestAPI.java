@@ -1,6 +1,5 @@
 package br.uff.tempo.middleware.comm.common;
 
-import java.util.List;
 
 public interface InterestAPI {
 	
@@ -43,12 +42,12 @@ public interface InterestAPI {
 	// 3rd step
 	
 	
-	public int getMyAddress() throws Exception;
+//	public int getMyAddress() throws Exception;
 	
-	public void removeAllInterests() throws Exception;
+//	public void removeAllInterests() throws Exception;
 	
-	public List<String> getListContextVariables() throws Exception;
+//	public List<String> getListContextVariables() throws Exception;
 	
-	public List<Integer> getListAgents() throws Exception;
+//	public List<Integer> getListAgents() throws Exception;
 	
 }

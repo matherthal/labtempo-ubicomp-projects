@@ -15,6 +15,7 @@ import br.uff.tempo.apps.baseview.BaseView;
 import br.uff.tempo.apps.counter.CounterView;
 import br.uff.tempo.apps.map.MapActivity;
 import br.uff.tempo.apps.onOffCounter.CounterApp;
+import br.uff.tempo.apps.onOffCounter.copyToTestCommAPI.CounterApp2;
 import br.uff.tempo.apps.onoffsample.OnOffView;
 import br.uff.tempo.apps.reminder.ReminderActivity;
 import br.uff.tempo.apps.rule.RuleActivity;
@@ -91,6 +92,9 @@ public class MainListView extends ListActivity {
 					startActivity(intent);
 				} else if (item.equals("Contador de OnOff")) {
 					Intent intent = new Intent(MainListView.this, CounterApp.class);
+					startActivity(intent);
+				} else if (item.equals("Copyyy Contador de OnOff")) {
+					Intent intent = new Intent(MainListView.this, CounterApp2.class);
 					startActivity(intent);
 				} else if (item.equals("Counter")) {
 					Intent intent = new Intent(MainListView.this, CounterView.class);

@@ -7,7 +7,7 @@ import android.util.Log;
 
 public class Stove implements Callable {
 	
-	private InterestAPI api = new InterestAPIImpl();
+//	private InterestAPI api = new InterestAPIImpl();
 	
 	private String taskInterest = "app-chat://message";
 	
@@ -30,15 +30,15 @@ public class Stove implements Callable {
 		
 		try {
 			Log.d("SmartAndroid", "Vou registrar o interesse do AgentSample" + this.taskInterest);
-			this.api.addInterest(this.taskInterest, this);
+//			this.api.addInterest(this.taskInterest, this);
 			Log.d("SmartAndroid", "Registrei o interesse do AgentSample" + this.taskInterest);
 			
 			Log.d("SmartAndroid", "Vou registrar o interesse do AgentSample" + this.sleepInterest);
-			this.api.addInterest(this.sleepInterest, this);
+//			this.api.addInterest(this.sleepInterest, this);
 			Log.d("SmartAndroid", "Registrei o interesse do AgentSample" + this.sleepInterest);
 			
 			Log.d("SmartAndroid", "Vou enviar a mensagem do AgentSample");
-			this.api.sendMessage(this.taskInterest, "Eu sou um fogão e sou capaz de fazer comida. Diga a comida que quer que eu faça: ");
+//			this.api.sendMessage(this.taskInterest, "Eu sou um fogão e sou capaz de fazer comida. Diga a comida que quer que eu faça: ");
 			Log.d("SmartAndroid", "Enviei a mensagem do AgentSample");
 		} catch (Exception e) {
 			Log.d("SmartAndroid", "Exception ao chamar addInterest do AgentSample.", e);
@@ -72,7 +72,7 @@ public class Stove implements Callable {
 	public void removeInterestCallback() {
 		try {
 			Log.d("SmartAndroid", "Vou remover o interesse no callback do AgentSample");
-			this.api.removeInterestCallback(taskInterest, this);
+//			this.api.removeInterestCallback(taskInterest, this);
 			Log.d("SmartAndroid", "Removi o interesse no callback do AgentSample");
 		} catch (Exception e) {
 			Log.d("SmartAndroid", "Exception ao chamar removeInterestCallback do AgentSample.", e);

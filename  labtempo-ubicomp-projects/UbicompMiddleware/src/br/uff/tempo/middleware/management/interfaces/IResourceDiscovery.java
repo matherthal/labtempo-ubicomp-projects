@@ -3,11 +3,10 @@ package br.uff.tempo.middleware.management.interfaces;
 import java.util.ArrayList;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
-import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public interface IResourceDiscovery {
 	
-	public static final String RDS_IP = "192.168.0.100";
+	public static final String RDS_IP = "192.168.1.105";
 	public static final String RDS_NAME = "br.uff.tempo.middleware.management.ResourceDiscovery:ResourceDiscovery";
 	public static final String RDS_ADDRESS = "rai:" + RDS_IP + "//" + RDS_NAME;
 	
