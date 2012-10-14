@@ -3,7 +3,6 @@ package br.uff.tempo.middleware.management;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceDirectory {

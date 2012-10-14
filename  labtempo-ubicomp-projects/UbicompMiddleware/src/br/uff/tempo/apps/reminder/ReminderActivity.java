@@ -2,9 +2,9 @@ package br.uff.tempo.apps.reminder;
 
 import java.util.List;
 
-import br.uff.tempo.R;
 import android.app.Activity;
 import android.os.Bundle;
+import br.uff.tempo.R;
 
 
 

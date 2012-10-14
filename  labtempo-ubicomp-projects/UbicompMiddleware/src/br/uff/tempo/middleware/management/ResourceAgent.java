@@ -13,7 +13,6 @@ import android.os.IBinder;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.common.Callable;
 import br.uff.tempo.middleware.comm.current.api.Caller;
-import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
@@ -45,7 +44,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	
 	private Position position;
 
-	// public static IResourceDiscovery getRDS()
 	public IResourceDiscovery getRDS() {
 		return rDS;
 	}
@@ -118,9 +116,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			return ResourceAgent.this;
 		}
 	}
-
-	//public ResourceBinder mBinder = new ResourceBinder();
-
+	
 	public ResourceAgent() {
 
 		this("GeneralAgent", "br.uff.tempo.middleware.management.ResourceAgent", 0);
@@ -139,8 +135,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public ResourceAgent(String name, String type, int id, Position position) {
 
 		stakeholders = new ArrayList<Stakeholder>();
-
-		// stakeholders.add(new Stakeholder("update",rR));
+		
 		registered = false;
 
 		this.type = type;// address+port+type+name
@@ -166,28 +161,21 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 
 		initResource();
 		registeredList = rDS.search("");// search all rR.contains("") = all IAR
-		// Exists only to defeat instantiation.
-		// rrs = ResourceRegisterServiceStub.getInstance();
 	}
 
 	private void initResource() {
-		// rDS = new
-		// ResourceDiscoveryStub("rai:127.0.0.1//br.uff.tempo.middleware.management.ResourceDiscovery:ResourceDiscovery");
 		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 		identify();
 	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		// this.register();
-		// TODO Auto-generated method stub
-		return null;//mBinder;
+		return null;
 	}
 
 	@Override
 	public void onStart(Intent intent, int startId) {
 		super.onStart(intent, startId);
-		// this.register();
 	}
 
 	@Override
@@ -245,27 +233,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		return registered;
 	}
 	
-	@Override
-	@Deprecated()
-	public void notifyStakeholders(String change) throws JSONException {
-		String rai = (String) JSONHelper.getChange("id", change);
-		String method = (String) JSONHelper.getChange("method", change);
-		Object value = JSONHelper.getChange("value", change);
-		
-		int i = 0;
-		while (i < stakeholders.size()) {
-			String url = stakeholders.get(i).getRAI();
-			// stakeholderStub = new ResourceAgentStub(url);
-			if (change.contains(stakeholders.get(i).getMethod()) || stakeholders.get(i).getMethod().equalsIgnoreCase("all"))
-				new ResourceAgentStub(url).notificationHandler(rai, method, value);
-			// change = id, method name and value
-			// query by url return a unique instance
-			i++;
-		}
-	}
-	
-	public List<Stakeholder> getStakeholders() {
-		
+	public List<Stakeholder> getStakeholders() {	
 		return stakeholders; 
 	}
 	
@@ -295,17 +263,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public void removeStakeholder(String method, String rai) {
 		Log.i("SmartAndroid", "[" + rai + ", " + method + "] is removed as Stakeholder from " + getName());
 		stakeholders.remove(new Stakeholder(method, rai));
-	}
-
-
-	// @Override
-	// public boolean registerStakeholder(String method, ResourceAgent rA) {
-	// stakeholders.add(new Stakeholder(method, rA));
-	// return true;
-	// }
-
-	public String change(String id, String method, Object value) throws JSONException {
-		return JSONHelper.createChange(id, method, value);
 	}
 
 	private void registerDefaultInterests() {

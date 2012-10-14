@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import android.os.Binder;
-import android.os.IBinder;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
