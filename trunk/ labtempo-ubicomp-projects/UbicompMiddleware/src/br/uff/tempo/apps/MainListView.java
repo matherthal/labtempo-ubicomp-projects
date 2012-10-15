@@ -26,18 +26,15 @@ import br.uff.tempo.apps.simulators.tracking.TrackingView;
 import br.uff.tempo.apps.simulators.tv.TvView;
 import br.uff.tempo.apps.tictactoe.TicTacToe;
 import br.uff.tempo.middleware.LogViewerActivity;
-import br.uff.tempo.middleware.comm.current.api.Dispatcher;
+import br.uff.tempo.middleware.SmartAndroid;
 
 public class MainListView extends ListActivity {
 
 	// @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		Dispatcher d = Dispatcher.getInstance();
-
-		if (!d.isAlive())
-			d.start();// start listener
+		
+		SmartAndroid.newInstance();
 
 		// Print devices list
 		String[] devices = getResources().getStringArray(R.array.devices_array);

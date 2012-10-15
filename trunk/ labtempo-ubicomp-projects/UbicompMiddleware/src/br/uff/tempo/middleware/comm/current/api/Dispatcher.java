@@ -216,7 +216,7 @@ public class Dispatcher extends Thread {
 	public void run() {
 		while (true) {
 			try {
-				socket.receiveSend(this);
+				socket.receiveSend();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

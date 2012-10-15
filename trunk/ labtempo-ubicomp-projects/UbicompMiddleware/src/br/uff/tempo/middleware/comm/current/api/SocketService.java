@@ -1,51 +1,32 @@
 package br.uff.tempo.middleware.comm.current.api;
 
-import java.io.BufferedReader;
-import java.io.PrintWriter;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.SocketException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+
+import android.util.Log;
 
 public class SocketService {
 
-	private static final int SERVER_PORT = 10006;
-	// private static final String SERVER_IP = "192.168.1.111";
-	// private static final String SERVER_IP = "192.168.1.28";
-	
-	private static ExecutorService eS = Executors.newCachedThreadPool(); 
-
-	private static Socket socket;
-	private static PrintWriter out;
-	private static BufferedReader in;
-	private final int PORT = 4000;
-	DatagramSocket sk;
-	InetAddress local;
-	int port;
+	private static final int SERVER_PORT = 4000;
+	private DatagramSocket sk;
 
 	public SocketService() {
-		
-
-
 		try {
-			sk = new DatagramSocket(PORT);
+			sk = new DatagramSocket(SERVER_PORT);
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Log.d("SmartAndroid", String.format("Exception: %s", e.getMessage()));
 		}
 	}
 
-
 	public void close() {
-		if (sk!=null)
+		if (sk != null) {
 			sk.close();
+		}
 	}
 
-	public static String sendReceive(String address, String message)
-			throws Exception {
+	public static String sendReceive(String address, String message) throws Exception {
 		DatagramSocket s = new DatagramSocket();
 		String outString = message;
 		int msg_length = outString.length();
@@ -55,7 +36,7 @@ public class SocketService {
 
 		InetAddress hostAddress = InetAddress.getByName(address);
 		DatagramPacket out = null;
-		out = new DatagramPacket(buf, msg_length, hostAddress,4000);
+		out = new DatagramPacket(buf, msg_length, hostAddress, SERVER_PORT);
 		
 		s.send(out);
 
@@ -67,10 +48,9 @@ public class SocketService {
 		return rcvd;
 	}
 
-	public void receiveSend(Dispatcher dispatcher) throws Exception {
-		int PORT = 4000;
+	public void receiveSend() throws Exception {
 		if (sk == null) {
-			sk = new DatagramSocket(PORT);
+			sk = new DatagramSocket(SERVER_PORT);
 		}
 		
 		byte[] buf = new byte[1500];
@@ -78,8 +58,7 @@ public class SocketService {
 		
 		sk.receive(dgp);
 
-		CommandExecution command = new CommandExecution(sk, dgp, dispatcher);
+		CommandExecution command = new CommandExecution(sk, dgp);
 		command.start();
 	}
-
 }

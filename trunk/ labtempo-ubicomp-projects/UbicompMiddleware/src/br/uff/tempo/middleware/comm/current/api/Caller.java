@@ -3,6 +3,8 @@ package br.uff.tempo.middleware.comm.current.api;
 import java.io.Serializable;
 
 import android.util.Log;
+import br.uff.tempo.middleware.comm.interest.api.NewDispatcher;
+import br.uff.tempo.middleware.e.SmartAndroidException;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class Caller implements Serializable {
@@ -34,7 +36,7 @@ public class Caller implements Serializable {
 			String result = "";
 			if (calleeAgent.getPath().equals(local)) {
 				Log.d("SmartAndroid", String.format("Sending LOCAL msg %s to %s", jsonString, calleeAgent.getRai()));
-				result = Dispatcher.getInstance().dispatch(calleeAgent.getRai(), jsonString);
+				result = NewDispatcher.getInstance().dispatch(calleeAgent.getRai(), jsonString);
 				Log.d("SmartAndroid", String.format("Receive LOCAL msg %s from %s", result, calleeAgent.getRai()));
 			} else {
 				Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", jsonString, calleeAgent.getRai()));
@@ -46,6 +48,9 @@ public class Caller implements Serializable {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			Log.e("Caller", "IllegalArgumentException: " + e.getMessage());
+		} catch (SmartAndroidException e) {
+			e.printStackTrace();
+			Log.e("Caller", "Exception: " + e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.e("Caller", "Exception: " + e.getMessage());
