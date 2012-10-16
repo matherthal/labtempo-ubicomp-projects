@@ -27,11 +27,14 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 
 	}
 
-	public boolean add(String url) {
+	public boolean add(String rans, String ip, int prefix, String rai) {
 
 		// Set params
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(String.class.getName(), rans));
+		params.add(new Tuple<String, Object>(String.class.getName(), ip));
+		params.add(new Tuple<String, Object>(Integer.class.getName(), prefix));
+		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
 		return (Boolean) makeCall("add", params, Boolean.class);
 
@@ -50,15 +53,6 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 	public ArrayList<String> getList() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	public boolean update(String url) {
-
-		// Set params
-		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(String.class.getName(), url));
-
-		return (Boolean) makeCall("update", params, Boolean.class);
 	}
 
 	public ArrayList<String> getSubList(String url) {

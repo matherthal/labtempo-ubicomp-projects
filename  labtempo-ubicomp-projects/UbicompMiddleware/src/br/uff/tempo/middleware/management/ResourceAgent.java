@@ -189,10 +189,13 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		if (!registered) {
 			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
 
+			String ip = ResourceAgentIdentifier.getLocalIpAddress();
+			int prefix = ResourceAgentIdentifier.getLocalPrefix();
+			
 			if (position != null) {
-				registered = rrs.registerLocation(this.rai, this.position);
+				registered = rrs.registerLocation(null, ip, prefix, this.rai, this.position);
 			} else {
-				registered = rrs.register(this.rai);
+				registered = rrs.register(null, ip, prefix, this.rai);
 			}
 				
 			String result = "";
@@ -208,7 +211,11 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		if (!registered) {
 			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
 			this.position = position;
-			registered = rrs.registerLocation(this.rai, this.position);
+			
+			String ip = ResourceAgentIdentifier.getLocalIpAddress();
+			int prefix = ResourceAgentIdentifier.getLocalPrefix();
+			
+			registered = rrs.registerLocation(null, ip, prefix, this.rai, this.position);
 				
 			String result = "";
 			// adding local reference of this instance
@@ -223,7 +230,11 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		if (!registered) {
 			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
 			this.position = position;
-			registered = rrs.registerInPlace(this.rai, placeName, this.position);
+			
+			String ip = ResourceAgentIdentifier.getLocalIpAddress();
+			int prefix = ResourceAgentIdentifier.getLocalPrefix();
+			
+			registered = rrs.registerInPlace(null, ip, prefix, this.rai, placeName, this.position);
 				
 			String result = "";
 			// adding local reference of this instance
