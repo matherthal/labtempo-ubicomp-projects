@@ -25,7 +25,7 @@ public class CommREPAD {
 				} catch (Exception e) {
 				}
 			}
-		});
+		}, "CommREPAD");
 		myThread.setDaemon(true);
 		myThread.start();
 	}

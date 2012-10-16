@@ -158,4 +158,8 @@ public class InterestAPIImpl implements InterestAPI {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public int getPrefix() {
+		return this.commREPAD.getRepaNodeAdress().getPrefix();
+	}
 }

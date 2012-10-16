@@ -11,6 +11,8 @@ import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
 
 public interface IResourceLocation {
+	
+	public static final String rans = "resourcelocation.ra";
 
 	void addPlace(Place place);
 

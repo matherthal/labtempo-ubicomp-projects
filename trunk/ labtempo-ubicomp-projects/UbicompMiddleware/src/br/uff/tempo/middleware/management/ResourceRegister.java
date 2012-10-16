@@ -30,23 +30,21 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		return instance;
 	}
 
-	public boolean register(String url) {
+	public boolean register(String rans, String ip, int prefix, String url) {
 		rR = ResourceRepository.getInstance();
-		rR.add(url);
+		rR.add(rans, ip, prefix, url);
 		
 		notifyStakeholders("register", url);
 		return true;
 	}
 	
-	public boolean registerLocation(String url, Position position) {
+	public boolean registerLocation(String rans, String ip, int prefix, String url, Position position) {
 		rR = ResourceRepository.getInstance();
-		rR.add(url);
+		rR.add(rans, ip, prefix, url);
 		rL = ResourceLocation.getInstance();
 		rL.registerInPlace(url,position);
 		return true;
 	}
-	
-	
 
 	public boolean unregister(String url) {
 		// rR = ResourceRepository.getInstance(); //already instantiated
@@ -61,9 +59,9 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	}
 
 	@Override
-	public boolean registerInPlace(String url, String placeName, Position position) {
+	public boolean registerInPlace(String rans, String ip, int prefix, String url, String placeName, Position position) {
 		rR = ResourceRepository.getInstance();
-		rR.add(url);
+		rR.add(rans, ip, prefix, url);
 		rL = ResourceLocation.getInstance();
 		if (position == null){
 			rL.registerInPlaceMiddlePos(url, rL.getPlace(placeName));

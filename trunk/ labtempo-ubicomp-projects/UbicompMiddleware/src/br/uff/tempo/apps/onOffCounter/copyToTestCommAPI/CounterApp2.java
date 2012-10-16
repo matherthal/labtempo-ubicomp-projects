@@ -53,13 +53,13 @@ public class CounterApp2 extends Activity implements IResourceChooser, IResource
 
 		super.onCreate(savedInstanceState);
 		
-        InterestAPI ia = InterestAPIImpl.getInstance();
-        String msg = "rai:192.168.1.105//br.uff.tempo.middleware.resources.Lamp:GeneralLamp;{\"types\":[],\"jsonrpc\":\"2.0\",\"method\":\"isOn\",\"params\":[]}";
-        try {
-            ia.sendMessage("rai:192.168.1.105//br.uff.tempo.middleware.resources.Lamp:GeneralLamp://ContextVariable", msg);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        InterestAPI ia = InterestAPIImpl.getInstance();
+//        String msg = "rai:192.168.1.105//br.uff.tempo.middleware.resources.Lamp:GeneralLamp;{\"types\":[],\"jsonrpc\":\"2.0\",\"method\":\"isOn\",\"params\":[]}";
+//        try {
+//            ia.sendMessage("rai:192.168.1.105//br.uff.tempo.middleware.resources.Lamp:GeneralLamp://ContextVariable", msg);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
 		// instantiate the dialog list
 		dialog = new ChooseResource(this);

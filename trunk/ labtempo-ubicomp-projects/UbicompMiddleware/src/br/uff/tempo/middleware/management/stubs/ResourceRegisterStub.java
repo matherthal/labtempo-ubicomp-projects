@@ -19,7 +19,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 		super(calleeID);
 	}
 
-	public boolean register(String url) {
+	public boolean register(String rans, String ip, int prefix, String rai) {
 
 		// Set params
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
@@ -27,32 +27,41 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 		Type rAType = new TypeToken<ResourceAgent>() {
 		}.getType();
 
-		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(String.class.getName(), rans));
+		params.add(new Tuple<String, Object>(String.class.getName(), ip));
+		params.add(new Tuple<String, Object>(Integer.class.getName(), prefix));
+		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
 		return (Boolean) makeCall("register", params, Boolean.class);
 	}
 
-	public boolean unregister(String url) {
+	public boolean unregister(String rai) {
 
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
 		return (Boolean) makeCall("unregister", params, Boolean.class);
 	}
 
 	@Override
-	public boolean registerLocation(String url, Position position) {
+	public boolean registerLocation(String rans, String ip, int prefix, String rai, Position position) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(String.class.getName(), rans));
+		params.add(new Tuple<String, Object>(String.class.getName(), ip));
+		params.add(new Tuple<String, Object>(Integer.class.getName(), prefix));
+		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 		
 		return (Boolean) makeCall("registerLocation", params, Boolean.class);		
 	}
 
 	@Override
-	public boolean registerInPlace(String url, String placeName, Position position) {
+	public boolean registerInPlace(String rans, String ip, int prefix, String rai, String placeName, Position position) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(String.class.getName(), rans));
+		params.add(new Tuple<String, Object>(String.class.getName(), ip));
+		params.add(new Tuple<String, Object>(Integer.class.getName(), prefix));
+		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 		params.add(new Tuple<String, Object>(String.class.getName(), placeName));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 		
