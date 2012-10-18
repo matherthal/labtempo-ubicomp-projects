@@ -23,6 +23,6 @@ public class TvView extends AbstractView {
 
 	@Override
 	public IResourceAgent createNewResourceAgent() {
-		return new Television("SomeTV");		
+		return new Television("tv" + getNextID() + ".ra");		
 	}
 }
