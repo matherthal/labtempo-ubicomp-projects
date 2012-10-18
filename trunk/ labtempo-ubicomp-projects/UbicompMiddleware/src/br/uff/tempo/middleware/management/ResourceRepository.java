@@ -73,8 +73,16 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	}
 	
 	public boolean remove(String url) {
-		repository.remove(url);
-		return true;
+	
+		for (ResourceAgentDescription des : repository) {
+			
+			if (des.getRai().equals(url)) {
+				repository.remove(des);
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 	@Override
