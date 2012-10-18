@@ -9,6 +9,7 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 public abstract class AbstractView extends FragmentActivity {
 
 	private IResourceAgent agent;
+	private static int couter = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,10 @@ public abstract class AbstractView extends FragmentActivity {
 				agent.identify();
 			}
 		}
+	}
+	
+	public int getNextID() {
+		return ++couter;
 	}
 
 	public abstract IResourceAgent createNewResourceAgent();

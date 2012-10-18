@@ -33,7 +33,7 @@ public class LampView extends AbstractView {
 
 	@Override
 	public IResourceAgent createNewResourceAgent() {
-		return new Lamp("GeneralLamp");
+		return new Lamp("lamp" + getNextID() + ".ra");
 	}
 
 }

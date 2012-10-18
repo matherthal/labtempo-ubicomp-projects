@@ -21,7 +21,7 @@ public class BedView extends AbstractView {
 	@Override
 	public IResourceAgent createNewResourceAgent() {
 		
-		return new Bed("SomeBed");
+		return new Bed("bed" + getNextID() + ".ra");
 	}
 	
 	@Override
