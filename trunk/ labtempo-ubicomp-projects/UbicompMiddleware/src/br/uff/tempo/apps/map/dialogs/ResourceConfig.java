@@ -6,10 +6,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.apps.map.objects.RegistryData;
+import br.uff.tempo.middleware.e.SmartAndroidException;
 
 public class ResourceConfig extends MapDialog {
 
 	private String name = "";
+	private float posX;
+	private float posY;
 
 	public ResourceConfig(final Activity act) {
 
@@ -34,26 +38,42 @@ public class ResourceConfig extends MapDialog {
 	// When OK button is clicked
 	public void btnOkClick(View v) {
 
-		EditText edit = (EditText) dialog.findViewById(R.id.etName);
+		EditText etName = (EditText) dialog.findViewById(R.id.etName);
+		EditText etPosX = (EditText) dialog.findViewById(R.id.etPosX);
+		EditText etPosY = (EditText) dialog.findViewById(R.id.etPosX);
 
-		this.name = edit.getText().toString();
+		this.name = etName.getText().toString();
+		String pX = etPosX.getText().toString();
+		String pY = etPosY.getText().toString();
 
-		if (name.equals("")) {
+		try {
+			if (name.equals("") || pX.equals("") || pY.equals(""))
+				throw new SmartAndroidException("Empty fields not allowed!");
 
+			try {
+				this.posX = Float.parseFloat(pX);
+				this.posY = Float.parseFloat(pY);
+			} catch (NumberFormatException e) {
+				throw new SmartAndroidException(
+						"Invalid floating-point number!", e);
+			}
+
+			dialog.cancel();
+			IResourceChooser chooser = (IResourceChooser) activity;
+			chooser.onDialogFinished(this.dialog);
+
+		} catch (SmartAndroidException e) {
 			activity.runOnUiThread(new Runnable() {
 
 				@Override
 				public void run() {
 
-					Toast.makeText(activity, "Enter a non-empty name!", Toast.LENGTH_LONG).show();
+					Toast.makeText(activity, "Invalid values!",
+							Toast.LENGTH_LONG).show();
 				}
 			});
-		} else {
-
-			dialog.cancel();
-			IResourceChooser chooser = (IResourceChooser) activity;
-			chooser.onDialogFinished(this.dialog);
 		}
+
 	}
 
 	// When Cancel button is clicked
@@ -62,9 +82,27 @@ public class ResourceConfig extends MapDialog {
 		dialog.cancel();
 	}
 
+	public RegistryData getData() {
+		
+		RegistryData data = new RegistryData();
+		data.setPositionX(posX);
+		data.setPositonY(posY);
+		data.setResourceName(name);
+		
+		return data;
+	}
+	
 	public String getName() {
 
 		return this.name;
+	}
+
+	public float getPositionX() {
+		return this.posX;
+	}
+
+	public float getPositionY() {
+		return this.posY;
 	}
 
 	@Override
