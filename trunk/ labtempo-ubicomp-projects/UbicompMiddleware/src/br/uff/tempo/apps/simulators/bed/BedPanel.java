@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractPanel;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.IBed;
 
 public class BedPanel extends AbstractPanel {
@@ -22,45 +23,35 @@ public class BedPanel extends AbstractPanel {
 	// private BedData bed;
 	private IBed agent;
 	private Bitmap mBitmap;
-	
+
 	private int pointX;
 	private int pointY;
 
 	public BedPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
 	}
 
 	@Override
-	protected final void init() {
+	public final void initialization() {
 
-		super.init();
-		
 		mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bed);
 
 		// This will calculate the bitmap (x,y) coordinate, when its center is
 		// on screen center
-		pointX = getScreenCenterX()- mBitmap.getWidth() / 2;
+		pointX = getScreenCenterX() - mBitmap.getWidth() / 2;
 		pointY = getScreenCenterY() - mBitmap.getHeight() / 2;
-		
-		agent = (IBed) ((BedView) getContext()).getAgent();
 	}
 
 	@Override
-	public void onDraw(Canvas canvas) {
-		
-		super.onDraw(canvas);
-		// draw the background color
-		canvas.drawColor(Color.BLACK);
-		// draw the bed bitmap
-		canvas.drawBitmap(mBitmap, pointX, pointY, null);
+	public void onUpdate(String method, Object value) {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-
+	public void touch(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			
+
 			// get the touch coordinates
 			int x = (int) event.getX();
 			int y = (int) event.getY();
@@ -82,14 +73,20 @@ public class BedPanel extends AbstractPanel {
 			Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
 			invalidate();
 		}
-
-		return true;
 	}
 
 	@Override
-	public void onUpdate(String method, Object value) {
-		// TODO Auto-generated method stub
-		
+	public void drawCanvas(Canvas canvas) {
+		super.onDraw(canvas);
+		// draw the background color
+		canvas.drawColor(Color.BLACK);
+		// draw the bed bitmap
+		canvas.drawBitmap(mBitmap, pointX, pointY, null);
+	}
+
+	@Override
+	public void setAgent(IResourceAgent agent) {
+		this.agent = (IBed) agent;
 	}
 
 }

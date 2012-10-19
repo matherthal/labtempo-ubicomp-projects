@@ -1,9 +1,12 @@
 package br.uff.tempo.apps.simulators;
 
 import android.content.Context;
+import android.graphics.Canvas;
+import android.os.DropBoxManager;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
@@ -20,9 +23,12 @@ public abstract class AbstractPanel extends View {
 	
 	private Handler handler = new Handler();
 	private float scale;
+	
+	private boolean thereIsAnAgent = false;
 
 	public AbstractPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		init();
 	}
 
 	protected void init() {
@@ -41,7 +47,58 @@ public abstract class AbstractPanel extends View {
 		
 		scale = getResources().getDisplayMetrics().density;
 		
+		if (getAgent() == null) {
+			thereIsAnAgent = false;
+		}
+		
 		setupInterest();
+		initialization();
+	}
+	
+	@Override
+	protected void onDraw(Canvas canvas) {
+		super.onDraw(canvas);
+	
+		if (thereIsAnAgent) {
+			drawCanvas(canvas);
+		}
+	}
+	
+	@Override
+	public boolean onTouchEvent(MotionEvent event) {
+	
+		if (thereIsAnAgent) {
+			touch(event);
+		}
+		
+		return super.onTouchEvent(event);
+	}
+	
+	public void thereIsAnAgent() {
+		
+		thereIsAnAgent = true;
+		invalidate();
+	}
+	
+	public void thereIsNotAnAgent() {
+		thereIsAnAgent = false;
+	}
+	
+	public abstract void initialization();
+	public abstract void setAgent(IResourceAgent agent);
+	public abstract void touch(MotionEvent event);
+	public abstract void drawCanvas(Canvas canvas);
+	
+	/**
+	 * Called when occurs a change in any context variable from current Agent.
+	 * @param method Context variable changed.
+	 * @param value Current value from the context variable changed.
+	 */
+	public abstract void onUpdate(String method, Object value);
+	
+	public IResourceAgent getAgent() {
+		
+		return ((AbstractView) getContext()).getAgent();
 	}
 	
 	public void setupInterest() {
@@ -66,13 +123,6 @@ public abstract class AbstractPanel extends View {
 			}
 		};
 	}
-	
-	/**
-	 * Called when occurs a change in any context variable from current Agent.
-	 * @param method Context variable changed.
-	 * @param value Current value from the context variable changed.
-	 */
-	public abstract void onUpdate(String method, Object value);
 	
 	public float getDensity() {
 		return scale;

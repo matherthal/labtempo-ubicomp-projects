@@ -12,7 +12,7 @@ import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 
-public class StoveBurnersPanel extends AbstractPanel {
+public class StoveBurnersPanel extends StovePanel {
 
 	private static final String TAG = "SmartAndroid";
 	private Bitmap mBitmap;
@@ -26,18 +26,13 @@ public class StoveBurnersPanel extends AbstractPanel {
 	private int pointX;
 	private int pointY;
 
-	private IStove stove;
-
 	public StoveBurnersPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
 	}
 
 	@Override
-	protected final void init() {
-
-		super.init();
-
+	public final void initialization() {
+		
 		mBitmap = BitmapFactory
 				.decodeResource(getResources(), R.drawable.stove);
 		mButtons = BitmapFactory.decodeResource(getResources(),
@@ -57,41 +52,17 @@ public class StoveBurnersPanel extends AbstractPanel {
 		// on screen center
 		pointX = getScreenCenterX() - mBitmap.getWidth() / 2;
 		pointY = getScreenCenterY() - mBitmap.getHeight() / 2;
-
-		stove = (IStove) ((StoveView) getContext()).getAgent();
 	}
 
 	@Override
-	public void onDraw(Canvas canvas) {
+	public void onUpdate(String method, Object value) {
+		// TODO Auto-generated method stub
 
-		super.onDraw(canvas);
-		// draw the background color
-		canvas.drawColor(Color.BLACK);
-
-		// draw the stove bitmap
-		canvas.drawBitmap(mBitmap, pointX, pointY, null);
-
-		// draw the flame at burners, if needed
-
-		if (stove.isOnBurner(0)) {
-			canvas.drawBitmap(mFireOne, pointX, pointY, null);
-		}
-		if (stove.isOnBurner(1)) {
-			canvas.drawBitmap(mFireTwo, pointX, pointY, null);
-		}
-		if (stove.isOnBurner(2)) {
-			canvas.drawBitmap(mFireThree, pointX, pointY, null);
-		}
-		if (stove.isOnBurner(3)) {
-			canvas.drawBitmap(mFireFour, pointX, pointY, null);
-		}
-
-		Log.d(TAG, "PanelBurners Screen repainted");
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-
+	public void touch(MotionEvent event) {
+		
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			// get the touch coordinates
 			int x = (int) event.getX();
@@ -142,28 +113,47 @@ public class StoveBurnersPanel extends AbstractPanel {
 
 					Log.d(TAG, "A burner knob was clicled...");
 
-					if (stove.isOnBurner(burnerIndex)) {
-						stove.turnOffBurner(burnerIndex);
+					if (agent.isOnBurner(burnerIndex)) {
+						agent.turnOffBurner(burnerIndex);
 					} else {
-						stove.turnOnBurner(burnerIndex);
+						agent.turnOnBurner(burnerIndex);
 					}
 				}
 
 				Log.d(TAG, "Color Clicked = " + Integer.toHexString(color));
-				
+
 				invalidate();
 
 			} catch (IllegalArgumentException ex) {
 				Log.d(TAG, "Exception... " + ex);
 			}
 		}
-
-		return super.onTouchEvent(event);
 	}
 
 	@Override
-	public void onUpdate(String method, Object value) {
-		// TODO Auto-generated method stub
-		
+	public void drawCanvas(Canvas canvas) {
+
+		// draw the background color
+		canvas.drawColor(Color.BLACK);
+
+		// draw the stove bitmap
+		canvas.drawBitmap(mBitmap, pointX, pointY, null);
+
+		// draw the flame at burners, if needed
+
+		if (agent.isOnBurner(0)) {
+			canvas.drawBitmap(mFireOne, pointX, pointY, null);
+		}
+		if (agent.isOnBurner(1)) {
+			canvas.drawBitmap(mFireTwo, pointX, pointY, null);
+		}
+		if (agent.isOnBurner(2)) {
+			canvas.drawBitmap(mFireThree, pointX, pointY, null);
+		}
+		if (agent.isOnBurner(3)) {
+			canvas.drawBitmap(mFireFour, pointX, pointY, null);
+		}
+
+		Log.d(TAG, "PanelBurners Screen repainted");
 	}
 }
