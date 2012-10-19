@@ -11,6 +11,7 @@ import android.view.MotionEvent;
 import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractPanel;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.interfaces.ILamp;
 
 public class LampPanel extends AbstractPanel {
@@ -20,54 +21,56 @@ public class LampPanel extends AbstractPanel {
 	private ILamp agent;
 	private Bitmap mBitmapOn;
 	private Bitmap mBitmapOff;
-	
+
 	private int pointX;
 	private int pointY;
 
 	public LampPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
 	}
 
 	@Override
-	protected final void init() {
+	public final void initialization() {
 
 		super.init();
-		
-		mBitmapOn = BitmapFactory.decodeResource(getResources(), R.drawable.lamp_on);
-		mBitmapOff = BitmapFactory.decodeResource(getResources(), R.drawable.lamp_off);
+
+		mBitmapOn = BitmapFactory.decodeResource(getResources(),
+				R.drawable.lamp_on);
+		mBitmapOff = BitmapFactory.decodeResource(getResources(),
+				R.drawable.lamp_off);
 
 		// This will calculate the bitmap (x,y) coordinate, when its center is
 		// on screen center
-		pointX = getScreenCenterX()- mBitmapOn.getWidth() / 2;
+		pointX = getScreenCenterX() - mBitmapOn.getWidth() / 2;
 		pointY = getScreenCenterY() - mBitmapOn.getHeight() / 2;
-		
-		agent = (ILamp) ((LampView) getContext()).getAgent();
 	}
-
+	
 	@Override
-	public void onDraw(Canvas canvas) {
-
-		super.onDraw(canvas);
+	public void drawCanvas(Canvas canvas) {
+		
 		// draw the background color
 		canvas.drawColor(Color.WHITE);
 		// draw the lamp bitmap
 
 		if (agent.isOn()) {
 			canvas.drawBitmap(mBitmapOn, pointX, pointY, null);
-		}
-		else {
+		} else {
 			canvas.drawBitmap(mBitmapOff, pointX, pointY, null);
 		}
-		
+
 		Log.i(TAG, "onDraw from LampPanel called");
+	}
+	
+	@Override
+	public void setAgent(IResourceAgent agent) {
+		this.agent = (ILamp) agent;
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public void touch(MotionEvent event) {
 
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-			
+
 			// get the touch coordinates
 			int x = (int) event.getX();
 			int y = (int) event.getY();
@@ -87,13 +90,11 @@ public class LampPanel extends AbstractPanel {
 			Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
 			invalidate();
 		}
-
-		return true;
 	}
 
 	@Override
 	public void onUpdate(String method, Object value) {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

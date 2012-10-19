@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import br.uff.tempo.R;
+import br.uff.tempo.apps.map.objects.RegistryData;
+import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.apps.simulators.AbstractView;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.Stove;
@@ -36,24 +38,13 @@ public class StoveView extends AbstractView {
 	}
 	
 	@Override
-	public IResourceAgent createNewResourceAgent() {
+	public IResourceAgent createNewResourceAgent(RegistryData data) {
 		//TODO get the name from a Dialog box
 		return new Stove("stove" + getNextID() + ".ra");
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-
+	public AbstractPanel getPanel() {
+		return (AbstractPanel) findViewById(R.id.stoveBurnersPanel);
 	}
 }

@@ -13,11 +13,9 @@ import br.uff.tempo.R;
 import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 
-public class StoveOvenPanel extends AbstractPanel {
+public class StoveOvenPanel extends StovePanel {
 
 	private final String TAG = "Stove-PanelOven";
-
-	private IStove agent;
 
 	private Bitmap mBitmap;
 	private Bitmap mButtons;
@@ -27,13 +25,10 @@ public class StoveOvenPanel extends AbstractPanel {
 
 	public StoveOvenPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		init();
 	}
 
 	@Override
-	protected void init() {
-
-		super.init();
+	public final void initialization() {
 
 		mBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.oven);
 
@@ -44,24 +39,16 @@ public class StoveOvenPanel extends AbstractPanel {
 		// on screen center
 		pointX = getScreenCenterX() - mBitmap.getWidth() / 2;
 		pointY = getScreenCenterY() - mBitmap.getHeight() / 2;
-
-		agent = (IStove) ((StoveView) getContext()).getAgent();
 	}
 
 	@Override
-	public void onDraw(Canvas canvas) {
+	public void onUpdate(String method, Object value) {
+		// TODO Auto-generated method stub
 
-		super.onDraw(canvas);
-		// draw the background color
-		canvas.drawColor(Color.BLACK);
-
-		// draw the stove bitmap
-		canvas.drawBitmap(mBitmap, pointX, pointY, null);
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
-
+	public void touch(MotionEvent event) {
 		if (event.getAction() == MotionEvent.ACTION_DOWN) {
 			// get the touch coordinates
 			int x = (int) event.getX();
@@ -111,13 +98,14 @@ public class StoveOvenPanel extends AbstractPanel {
 				Log.d(TAG, "Exception... " + ex);
 			}
 		}
-
-		return super.onTouchEvent(event);
 	}
 
 	@Override
-	public void onUpdate(String method, Object value) {
-		// TODO Auto-generated method stub
-		
+	public void drawCanvas(Canvas canvas) {
+		// draw the background color
+		canvas.drawColor(Color.BLACK);
+
+		// draw the stove bitmap
+		canvas.drawBitmap(mBitmap, pointX, pointY, null);
 	}
 }

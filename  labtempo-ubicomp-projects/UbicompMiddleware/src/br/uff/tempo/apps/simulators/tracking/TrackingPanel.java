@@ -17,6 +17,7 @@ import android.view.MotionEvent;
 import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.Place;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
@@ -53,7 +54,7 @@ public class TrackingPanel extends AbstractPanel {
 	}
 
 	@Override
-	protected final void init() {
+	public final void initialization() {
 
 		super.init();
 
@@ -88,10 +89,10 @@ public class TrackingPanel extends AbstractPanel {
 
 		float mapWidth = homeMap.getWidth();
 		float mapHeight = homeMap.getHeight();
-		
+
 		float sWidth = getScreenWidth();
 		float sHeight = getScreenHeight();
-		
+
 		int factorW = (int) (sWidth / mapWidth + 0.5f);
 		int factorH = (int) (sHeight / mapHeight + 0.5f);
 
@@ -117,25 +118,32 @@ public class TrackingPanel extends AbstractPanel {
 		}
 	}
 
-	@Override
-	public void onDraw(Canvas canvas) {
+	public void addPerson(String name) {
 
-		super.onDraw(canvas);
+		Paint p = new Paint();
+		p.setColor(colors[counter]);
 
-		for (Rect rect : rooms.values()) {
+		Avatar usr = new Avatar(name, getScreenCenterX(), getScreenCenterY(),
+				dpTopixel(RADIUS), p);
 
-			canvas.drawRect(rect, paint);
-		}
+		usr.setPixalFactor(factor);
+		usr.setSpace(homeMap);
 
-		for (Avatar circ : users) {
-			canvas.drawCircle(circ.getCenterX(), circ.getCenterY(),
-					circ.getRadius(), circ.getPaint());
-		}
+		users.add(usr);
+
+		counter = (counter + 1) % colors.length;
+
+		invalidate();
 	}
 
 	@Override
-	public boolean onTouchEvent(MotionEvent event) {
+	public void onUpdate(String method, Object value) {
+		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void touch(MotionEvent event) {
 		// get the touch coordinates
 		int x = (int) event.getX();
 		int y = (int) event.getY();
@@ -177,50 +185,43 @@ public class TrackingPanel extends AbstractPanel {
 
 			Log.d("TrackingPanel", "Action UP");
 
-//			for (Map.Entry<String, Rect> entry : rooms.entrySet()) {
-//
-//				if (entry.getValue().contains(x, y)) {
-//
-//					Toast.makeText(getContext(), entry.getKey(),
-//							Toast.LENGTH_SHORT).show();
-//					break;
-//				}
-//			}
+			// for (Map.Entry<String, Rect> entry : rooms.entrySet()) {
+			//
+			// if (entry.getValue().contains(x, y)) {
+			//
+			// Toast.makeText(getContext(), entry.getKey(),
+			// Toast.LENGTH_SHORT).show();
+			// break;
+			// }
+			// }
 
 			if (currentUser != null && caught) {
 				currentUser.storePosition();
 			}
-			
+
 			caught = false;
 		}
-
-		invalidate();
-
-		return true;
-	}
-
-	public void addPerson(String name) {
-
-		Paint p = new Paint();
-		p.setColor(colors[counter]);
-
-		Avatar usr = new Avatar(name, getScreenCenterX(), getScreenCenterY(),
-				dpTopixel(RADIUS), p);
-
-		usr.setPixalFactor(factor);
-		usr.setSpace(homeMap);
-
-		users.add(usr);
-
-		counter = (counter + 1) % colors.length;
 
 		invalidate();
 	}
 
 	@Override
-	public void onUpdate(String method, Object value) {
-		// TODO Auto-generated method stub
+	public void drawCanvas(Canvas canvas) {
+		
+		for (Rect rect : rooms.values()) {
 
+			canvas.drawRect(rect, paint);
+		}
+
+		for (Avatar circ : users) {
+			canvas.drawCircle(circ.getCenterX(), circ.getCenterY(),
+					circ.getRadius(), circ.getPaint());
+		}
+	}
+
+	@Override
+	public void setAgent(IResourceAgent agent) {
+		// TODO Auto-generated method stub
 	}
 }
 
@@ -274,10 +275,10 @@ class Avatar {
 
 		float x = Space.pixelToMeters(centerX, pixelFactor);
 		float y = houseMap.invertYcoordinate(Space.pixelToMeters(centerY,
-				pixelFactor));		
+				pixelFactor));
 
 		Log.i("SmartAndroid", "[" + x + ", " + y + "]");
-		
+
 		this.person.addPosition(new Position(x, y));
 	}
 

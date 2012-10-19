@@ -1,19 +1,30 @@
 package br.uff.tempo.apps.simulators;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.Window;
+import br.uff.tempo.apps.map.dialogs.IResourceChooser;
+import br.uff.tempo.apps.map.dialogs.ResourceConfig;
+import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
-public abstract class AbstractView extends FragmentActivity {
+public abstract class AbstractView extends FragmentActivity implements
+		IResourceChooser {
 
 	private IResourceAgent agent;
-	private static int couter = 0;
+	private static int counter = 0;
+
+	// Dialog to get resource information
+	private ResourceConfig resConf;
+	
+	private AbstractPanel panel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
+		
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
@@ -29,19 +40,44 @@ public abstract class AbstractView extends FragmentActivity {
 
 		// else, creates a new one
 		} else {
-			agent = createNewResourceAgent();
-			
-			if (agent != null) {
-				agent.identify();
-			}
+
+			// Asks for the user about the Resource Informations
+			// such as Name and Position
+			callDialog();
 		}
 	}
-	
-	public int getNextID() {
-		return ++couter;
+
+	public void onRegisteredResourceChoosed(String resourceRAI) {}
+
+	public void onDialogFinished(Dialog dialog) {
+		
+		agent = createNewResourceAgent(resConf.getData());
+
+		if (agent != null) {
+			agent.identify();
+			
+			AbstractPanel p = getPanel();
+			p.setAgent(agent);
+			p.thereIsAnAgent();
+			
+		} else {
+			Log.e("SmartAndroid", "AbstractView: Agent is NULL!");
+		}
 	}
 
-	public abstract IResourceAgent createNewResourceAgent();
+	private final void callDialog() {
+
+		resConf = new ResourceConfig(this);
+		resConf.showDialog();
+	}
+
+	public int getNextID() {
+		return ++counter;
+	}
+
+	public abstract IResourceAgent createNewResourceAgent(RegistryData data);
+	
+	public abstract AbstractPanel getPanel();
 
 	public IResourceAgent getAgent() {
 		return this.agent;
