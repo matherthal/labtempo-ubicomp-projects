@@ -14,11 +14,36 @@ public class RegistryData implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String resName;
-
+	private float posX;
+	private float posY;
+	
+	public RegistryData() {	}
+	
 	public RegistryData(String name) {
-
 		this.resName = name;
 	}
+
+	public float getPositionX() {
+		return posX;
+	}
+
+	/**
+	 * 
+	 * @param posX
+	 */
+	public void setPositionX(float posX) {
+		this.posX = posX;
+	}
+
+	public float getPositionY() {
+		return posY;
+	}
+
+	public void setPositonY(float posY) {
+		this.posY = posY;
+	}
+
+
 
 	/**
 	 * Get the name that will be the resource name

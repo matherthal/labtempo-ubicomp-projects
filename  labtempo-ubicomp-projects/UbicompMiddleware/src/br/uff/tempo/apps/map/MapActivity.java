@@ -778,7 +778,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	@Override
 	public void onDialogFinished(Dialog dialog) {
 
-		regData = new RegistryData(resConf.getName());
+		regData = resConf.getData();
 		resConfigured = true;
 
 		onOptionsItemSelected(itemSelected);
@@ -826,14 +826,6 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// Save the new preference to memory
 		MapSettings.setAddress(sharedPreferences.getString("rdsAddress", null));
 	}
-
-	// @Override protected void onActivityResult(int requestCode, int
-	// resultCode, Intent data) {
-	// super.onActivityResult(requestCode, resultCode, data);
-	//
-	// //mAppManager.addResourceData((ResourceData)
-	// data.getSerializableExtra("resourceData");
-	// }
 
 	// Detectors
 	@Override
