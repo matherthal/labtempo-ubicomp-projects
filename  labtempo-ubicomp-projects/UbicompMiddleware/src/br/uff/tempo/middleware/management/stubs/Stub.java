@@ -50,7 +50,7 @@ public class Stub implements Serializable {
 
 			// Get answer from remote method call and return
 			String ret = caller.sendMessage(msg);
-			return JSONHelper.getMessage(ret,returnType);
+			return JSONHelper.getMessage(ret);
 
 		} catch (JSONException e) {
 			e.printStackTrace();
@@ -66,7 +66,7 @@ public class Stub implements Serializable {
 
 			// Get answer from remote method call and return
 			String ret = caller.sendMessage(msg);
-			return JSONHelper.getMessage(ret,returnType);
+			return JSONHelper.getMessage(ret);
 
 		} catch (JSONException e) {
 			e.printStackTrace();

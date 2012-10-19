@@ -24,7 +24,7 @@ import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
 public abstract class ResourceAgent extends Service implements IResourceAgent, Serializable, Callable {
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private static final String TAG = "AgentBase";
@@ -41,6 +41,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private static IResourceDiscovery rDS;
 	private ArrayList<String> registeredList;
 	private String RDS_URL;
+	
+	private IResourceRegister rrs;
+	private Caller caller;
 	
 	private Position position;
 
@@ -107,9 +110,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public String getResourceClassName() {
 		return this.getClass().getName();
 	}
-
-	private IResourceRegister rrs;
-	private Caller caller;
 
 	public class ResourceBinder extends Binder {
 		public ResourceAgent getService() {
@@ -192,10 +192,12 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			String ip = ResourceAgentIdentifier.getLocalIpAddress();
 			int prefix = ResourceAgentIdentifier.getLocalPrefix();
 			
+			ResourceData resourceData = new ResourceData(this.rai, this.name, this.type, this.position, null);
+			
 			if (position != null) {
-				registered = rrs.registerLocation(null, ip, prefix, this.rai, this.position);
+				registered = rrs.registerLocation(null, ip, prefix, this.rai, this.position, resourceData);
 			} else {
-				registered = rrs.register(null, ip, prefix, this.rai);
+				registered = rrs.register(null, ip, prefix, this.rai, resourceData);
 			}
 				
 			String result = "";
@@ -215,7 +217,10 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			String ip = ResourceAgentIdentifier.getLocalIpAddress();
 			int prefix = ResourceAgentIdentifier.getLocalPrefix();
 			
-			registered = rrs.registerLocation(null, ip, prefix, this.rai, this.position);
+			Place place = ResourceLocation.getInstance().getLocal(position);
+			ResourceData resourceData = new ResourceData(this.rai, this.name, this.type, this.position, place);
+			
+			registered = rrs.registerLocation(null, ip, prefix, this.rai, this.position, resourceData);
 				
 			String result = "";
 			// adding local reference of this instance
@@ -234,7 +239,10 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			String ip = ResourceAgentIdentifier.getLocalIpAddress();
 			int prefix = ResourceAgentIdentifier.getLocalPrefix();
 			
-			registered = rrs.registerInPlace(null, ip, prefix, this.rai, placeName, this.position);
+			Place place = ResourceLocation.getInstance().getPlace(placeName);
+			ResourceData resourceData = new ResourceData(this.rai, this.name, this.type, this.position, place);
+			
+			registered = rrs.registerInPlace(null, ip, prefix, this.rai, placeName, this.position, resourceData);
 				
 			String result = "";
 			// adding local reference of this instance

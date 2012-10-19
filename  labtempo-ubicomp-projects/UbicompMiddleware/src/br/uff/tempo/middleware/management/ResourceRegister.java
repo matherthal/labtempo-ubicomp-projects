@@ -29,20 +29,26 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 			instance = new ResourceRegister();
 		return instance;
 	}
-
-	public boolean register(String rans, String ip, int prefix, String url) {
+	
+	@Override
+	public boolean register(String rans, String ip, int prefix, String url, ResourceData resourceData) {
 		rR = ResourceRepository.getInstance();
 		rR.add(rans, ip, prefix, url);
+		
+		//ResourceDirectory.getInstance().create(resourceData);
 		
 		notifyStakeholders("register", url);
 		return true;
 	}
 	
-	public boolean registerLocation(String rans, String ip, int prefix, String url, Position position) {
+	@Override
+	public boolean registerLocation(String rans, String ip, int prefix, String url, Position position, ResourceData resourceData) {
 		rR = ResourceRepository.getInstance();
 		rR.add(rans, ip, prefix, url);
 		rL = ResourceLocation.getInstance();
 		rL.registerInPlace(url,position);
+		
+		//ResourceDirectory.getInstance().create(resourceData);
 		return true;
 	}
 
@@ -59,10 +65,13 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	}
 
 	@Override
-	public boolean registerInPlace(String rans, String ip, int prefix, String url, String placeName, Position position) {
+	public boolean registerInPlace(String rans, String ip, int prefix, String url, String placeName, Position position, ResourceData resourceData) {
 		rR = ResourceRepository.getInstance();
 		rR.add(rans, ip, prefix, url);
 		rL = ResourceLocation.getInstance();
+		
+		//ResourceDirectory.getInstance().create(resourceData);
+		
 		if (position == null){
 			rL.registerInPlaceMiddlePos(url, rL.getPlace(placeName));
 		} else {

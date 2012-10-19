@@ -1,5 +1,7 @@
 package br.uff.tempo.apps.map.objects;
 
+import java.io.Serializable;
+
 /**
  * This class aims to wrap the necessary information to register a resource and
  * enable this information to be passed as parameter easily. Initially, it's
@@ -7,8 +9,10 @@ package br.uff.tempo.apps.map.objects;
  * 
  * @author dbarreto
  */
-public class RegistryData {
-
+public class RegistryData implements Serializable {
+	
+	private static final long serialVersionUID = 1L;
+	
 	private String resName;
 
 	public RegistryData(String name) {
