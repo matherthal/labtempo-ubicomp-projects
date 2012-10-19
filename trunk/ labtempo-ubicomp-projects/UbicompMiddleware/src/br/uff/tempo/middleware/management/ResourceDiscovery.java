@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceDiscovery extends ResourceAgent implements IResourceDiscovery {
 	
@@ -17,10 +18,26 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 		setType("br.uff.tempo.middleware.management.ResourceDiscovery");
 
 		setRAI(IResourceDiscovery.RDS_ADDRESS);
-
-		ResourceContainer.getInstance().add(this);
+	}
+	
+	public static ResourceDiscovery getInstance() {
+		if (instance == null)
+			instance = new ResourceDiscovery();
+		return instance;
 	}
 
+	@Override
+	public boolean identify() {
+		String ip = ResourceAgentIdentifier.getLocalIpAddress();
+		int prefix = ResourceAgentIdentifier.getLocalPrefix();
+		
+		ResourceContainer.getInstance().add(this);
+		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRAI(), ip, prefix));
+		ResourceRepository.getInstance().add(this.getRAI(), ip, prefix, this.getRAI());
+		
+		return true;
+	}
+	
 	public ArrayList<String> search(String query) {
 		ResourceRepository rR = ResourceRepository.getInstance();
 		if (query == "")
@@ -37,12 +54,6 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 
 	private ArrayList<ResourceAgent> queryByProximity(String query) {
 		return null;
-	}
-
-	public static ResourceDiscovery getInstance() {
-		if (instance == null)
-			instance = new ResourceDiscovery();
-		return instance;
 	}
 
 	@Override
@@ -62,6 +73,11 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 	}
 
 	@Override
+	public ResourceAgentNS getRANS(String rans) {
+		return ResourceRepository.getInstance().getRANS(rans);
+	}
+
+	@Override
 	public List<ResourceData> searchForAttribute(int attribute, String query) {
 		return ResourceDirectory.getInstance().read(attribute, query);
 //		 ArrayList<ResourceData> lista =  new ArrayList<ResourceData>();
@@ -69,5 +85,4 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 //		return lista;
 		
 	}
-
 }

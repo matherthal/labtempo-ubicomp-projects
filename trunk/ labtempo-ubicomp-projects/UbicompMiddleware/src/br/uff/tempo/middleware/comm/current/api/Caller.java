@@ -5,6 +5,8 @@ import java.io.Serializable;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.interest.api.NewDispatcher;
 import br.uff.tempo.middleware.e.SmartAndroidException;
+import br.uff.tempo.middleware.management.ResourceAgentNS;
+import br.uff.tempo.middleware.management.ResourceNSContainer;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class Caller implements Serializable {
@@ -19,15 +21,16 @@ public class Caller implements Serializable {
 
 	public String sendMessage(String jsonString) {
 		try {
-			String local = ResourceAgentIdentifier.getLocalIpAddress();
 			String result = "";
-			if (calleeAgent.getPath().equals(local)) {
+			if (calleeAgent.getPath().equals(ResourceAgentIdentifier.getLocalIpAddress())) {
 				Log.d("SmartAndroid", String.format("Sending LOCAL msg %s to %s", jsonString, calleeAgent.getRai()));
 				result = NewDispatcher.getInstance().dispatch(calleeAgent.getRai(), jsonString);
 				Log.d("SmartAndroid", String.format("Receive LOCAL msg %s from %s", result, calleeAgent.getRai()));
 			} else {
+				ResourceAgentNS rans = ResourceNSContainer.getInstance().get(this.calleeAgent.getRai());
+				
 				Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", jsonString, calleeAgent.getRai()));
-				result = SocketService.sendReceive(calleeAgent.getPath(), calleeAgent.getRai() + ";" + jsonString + ";");
+				result = SocketService.sendReceive(rans.getIp(), rans.getRans() + ";" + jsonString + ";");
 				Log.d("SmartAndroid", String.format("Receive REMOTE msg %s from %s", result, calleeAgent.getRai()));
 			}
 			

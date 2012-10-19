@@ -8,9 +8,6 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	
 	private static final long serialVersionUID = 1L;
 
-	ResourceRepository rR;
-	ResourceLocation rL;
-
 	private static ResourceRegister instance;
 
 	private ResourceRegister() {
@@ -20,8 +17,6 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		setRAI("br.uff.tempo.middleware.management.ResourceRegister");
 
 		setRAI(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceRegister", "ResourceRegister"));
-
-		ResourceContainer.getInstance().add(this);
 	}
 
 	public static ResourceRegister getInstance() {
@@ -31,9 +26,21 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	}
 	
 	@Override
+	public boolean identify() {
+		String ip = ResourceAgentIdentifier.getLocalIpAddress();
+		int prefix = ResourceAgentIdentifier.getLocalPrefix();
+		
+		ResourceContainer.getInstance().add(this);
+		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRAI(), ip, prefix));
+		ResourceRepository.getInstance().add(this.getRAI(), ip, prefix, this.getRAI());
+		
+		return true;
+	}
+	
+	@Override
 	public boolean register(String rans, String ip, int prefix, String url, ResourceData resourceData) {
-		rR = ResourceRepository.getInstance();
-		rR.add(rans, ip, prefix, url);
+		ResourceRepository.getInstance().add(rans, ip, prefix, url);
+		ResourceNSContainer.getInstance().add(new ResourceAgentNS(rans, ip, prefix));
 		
 		//ResourceDirectory.getInstance().create(resourceData);
 		
@@ -43,18 +50,18 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	
 	@Override
 	public boolean registerLocation(String rans, String ip, int prefix, String url, Position position, ResourceData resourceData) {
-		rR = ResourceRepository.getInstance();
-		rR.add(rans, ip, prefix, url);
-		rL = ResourceLocation.getInstance();
-		rL.registerInPlace(url,position);
+		ResourceRepository.getInstance().add(rans, ip, prefix, url);
+		ResourceNSContainer.getInstance().add(new ResourceAgentNS(rans, ip, prefix));
+		
+		ResourceLocation.getInstance().registerInPlace(url,position);
 		
 		//ResourceDirectory.getInstance().create(resourceData);
 		return true;
 	}
 
 	public boolean unregister(String url) {
-		// rR = ResourceRepository.getInstance(); //already instantiated
-		rR.remove(url);
+		ResourceRepository.getInstance().remove(url);
+		ResourceNSContainer.getInstance().remove(url);
 		return true;
 	}
 
@@ -66,9 +73,10 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 
 	@Override
 	public boolean registerInPlace(String rans, String ip, int prefix, String url, String placeName, Position position, ResourceData resourceData) {
-		rR = ResourceRepository.getInstance();
-		rR.add(rans, ip, prefix, url);
-		rL = ResourceLocation.getInstance();
+		ResourceRepository.getInstance().add(rans, ip, prefix, url);
+		ResourceNSContainer.getInstance().add(new ResourceAgentNS(rans, ip, prefix));
+		
+		ResourceLocation rL = ResourceLocation.getInstance();
 		
 		//ResourceDirectory.getInstance().create(resourceData);
 		

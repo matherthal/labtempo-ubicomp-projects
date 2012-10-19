@@ -49,4 +49,9 @@ public class ResourceAgentNS {
 	public void setPrefix(int prefix) {
 		this.prefix = prefix;
 	}
+	
+	@Override
+	public String toString() {
+		return String.format("ip: %s prefix: %s rans: %s", ip, prefix, rans);
+	}
 }

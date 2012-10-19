@@ -3,9 +3,6 @@ package br.uff.tempo.middleware.management;
 import java.util.ArrayList;
 import java.util.Map;
 
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
-import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
@@ -27,21 +24,6 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 
 		setName("ResourceRepository");
 		setType("management");
-		
-		ResourceRepository rR = this;
-		ResourceDiscovery rDS = ResourceDiscovery.getInstance();
-		ResourceRegister rRS = ResourceRegister.getInstance();
-		ResourceLocation rLS = ResourceLocation.getInstance();
-		
-		ResourceContainer.getInstance().addAll(rR, rDS, rRS, rLS);
-
-		String ip = ResourceAgentIdentifier.getLocalIpAddress();
-		int prefix = ResourceAgentIdentifier.getLocalPrefix();
-		
-		add(IResourceRepository.rans, ip, prefix, rR.getRAI());
-		add(IResourceDiscovery.rans, ip, prefix, rDS.getRAI());
-		add(IResourceRegister.rans, ip, prefix, rRS.getRAI());
-		add(IResourceLocation.rans, ip, prefix, rLS.getRAI());
 	}
 
 	public synchronized static ResourceRepository getInstance() {
@@ -50,11 +32,32 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		}
 		return instance;
 	}
+	
+	@Override
+	public boolean identify() {
+		String ip = ResourceAgentIdentifier.getLocalIpAddress();
+		int prefix = ResourceAgentIdentifier.getLocalPrefix();
+		
+		ResourceContainer.getInstance().add(this);
+		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRAI(), ip, prefix));
+		ResourceRepository.getInstance().add(this.getRAI(), ip, prefix, this.getRAI());
+		
+		return true;
+	}
 
 	public String get(String url) {
 		for (ResourceAgentDescription rad : repository) {
 			if (rad.getRai().contains(url)) {
 				return rad.getRai(); 
+			}
+		}
+		return null;
+	}
+	
+	public ResourceAgentNS getRANS(String rans) {
+		for (ResourceAgentDescription rad : repository) {
+			if (rad.getRaNS().getRans().equals(rans)) {
+				return rad.getRaNS(); 
 			}
 		}
 		return null;
@@ -73,9 +76,7 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	}
 	
 	public boolean remove(String url) {
-	
 		for (ResourceAgentDescription des : repository) {
-			
 			if (des.getRai().equals(url)) {
 				repository.remove(des);
 				return true;

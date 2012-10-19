@@ -16,12 +16,10 @@ import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Sorter;
 import br.uff.tempo.middleware.management.utils.Space;
 
-public class ResourceLocation extends ResourceAgent implements
-		IResourceLocation {
+public class ResourceLocation extends ResourceAgent implements IResourceLocation {
 
 	private static final long serialVersionUID = 1L;
-
-	private ResourceRepository rR;
+	
 	private Space currentSpace;
 
 	private static ResourceLocation instance;
@@ -36,16 +34,11 @@ public class ResourceLocation extends ResourceAgent implements
 		setName("ResourceLocation");
 		setType("management");
 
-		setRAI(ResourceAgentIdentifier.generateRAI(
-				ResourceAgentIdentifier.getLocalIpAddress(),
-				"br.uff.tempo.middleware.management.ResourceLocation",
-				"ResourceLocation"));
+		setRAI(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceLocation", "ResourceLocation"));
 
 		currentSpace = new Space();
 		resources = new HashMap<String, Position>();
 		baseIndexer = new HashMap<String, HashMap<String, Position>>();
-		ResourceContainer.getInstance().add(this);
-		// loadBase();
 	}
 	
 	public static ResourceLocation getInstance() {
@@ -54,6 +47,18 @@ public class ResourceLocation extends ResourceAgent implements
 		return instance;
 	}
 
+	@Override
+	public boolean identify() {
+		String ip = ResourceAgentIdentifier.getLocalIpAddress();
+		int prefix = ResourceAgentIdentifier.getLocalPrefix();
+		
+		ResourceContainer.getInstance().add(this);
+		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRAI(), ip, prefix));
+		ResourceRepository.getInstance().add(this.getRAI(), ip, prefix, this.getRAI());
+		
+		return true;
+	}
+	
 	/**
 	 * carrega mapa com lugares baseados na interface do MapaDaCasa areas da
 	 * casa e dos comodos foram estimadas area da casa: 100x50
