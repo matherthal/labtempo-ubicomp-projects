@@ -3,15 +3,11 @@ package br.uff.tempo.middleware.management;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceDirectory {
-
-	public static final int RAI = 0;
-	public static final int NAME = 1;  
-	public static final int TYPE = 2;
-	public static final int POSITION = 3;
-	public static final int PLACE = 4;
+	private static final String TAG = ResourceDirectory.class.getSimpleName();
 	
 	Type directory;
 	
@@ -21,7 +17,7 @@ public class ResourceDirectory {
 		directory = new Type("\\");
 	}
 	
-	public static ResourceDirectory getInstance() {
+	public static synchronized ResourceDirectory getInstance() {
 		if (instance == null)
 			return instance = new ResourceDirectory();
 		return instance;
@@ -43,7 +39,7 @@ public class ResourceDirectory {
 				Type typeTemp = typeBase;
 				boolean isInserted = false;
 				while (typeTemp != null && !isInserted){
-					Type typeSubTemp = search(list.get(++i),typeTemp.getSubTypeList());
+					Type typeSubTemp = this.search(list.get(i++),typeTemp.getSubTypeList());
 					if (typeSubTemp != null){
 						typeTemp = typeSubTemp;
 					} else{
@@ -57,6 +53,7 @@ public class ResourceDirectory {
 				}
 			}		
 		}
+		Log.d(TAG, "Created");
 	}
 	
 	/**
@@ -68,22 +65,24 @@ public class ResourceDirectory {
 	public List<ResourceData> read(int attribute, String query){
 		List<ResourceData> result = new ArrayList<ResourceData>();
 		switch (attribute) {
-			case RAI:
+			case ResourceData.RAI:
 				result = getByRai(query);
-			case NAME:
+			case ResourceData.NAME:
 				result = searchByName(query);
 				break;
-			case TYPE:
+			case ResourceData.TYPE:
 				result = searchByType(query);
 				break;
-			case PLACE:
+			case ResourceData.PLACE:
 				result = searchByPlace(query);
 				break;
 		}
+		Log.d(TAG, "Read");
 		return result;
 	}
 	
 	private List<ResourceData> getByRai(String query) {
+		Log.d(TAG, "getByRai");
 		return raiTreeSearch(query, directory);
 	}
 
@@ -126,12 +125,15 @@ public class ResourceDirectory {
 					result.addAll(result);
 				}
 			}
+			Log.d(TAG, "searchByPlace");
 			return result;
 		}
+		Log.d(TAG, "searchByPlace: null");
 		return null;
 	}
 
 	private List<ResourceData> searchByType(String query) {
+		Log.d(TAG, "searchByType");
 		return typeTreeSearch(query, directory);	
 	}
 
@@ -162,6 +164,7 @@ public class ResourceDirectory {
 	}
 
 	private List<ResourceData> searchByName(String query) {
+		Log.d(TAG, "searchByName");
 		return nameTreeSearch(query,directory);
 	}
 
@@ -217,9 +220,10 @@ public class ResourceDirectory {
 	 */
 	public void update(ResourceData resource){
 		List<ResourceData> result;
-		if ((result = read(RAI, resource.getRai()))!= null){
+		if ((result = read(ResourceData.RAI, resource.getRai()))!= null){
 			result.set(0, resource);
 		}
+		Log.d(TAG, "Updated");
 	}
 	
 	/**
@@ -228,9 +232,10 @@ public class ResourceDirectory {
 	 */
 	public void delete(ResourceData resource){
 		List<ResourceData> result;
-		if ((result = read(RAI, resource.getRai()))!= null){
+		if ((result = read(ResourceData.RAI, resource.getRai()))!= null){
 			result.set(0,null);
 		}
+		Log.d(TAG, "Deleted");
 	}
 	
 	

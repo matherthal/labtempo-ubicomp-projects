@@ -19,8 +19,7 @@ import br.uff.tempo.apps.map.dialogs.ChooseResource;
 import br.uff.tempo.apps.map.dialogs.IResourceChooser;
 import br.uff.tempo.apps.map.dialogs.IResourceListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
-import br.uff.tempo.middleware.comm.common.InterestAPI;
-import br.uff.tempo.middleware.comm.interest.api.InterestAPIImpl;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.interfaces.ILamp;
@@ -60,6 +59,8 @@ public class CounterApp2 extends Activity implements IResourceChooser, IResource
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+		
+		ResourceData a = rds.searchForAttribute(0, "aaaaaaaa").get(0);
 
 		// instantiate the dialog list
 		dialog = new ChooseResource(this);

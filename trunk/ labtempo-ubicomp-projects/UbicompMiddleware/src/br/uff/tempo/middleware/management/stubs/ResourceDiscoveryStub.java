@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
 public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourceDiscovery {
@@ -33,6 +34,15 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 	public String getPath(String id) {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public List<ResourceData> searchForAttribute(int attribute, String query) {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+		params.add(new Tuple<String, Object>(Integer.class.getName(), attribute));
+		params.add(new Tuple<String, Object>(String.class.getName(), query));
+
+		return (List<ResourceData>) makeCall("searchForAttribute", params, List.class);
 	}
 
 }

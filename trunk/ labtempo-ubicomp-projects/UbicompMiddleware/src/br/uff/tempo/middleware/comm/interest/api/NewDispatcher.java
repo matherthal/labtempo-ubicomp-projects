@@ -12,11 +12,11 @@ import java.util.Map;
 
 import android.util.Log;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
+import br.uff.tempo.middleware.comm.current.api.JSONRPC;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.e.SmartAndroidException;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceContainer;
-import br.uff.tempo.middleware.management.utils.Position;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -35,9 +35,27 @@ public class NewDispatcher {
 	private NewDispatcher() {}
 	
 	public String dispatch(String rai, String jsonRPCString) throws SmartAndroidException {
-		Map<String, Object> methodCall = getMethodCall(jsonRPCString);
-		String methodName = getMethodName(methodCall);
-		List<Tuple<String, Object>> params = getParams(methodCall);
+//		JsonParser parser = new JsonParser();
+//		JsonArray array = parser.parse(jsonRPCString).getAsJsonArray();
+		
+//		Type collectionType = new TypeToken<HashMap<String, Object>>() {
+//		}.getType();
+//		
+//	    JsonParser parser = new JsonParser();
+//	    JsonArray array = parser.parse(jsonRPCString).getAsJsonArray();
+//	    HashMap<String, Object> message = (new Gson()).fromJson(array.get(0), collectionType);
+		
+		JSONRPC jsonRpc = (new Gson()).fromJson(jsonRPCString, JSONRPC.class);
+		
+//	    JSONRPC jsonRpc = new JSONRPC((String) message.get("method"), (List<Object>) message.get("params"), (List<String>) message.get("types"));
+	    
+//		Map<String, Object> methodCall = jsonRpc.getMethod();
+		String methodName = jsonRpc.getMethod();
+//		List<Tuple<String, Object>> params = jsonRpc.getParams();
+//		Map<String, Object> methodCall = getMethodCall(jsonRPCString);
+//		String methodName = getMethodName(methodCall);
+		
+		List<Tuple<String, String>> params = getParams(jsonRpc);
 
 		Object[] paramsArray = paramsToArray(params);
 
@@ -47,7 +65,7 @@ public class NewDispatcher {
 			if (method.getName().equals(methodName)) {
 				Log.d("SmartAndroid", String.format("Executing method %s with params %s", method, paramsArray));
 				Object obj = execute(rai, method, paramsArray);
-				String response = JSONHelper.createReply(obj);
+				String response = JSONHelper.createReply(obj, method.getReturnType());
 				Log.d("SmartAndroid", String.format("Method %s returns response %s", method, response));
 				return response;				
 			}
@@ -70,7 +88,7 @@ public class NewDispatcher {
 		}
 	}
 	
-	private Class getClassOf(String resource) throws ClassNotFoundException {
+	public static Class getClassOf(String resource) throws ClassNotFoundException {
 		return Class.forName(resource);
 	}
 	
@@ -89,35 +107,36 @@ public class NewDispatcher {
 		return (String) methodCall.get("method");
 	}
 
-	private List<Tuple<String, Object>> getParams(Map<String, Object> methodCall) {
-		List<Tuple<String, Object>> result = new ArrayList<Tuple<String, Object>>();
-		List<Object> params = (List<Object>) methodCall.get("params");
-		List<String> types = (List<String>) methodCall.get("types");
-		Iterator<Object> itParams = params.iterator();
+	private List<Tuple<String, String>> getParams(JSONRPC jsonRpc) {
+		List<Tuple<String, String>> result = new ArrayList<Tuple<String, String>>();
+		List<String> params = jsonRpc.getParams();
+		List<String> types = jsonRpc.getTypes();
+		Iterator<String> itParams = params.iterator();
 		Iterator<String> itTypes = types.iterator();
 
-		Tuple<String, Object> tp;
+		Tuple<String, String> tp;
 
 		while (itParams.hasNext()) {
 			String strType = itTypes.next();
-			Object param = itParams.next();
-			tp = new Tuple<String, Object>(strType, param);
+			String param = itParams.next();
+			tp = new Tuple<String, String>(strType, param);
 			result.add(tp);
 		}
 	
 		return result;
 	}
 
-	private Object[] paramsToArray(List<Tuple<String, Object>> argList) {
+	
+	private Object[] paramsToArray(List<Tuple<String, String>> argList) {
 		Object[] args = new Object[argList.size()];
 		for (int i = 0; i < argList.size(); i++){
-			Tuple<String, Object> tuple = argList.get(i);
+			Tuple<String, String> tuple = argList.get(i);
 			if (tuple.value != null) {
-				if (tuple.key.equals(String.class.getName())) {
-					args[i] = tuple.value;
-				} else if (tuple.key.equals(Position.class.getName())) {
-					args[i] = new Gson().fromJson(tuple.value.toString(), Position.class);
-				} else {
+//				if (tuple.key.equals(String.class.getName())) {
+//					args[i] = tuple.value;
+//				} else if (tuple.key.equals(Position.class.getName())) {
+//					args[i] = new Gson().fromJson(tuple.value.toString(), Position.class);
+//				} else {
 					try {
 						Class type = getClassOf(tuple.key);
 						args[i] = new Gson().fromJson(tuple.value.toString(), type);
@@ -125,7 +144,7 @@ public class NewDispatcher {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
-				}
+//				}
 			} else {
 				args[i] = null;
 			}
