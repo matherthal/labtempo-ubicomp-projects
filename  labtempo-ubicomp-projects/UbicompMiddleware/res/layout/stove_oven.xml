@@ -4,22 +4,12 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <!--
-    <Button
-        android:id="@+id/btnReg"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:onClick="onRegisterClick"
-        android:text="@string/regButton" />
-    -->
-
     <FrameLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" >
 
         <br.uff.tempo.apps.simulators.stove.StoveOvenPanel
-            android:id="@+id/panel"
+            android:id="@+id/stoveOvenPanel"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
     </FrameLayout>

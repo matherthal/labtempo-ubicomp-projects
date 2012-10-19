@@ -10,8 +10,10 @@
     <string name="textView_log">Log: </string>
 
     <!-- From Layout resource_config.xml -->
-    <string name="title_config_res">Choose a Resource</string>
-    <string name="tv_config_res_name">Resource Name: </string>
+    <string name="title_config_res">Resource Settings</string>
+    <string name="tv_config_res_name">Resource Name</string>
+    <string name="tv_config_res_posX">X Position (m)</string>
+    <string name="tv_config_res_posY">Y Position (m)</string>
     <string name="btn_config_res_ok">OK</string>
     <string name="btn_config_res_cancel">Cancel</string>
 
