@@ -2,6 +2,11 @@ package br.uff.tempo.middleware;
 
 import android.util.Log;
 import br.uff.tempo.middleware.comm.current.api.SocketService;
+import br.uff.tempo.middleware.management.ResourceAgentNS;
+import br.uff.tempo.middleware.management.ResourceDiscovery;
+import br.uff.tempo.middleware.management.ResourceLocation;
+import br.uff.tempo.middleware.management.ResourceNSContainer;
+import br.uff.tempo.middleware.management.ResourceRegister;
 import br.uff.tempo.middleware.management.ResourceRepository;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
@@ -23,7 +28,7 @@ public class SmartAndroid {
 
 	public SmartAndroid() {
 		initializeIpAndPrefixDaemon();
-		initializeResourceRepository();
+		initializeMiddlewareResources();
 		initializeCommunicationDaemon();			
 	}
 
@@ -49,11 +54,18 @@ public class SmartAndroid {
 		ipPrefixDaemon.setDaemon(true);
 		ipPrefixDaemon.start();
 	}
-
-	private void initializeResourceRepository() {
-		String rdsHost = new ResourceAgentIdentifier(IResourceDiscovery.RDS_ADDRESS).getPath();
-		if (rdsHost.equals(ResourceAgentIdentifier.getLocalIpAddress())) {
-			ResourceRepository.getInstance(); // ResourceRepository should be initialized before everything
+	
+	private void initializeMiddlewareResources() {
+		if (IResourceDiscovery.RDS_IP.equals(ResourceAgentIdentifier.getLocalIpAddress())) {
+			// ResourceRepository should be initialized before everything
+			ResourceRepository.getInstance().identify();
+			ResourceDiscovery.getInstance().identify();
+			ResourceRegister.getInstance().identify();
+			ResourceLocation.getInstance().identify();
+		} else {
+			// Should be initialized with ResourceDiscovery IP and PREFIX at beginning to allow communication...
+			ResourceNSContainer.getInstance().add(new ResourceAgentNS(IResourceDiscovery.RDS_ADDRESS, IResourceDiscovery.RDS_IP, 0)); // to keep compatibility for now...
+			//ResourceNSContainer.getInstance().add(new ResourceAgentNS(IResourceDiscovery.rans, IResourceDiscovery.RDS_IP, 0));			
 		}
 	}
 	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
+import br.uff.tempo.middleware.management.ResourceAgentNS;
 import br.uff.tempo.middleware.management.interfaces.IResourceRepository;
 
 import com.google.gson.reflect.TypeToken;
@@ -65,6 +66,14 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 		}.getType();
 
 		return (ArrayList<String>) makeCall("getSubList", params, type);
+	}
+
+	@Override
+	public ResourceAgentNS getRANS(String rans) {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+		params.add(new Tuple<String, Object>(String.class.getName(), rans));
+		
+		return (ResourceAgentNS) makeCall("getRANS", params, ResourceAgentNS.class);
 	}
 
 }

@@ -195,14 +195,15 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			ResourceData resourceData = new ResourceData(this.rai, this.name, this.type, this.position, null);
 			
 			if (position != null) {
-				registered = rrs.registerLocation(null, ip, prefix, this.rai, this.position, resourceData);
+				registered = rrs.registerLocation(this.rai, ip, prefix, this.rai, this.position, resourceData);
 			} else {
-				registered = rrs.register(null, ip, prefix, this.rai, resourceData);
+				registered = rrs.register(this.rai, ip, prefix, this.rai, resourceData);
 			}
 				
 			String result = "";
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
+			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rai, ip, prefix));
 		}
 
 		return registered;
@@ -220,11 +221,12 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			Place place = ResourceLocation.getInstance().getLocal(position);
 			ResourceData resourceData = new ResourceData(this.rai, this.name, this.type, this.position, place);
 			
-			registered = rrs.registerLocation(null, ip, prefix, this.rai, this.position, resourceData);
+			registered = rrs.registerLocation(this.rai, ip, prefix, this.rai, this.position, resourceData);
 				
 			String result = "";
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
+			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rai, ip, prefix));
 		}
 
 		return registered;
@@ -247,6 +249,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			String result = "";
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
+			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rai, ip, prefix));
 		}
 
 		return registered;

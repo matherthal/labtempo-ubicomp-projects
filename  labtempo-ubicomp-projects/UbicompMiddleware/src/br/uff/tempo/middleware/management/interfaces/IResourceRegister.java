@@ -15,4 +15,5 @@ public interface IResourceRegister {
 	public boolean registerInPlace(String rans, String ip, int prefix, String rai, String placeName, Position position, ResourceData resourceData);
 	
 	public boolean unregister(String rai);
+
 }
