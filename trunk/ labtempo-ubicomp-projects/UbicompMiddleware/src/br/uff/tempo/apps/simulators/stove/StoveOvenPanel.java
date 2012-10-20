@@ -39,6 +39,8 @@ public class StoveOvenPanel extends StovePanel {
 		// on screen center
 		pointX = getScreenCenterX() - mBitmap.getWidth() / 2;
 		pointY = getScreenCenterY() - mBitmap.getHeight() / 2;
+		
+		thereIsAnAgent();
 	}
 
 	@Override
