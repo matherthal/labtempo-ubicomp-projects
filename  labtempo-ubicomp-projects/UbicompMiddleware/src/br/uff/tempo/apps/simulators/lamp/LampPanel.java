@@ -32,8 +32,6 @@ public class LampPanel extends AbstractPanel {
 	@Override
 	public final void initialization() {
 
-		super.init();
-
 		mBitmapOn = BitmapFactory.decodeResource(getResources(),
 				R.drawable.lamp_on);
 		mBitmapOff = BitmapFactory.decodeResource(getResources(),

@@ -59,6 +59,7 @@ public abstract class AbstractView extends FragmentActivity implements
 			AbstractPanel p = getPanel();
 			p.setAgent(agent);
 			p.thereIsAnAgent();
+			p.invalidate();
 			
 		} else {
 			Log.e("SmartAndroid", "AbstractView: Agent is NULL!");

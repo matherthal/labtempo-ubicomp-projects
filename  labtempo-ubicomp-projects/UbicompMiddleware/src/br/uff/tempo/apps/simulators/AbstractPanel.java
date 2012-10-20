@@ -24,7 +24,7 @@ public abstract class AbstractPanel extends View {
 	private Handler handler = new Handler();
 	private float scale;
 	
-	private boolean thereIsAnAgent = false;
+	private boolean thereIsAnAgent = true;
 
 	public AbstractPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -47,8 +47,13 @@ public abstract class AbstractPanel extends View {
 		
 		scale = getResources().getDisplayMetrics().density;
 		
-		if (getAgent() == null) {
-			thereIsAnAgent = false;
+		IResourceAgent res = getAgentFromView();
+		
+		if (res == null) {
+			thereIsNotAnAgent();
+		} else {
+			thereIsAnAgent();
+			setAgent(res);
 		}
 		
 		setupInterest();
@@ -77,7 +82,6 @@ public abstract class AbstractPanel extends View {
 	public void thereIsAnAgent() {
 		
 		thereIsAnAgent = true;
-		invalidate();
 	}
 	
 	public void thereIsNotAnAgent() {
@@ -96,7 +100,7 @@ public abstract class AbstractPanel extends View {
 	 */
 	public abstract void onUpdate(String method, Object value);
 	
-	public IResourceAgent getAgent() {
+	public IResourceAgent getAgentFromView() {
 		
 		return ((AbstractView) getContext()).getAgent();
 	}
