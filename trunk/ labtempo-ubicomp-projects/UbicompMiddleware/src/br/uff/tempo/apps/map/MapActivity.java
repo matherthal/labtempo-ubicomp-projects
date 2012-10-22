@@ -538,7 +538,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			// Starts a middleware operation, listing all registered resources
 			// ("")
-			MiddlewareOperation m = new MiddlewareOperation(this, "", MapSettings.getRDSAddress());
+			MiddlewareOperation m = new MiddlewareOperation(this, "//", MapSettings.getRDSAddress());
 			m.execute(null);
 
 			// An external resource... we must exit this method, not only

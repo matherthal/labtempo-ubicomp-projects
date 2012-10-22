@@ -14,7 +14,7 @@ public class ResourceDirectory {
 	private static ResourceDirectory instance;
 	
 	private ResourceDirectory() {
-		directory = new Type("\\");
+		directory = new Type("//");
 	}
 	
 	public static synchronized ResourceDirectory getInstance() {
@@ -28,7 +28,9 @@ public class ResourceDirectory {
 	 * @param resource is a ResourceAgent data
 	 */
 	public void create(ResourceData resource) {
-		ArrayList<String> list = extractType(resource.getType());		
+		ArrayList<String> list = new ArrayList<String>();
+		list.add(directory.getName());
+		list.addAll(extractType(resource.getType()));		
 		Type typeBase = directory;
 		int i = 0;
 		if (list != null){
@@ -39,13 +41,16 @@ public class ResourceDirectory {
 				Type typeTemp = typeBase;
 				boolean isInserted = false;
 				while (typeTemp != null && !isInserted){
-					Type typeSubTemp = this.search(list.get(i++),typeTemp.getSubTypeList());
+					Type typeSubTemp = null;
+					if (i < list.size()){ 
+						typeSubTemp = this.search(list.get(i++),typeTemp.getSubTypeList());
+					}
 					if (typeSubTemp != null){
 						typeTemp = typeSubTemp;
 					} else{
-						if (list.size()-i>0){
+						if (list.size()>0){//it has more types
 							typeTemp.add(list,resource,i);
-						} else {
+						} else {//end of list
 							typeTemp.resources.add(resource);
 						}
 						isInserted = true;
@@ -67,6 +72,7 @@ public class ResourceDirectory {
 		switch (attribute) {
 			case ResourceData.RAI:
 				result = getByRai(query);
+				break;
 			case ResourceData.NAME:
 				result = searchByName(query);
 				break;
@@ -121,8 +127,9 @@ public class ResourceDirectory {
 			List<ResourceData> result = new ArrayList<ResourceData>();
 			for (String raiStr : raiList){
 				ResourceAgentIdentifier rai = new ResourceAgentIdentifier(raiStr);
-				if ((result = searchByName(rai.getName()))!=null){
-					result.addAll(result);
+				List<ResourceData> tmpResult = searchByName(rai.getName());
+				if (tmpResult!=null){
+					result.addAll(tmpResult);
 				}
 			}
 			Log.d(TAG, "searchByPlace");
@@ -197,9 +204,11 @@ public class ResourceDirectory {
 	}
 
 	private Type search(String type, List<Type> typeList) {
-		for (Type obj : typeList) {
-			if (obj.getName().equals(type)){
-				return obj;
+		if (typeList != null) {
+			for (Type obj : typeList) {
+				if (obj.getName().equals(type)){
+					return obj;
+				}
 			}
 		}
 		return null;

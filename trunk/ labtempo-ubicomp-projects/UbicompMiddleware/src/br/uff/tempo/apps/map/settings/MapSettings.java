@@ -97,7 +97,7 @@ public class MapSettings extends PreferenceActivity implements IResourceListGett
 			}
 			
 			reg.unregister(resource);
-			new MiddlewareOperation(this, "", getRDSAddress()).execute(null);
+			new MiddlewareOperation(this, "//", getRDSAddress()).execute(null);
 			
 		// Setup the stakeholders from an Agent
 		} else if (op == OP_SETUP){

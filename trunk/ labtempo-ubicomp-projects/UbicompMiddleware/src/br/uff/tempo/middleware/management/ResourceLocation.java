@@ -39,6 +39,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		currentSpace = new Space();
 		resources = new HashMap<String, Position>();
 		baseIndexer = new HashMap<String, HashMap<String, Position>>();
+		loadBase();
 	}
 	
 	public static ResourceLocation getInstance() {

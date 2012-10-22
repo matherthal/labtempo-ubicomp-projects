@@ -60,7 +60,7 @@ public class CounterApp2 extends Activity implements IResourceChooser, IResource
 //            e.printStackTrace();
 //        }
 		
-		ResourceData a = rds.searchForAttribute(0, "aaaaaaaa").get(0);
+		//ResourceData a = rds.searchForAttribute(0, "aaaaaaaa").get(0);
 
 		// instantiate the dialog list
 		dialog = new ChooseResource(this);
