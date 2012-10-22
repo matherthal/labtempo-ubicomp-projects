@@ -42,7 +42,7 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		ResourceRepository.getInstance().add(rans, ip, prefix, url);
 		ResourceNSContainer.getInstance().add(new ResourceAgentNS(rans, ip, prefix));
 		
-		//ResourceDirectory.getInstance().create(resourceData);
+		ResourceDirectory.getInstance().create(resourceData);
 		
 		notifyStakeholders("register", url);
 		return true;
@@ -55,7 +55,7 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		
 		ResourceLocation.getInstance().registerInPlace(url,position);
 		
-		//ResourceDirectory.getInstance().create(resourceData);
+		ResourceDirectory.getInstance().create(resourceData);
 		return true;
 	}
 

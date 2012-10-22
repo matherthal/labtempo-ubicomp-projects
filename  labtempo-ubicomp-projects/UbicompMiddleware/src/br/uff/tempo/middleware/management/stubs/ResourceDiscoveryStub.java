@@ -46,12 +46,12 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 	}
 	
 	@Override
-	public List<ResourceData> searchForAttribute(int attribute, String query) {
+	public List<String> searchForAttribute(int attribute, String query) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), attribute));
 		params.add(new Tuple<String, Object>(String.class.getName(), query));
 
-		return (List<ResourceData>) makeCall("searchForAttribute", params, List.class);
+		return (List<String>) makeCall("searchForAttribute", params, List.class);
 	}
 
 }

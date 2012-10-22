@@ -78,11 +78,12 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 	}
 
 	@Override
-	public List<ResourceData> searchForAttribute(int attribute, String query) {
-		return ResourceDirectory.getInstance().read(attribute, query);
-//		 ArrayList<ResourceData> lista =  new ArrayList<ResourceData>();
-//		 lista.add(new ResourceData("meurai", "meu name", "meu type", new Position(0.1f, 0.2f), new Place("meu place", new Position(0.3f, 0.4f), new Position(0.5f, 0.6f))));
-//		return lista;
-		
+	public List<String> searchForAttribute(int attribute, String query) {
+		List<ResourceData> tempResult = ResourceDirectory.getInstance().read(attribute, query);
+		List<String> result = new ArrayList<String>();
+		for (ResourceData resourceData : tempResult) {
+			result.add(resourceData.getRai());
+		}
+		return result;		
 	}
 }

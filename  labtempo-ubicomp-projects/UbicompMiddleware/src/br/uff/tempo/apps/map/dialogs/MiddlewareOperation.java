@@ -5,6 +5,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 
@@ -60,7 +61,7 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<String>> {
 
 		// Get registered resources references from Resource Discovery that
 		// matches the query
-		return rd.search(this.query);
+		return rd.searchForAttribute(ResourceData.TYPE, this.query);
 	}
 
 	// Executed when search finishes

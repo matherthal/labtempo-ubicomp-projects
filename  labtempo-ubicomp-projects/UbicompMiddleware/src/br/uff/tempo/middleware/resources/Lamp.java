@@ -2,6 +2,7 @@ package br.uff.tempo.middleware.resources;
 
 import android.util.Log;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.ILamp;
 
 public class Lamp extends ResourceAgent implements ILamp {
