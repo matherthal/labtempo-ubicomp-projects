@@ -48,7 +48,7 @@ public class Type {
 	public void add(ArrayList<String> list, ResourceData resource, int begin) {
 		List<Type> subTypesTemp = this.subTypes;
 		Type aux = this;
-		for (int i = begin-1; i< list.size(); i++){
+		for (int i = begin; i< list.size(); i++){
 			aux = new Type(list.get(i));
 			subTypesTemp.add(aux);
 			subTypesTemp = aux.subTypes;

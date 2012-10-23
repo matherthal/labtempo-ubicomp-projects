@@ -26,13 +26,17 @@ public class Game{
   //
   // Constructors
   //
-	private IGameAgent gameAgent;
+//	private IGameAgent gameAgent;
 
+	public Game(Context context) {
+		this.context = context;
+	}
+	
 	public Game(Context context, IGameAgent gameAgent) {
-    this.context = context;
-		this.gameAgent = gameAgent;
-		this.gameAgent.setGame(this);
-  }
+		this.context = context;
+//		this.gameAgent = gameAgent;
+//		this.gameAgent.setGame(this);
+	}
 
   //
   // Additional methods
@@ -108,45 +112,58 @@ public class Game{
 
 	public void processMove(Location move, String flag) {
     // Store the move if it is valid.
-    if (!this.gameOver && this.board.setMove(move, this.currentPlayer)) {
-			if (!flag.equals("local")) {
-				gameAgent.setMove(move.getRow(), move.getColumn(), this.currentPlayer.toString());
+	    if (!this.gameOver && this.board.setMove(move, this.currentPlayer)) {
+//			if (!flag.equals("local")) {
+//				gameAgent.setMove(move.getRow(), move.getColumn(), this.currentPlayer.toString());
+//				if (this.currentPlayer.getType() == Player.Type.Human) {
+//			        this.playerPrompts.get(this.currentPlayer.getName()).hide();
+//				}
+//			}else
+//			{				
+//				if (this.currentPlayer.getType() == Player.Type.Human) {
+//			        if (this.currentPlayer.equals(playerX)) {
+//			        	this.playerPrompts.get(this.playerO.getName()).hide();
+//			        }else {
+//			        	this.playerPrompts.get(this.playerX.getName()).hide();
+//			        }
+//				}
+//			}
+		      
+			if (this.currentPlayer.getType() == Player.Type.Human) {
+		        this.playerPrompts.get(this.currentPlayer.getName()).hide();
 			}
-      // Hide the prompt for the human player.
-      if (this.currentPlayer.getType() == Player.Type.Human) {
-        this.playerPrompts.get(this.currentPlayer.getName()).hide();
-      }
-
-      this.board.invalidate();
-      this.numberOfMoves++;
-
-      // Check for the end of the game.
-      if (this.checkForWin()) {
-        this.output("Player " + this.currentPlayer.getName() + " wins!");
-        this.gameOver = true;
-      }
-      else if (this.numberOfMoves == 9) {
-        this.output("Draw");
-        this.gameOver = true;
-      }
-      else {
-
-        // Switch players.
-        if (this.currentPlayer == this.playerX) {
-          this.currentPlayer = this.playerO;
-        }
-        else {
-          this.currentPlayer = this.playerX;
-        }
-
-        // Show the prompt for the human player.
-        if (this.currentPlayer.getType() == Player.Type.Human) {
-          this.playerPrompts.get(this.currentPlayer.getName()).show();
-        }
-
-      }
-
-    }
+			
+		
+			this.board.invalidate();
+		    this.numberOfMoves++;
+		
+		    // Check for the end of the game.
+		    if (this.checkForWin()) {
+			      this.output("Player " + this.currentPlayer.getName() + " wins!");
+			      this.gameOver = true;
+		    }
+		    else if (this.numberOfMoves == 9) {
+		        this.output("Draw");
+		        this.gameOver = true;
+		    }
+		    else {
+		
+		        // Switch players.
+		        if (this.currentPlayer == this.playerX) {
+		        	this.currentPlayer = this.playerO;
+		        }
+		        else {
+		        	this.currentPlayer = this.playerX;
+		        }
+		
+		        // Show the prompt for the human player.
+		        if (this.currentPlayer.getType() == Player.Type.Human) {
+		        	this.playerPrompts.get(this.currentPlayer.getName()).show();
+		        }
+		
+		    }
+	
+	    }
 
   }
 
@@ -268,16 +285,16 @@ public class Game{
   private final int pause = 500;
 
   private Runnable updateTimeTask = new Runnable() {
-    //@Override
-    public void run() {
-			Game.this.processMove(Game.this.currentPlayer.getMove(), "notify");
-      if (Game.this.gameOver) {
-        Game.this.pause();
-      }
-      else {
-        Game.this.handler.postDelayed(this, Game.this.pause);
-      }
-    }
+	    //@Override
+	    public void run() {
+	    	Game.this.processMove(Game.this.currentPlayer.getMove(), "notify");
+	    	if (Game.this.gameOver) {
+	    		Game.this.pause();
+	    	}
+	    	else {
+	    		Game.this.handler.postDelayed(this, Game.this.pause);
+	    	}
+	    }
   };
 
 }

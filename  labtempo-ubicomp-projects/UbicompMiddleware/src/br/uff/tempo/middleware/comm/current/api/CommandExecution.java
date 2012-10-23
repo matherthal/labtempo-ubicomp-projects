@@ -10,7 +10,8 @@ import br.uff.tempo.middleware.comm.interest.api.NewDispatcher;
 import br.uff.tempo.middleware.e.SmartAndroidException;
 
 public class CommandExecution extends Thread {
-
+	
+	
 	private DatagramSocket sk;
 	private DatagramPacket dgp;
 
@@ -24,12 +25,12 @@ public class CommandExecution extends Thread {
 		try {
 			String rcvd = new String(dgp.getData(), 0, dgp.getLength(), "US-ASCII");
 
-			String[] call = rcvd.split(";");
+			String[] call = rcvd.split(SocketService.BUFFER_END);
 			
 			String calleeID = call[0];
 			String jsonstring = call[1];
 			
-			String result = NewDispatcher.getInstance().dispatch(calleeID, jsonstring) + ";";
+			String result = NewDispatcher.getInstance().dispatch(calleeID, jsonstring) + SocketService.BUFFER_END;
 			
 			byte[] bufsk = result.getBytes();
 			DatagramPacket out = new DatagramPacket(bufsk, bufsk.length, dgp.getAddress(), dgp.getPort());
