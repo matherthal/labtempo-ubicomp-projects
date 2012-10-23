@@ -1,5 +1,6 @@
 package br.uff.tempo.middleware.management.utils;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +8,7 @@ import java.util.Set;
 
 import br.uff.tempo.middleware.management.Place;
 
-public class Space {
+public class Space implements Serializable {
 
 	// Constants
 

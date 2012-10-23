@@ -84,16 +84,21 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 		if (pSceneTouchEvent.isActionMove()) {
 
 			if (mLongPressed) {
-				onLongPress(pSceneTouchEvent);
+				onLongPressMove(pSceneTouchEvent);
 			}
 		}
 
 		if (pSceneTouchEvent.isActionUp()) {
 
-			if (!mLongPressed) {
+			if (mLongPressed) {
 
+				onEndLongPressMove(pSceneTouchEvent);
+				
+			} else {
+				
 				onTap(pSceneTouchEvent);
 			}
+			
 			cancelTimer();
 		}
 
@@ -121,8 +126,11 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 	// fired when user performs a long touch (more than LONGPRESS_THRESHOLD ms)
 	public abstract void onStartLongPress(TouchEvent pSceneTouchEvent);
 
-	// fired when user finishes a long touch (more than LONGPRESS_THRESHOLD ms)
-	public abstract void onLongPress(TouchEvent pSceneTouchEvent);
+	// fired when user performs a long touch and move the object (more than LONGPRESS_THRESHOLD ms)
+	public abstract void onLongPressMove(TouchEvent pSceneTouchEvent);
+	
+	// fired when user release the object, after a long press
+	public abstract void onEndLongPressMove(TouchEvent pSceneTouchEvent);
 
 	// fired when user performs a short touch
 	public abstract void onTap(TouchEvent pSceneTouchEvent);

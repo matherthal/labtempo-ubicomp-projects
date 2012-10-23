@@ -1,5 +1,6 @@
 package br.uff.tempo.apps.map.objects;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,6 +67,11 @@ public class InterfaceApplicationManager extends ResourceAgent {
 	public INotificationBoxReceiver getResource(String rai) {
 		
 		return sceneObjects.get(rai);
+	}
+	
+	public Collection<INotificationBoxReceiver> getAllResources() {
+		
+		return sceneObjects.values();
 	}
 
 	// ===========================================================

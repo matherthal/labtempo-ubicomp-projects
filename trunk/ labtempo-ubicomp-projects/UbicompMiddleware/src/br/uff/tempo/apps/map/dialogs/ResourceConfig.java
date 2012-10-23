@@ -86,7 +86,7 @@ public class ResourceConfig extends MapDialog {
 		
 		RegistryData data = new RegistryData();
 		data.setPositionX(posX);
-		data.setPositonY(posY);
+		data.setPositionY(posY);
 		data.setResourceName(name);
 		
 		return data;

@@ -1,5 +1,6 @@
 package br.uff.tempo.apps.map;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.andengine.engine.camera.ZoomCamera;
@@ -66,8 +67,10 @@ import br.uff.tempo.apps.map.log.LogActivity;
 import br.uff.tempo.apps.map.objects.AnimatedResourceObject;
 import br.uff.tempo.apps.map.objects.INotificationBoxReceiver;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
+import br.uff.tempo.apps.map.objects.PersistHelper;
 import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.map.objects.ResourceObject;
+import br.uff.tempo.apps.map.objects.SceneState;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
 import br.uff.tempo.apps.map.settings.MapSettings;
@@ -107,10 +110,12 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	// private static final int CAMERA_WIDTH = 720;
 	// private static final int CAMERA_HEIGHT = 480;
 
-	private static final String TAG = "SmartAndroid";
+	private static final String TAG = "Map";
 
 	// Time to vibrate (ms)
 	private static final long VIBRATE_TIME = 100;
+	
+	private static final int MIN_OBJECTS = 3;
 
 	// TODO: Put these constants in a separate file
 	public static final int GPR_RESOURCES = 10;
@@ -167,13 +172,16 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	private TiledTextureRegion mPersonBlondGuy;
 	private TiledTextureRegion mPersonGrayGuy;
 	private TiledTextureRegion mPersonNurse;
-	
+
 	// Shared preferences
 	private SharedPreferences prefs;
-	
+
+	// Editor from Shared preferences
+	Editor editor;
+
 	// RDS Address from the preferences
 	private String rdsAddress;
-	
+
 	// Camera size
 	private int mCameraWidth;
 	private int mCameraHeight;
@@ -182,7 +190,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	private QuickAction mQuickAction;
 
 	// Manages the Resources data
-	InterfaceApplicationManager mAppManager;
+	private InterfaceApplicationManager mAppManager;
+
+	private SceneState state;
 
 	// Dialog wrappers
 	private ResourceConfig resConf;
@@ -240,6 +250,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 				ScreenOrientation.LANDSCAPE_SENSOR, new RatioResolutionPolicy(
 						this.mCameraWidth, this.mCameraHeight), this.mCamera);
 
+		Log.i(TAG, "Create Engine Options");
+
 		return engineOptions;
 	}
 
@@ -252,9 +264,17 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		resConf = new ResourceConfig(this);
 		externalList = new ChooseResource(this);
 
-		// Get an Interface Manager instance and register it
-		mAppManager = InterfaceApplicationManager.getInstance();
-		mAppManager.identify();
+		// Setup preferences
+		prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		prefs.registerOnSharedPreferenceChangeListener(this);
+
+		// Add a default value for the preference "rdsAddress"
+		editor = prefs.edit();
+		editor.putString("rdsAddress", IResourceDiscovery.RDS_IP);
+		editor.commit();
+
+		// Save this value to memory
+		MapSettings.setAddress(prefs.getString("rdsAddress", null));
 
 		this.mEngine.enableVibrator(this);
 
@@ -300,18 +320,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		} catch (TextureAtlasBuilderException e) {
 			Debug.e(e);
 		}
-		
-		// Setup preferences
-		prefs = PreferenceManager.getDefaultSharedPreferences(this);
-		prefs.registerOnSharedPreferenceChangeListener(this);
-		
-		//Add a default value for the preference "rdsAddress"
-		Editor ed = prefs.edit();
-		ed.putString("rdsAddress", IResourceDiscovery.RDS_IP);
-		ed.commit();
-		
-		// Save this value to memory
-		MapSettings.setAddress(prefs.getString("rdsAddress", null));
+
+		Log.i(TAG, "Create Resources");
 	}
 
 	@Override
@@ -368,10 +378,62 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		setupGestureDetection();
 
-		// TODO Test if it is called again, when screen rotate...
-		pushMap();
+		Log.i(TAG, "Create Scene");
 
 		return this.mScene;
+	}
+
+	@Override
+	public synchronized void onPauseGame() {
+		super.onPauseGame();
+
+		Log.i(TAG, "Pause Game");
+	}
+
+	@Override
+	public synchronized void onGameDestroyed() {
+
+		PersistHelper.saveToFile("state", this.state, editor);
+		this.mScene.dispose();
+
+		Log.i(TAG, "Destroy Game");
+
+		super.onGameDestroyed();
+	}
+
+	@Override
+	public synchronized void onResumeGame() {
+		super.onResumeGame();
+
+		if (this.mScene.getChildCount() < MIN_OBJECTS) {
+			// Create an Interface Manager instance and register it
+			mAppManager = InterfaceApplicationManager.getInstance();
+			mAppManager.identify();
+
+			state = (SceneState) PersistHelper.loadFromFile("state", prefs);
+
+			// There is no state saved
+			if (state == null) {
+
+				state = new SceneState();
+				// TODO Test if it is called again, when screen rotate...
+				pushMap();
+
+				// There is a previous state saved. Restoring it
+			} else {
+
+				houseMap = state.getMapInfo();
+
+				state.setLock(true);
+				for (RegistryData data : state.getData()) {
+
+					createResourceIcon(data);
+				}
+				state.setLock(false);
+			}
+		}
+
+		Log.i(TAG, "Resume Game");
 	}
 
 	// ===========================================================
@@ -389,15 +451,12 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		resConf.showDialog();
 	}
 
-	public void createResourceIcon(int iconType, boolean emulated) {
+	public void createResourceIcon(RegistryData regData) {
 
 		// init local variables
 
 		// It is used to call another activity and pass values to it!
 		Intent i = null;
-
-		// It may contain lots of values wrapped, to send to another activity
-		Bundle bundle = new Bundle();
 
 		// The class of the application (StoveView, BedView...)
 		// it will be called when the icon is clicked
@@ -407,35 +466,34 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		ITextureRegion tr = null;
 
 		// Reference to resource to be created
-		IResourceAgent resAg = null;
 
-		// An integer that represents the resource type
-		// it's not been used yet...
-		int resType = -1;
+		// This will be sent through intents to Simulator GUI
+		IResourceAgent proxyAg = regData.getStub();
 
-		switch (iconType) {
+		// This one will be kept locally (this is the real one, not a proxy)
+		IResourceAgent realAg = regData.getAgent();
+
+		switch (regData.getIconType()) {
 
 		// Smart Stove selected. Creates a new stove in the scene
 		case STOVE:
 
 			c = br.uff.tempo.apps.simulators.stove.StoveView.class;
 			tr = this.mStoveTextureRegion;
-			resType = STOVE;
-
-			IStove stove;
 
 			// create an agent if it's a simulated resource; a stub otherwise
-			if (emulated) {
-				stove = new Stove(regData.getResourceName());
-			} else {
-				stove = new StoveStub(regData.getResourceName());
+			if (proxyAg == null) {
+
+				if (regData.isFake()) {
+
+					realAg = new Stove(regData.getResourceName());
+					proxyAg = new StoveStub(realAg.getRAI());
+
+				} else {
+					realAg = null;
+					proxyAg = new StoveStub(regData.getResourceName());
+				}
 			}
-
-			// simulated -> put an agent; not simulated -> put a stub (proxy to
-			// an agent)
-			bundle.putSerializable("agent", stove);
-
-			resAg = stove;
 
 			break;
 
@@ -444,22 +502,20 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			c = br.uff.tempo.apps.simulators.lamp.LampView.class;
 			tr = this.mLampTextureRegion;
-			resType = LAMP;
 
-			ILamp lamp;
+			// create an agent if it's a simulated resource; a stub otherwise
+			if (proxyAg == null) {
 
-			// create an agent if it's a emulated resource; a stub otherwise
-			if (emulated) {
-				lamp = new Lamp(regData.getResourceName());
-			} else {
-				lamp = new LampStub(regData.getResourceName());
+				if (regData.isFake()) {
+
+					realAg = new Lamp(regData.getResourceName());
+					proxyAg = new LampStub(realAg.getRAI());
+
+				} else {
+					realAg = null;
+					proxyAg = new LampStub(regData.getResourceName());
+				}
 			}
-
-			// simulated -> put an agent; not simulated -> put a stub (proxy to
-			// an agent)
-			bundle.putSerializable("agent", lamp);
-
-			resAg = lamp;
 
 			break;
 
@@ -468,22 +524,20 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			c = br.uff.tempo.apps.simulators.tv.TvView.class;
 			tr = this.mTVTextureRegion;
-			resType = TV;
-
-			ITelevision tv;
 
 			// create an agent if it's a simulated resource; a stub otherwise
-			if (emulated) {
-				tv = new Television(regData.getResourceName());
-			} else {
-				tv = new TelevisionStub(regData.getResourceName());
+			if (proxyAg == null) {
+
+				if (regData.isFake()) {
+
+					realAg = new Television(regData.getResourceName());
+					proxyAg = new TelevisionStub(realAg.getRAI());
+
+				} else {
+					realAg = null;
+					proxyAg = new TelevisionStub(regData.getResourceName());
+				}
 			}
-
-			// simulated -> put an agent; not simulated -> put a stub (proxy to
-			// an agent)
-			bundle.putSerializable("agent", tv);
-
-			resAg = tv;
 
 			break;
 
@@ -492,22 +546,20 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			c = br.uff.tempo.apps.simulators.bed.BedView.class;
 			tr = this.mBedTextureRegion;
-			resType = BED;
-
-			IBed bed;
 
 			// create an agent if it's a simulated resource; a stub otherwise
-			if (emulated) {
-				bed = new Bed(regData.getResourceName());
-			} else {
-				bed = new BedStub(regData.getResourceName());
+			if (proxyAg == null) {
+
+				if (regData.isFake()) {
+
+					realAg = new Bed(regData.getResourceName());
+					proxyAg = new BedStub(realAg.getRAI());
+
+				} else {
+					realAg = null;
+					proxyAg = new BedStub(regData.getResourceName());
+				}
 			}
-
-			// simulated -> put an agent; not simulated -> put a stub (proxy to
-			// an agent)
-			bundle.putSerializable("agent", bed);
-
-			resAg = bed;
 
 			break;
 
@@ -515,22 +567,20 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			c = br.uff.tempo.apps.simulators.bed.BedView.class;
 			tr = this.mPersonBaldMan;
-			resType = PERSON;
-
-			IPerson person;
 
 			// create an agent if it's a simulated resource; a stub otherwise
-			if (emulated) {
-				person = new Person(regData.getResourceName());
-			} else {
-				person = new PersonStub(regData.getResourceName());
+			if (proxyAg == null) {
+
+				if (regData.isFake()) {
+
+					realAg = new Person(regData.getResourceName());
+					proxyAg = new PersonStub(realAg.getRAI());
+
+				} else {
+					realAg = null;
+					proxyAg = new PersonStub(regData.getResourceName());
+				}
 			}
-
-			// simulated -> put an agent; not simulated -> put a stub (proxy to
-			// an agent)
-			bundle.putSerializable("agent", person);
-
-			resAg = person;
 
 			break;
 
@@ -538,7 +588,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 			// Starts a middleware operation, listing all registered resources
 			// ("")
-			MiddlewareOperation m = new MiddlewareOperation(this, "//", MapSettings.getRDSAddress());
+			MiddlewareOperation m = new MiddlewareOperation(this, "//",
+					MapSettings.getRDSAddress());
 			m.execute(null);
 
 			// An external resource... we must exit this method, not only
@@ -552,12 +603,12 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			startActivity(i);
 
 			return;
-			
+
 		case SETTINGS:
-			
+
 			i = new Intent(this, MapSettings.class);
 			startActivity(i);
-			
+
 			return;
 		default:
 			// if receive an invalid option, exit method
@@ -565,29 +616,40 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			return;
 		}
 
+		// Register the real agent, if it exists
+		if (realAg != null) {
+			realAg.identify();
+		}
+
 		// Subscribe to the agent (all context variables) to receive
 		// notifications
-		resAg.registerStakeholder("all", mAppManager.getRAI());
+		proxyAg.registerStakeholder("all", mAppManager.getRAI());
 
 		// Creates an intent, to pass data to StoveView
 		i = new Intent(this, c);
 
-		// Put all information in the intent
-		i.putExtras(bundle);
-
 		// create an icon in the map, according to the parameters
 		INotificationBoxReceiver res = (INotificationBoxReceiver) createSprite(
-				tr, i, resType);
+				tr, i, regData);
 
-		mAppManager.addResource(resAg.getRAI(), res);
+		mAppManager.addResource(proxyAg.getRAI(), res);
+
+		regData.setAgent(realAg);
+		regData.setStub(proxyAg);
+
+		// add only if the state is unlocked (tested internally)
+		state.addData(regData);
 	}
 
 	private Sprite createSprite(final ITextureRegion pTextureRegion,
-			final Intent intent, final int dataType) {
+			final Intent intent, final RegistryData data) {
 
 		// Create a new Sprite that shows pTextureImage as graphical
 		// representation
-		// It's initially positioned at center screen
+		// It's initially positioned at (x,y) position (pixels)
+		float x = houseMap.metersToPixel(data.getPositionX());
+		float y = houseMap.metersToPixel(houseMap.invertYcoordinate(data
+				.getPositionY()));
 
 		Sprite sprite = null;
 
@@ -595,10 +657,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		FontManager fm = this.getFontManager();
 		TextureManager tm = this.getTextureManager();
 
-		float x = this.mCameraWidth / 2;
-		float y = this.mCameraHeight / 2;
-
-		if (dataType == PERSON) {
+		if (data.getIconType() == PERSON) {
 
 			AnimatedResourceObject aro = new AnimatedResourceObject(x, y,
 					(ITiledTextureRegion) pTextureRegion, vbom, fm, tm) {
@@ -625,7 +684,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			sprite = new ResourceObject(x, y, pTextureRegion, vbom, fm, tm) {
 
 				@Override
-				public void onLongPress(TouchEvent pSceneTouchEvent) {
+				public void onLongPressMove(TouchEvent pSceneTouchEvent) {
 
 					// Can freely move the resource in the screen
 					this.setPosition(pSceneTouchEvent.getX() - this.getWidth()
@@ -641,6 +700,11 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 					Log.d("IPGAP",
 							"A resource was selected. Opening the Application");
 
+					Bundle bundle = new Bundle();
+					bundle.putSerializable("agent", data.getStub());
+
+					intent.putExtras(bundle);
+
 					MapActivity.this.startActivity(intent);
 				}
 
@@ -650,6 +714,17 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 					// When start the long press event, vibrate the device for
 					// 'VIBRATE_TIME' ms
 					MapActivity.this.mEngine.vibrate(VIBRATE_TIME);
+				}
+
+				@Override
+				public void onEndLongPressMove(TouchEvent pSceneTouchEvent) {
+
+					float x = houseMap.pixelToMeters((int) this.getX());
+					float y = houseMap.invertYcoordinate(houseMap
+							.pixelToMeters((int) this.getY()));
+
+					data.setPositionX(x);
+					data.setPositionY(y);
 				}
 			};
 		}
@@ -703,6 +778,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		}
 
 		rl.insertMap(houseMap);
+
+		state.setMapInfo(houseMap);
 	}
 
 	// The main menu, accessed by Android menu button (in the Android device)
@@ -733,7 +810,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 				.setIcon(R.drawable.connect);
 
 		// Option to open a settings screen of the application
-		menu.add(Menu.NONE, SETTINGS, Menu.NONE, "Settings").setIcon(R.drawable.settings);
+		menu.add(Menu.NONE, SETTINGS, Menu.NONE, "Settings").setIcon(
+				R.drawable.settings);
 		// Option to load a different map file
 		menu.add("Load Map").setIcon(R.drawable.map);
 		// Option to create a logical expression (called context rule)
@@ -767,9 +845,18 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		}
 
 		resConfigured = false;
+		regData = resConf.getData();
+		regData.setFake(true);
+		regData.setIconType(item.getItemId());
+
+		float x = houseMap.pixelToMeters(this.mCameraWidth / 2);
+		float y = houseMap.pixelToMeters(this.mCameraHeight / 2);
+
+		regData.setPositionX(x);
+		regData.setPositionY(y);
 
 		// Process the menu items...
-		createResourceIcon(item.getItemId(), true);
+		createResourceIcon(regData);
 
 		return super.onOptionsItemSelected(item);
 	}
@@ -778,7 +865,6 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	@Override
 	public void onDialogFinished(Dialog dialog) {
 
-		regData = resConf.getData();
 		resConfigured = true;
 
 		onOptionsItemSelected(itemSelected);
@@ -797,32 +883,31 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	@Override
 	public void onRegisteredResourceChoosed(String resourceRAI) {
 
-		int type = -1;
 		regData = new RegistryData(resourceRAI);
+		regData.setFake(false);
 
 		// TODO Add middleware support to get the resource types
 		// Toast.makeText(this, resourceRAI, Toast.LENGTH_LONG).show();
 		if (resourceRAI.contains("Stove")) {
-			type = STOVE;
+			regData.setIconType(STOVE);
 		} else if (resourceRAI.contains("Lamp")) {
-			type = LAMP;
+			regData.setIconType(LAMP);
 		} else if (resourceRAI.contains("Bed")) {
-			type = BED;
+			regData.setIconType(BED);
 		} else if (resourceRAI.contains("Television")) {
-			type = TV;
+			regData.setIconType(TV);
 		} else if (resourceRAI.contains("Person")) {
-			type = PERSON;
+			regData.setIconType(PERSON);
 		}
 
-		createResourceIcon(type, false);
-
+		createResourceIcon(regData);
 	}
-	
-	// It is called when a preference is changed 
+
+	// It is called when a preference is changed
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-	
+
 		// Save the new preference to memory
 		MapSettings.setAddress(sharedPreferences.getString("rdsAddress", null));
 	}

@@ -1,8 +1,10 @@
 package br.uff.tempo.middleware.management;
 
+import java.io.Serializable;
+
 import br.uff.tempo.middleware.management.utils.Position;
 
-public class Place {
+public class Place implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 

@@ -43,7 +43,7 @@ public class AnimatedResourceObject extends AnimatedSprite implements
 		updatePosition(x, y);
 	}
 
-	public void updatePosition(float x, float y) {
+	public synchronized void updatePosition(float x, float y) {
 
 		int pX = space.metersToPixel(x);
 		int pY = space.metersToPixel(space.invertYcoordinate(y));
