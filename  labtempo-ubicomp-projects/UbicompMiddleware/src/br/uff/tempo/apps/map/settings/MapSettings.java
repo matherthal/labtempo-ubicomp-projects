@@ -46,7 +46,7 @@ public class MapSettings extends PreferenceActivity implements IResourceListGett
 		addPreferencesFromResource(R.xml.map_prefs);
 		
 		// Get the references to all registered resources
-		new MiddlewareOperation(this, "", getRDSAddress()).execute(null);
+		new MiddlewareOperation(this, "//", getRDSAddress()).execute(null);
 		
 		choose = new ChooseResource(this);
 		sHolder = new ChooseResource(this);
