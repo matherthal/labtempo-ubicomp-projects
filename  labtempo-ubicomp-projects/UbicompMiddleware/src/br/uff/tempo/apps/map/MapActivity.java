@@ -1,6 +1,5 @@
 package br.uff.tempo.apps.map;
 
-import java.util.Collection;
 import java.util.List;
 
 import org.andengine.engine.camera.ZoomCamera;
@@ -89,10 +88,6 @@ import br.uff.tempo.middleware.resources.Bed;
 import br.uff.tempo.middleware.resources.Lamp;
 import br.uff.tempo.middleware.resources.Stove;
 import br.uff.tempo.middleware.resources.Television;
-import br.uff.tempo.middleware.resources.interfaces.IBed;
-import br.uff.tempo.middleware.resources.interfaces.ILamp;
-import br.uff.tempo.middleware.resources.interfaces.IStove;
-import br.uff.tempo.middleware.resources.interfaces.ITelevision;
 import br.uff.tempo.middleware.resources.stubs.BedStub;
 import br.uff.tempo.middleware.resources.stubs.LampStub;
 import br.uff.tempo.middleware.resources.stubs.StoveStub;
@@ -399,6 +394,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	@Override
 	public synchronized void onGameDestroyed() {
 
+		editor = prefs.edit();
+		
 		PersistHelper.saveToFile("state", this.state, editor);
 		this.mScene.dispose();
 
