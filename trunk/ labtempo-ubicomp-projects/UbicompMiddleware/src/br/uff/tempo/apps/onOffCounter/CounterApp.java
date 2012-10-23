@@ -125,7 +125,7 @@ public class CounterApp extends Activity implements IResourceChooser, IResourceL
 	
 	public void chooseClick(View v) {
 
-		MiddlewareOperation m = new MiddlewareOperation(this, "Lamp");
+		MiddlewareOperation m = new MiddlewareOperation(this, "br.uff.tempo.middleware.resources.Lamp");
 		m.execute(null);
 		
 	}
