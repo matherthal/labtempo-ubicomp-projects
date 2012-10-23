@@ -49,7 +49,7 @@
         android:layout_below="@+id/buttonToggleDayNight"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
-        android:text="Medium Text"
+        android:text="Bloquear/Desbloquear lâmpada:"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <Spinner
