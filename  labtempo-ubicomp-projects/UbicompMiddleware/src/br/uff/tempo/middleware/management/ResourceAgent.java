@@ -287,6 +287,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		Log.i("SmartAndroid", "[" + rai + ", " + method + "] is removed as Stakeholder from " + getName());
 		stakeholders.remove(new Stakeholder(method, rai));
 	}
+	
+	
 
 	private void registerDefaultInterests() {
 //		InterestAPI ia = InterestAPIImpl.getInstance();

@@ -116,7 +116,7 @@
         <item>@string/type_player_human</item>
     </string-array>
 
-    <string name="type_player_o_default">@string/type_player_computer</string>
+    <string name="type_player_o_default">@string/type_player_human</string>
     <string name="type_player_o_key">typePlayerO</string>
     <string name="type_player_o_title">Player O</string>
     <string name="type_player_summary">Computer or Human</string>
