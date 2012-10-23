@@ -3,7 +3,10 @@ package br.uff.tempo.middleware.resources.stubs;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.uff.tempo.apps.tictactoe.Board;
 import br.uff.tempo.apps.tictactoe.Game;
+import br.uff.tempo.apps.tictactoe.Player;
+import br.uff.tempo.apps.tictactoe.Player.Name;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.resources.interfaces.IGameAgent;
@@ -29,6 +32,22 @@ public class GameAgentStub extends ResourceAgentStub implements IGameAgent {
 		params.add(new Tuple<String, Object>(String.class.getName(), player));
 
 		makeCall("setMove", params);
+	}
+
+	@Override
+	public void setPlayer(Player.Name player) {
+	
+	}
+	
+	@Override
+	public void setBoard(Board board) {
+	
+	}
+
+	@Override
+	public Name getPlayer() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -19,6 +19,11 @@ import android.view.WindowManager.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
+import br.uff.tempo.middleware.resources.GameAgent;
 import br.uff.tempo.middleware.resources.interfaces.IGameAgent;
 
 public class Game{
@@ -26,7 +31,7 @@ public class Game{
   //
   // Constructors
   //
-//	private IGameAgent gameAgent;
+	private IGameAgent gameAgent;
 
 	public Game(Context context) {
 		this.context = context;
@@ -34,8 +39,8 @@ public class Game{
 	
 	public Game(Context context, IGameAgent gameAgent) {
 		this.context = context;
-//		this.gameAgent = gameAgent;
-//		this.gameAgent.setGame(this);
+		this.gameAgent = gameAgent;
+		this.gameAgent.setGame(this);
 	}
 
   //
@@ -53,6 +58,7 @@ public class Game{
     // Initialize the board.
     this.board = new Board(this.context);
     this.board.requestFocus();
+    gameAgent.setBoard(board);
 
     // Initialize the players.
     this.playerX = this.getPlayer(Player.Name.X);
@@ -112,60 +118,100 @@ public class Game{
 
 	public void processMove(Location move, String flag) {
     // Store the move if it is valid.
-	    if (!this.gameOver && this.board.setMove(move, this.currentPlayer)) {
-//			if (!flag.equals("local")) {
-//				gameAgent.setMove(move.getRow(), move.getColumn(), this.currentPlayer.toString());
-//				if (this.currentPlayer.getType() == Player.Type.Human) {
-//			        this.playerPrompts.get(this.currentPlayer.getName()).hide();
-//				}
-//			}else
-//			{				
-//				if (this.currentPlayer.getType() == Player.Type.Human) {
-//			        if (this.currentPlayer.equals(playerX)) {
-//			        	this.playerPrompts.get(this.playerO.getName()).hide();
-//			        }else {
-//			        	this.playerPrompts.get(this.playerX.getName()).hide();
-//			        }
-//				}
-//			}
-		      
-			if (this.currentPlayer.getType() == Player.Type.Human) {
-		        this.playerPrompts.get(this.currentPlayer.getName()).hide();
-			}
-			
-		
-			this.board.invalidate();
-		    this.numberOfMoves++;
-		
-		    // Check for the end of the game.
-		    if (this.checkForWin()) {
-			      this.output("Player " + this.currentPlayer.getName() + " wins!");
-			      this.gameOver = true;
-		    }
-		    else if (this.numberOfMoves == 9) {
-		        this.output("Draw");
-		        this.gameOver = true;
-		    }
-		    else {
-		
-		        // Switch players.
-		        if (this.currentPlayer == this.playerX) {
-		        	this.currentPlayer = this.playerO;
-		        }
-		        else {
-		        	this.currentPlayer = this.playerX;
-		        }
-		
-		        // Show the prompt for the human player.
-		        if (this.currentPlayer.getType() == Player.Type.Human) {
-		        	this.playerPrompts.get(this.currentPlayer.getName()).show();
-		        }
-		
-		    }
+	    if (!this.gameOver) {
+	    	if (this.currentPlayer.getName().equals(gameAgent.getPlayer())){
+	    		if (this.board.setMove(move, this.currentPlayer)) {
+			    
+					if (!flag.equals("local")) {
+						gameAgent.setMove(move.getRow(), move.getColumn(), this.currentPlayer.toString());
+		//				if (this.currentPlayer.getType() == Player.Type.Human) {
+		//			        this.playerPrompts.get(this.currentPlayer.getName()).hide();
+		//				}
+					}//else
+		//			{				
+		//				if (this.currentPlayer.getType() == Player.Type.Human) {
+		//			        if (this.currentPlayer.equals(playerX)) {
+		//			        	this.playerPrompts.get(this.playerO.getName()).hide();
+		//			        }else {
+		//			        	this.playerPrompts.get(this.playerX.getName()).hide();
+		//			        }
+		//				}
+		//			}
+				      
+					if (this.currentPlayer.getType() == Player.Type.Human) {
+				        this.playerPrompts.get(this.currentPlayer.getName()).hide();
+					}
+					
+				
+					this.board.invalidate();
+				    this.numberOfMoves++;
+				
+				    // Check for the end of the game.
+				    if (this.checkForWin()) {
+					      this.output("Player " + this.currentPlayer.getName() + " wins!");
+					      this.gameOver = true;
+				    }
+				    else if (this.numberOfMoves == 9) {
+				        this.output("Draw");
+				        this.gameOver = true;
+				    }
+				    else {
+				
+				        // Switch players.
+				        if (this.currentPlayer == this.playerX) {
+				        	this.currentPlayer = this.playerO;
+				        }
+				        else {
+				        	this.currentPlayer = this.playerX;
+				        }
+				
+				        // Show the prompt for the human player.
+				        if (this.currentPlayer.getType() == Player.Type.Human) {
+				        	this.playerPrompts.get(this.currentPlayer.getName()).show();
+				        }
+				
+				    }
+	    		}
+	    	}
 	
 	    }
 
   }
+	
+	public void update() {
+		if (this.currentPlayer.getType() == Player.Type.Human) {
+	        this.playerPrompts.get(this.currentPlayer.getName()).hide();
+		}
+		
+		this.board.invalidate();
+	    this.numberOfMoves++;
+	
+	    // Check for the end of the game.
+	    if (this.checkForWin()) {
+		      this.output("Player " + this.currentPlayer.getName() + " wins!");
+		      this.gameOver = true;
+	    }
+	    else if (this.numberOfMoves == 9) {
+	        this.output("Draw");
+	        this.gameOver = true;
+	    }
+	    else {
+	
+	        // Switch players.
+	        if (this.currentPlayer == this.playerX) {
+	        	this.currentPlayer = this.playerO;
+	        }
+	        else {
+	        	this.currentPlayer = this.playerX;
+	        }
+	
+	        // Show the prompt for the human player.
+	        if (this.currentPlayer.getType() == Player.Type.Human) {
+	        	this.playerPrompts.get(this.currentPlayer.getName()).show();
+	        }
+	
+	    }
+	}
 
   private boolean checkForWin() {
     boolean won;
@@ -263,7 +309,7 @@ public class Game{
   // Attributes
   //
 
-  private Context context;
+  public Context context;
 
   private Board board;
 
@@ -273,7 +319,11 @@ public class Game{
 
   private Player currentPlayer;
 
-  private Map<Player.Name, Dialog> playerPrompts =
+  public Player getCurrentPlayer() {
+	return currentPlayer;
+}
+
+private Map<Player.Name, Dialog> playerPrompts =
     new HashMap<Player.Name, Dialog>();
 
   private int numberOfMoves;

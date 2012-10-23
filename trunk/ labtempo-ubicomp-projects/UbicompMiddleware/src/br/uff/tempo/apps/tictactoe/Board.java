@@ -32,7 +32,7 @@ public class Board extends View {
   //
 
   @Override
-  protected void onDraw(Canvas canvas) {
+  public void onDraw(Canvas canvas) {
 
     // Draw the background.
     Paint background = new Paint();
