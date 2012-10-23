@@ -42,16 +42,19 @@ public class ResourceDirectory {
 				boolean isInserted = false;
 				while (typeTemp != null && !isInserted){
 					Type typeSubTemp = null;
+					++i;
 					if (i < list.size()){ 
-						typeSubTemp = this.search(list.get(i++),typeTemp.getSubTypeList());
+						typeSubTemp = this.search(list.get(i),typeTemp.getSubTypeList());
 					}
 					if (typeSubTemp != null){
 						typeTemp = typeSubTemp;
 					} else{
-						if (list.size()>0){//it has more types
+						if (list.size()>i){//it has more types
 							typeTemp.add(list,resource,i);
 						} else {//end of list
-							typeTemp.resources.add(resource);
+							if (!contains(typeTemp.resources,resource)){
+								typeTemp.resources.add(resource);
+							}
 						}
 						isInserted = true;
 					}
@@ -61,6 +64,15 @@ public class ResourceDirectory {
 		Log.d(TAG, "Created");
 	}
 	
+	private boolean contains(List<ResourceData> resources, ResourceData resource) {
+		for (ResourceData resourceData : resources) {
+			if (resourceData.getName().equals(resource.getName())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	/**
 	 * Part of CRUD
 	 * @param attribute is value of target variable of query
@@ -141,6 +153,9 @@ public class ResourceDirectory {
 
 	private List<ResourceData> searchByType(String query) {
 		Log.d(TAG, "searchByType");
+		if (query.equals("")){
+			return getResources(directory);
+		}
 		return typeTreeSearch(query, directory);	
 	}
 

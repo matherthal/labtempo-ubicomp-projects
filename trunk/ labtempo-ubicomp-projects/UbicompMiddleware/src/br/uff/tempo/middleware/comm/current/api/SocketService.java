@@ -8,7 +8,8 @@ import java.net.SocketException;
 import android.util.Log;
 
 public class SocketService {
-
+	public final static String BUFFER_END = "#@#";
+	
 	private static final int SERVER_PORT = 4000;
 	private DatagramSocket sk;
 
@@ -42,7 +43,7 @@ public class SocketService {
 
 		s.receive(dp);
 		String rcvd = new String(dp.getData());
-		rcvd = rcvd.substring(0, rcvd.lastIndexOf(";"));
+		rcvd = rcvd.substring(0, rcvd.lastIndexOf(BUFFER_END));
 		s.close();
 		
 		return rcvd;

@@ -30,7 +30,7 @@ public class Caller implements Serializable {
 				ResourceAgentNS rans = ResourceNSContainer.getInstance().get(this.calleeAgent.getRai());
 				
 				Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", jsonString, calleeAgent.getRai()));
-				result = SocketService.sendReceive(rans.getIp(), rans.getRans() + ";" + jsonString + ";");
+				result = SocketService.sendReceive(rans.getIp(), rans.getRans() + SocketService.BUFFER_END + jsonString + SocketService.BUFFER_END);
 				Log.d("SmartAndroid", String.format("Receive REMOTE msg %s from %s", result, calleeAgent.getRai()));
 			}
 			

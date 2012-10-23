@@ -27,21 +27,22 @@ public class TicTacToe extends Activity {
   //
 
   public TicTacToe() {
-		IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		ArrayList<String> gameList = discovery.search("GameAgent");
-		IGameAgent gameAgent;
-		int id = (int) Math.round(50 * Math.random());
-		gameAgent = new GameAgent("Game"+id);
-		((GameAgent) gameAgent).identify();
-		if (gameList != null){
-			for (String iGameAgentRai : gameList) {
-				IGameAgent iGameAgent = new GameAgentStub(iGameAgentRai);
-				((GameAgentStub) iGameAgent).registerStakeholder("setMove", ((GameAgent) gameAgent).getRAI());
-				((GameAgent) gameAgent).registerStakeholder("setMove", iGameAgentRai);
-			}
-		}
-		this.game = new Game(this, gameAgent);
-		gameAgent.setGame((Game)this.game);
+//		IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+//		ArrayList<String> gameList = discovery.search("GameAgent");
+//		IGameAgent gameAgent;
+//		int id = (int) Math.round(50 * Math.random());
+//		gameAgent = new GameAgent("Game"+id);
+//		((GameAgent) gameAgent).identify();
+//		if (gameList != null){
+//			for (String iGameAgentRai : gameList) {
+//				IGameAgent iGameAgent = new GameAgentStub(iGameAgentRai);
+//				((GameAgentStub) iGameAgent).registerStakeholder("setMove", ((GameAgent) gameAgent).getRAI());
+//				((GameAgent) gameAgent).registerStakeholder("setMove", iGameAgentRai);
+//			}
+//		}
+//		this.game = new Game(this, gameAgent);
+//		gameAgent.setGame((Game)this.game);
+	  this.game = new Game(this);
   }
 
   //
@@ -50,9 +51,9 @@ public class TicTacToe extends Activity {
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-		View view = this.game.initialize();
-		this.setContentView(view);
+	  super.onCreate(savedInstanceState);
+	  View view = this.game.initialize();
+	  this.setContentView(view);
   }
 
   @Override
