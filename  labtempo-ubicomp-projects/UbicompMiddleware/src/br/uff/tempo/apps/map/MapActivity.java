@@ -131,6 +131,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	public static final int EXTERNAL = LUMINOSITY + 1;
 	public static final int LOG = EXTERNAL + 1;
 	public static final int SETTINGS = LOG + 1;
+	private static final int ERASE = SETTINGS + 1;
 
 	// constants to QuickAction (it's not been used yet)
 	public static final int ID_UNREG = 1;
@@ -270,8 +271,13 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		// Add a default value for the preference "rdsAddress"
 		editor = prefs.edit();
-		editor.putString("rdsAddress", IResourceDiscovery.RDS_IP);
-		editor.commit();
+		
+		String rdsIP = prefs.getString("rdsAddress", null);
+		
+		if (rdsIP == null) {
+			editor.putString("rdsAddress", IResourceDiscovery.RDS_IP);
+			editor.commit();	
+		}
 
 		// Save this value to memory
 		MapSettings.setAddress(prefs.getString("rdsAddress", null));
@@ -610,6 +616,14 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			startActivity(i);
 
 			return;
+			
+		case ERASE:
+			
+			editor.remove("state");
+			editor.commit();
+			
+			return;
+			
 		default:
 			// if receive an invalid option, exit method
 			// (and doesn't execute the lines above!)
@@ -819,6 +833,8 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		menu.add(Menu.NONE, LOG, Menu.NONE, "View Log").setIcon(
 				R.drawable.log_icon);
+		
+		menu.add(Menu.NONE, ERASE, Menu.NONE, "Clear Saved Data").setIcon(R.drawable.cancel);
 
 		return super.onCreateOptionsMenu(menu);
 	}
