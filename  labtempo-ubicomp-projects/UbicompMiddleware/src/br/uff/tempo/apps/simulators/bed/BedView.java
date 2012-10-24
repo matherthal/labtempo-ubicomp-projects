@@ -23,22 +23,7 @@ public class BedView extends AbstractView {
 	@Override
 	public IResourceAgent createNewResourceAgent(RegistryData data) {
 		
-		return new Bed("bed" + getNextID() + ".ra");
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
+		return new Bed(data.getResourceName());
 	}
 
 	public void onRegisterClick(View target) {
