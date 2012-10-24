@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
 public interface IResourceAgent extends Serializable {
@@ -82,6 +83,8 @@ public interface IResourceAgent extends Serializable {
 	public boolean identify();
 	
 	public boolean unregister();
+	
+	public Position getPosition();
 
 	public void notifyStakeholders(String method, Object value);
 	
