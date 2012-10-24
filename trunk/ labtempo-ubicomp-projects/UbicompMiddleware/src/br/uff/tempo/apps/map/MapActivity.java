@@ -404,16 +404,20 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		// Unregister all fake devices from Resource Register and
 		// remove it from local containers
-		for (RegistryData regData : state.getData()) {
-			if (regData.isFake()) {
-				regData.getAgent().unregister();
+
+		if (state != null) {
+			
+			for (RegistryData regData : state.getData()) {
+				if (regData.isFake()) {
+					regData.getAgent().unregister();
+				}
 			}
+
+			editor = prefs.edit();
+
+			PersistHelper.saveToFile("state", this.state, editor);
+			this.mScene.dispose();
 		}
-
-		editor = prefs.edit();
-
-		PersistHelper.saveToFile("state", this.state, editor);
-		this.mScene.dispose();
 
 		Log.i(TAG, "Destroy Game");
 
