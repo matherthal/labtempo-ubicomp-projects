@@ -1,5 +1,7 @@
 package br.uff.tempo.apps.simulators;
 
+import java.util.Random;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.os.DropBoxManager;
@@ -55,8 +57,7 @@ public abstract class AbstractPanel extends View {
 			thereIsAnAgent();
 			setAgent(res);
 		}
-		
-		setupInterest();
+
 		initialization();
 	}
 	
@@ -108,10 +109,12 @@ public abstract class AbstractPanel extends View {
 	public void setupInterest() {
 		
 		// When the agent change its state, redraw the screen
-		IResourceAgent res = ((AbstractView) getContext()).getAgent();
+		IResourceAgent res = getAgentFromView();
 		
-		new Generic("StakeholderFromView" + (++count), res, "all") {
+		new Generic(res.getName() + "Stakeholder" + getNextID(), res, "all") {
 			
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void notificationHandler(final String rai, final String method, final Object value) {
 				
@@ -126,6 +129,10 @@ public abstract class AbstractPanel extends View {
 				
 			}
 		};
+	}
+	
+	public int getNextID() {
+		return new Random().nextInt(100);
 	}
 	
 	public float getDensity() {
