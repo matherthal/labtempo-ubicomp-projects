@@ -19,21 +19,6 @@ public class LampView extends AbstractView {
 	}
 
 	@Override
-	protected void onResume() {
-		super.onResume();
-	}
-
-	@Override
-	protected void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-	}
-
-	@Override
 	public IResourceAgent createNewResourceAgent(RegistryData data) {
 		return new Lamp(data.getResourceName());
 	}
