@@ -15,7 +15,7 @@ public abstract class AbstractView extends FragmentActivity implements
 		IResourceChooser {
 
 	private IResourceAgent agent;
-	private static int counter = 0;
+	private boolean fromMap = false;
 
 	// Dialog to get resource information
 	private ResourceConfig resConf;
@@ -37,6 +37,7 @@ public abstract class AbstractView extends FragmentActivity implements
 		// (probably the agent) use it
 		if (fromExternal != null) {
 			agent = (IResourceAgent) fromExternal.getSerializable("agent");
+			this.fromMap = true;
 
 		// else, creates a new one
 		} else {
@@ -44,6 +45,15 @@ public abstract class AbstractView extends FragmentActivity implements
 			// Asks for the user about the Resource Informations
 			// such as Name and Position
 			callDialog();
+		}
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
+		
+		if (fromMap) {
+			getPanel().setupInterest();
 		}
 	}
 
@@ -57,8 +67,12 @@ public abstract class AbstractView extends FragmentActivity implements
 			agent.identify();
 			
 			AbstractPanel p = getPanel();
+			
 			p.setAgent(agent);
 			p.thereIsAnAgent();
+			
+			p.setupInterest();
+			
 			p.invalidate();
 			
 		} else {
@@ -70,10 +84,6 @@ public abstract class AbstractView extends FragmentActivity implements
 
 		resConf = new ResourceConfig(this);
 		resConf.showDialog();
-	}
-
-	public int getNextID() {
-		return ++counter;
 	}
 
 	public abstract IResourceAgent createNewResourceAgent(RegistryData data);
