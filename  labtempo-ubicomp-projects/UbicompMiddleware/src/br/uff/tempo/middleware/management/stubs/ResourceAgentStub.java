@@ -149,6 +149,10 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		return false;
 	}
 	
+	public boolean unregister() {
+		return false;
+	}
+	
 	@Override
 	public void notifyStakeholders(String method, Object value) {
 		// TODO Auto-generated method stub

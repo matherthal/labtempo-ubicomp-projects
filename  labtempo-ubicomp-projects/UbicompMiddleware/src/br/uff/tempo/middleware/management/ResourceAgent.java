@@ -209,6 +209,21 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 
 		return registered;
 	}
+	
+	public boolean unregister() {
+		
+		rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
+		rrs.unregister(this.rai);
+		
+		ResourceContainer.getInstance().remove(this.rai);
+		
+		//TODO In the future, RAI will change to RANS, be careful
+		ResourceNSContainer.getInstance().remove(this.rai);
+		
+		registered = false;
+		
+		return true;
+	}
 
 	public boolean identifyPosition(Position position) {
 

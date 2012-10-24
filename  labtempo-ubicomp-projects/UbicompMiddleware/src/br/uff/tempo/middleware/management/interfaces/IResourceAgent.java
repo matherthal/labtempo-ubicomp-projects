@@ -80,6 +80,8 @@ public interface IResourceAgent extends Serializable {
 	public boolean isRegistered();
 
 	public boolean identify();
+	
+	public boolean unregister();
 
 	public void notifyStakeholders(String method, Object value);
 	
