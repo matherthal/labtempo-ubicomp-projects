@@ -271,6 +271,10 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		return registered;
 	}
 	
+	public Position getPosition() {
+		return position;
+	}
+	
 	public List<Stakeholder> getStakeholders() {	
 		return stakeholders; 
 	}

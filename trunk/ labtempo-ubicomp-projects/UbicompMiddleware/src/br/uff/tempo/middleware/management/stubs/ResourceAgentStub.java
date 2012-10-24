@@ -7,6 +7,7 @@ import java.util.List;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
 import com.google.gson.reflect.TypeToken;
@@ -151,6 +152,12 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	
 	public boolean unregister() {
 		return false;
+	}
+	
+	public Position getPosition() {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+
+		return (Position) makeCall("getPosition", params, Position.class);
 	}
 	
 	@Override
