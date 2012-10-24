@@ -80,6 +80,7 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.PersonStub;
+import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
@@ -109,7 +110,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 	// Time to vibrate (ms)
 	private static final long VIBRATE_TIME = 100;
-	
+
 	private static final int MIN_OBJECTS = 3;
 
 	// TODO: Put these constants in a separate file
@@ -266,12 +267,14 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		// Add a default value for the preference "rdsAddress"
 		editor = prefs.edit();
-		
+
 		String rdsIP = prefs.getString("rdsAddress", null);
-		
+
 		if (rdsIP == null) {
 			editor.putString("rdsAddress", IResourceDiscovery.RDS_IP);
-			editor.commit();	
+			editor.commit();
+		} else {
+			testRDSAddress(rdsIP);
 		}
 
 		// Save this value to memory
@@ -323,6 +326,11 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		}
 
 		Log.i(TAG, "Create Resources");
+	}
+
+	private void testRDSAddress(String address) {
+		// TODO Test if the address is really appointing to a ResourceDiscovery
+		// Service
 	}
 
 	@Override
@@ -401,9 +409,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 				regData.getAgent().unregister();
 			}
 		}
-		
+
 		editor = prefs.edit();
-		
+
 		PersistHelper.saveToFile("state", this.state, editor);
 		this.mScene.dispose();
 
@@ -598,7 +606,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		case EXTERNAL:
 
 			// Starts a middleware operation, listing all registered resources
-			// ("")
+			// ("//")
 			MiddlewareOperation m = new MiddlewareOperation(this, "//",
 					MapSettings.getRDSAddress());
 			m.execute(null);
@@ -621,14 +629,15 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			startActivity(i);
 
 			return;
-			
+
 		case ERASE:
-			
+
 			editor.remove("state");
+			editor.remove("rdsAddress");
 			editor.commit();
-			
+
 			return;
-			
+
 		default:
 			// if receive an invalid option, exit method
 			// (and doesn't execute the lines above!)
@@ -638,6 +647,22 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// Register the real agent, if it exists
 		if (realAg != null) {
 			realAg.identify();
+		}
+
+		if (!regData.isFake()) {
+			Position pos = proxyAg.getPosition();
+
+			if (pos != null) {
+				regData.setPositionX(pos.getX());
+				regData.setPositionY(pos.getY());
+			} else {
+
+				float x = houseMap.pixelToMeters(this.mCameraWidth / 2);
+				float y = houseMap.pixelToMeters(this.mCameraHeight / 2);
+
+				regData.setPositionX(x);
+				regData.setPositionY(y);
+			}
 		}
 
 		// Subscribe to the agent (all context variables) to receive
@@ -838,8 +863,9 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 		menu.add(Menu.NONE, LOG, Menu.NONE, "View Log").setIcon(
 				R.drawable.log_icon);
-		
-		menu.add(Menu.NONE, ERASE, Menu.NONE, "Clear Saved Data").setIcon(R.drawable.cancel);
+
+		menu.add(Menu.NONE, ERASE, Menu.NONE, "Clear Saved Data").setIcon(
+				R.drawable.cancel);
 
 		return super.onCreateOptionsMenu(menu);
 	}
