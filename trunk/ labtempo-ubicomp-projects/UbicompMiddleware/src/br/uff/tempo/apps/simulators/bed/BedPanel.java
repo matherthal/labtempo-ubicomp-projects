@@ -77,7 +77,6 @@ public class BedPanel extends AbstractPanel {
 
 	@Override
 	public void drawCanvas(Canvas canvas) {
-		super.onDraw(canvas);
 		// draw the background color
 		canvas.drawColor(Color.BLACK);
 		// draw the bed bitmap
