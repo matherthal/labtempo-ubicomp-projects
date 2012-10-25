@@ -35,4 +35,5 @@ public class BedView extends AbstractView {
 	public AbstractPanel getPanel() {
 		return (AbstractPanel) findViewById(R.id.bedPanel);
 	}
+
 }
