@@ -156,13 +156,10 @@ public class RuleConditionActivity extends Activity {
 		// Get RA
 		Spinner spn = (Spinner) findViewById(R.id.spinnerRAChoice);
 		// (ResourceAgent)discovery.search(s.getSelectedItem().toString()).get(0);
-		ResourceAgent ra = new Stove();// FIXME: get it out of here, just for
-										// debug. The correct is above
 
 		// Get attribute's acess method
 		spn = (Spinner) findViewById(R.id.spinnerRAAttribChoice);
 
-		ra.setId(1543);
 		// Get attribute's acess method
 		// Method mtd = null;
 		// try {

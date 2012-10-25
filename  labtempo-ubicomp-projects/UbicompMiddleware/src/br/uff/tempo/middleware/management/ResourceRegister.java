@@ -11,12 +11,7 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	private static ResourceRegister instance;
 
 	private ResourceRegister() {
-		setId(1);
-		setName("ResourceRegister");
-		setType("management");
-		setRAI("br.uff.tempo.middleware.management.ResourceRegister");
-
-		setRAI(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceRegister", "ResourceRegister"));
+		super("ResourceRegister", ResourceRegister.class.getName(), 1);
 	}
 
 	public static ResourceRegister getInstance() {

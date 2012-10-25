@@ -10,6 +10,10 @@ public class Teapot extends ResourceAgent implements ITeapot {
 	private static final long serialVersionUID = 1L;
 	
 	public float temperature = 0.0f;
+	
+	public Teapot(String name, String type, int id) {
+		super(name, type, id);
+	}
 
 	@Override
 	public float getTemperature() {
