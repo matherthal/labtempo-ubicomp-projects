@@ -1,6 +1,5 @@
 package br.uff.tempo.middleware.management.stubs;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		params.add(new Tuple<String, Object>(String.class.getName(), method));
 		params.add(new Tuple<String, Object>(value.getClass().getName(), value));
 
-		makeCall("notificationHandler", params);
+		makeCall("notificationHandler", params, void.class);
 	}
 
 	public String getResourceClassName() {
@@ -45,17 +44,15 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		params.add(new Tuple<String, Object>(String.class.getName(), method));
 		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
-		makeCall("registerStakeholder", params);
+		makeCall("registerStakeholder", params, void.class);
 	}
 
 	@Override
 	public List<Stakeholder> getStakeholders() {
 		
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		Type type = new TypeToken<List<Stakeholder>>() {
-		}.getType();
 
-		return (List<Stakeholder>) makeCall("getStakeholders", params, type);		
+		return (List<Stakeholder>) makeCall("getStakeholders", params, new TypeToken<List<Stakeholder>>() {}.getType());		
 	}
 	
 	@Override
@@ -70,7 +67,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), id));
 
-		makeCall("setId", params);
+		makeCall("setId", params, void.class);
 	}
 
 	@Override
@@ -85,7 +82,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), name));
 
-		makeCall("setName", params);
+		makeCall("setName", params, void.class);
 	}
 
 	@Override
@@ -102,7 +99,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
-		makeCall("setRAI", params);
+		makeCall("setRAI", params, void.class);
 	}
 
 	@Override
@@ -116,7 +113,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), type));
 
-		makeCall("setType", params);
+		makeCall("setType", params, void.class);
 	}
 
 	@Override
@@ -177,7 +174,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		params.add(new Tuple<String, Object>(String.class.getName(), method));
 		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
-		makeCall("removeStakeholder", params);	
+		makeCall("removeStakeholder", params, void.class);	
 	}
 
 }

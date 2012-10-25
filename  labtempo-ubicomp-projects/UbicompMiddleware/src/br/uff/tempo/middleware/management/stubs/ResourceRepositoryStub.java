@@ -1,6 +1,5 @@
 package br.uff.tempo.middleware.management.stubs;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,11 +60,8 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 		// Set params
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
-		
-		Type type = new TypeToken<ArrayList<String>>() {
-		}.getType();
 
-		return (ArrayList<String>) makeCall("getSubList", params, type);
+		return (ArrayList<String>) makeCall("getSubList", params, new TypeToken<ArrayList<String>>() {}.getType());
 	}
 
 	@Override

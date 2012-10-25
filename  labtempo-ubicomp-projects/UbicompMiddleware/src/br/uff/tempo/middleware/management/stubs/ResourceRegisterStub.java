@@ -1,16 +1,12 @@
 package br.uff.tempo.middleware.management.stubs;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
-import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.utils.Position;
-
-import com.google.gson.reflect.TypeToken;
 
 public class ResourceRegisterStub extends ResourceAgentStub implements IResourceRegister {
 	
@@ -25,9 +21,6 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 
 		// Set params
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-
-		Type rAType = new TypeToken<ResourceAgent>() {
-		}.getType();
 
 		params.add(new Tuple<String, Object>(String.class.getName(), rans));
 		params.add(new Tuple<String, Object>(String.class.getName(), ip));

@@ -25,7 +25,7 @@ public class PresenceSensorStub extends ResourceAgentStub implements IPresenceSe
 	public void setPresence(boolean p) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Boolean.class.getName(), p));
-		makeCall("setPresence", params);
+		makeCall("setPresence", params, void.class);
 	}
 
 }

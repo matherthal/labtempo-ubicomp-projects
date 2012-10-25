@@ -1,5 +1,6 @@
 package br.uff.tempo.apps.map.dialogs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -61,7 +62,12 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<String>> {
 
 		// Get registered resources references from Resource Discovery that
 		// matches the query
-		return rd.searchForAttribute(ResourceData.TYPE, this.query);
+		List<ResourceData> resourceData = rd.searchForAttribute(ResourceData.TYPE, this.query);
+		List<String> result = new ArrayList<String>();
+		for (ResourceData r : resourceData) {
+			result.add(r.getRai());
+		}
+		return result;
 	}
 
 	// Executed when search finishes

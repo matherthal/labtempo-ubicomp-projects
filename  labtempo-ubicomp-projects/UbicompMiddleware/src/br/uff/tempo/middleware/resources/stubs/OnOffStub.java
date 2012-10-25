@@ -19,7 +19,7 @@ public class OnOffStub extends ResourceAgentStub implements IOnOff{
 	public void setStatus(boolean isOn) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(boolean.class.getName(), isOn));
-		makeCall("setStatus", params);
+		makeCall("setStatus", params, void.class);
 	}
 
 	@Override
