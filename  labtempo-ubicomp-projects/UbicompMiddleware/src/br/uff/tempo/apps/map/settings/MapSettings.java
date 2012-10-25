@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -18,6 +17,7 @@ import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
 public class MapSettings extends PreferenceActivity implements IListGetter, IChooser {
@@ -100,12 +100,14 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 			stakeholders = current.getStakeholders();
 			List<ResourceData> shData = new ArrayList<ResourceData>();
 			
+			IResourceDiscovery resData = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+			
 			for (Stakeholder s : stakeholders) {
-				ResourceData d = s.getResourceData();
-				d.setTag(s.getName() + " wants " + s.getMethod());
+				ResourceData d = resData.searchForAttribute(ResourceData.RAI, s.getRAI()).get(0);
+				d.setTag(d.getName() + " wants " + s.getMethod());
 				
-				shData.add(s.getResourceData());
-				stakeholderNames.put(s.getName(), s.getMethod());
+				shData.add(d);
+				stakeholderNames.put(d.getName(), s.getMethod());
 			}
 			
 			op = OP_STAKEHOLDER;
