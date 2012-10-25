@@ -68,7 +68,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		
 		registered = false;
 
-		this.type = generateType(this.getClass());
+		this.type = type;//generateType(this.getClass());
 		this.id = id;
 		this.name = name;
 		rai = "";
