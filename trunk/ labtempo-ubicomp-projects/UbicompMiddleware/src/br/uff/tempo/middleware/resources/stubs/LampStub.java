@@ -26,14 +26,14 @@ public class LampStub extends ResourceAgentStub implements ILamp {
 	@Service(name = "Acender lampada")
 	public void turnOn() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		makeCall("turnOn", params);
+		makeCall("turnOn", params, void.class);
 	}
 
 	@Override
 	@Service(name = "Apagar lampada")
 	public void turnOff() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		makeCall("turnOff", params);
+		makeCall("turnOff", params, void.class);
 	}
 
 }

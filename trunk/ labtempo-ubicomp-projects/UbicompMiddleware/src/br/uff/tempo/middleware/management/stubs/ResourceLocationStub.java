@@ -1,6 +1,5 @@
 package br.uff.tempo.middleware.management.stubs;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +29,7 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 
 		params.add(new Tuple<String, Object>(Place.class.getName(), place));
 		
-		makeCall("addPlace", params);
+		makeCall("addPlace", params, void.class);
 	}
 
 	@Override
@@ -42,28 +41,22 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 		params.add(new Tuple<String, Object>(Position.class.getName(), lower));
 		params.add(new Tuple<String, Object>(Position.class.getName(), upper));
 
-		makeCall("addPlace", params);
+		makeCall("addPlace", params, void.class);
 	}
 
 	@Override
 	public ArrayList<String> search(String query) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), query));
-
-		Type type = new TypeToken<ArrayList<String>>() {
-		}.getType();
 		
-		return (ArrayList<String>) makeCall("search", params, type);
+		return (ArrayList<String>) makeCall("search", params, new TypeToken<ArrayList<String>>() {}.getType());
 	}
 
 	@Override
 	public Set<String> getPlacesNames() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-
-		Type type = new TypeToken<Set<String>>() {
-		}.getType();
 		
-		return (Set<String>) makeCall("getPlacesNames", params, type);
+		return (Set<String>) makeCall("getPlacesNames", params, new TypeToken<Set<String>>() {}.getType());
 	}
 
 	@Override
@@ -89,10 +82,8 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 	public Collection<Place> getAllPlaces() {
 
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		Type type = new TypeToken<Collection<Place>>() {
-		}.getType();
 
-		return (Collection<Place>) makeCall("getAllPlaces", params, type);
+		return (Collection<Place>) makeCall("getAllPlaces", params, new TypeToken<Collection<Place>>() {}.getType());
 	}
 
 	@Override
@@ -125,7 +116,7 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Space.class.getName(), newSpace));
 
-		makeCall("insertMap", params);
+		makeCall("insertMap", params, void.class);
 	}
 
 	@Override
@@ -133,7 +124,7 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Map.class.getName(), newMap));
 
-		makeCall("setMap", params);
+		makeCall("setMap", params, void.class);
 	}
 
 	@Override
@@ -142,19 +133,17 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 
-		makeCall("registerInPlace", params);
+		makeCall("registerInPlace", params, void.class);
 	}
 
 	@Override
-	public void registerInPlaceRelative(String url, Place place,
-			Position position) {
-		
+	public void registerInPlaceRelative(String url, Place place, Position position) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 		params.add(new Tuple<String, Object>(Place.class.getName(), place));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 
-		makeCall("registerInPlace", params);
+		makeCall("registerInPlace", params, void.class);
 	}
 
 	@Override
@@ -163,16 +152,14 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 		params.add(new Tuple<String, Object>(String.class.getName(), url));
 		params.add(new Tuple<String, Object>(Place.class.getName(), place));
 
-		makeCall("registerInPlaceMiddlePos", params);
+		makeCall("registerInPlaceMiddlePos", params, void.class);
 	}
 
 	@Override
 	public ArrayList<String> queryByLocal(Position position) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
-		
-		Type type = new TypeToken<ArrayList<String>>() {}.getType();
 
-		return (ArrayList<String>) makeCall("queryByLocal", params, type);
+		return (ArrayList<String>) makeCall("queryByLocal", params, new TypeToken<ArrayList<String>>() {}.getType());
 	}
 }

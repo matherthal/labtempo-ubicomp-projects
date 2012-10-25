@@ -28,12 +28,12 @@ public class BedStub extends ResourceAgentStub implements IBed {
 	@Override
 	public void lieDown() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		makeCall("lieDown", params);
+		makeCall("lieDown", params, void.class);
 	}
 
 	@Override
 	public void getOut() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		makeCall("getOut", params);
+		makeCall("getOut", params, void.class);
 	}
 }

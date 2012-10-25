@@ -31,7 +31,7 @@ public class GameAgentStub extends ResourceAgentStub implements IGameAgent {
 		params.add(new Tuple<String, Object>(Integer.class.getName(), column));
 		params.add(new Tuple<String, Object>(String.class.getName(), player));
 
-		makeCall("setMove", params);
+		makeCall("setMove", params, void.class);
 	}
 
 	@Override

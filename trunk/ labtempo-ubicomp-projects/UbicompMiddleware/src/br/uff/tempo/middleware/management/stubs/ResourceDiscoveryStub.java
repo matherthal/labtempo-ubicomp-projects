@@ -9,6 +9,8 @@ import br.uff.tempo.middleware.management.ResourceAgentNS;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
+import com.google.gson.reflect.TypeToken;
+
 public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourceDiscovery {
 	
 	private static final long serialVersionUID = 1L;
@@ -46,12 +48,12 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 	}
 	
 	@Override
-	public List<String> searchForAttribute(int attribute, String query) {
+	public List<ResourceData> searchForAttribute(int attribute, String query) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), attribute));
 		params.add(new Tuple<String, Object>(String.class.getName(), query));
 
-		return (List<String>) makeCall("searchForAttribute", params, List.class);
+		return (List<ResourceData>) makeCall("searchForAttribute", params, new TypeToken<List<ResourceData>>() {}.getType());
 	}
 
 }

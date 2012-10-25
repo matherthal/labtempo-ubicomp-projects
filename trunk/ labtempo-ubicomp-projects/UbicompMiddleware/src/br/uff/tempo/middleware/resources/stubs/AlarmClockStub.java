@@ -21,7 +21,7 @@ public class AlarmClockStub extends ResourceAgentStub implements IAlarmClock {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>("name", name));
 		params.add(new Tuple<String, Object>("start", start));
-		makeCall("turnOnBurner", params);
+		makeCall("turnOnBurner", params, void.class);
 	}
 
 	@Override
@@ -30,17 +30,17 @@ public class AlarmClockStub extends ResourceAgentStub implements IAlarmClock {
 		params.add(new Tuple<String, Object>(String.class.getName(), name));
 		params.add(new Tuple<String, Object>(Calendar.class.getName(), start));
 		params.add(new Tuple<String, Object>(Integer.class.getName(), interval));
-		makeCall("turnOnBurner", params);
+		makeCall("turnOnBurner", params, void.class);
 	}
 
 	@Override
 	public void goOff() {
-		makeCall("turnOnBurner", new ArrayList<Tuple<String, Object>>());
+		makeCall("turnOnBurner", new ArrayList<Tuple<String, Object>>(), void.class);
 	}
 
 	@Override
 	public void snooze(int timeInSec) {
-		makeCall("turnOnBurner", new ArrayList<Tuple<String, Object>>());
+		makeCall("turnOnBurner", new ArrayList<Tuple<String, Object>>(), void.class);
 	}
 
 	@Override

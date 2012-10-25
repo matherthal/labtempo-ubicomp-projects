@@ -30,7 +30,7 @@ public class PersonStub extends ResourceAgentStub implements IPerson {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(SmartObject.class.getName(), sensor));
 
-		makeCall("addSensor", params);
+		makeCall("addSensor", params, void.class);
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class PersonStub extends ResourceAgentStub implements IPerson {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 
-		makeCall("addPosition", params);
+		makeCall("addPosition", params, void.class);
 	}
 
 	@Override

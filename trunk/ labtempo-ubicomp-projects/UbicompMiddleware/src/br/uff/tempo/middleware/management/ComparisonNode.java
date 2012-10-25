@@ -57,7 +57,7 @@ public class ComparisonNode {
 	 */
 	public void updateValueCache() {
 		Stub s = new Stub(rai);
-		setValueCache(s.makeCall(method, params));
+		setValueCache(s.makeCall(method, params, Object.class));
 	}
 
 	/**

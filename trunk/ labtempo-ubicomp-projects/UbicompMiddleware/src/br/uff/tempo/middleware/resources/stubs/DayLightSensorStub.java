@@ -35,7 +35,7 @@ public class DayLightSensorStub extends ResourceAgentStub implements IDayLightSe
 	public void setDay(boolean d) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Boolean.class.getName(), d));
-		makeCall("setDay", params);
+		makeCall("setDay", params, void.class);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class DayLightSensorStub extends ResourceAgentStub implements IDayLightSe
 	public void setLightAmount(float l) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Float.class.getName(), l));
-		makeCall("setLightAmount", params);
+		makeCall("setLightAmount", params, void.class);
 	}
 
 }

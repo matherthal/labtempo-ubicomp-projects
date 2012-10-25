@@ -2,23 +2,16 @@ package br.uff.tempo.middleware.comm.current.api;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONException;
 
-import br.uff.tempo.middleware.comm.interest.api.NewDispatcher;
-
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class JSONHelper {
 
 	public static String createMethodCall(String method, List<Tuple<String, Object>> params) throws JSONException {
-
-		Map<String, Object> methodCall = new HashMap<String, Object>();
 		List<String> jsonparams = new ArrayList<String>();
 		List<String> jsontypes = new ArrayList<String>();
 
@@ -34,74 +27,26 @@ public class JSONHelper {
 				jsontypes.add(tp.key);
 			}
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		methodCall.put("jsonrpc", "2.0");
-		methodCall.put("method", method);
-		methodCall.put("params", jsonparams);
-		methodCall.put("types", jsontypes);
-//
-//		Type collectionType = new TypeToken<HashMap<String, Object>>() {
-//		}.getType();
-//		
 		JSONRPC jsonRpc = new JSONRPC(method, jsonparams, jsontypes);
-		
-//		Collection collection = new ArrayList();
-//		collection.add(methodCall);
+
 		return (new Gson()).toJson(jsonRpc, JSONRPC.class);
 	}
 
-	// deserialize
-//	private static String deserialize(String result) {
-//
-//		// Parse response string
-//		Type collectionType = new TypeToken<HashMap<String, String>>() {
-//		}.getType();
-//
-//		String[] resultData = result.split(";");
-//		Map<String, String> response = (new Gson()).fromJson(resultData[0], collectionType);
-//		return response.get("result");
-//	}
-
-	public static Object getMessage(String jsonRPCString) throws JSONException {
+	public static Object getMessage(String jsonRPCString, Type returnType) throws JSONException {
+		if (void.class.equals(returnType)) {
+			return null;
+		}
+		
 		JSONRPC jsonRpc = (new Gson()).fromJson(jsonRPCString, JSONRPC.class);
 		
 		if (jsonRpc.getResponse() == null && jsonRpc.getResponseType() == null) {
 			return null;
 		}
-		
-		Class type = null;
-		try {
-			type = NewDispatcher.getClassOf(jsonRpc.getResponseType());
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-//		args[i] = 
-//		
-//		// Parse response string
-//		String json = deserialize(result);
-//		
-//		Object obj = new Gson().fromJson(json, Object.class);
 
-		return new Gson().fromJson(jsonRpc.getResponse(), type);
+		return new Gson().fromJson(jsonRpc.getResponse(), returnType);
 	}
-
-//	public static Object getMessage(String result, Class type)
-//			throws JSONException {
-//		
-//		String json = deserialize(result);
-//		return new Gson().fromJson(json, type);
-//	}
-//	
-//	public static Object getMessage(String result, Type type)
-//			throws JSONException {
-//		
-//		String json = deserialize(result);
-//		return new Gson().fromJson(json, type);
-//	}
 
 	public static String createReply(Object msg, Class type) {
 		if (void.class.equals(type)) {
@@ -115,22 +60,8 @@ public class JSONHelper {
 		JSONRPC jsonRpc = new JSONRPC(jsonString, ret);						
 		
 		String resultMsg = new Gson().toJson(jsonRpc, JSONRPC.class);
-		
-//		//Map<String, String> response = new HashMap<String, String>();
-//		response.put("result", msgStr);
-//		response.put("id", "0"); // we don't really use this so value is always
-//									// zero
-//		String resultMsg;
-//		try {
-//			resultMsg = (new Gson()).toJson(response);
-//		} catch (Exception e) {
-//			String result = (new Gson()).toJson(response.get("result"), View.class);
-//			response.put("result", result);
-//			resultMsg = (new Gson()).toJson(response);
-//		}
+
 		return resultMsg;
-		// Serialise response to JSON-encoded string
-		// The response string can now be sent back to the client...
 	}
 
 
@@ -154,35 +85,55 @@ public class JSONHelper {
 		return type.getName();
 	}
 
-	@Deprecated
-	public static String createChange(String id, String method, Object value) {
-		Map<String, Object> change = new HashMap<String, Object>();
-		change.put("jsonobject", "2.0");
-		change.put("id", id);
-		change.put("method", method);
-		change.put("value", value);
-		Type collectionType = new TypeToken<HashMap<String, Object>>() {
-		}.getType();
-		return (new Gson()).toJson(change, collectionType);
+	private static List<Tuple<String, String>> getParams(JSONRPC jsonRpc) {
+		List<Tuple<String, String>> result = new ArrayList<Tuple<String, String>>();
+		List<String> params = jsonRpc.getParams();
+		List<String> types = jsonRpc.getTypes();
+		Iterator<String> itParams = params.iterator();
+		Iterator<String> itTypes = types.iterator();
+
+		Tuple<String, String> tp;
+
+		while (itParams.hasNext()) {
+			String strType = itTypes.next();
+			String param = itParams.next();
+			tp = new Tuple<String, String>(strType, param);
+			result.add(tp);
+		}
+	
+		return result;
+	}
+	
+	private static Object[] paramsToArray(List<Tuple<String, String>> argList) {
+		Object[] args = new Object[argList.size()];
+		for (int i = 0; i < argList.size(); i++){
+			Tuple<String, String> tuple = argList.get(i);
+			if (tuple.value != null) {
+				try {
+					Class type = Class.forName(tuple.key);
+					args[i] = new Gson().fromJson(tuple.value.toString(), type);
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			} else {
+				args[i] = null;
+			}
+		}			
+		return args;
 	}
 
-	@Deprecated
-	public static Object getChange(String what, String change) {
-		Type collectionType = new TypeToken<HashMap<String, Object>>() {
-		}.getType();
+	public static Object[] getParamsArray(String jsonRPCString) {
+		JSONRPC jsonRpc = (new Gson()).fromJson(jsonRPCString, JSONRPC.class);
+		
+		List<Tuple<String, String>> params = getParams(jsonRpc);
 
-		Map<String, Object> changeObj = (new Gson()).fromJson(change,
-				collectionType);
-		return changeObj.get(what);
+		Object[] paramsArray = paramsToArray(params);
+		return paramsArray;
 	}
 
-	/*
-	 * public static JSONArray createMethodParams(JSONArray params) throws
-	 * JSONException { // Default params that appear in all method calls
-	 * params.put(new JSONObject().put("first", "A")); params.put(new
-	 * JSONObject().put("second", "B"));
-	 * 
-	 * // To add custom parameters, add to the return value rather than here, //
-	 * or this method becomes messy return params; }
-	 */
+	public static String getMethodName(String jsonRPCString) {
+		JSONRPC jsonRpc = (new Gson()).fromJson(jsonRPCString, JSONRPC.class);
+		return jsonRpc.getMethod();
+	}
 }

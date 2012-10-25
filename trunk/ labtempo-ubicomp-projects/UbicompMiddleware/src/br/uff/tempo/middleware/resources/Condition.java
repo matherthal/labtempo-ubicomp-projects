@@ -126,7 +126,7 @@ public class Condition implements Serializable {
 
 		// IResourceAgent ra = new ResourceAgentStub(this.ra.getRAI());
 		Stub s = new Stub(rai);
-		Object ret = s.makeCall(method, params);
+		Object ret = s.makeCall(method, params, Object.class);
 		// ret = ra.getClass().getMethod(method, paramTypes).invoke(params);
 
 		if (operator.equals(Operator.Equal)) // Operator ==
