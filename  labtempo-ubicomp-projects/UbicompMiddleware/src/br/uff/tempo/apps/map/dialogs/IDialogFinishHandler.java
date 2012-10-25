@@ -2,8 +2,7 @@ package br.uff.tempo.apps.map.dialogs;
 
 import android.app.Dialog;
 
-public interface IResourceChooser {
+public interface IDialogFinishHandler {
 
-	void onRegisteredResourceChoosed(String resourceRAI);
 	void onDialogFinished(Dialog dialog);
 }

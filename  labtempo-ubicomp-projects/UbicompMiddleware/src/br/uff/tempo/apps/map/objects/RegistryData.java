@@ -15,9 +15,11 @@ public class RegistryData implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
+	public static float INVALID_POSITION = -931.3f;
+	
 	private String resourceName;
-	private float positionX;
-	private float positionY;
+	private float positionX = INVALID_POSITION;
+	private float positionY = INVALID_POSITION;
 	private IResourceAgent agent;
 	private IResourceAgent stub;
 

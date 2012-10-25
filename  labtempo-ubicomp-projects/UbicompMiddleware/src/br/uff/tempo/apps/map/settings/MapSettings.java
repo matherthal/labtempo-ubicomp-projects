@@ -12,16 +12,15 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
-import br.uff.tempo.apps.map.dialogs.IResourceChooser;
-import br.uff.tempo.apps.map.dialogs.IResourceListGetter;
+import br.uff.tempo.apps.map.dialogs.IChooser;
+import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
-import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
-public class MapSettings extends PreferenceActivity implements IResourceListGetter, IResourceChooser {
+public class MapSettings extends PreferenceActivity implements IListGetter, IChooser {
 	
 	public static int OP_UNREG = 0;
 	public static int OP_SETUP = 1;
@@ -29,16 +28,14 @@ public class MapSettings extends PreferenceActivity implements IResourceListGett
 	
 	private Preference resPref;
 	private Preference stakeholderPref;
-	private ChooseResource choose;
-	private ChooseResource sHolder;
-	private List<String> list;
+	private ChooseResource chooseResourceDialog;
+	private ChooseResource stakeholderDialog;
+	private List<ResourceData> list;
 	private static String rdsAddress;
 	private int op;
-	private String raiRegister;
-	private IResourceRegister reg = null;
 	private List<Stakeholder> stakeholders;
 	private ResourceAgentStub current; 
-	private Map<String, String> sHolderNames;
+	private Map<String, String> stakeholderNames;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +45,10 @@ public class MapSettings extends PreferenceActivity implements IResourceListGett
 		// Get the references to all registered resources
 		new MiddlewareOperation(this, "//", getRDSAddress()).execute(null);
 		
-		choose = new ChooseResource(this);
-		sHolder = new ChooseResource(this);
+		chooseResourceDialog = new ChooseResource(this);
+		stakeholderDialog = new ChooseResource(this);
 		
-		sHolderNames = new HashMap<String, String>();
+		stakeholderNames = new HashMap<String, String>();
 		
 		resPref = findPreference("regResources");
 		resPref.setOnPreferenceClickListener(new OnPreferenceClickListener() {
@@ -75,72 +72,60 @@ public class MapSettings extends PreferenceActivity implements IResourceListGett
 	public boolean unregisterResourceClick() {
 		
 		op = OP_UNREG;
-		choose.showDialog(list);
+		chooseResourceDialog.showDialog(list);
 		return false;
 	}
 	
 	public boolean setupStakeholdersClick() {
 		
 		op = OP_SETUP;
-		choose.showDialog(list);
+		chooseResourceDialog.showDialog(list);
 		return false;
 	}
 	
 	@Override
-	public void onRegisteredResourceChoosed(String resource) {
+	public void onRegisteredResourceChoosed(ResourceData resource) {
 		
 		// Unregister an Agent
 		if (op == OP_UNREG) {
 			
-			if (reg == null) {
-				reg = new ResourceRegisterStub(raiRegister);
-			}
+			new ResourceAgentStub(resource.getRai()).unregister();
 			
-			reg.unregister(resource);
 			new MiddlewareOperation(this, "//", getRDSAddress()).execute(null);
 			
 		// Setup the stakeholders from an Agent
 		} else if (op == OP_SETUP){
 		
-			current = new ResourceAgentStub(resource);
+			current = new ResourceAgentStub(resource.getRai());
 			stakeholders = current.getStakeholders();
-			List<String> shStrings = new ArrayList<String>();
+			List<ResourceData> shData = new ArrayList<ResourceData>();
 			
 			for (Stakeholder s : stakeholders) {
-				shStrings.add(s.toString());
-				sHolderNames.put(s.getName(), s.getRAI());
+				ResourceData d = s.getResourceData();
+				d.setTag(s.getName() + " wants " + s.getMethod());
+				
+				shData.add(s.getResourceData());
+				stakeholderNames.put(s.getName(), s.getMethod());
 			}
 			
 			op = OP_STAKEHOLDER;
-			choose.dismiss();
-			sHolder.showDialog(shStrings, false);
+			chooseResourceDialog.dismiss();
+			stakeholderDialog.showDialog(shData);
 		
 		// A stakeholder was selected
 		} else if (op == OP_STAKEHOLDER) {
 			
-			String[] parsed = resource.split(" wants: ");
-			current.removeStakeholder(parsed[1], sHolderNames.get(parsed[0]));
+			current.removeStakeholder(stakeholderNames.get(resource.getName()), resource.getRai());
+			stakeholderNames.clear();
 		}
-	}
-
-	@Override
-	public void onDialogFinished(Dialog dialog) {
-		// TODO Auto-generated method stub
 	}
 	
+	// Called when a middleware operation finishes
+	// returning the list of resources from ResitryService
 	@Override
-	public void onGetResourceList(List<String> result) {
+	public void onGetList(List<ResourceData> result) {
+		
 		list = result;
-		
-		raiRegister = null;
-		
-		// Save the ResourceRegister RAI to avoid calling a remote method
-		for (String rai : list) {
-			if (rai.contains("ResourceRegister")) {
-				raiRegister = rai;
-				break;
-			}
-		}
 	}
 
 	public static void setAddress(String address) {
@@ -150,4 +135,5 @@ public class MapSettings extends PreferenceActivity implements IResourceListGett
 	public static String getRDSAddress() {
 		return "rai:" + rdsAddress + "//" + IResourceDiscovery.RDS_NAME;
 	}
+
 }

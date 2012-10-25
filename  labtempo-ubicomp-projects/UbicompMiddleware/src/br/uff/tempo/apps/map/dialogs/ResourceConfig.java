@@ -59,8 +59,8 @@ public class ResourceConfig extends MapDialog {
 			}
 
 			dialog.cancel();
-			IResourceChooser chooser = (IResourceChooser) activity;
-			chooser.onDialogFinished(this.dialog);
+			IDialogFinishHandler handler = (IDialogFinishHandler) activity;
+			handler.onDialogFinished(this.dialog);
 
 		} catch (SmartAndroidException e) {
 			activity.runOnUiThread(new Runnable() {

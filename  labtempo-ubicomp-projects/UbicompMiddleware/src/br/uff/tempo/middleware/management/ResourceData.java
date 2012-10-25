@@ -15,6 +15,7 @@ public class ResourceData {
 	private String type;
 	private Position position;
 	private Place place;
+	private String tag;
 	
 	public ResourceData(String rai, String name, String type, Position position, Place place) {
 		this.rai = rai;
@@ -52,4 +53,11 @@ public class ResourceData {
 		return rai;
 	}
 
+	public String getTag() {
+		return tag;
+	}
+
+	public void setTag(String tag) {
+		this.tag = tag;
+	}
 }
