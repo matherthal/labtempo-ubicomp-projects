@@ -26,7 +26,6 @@ import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Generic;
 import br.uff.tempo.middleware.resources.Rule;
-import br.uff.tempo.middleware.resources.Stove;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 import br.uff.tempo.middleware.resources.interfaces.ITelevision;
 import br.uff.tempo.middleware.resources.stubs.StoveStub;
@@ -311,8 +310,6 @@ public class RuleActivity extends Activity {
 			String value) {
 		// ResourceAgent ra =
 		// (ResourceAgent)discovery.search(s.getSelectedItem().toString()).get(0);
-		ResourceAgent ra = new Stove();// FIXME: get it out of here, just for
-										// debug. The correct is above
 
 		// Get attribute's acess method
 		// Method mtd = null;

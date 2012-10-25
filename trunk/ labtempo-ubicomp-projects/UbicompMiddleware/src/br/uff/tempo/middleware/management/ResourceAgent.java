@@ -46,6 +46,44 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private Caller caller;
 	
 	private Position position;
+	
+	public ResourceAgent() {
+
+		this("GeneralAgent", "br.uff.tempo.middleware.management.ResourceAgent", 0);
+	}
+
+	public ResourceAgent(String type, int id) {
+
+		this(id + "", type, id);
+	}
+
+	public ResourceAgent(String name, String type, int id) {
+
+		this(name, type, id, null);
+	}
+	
+	public ResourceAgent(String name, String type, int id, Position position) {
+
+		stakeholders = new ArrayList<Stakeholder>();
+		
+		registered = false;
+
+		this.type = type;// address+port+type+name
+		this.id = id;
+		this.name = name;
+		rai = "";
+
+		String ipAddress = ResourceAgentIdentifier.getLocalIpAddress();
+
+		rai = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);
+
+		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+
+		this.position = position;
+		// initResource();
+		
+		this.registerDefaultInterests();
+	}
 
 	public IResourceDiscovery getRDS() {
 		return rDS;
@@ -115,44 +153,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		public ResourceAgent getService() {
 			return ResourceAgent.this;
 		}
-	}
-	
-	public ResourceAgent() {
-
-		this("GeneralAgent", "br.uff.tempo.middleware.management.ResourceAgent", 0);
-	}
-
-	public ResourceAgent(String type, int id) {
-
-		this(id + "", type, id);
-	}
-
-	public ResourceAgent(String name, String type, int id) {
-
-		this(name, type, id, null);
-	}
-	
-	public ResourceAgent(String name, String type, int id, Position position) {
-
-		stakeholders = new ArrayList<Stakeholder>();
-		
-		registered = false;
-
-		this.type = type;// address+port+type+name
-		this.id = id;
-		this.name = name;
-		rai = "";
-
-		String ipAddress = ResourceAgentIdentifier.getLocalIpAddress();
-
-		rai = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);
-
-		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-
-		this.position = position;
-		// initResource();
-		
-		this.registerDefaultInterests();
 	}
 
 	@Override

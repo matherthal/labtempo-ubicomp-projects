@@ -4,7 +4,6 @@ import java.util.Date;
 
 import br.uff.tempo.middleware.management.Aggregator;
 import br.uff.tempo.middleware.management.Interpreter;
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.utils.Position;
 
 @Deprecated
@@ -20,19 +19,6 @@ public class Person extends Aggregator {
 	private boolean isEating = false;
 	private boolean isWalking = false;
 	private boolean isRunning = false;
-
-	public Person() {
-		// Discover ContextVariables to update this aggregator status
-		// Add them with the aggregator's support
-		IResourceDiscovery iRDS = getRDS();
-		//IBed bed = new BedStub(iRDS.search("bed").get(0));
-		//bed.registerStakeholder("inUse", this.getRAI());
-
-		//this.addContextVariable(bed, "inUse");
-		// ...
-		// Add interpreters
-		// ...
-	}
 	
 	public Person(String name, Position position) {
 		// FIXME: get correct id

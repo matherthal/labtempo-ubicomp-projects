@@ -13,11 +13,7 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 	private static ResourceDiscovery instance;
 
 	private ResourceDiscovery() {
-		setId(2);
-		setName("ResourceDiscovery");
-		setType("br.uff.tempo.middleware.management.ResourceDiscovery");
-
-		setRAI(IResourceDiscovery.RDS_ADDRESS);
+		super("ResourceDiscovery", ResourceDiscovery.class.getName(), 2);		
 	}
 	
 	public static ResourceDiscovery getInstance() {

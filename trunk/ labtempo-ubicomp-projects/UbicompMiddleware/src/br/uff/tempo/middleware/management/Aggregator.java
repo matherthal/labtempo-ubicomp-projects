@@ -13,11 +13,6 @@ public abstract class Aggregator extends ResourceAgent implements IAggregator {
 	
 	private static final long serialVersionUID = 1L;
 	
-
-	public Aggregator() {
-		super();
-	}
-	
 	public Aggregator(String name, String type, int id, Position position) {
 		super(name, type, id, position);
 	}

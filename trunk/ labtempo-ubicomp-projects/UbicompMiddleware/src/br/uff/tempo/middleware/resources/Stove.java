@@ -37,10 +37,6 @@ public class Stove extends ResourceAgent implements IStove {
 	//Stove Burners
 	private List<Float> burners;
 
-	public Stove() {
-		this("GeneralStove");
-	}
-
 	public Stove(String name) {
 		// FIXME: get correct id
 		this(name, null);

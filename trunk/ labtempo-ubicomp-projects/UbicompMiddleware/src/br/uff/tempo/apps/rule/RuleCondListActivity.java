@@ -66,10 +66,7 @@ public class RuleCondListActivity extends Activity {
 				// Add condition to list of conditions
 				// >>>conds.add(cond);
 				// Add condition to list in the view
-				Teapot ra = new Teapot();
-				ra.setId(0001);
-				ra.setName("teapot01");
-				ra.setType("Teapot");
+				Teapot ra = new Teapot("teapot01", "Teapot", 0001);
 				ra.identify();
 				Condition cond = null;
 				try {
@@ -95,8 +92,6 @@ public class RuleCondListActivity extends Activity {
 	public void createCond(String raID, String attrib, Operator operator, String value) {
 		// ResourceAgent ra =
 		// (ResourceAgent)discovery.search(s.getSelectedItem().toString()).get(0);
-		ResourceAgent ra = new Stove();// FIXME: get it out of here, just for
-										// debug. The correct is above
 
 		// Get attribute's acess method
 		// Method mtd = null;

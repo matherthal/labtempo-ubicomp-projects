@@ -29,13 +29,8 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	HashMap<String, HashMap<String, Position>> baseIndexer;
 
 	private ResourceLocation() {
-		setId(3);
-		setRAI("br.uff.tempo.middleware.management.ResourceLocation");
-		setName("ResourceLocation");
-		setType("management");
-
-		setRAI(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), "br.uff.tempo.middleware.management.ResourceLocation", "ResourceLocation"));
-
+		super("ResourceLocation", ResourceLocation.class.getName(), 3);
+		
 		currentSpace = new Space();
 		resources = new HashMap<String, Position>();
 		baseIndexer = new HashMap<String, HashMap<String, Position>>();

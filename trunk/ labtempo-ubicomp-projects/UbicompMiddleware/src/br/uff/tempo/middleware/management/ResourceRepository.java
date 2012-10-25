@@ -17,13 +17,9 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	private static ResourceRepository instance;
 
 	private ResourceRepository() {
-		setId(0);
-
+		super("ResourceRepository", ResourceRepository.class.getName(), 0);
+		
 		directory = ResourceDirectory.getInstance();
-		setRAI(ResourceAgentIdentifier.generateRAI(ResourceAgentIdentifier.getLocalIpAddress(), ResourceRepository.class.getName(), "ResourceRepository"));
-
-		setName("ResourceRepository");
-		setType("management");
 	}
 
 	public synchronized static ResourceRepository getInstance() {
