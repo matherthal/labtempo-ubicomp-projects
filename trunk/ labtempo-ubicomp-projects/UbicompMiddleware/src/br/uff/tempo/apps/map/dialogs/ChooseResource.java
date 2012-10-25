@@ -9,13 +9,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.ResourceData;
 
 public class ChooseResource extends MapDialog implements
 		AdapterView.OnItemClickListener {
 
-	private ListView list;
+	private ListView listView;
 	private ArrayAdapter<String> lvAdapter;
-	private List<String> resourcesRAI;
+	private List<ResourceData> dataFromResouces;
+	private String[] listNames;
 
 	public ChooseResource(final Activity act) {
 
@@ -27,8 +29,8 @@ public class ChooseResource extends MapDialog implements
 			public void run() {
 
 				// Get the reference to the list view
-				list = (ListView) dialog.findViewById(R.id.list_registered);
-				list.setOnItemClickListener(ChooseResource.this);
+				listView = (ListView) dialog.findViewById(R.id.list_registered);
+				listView.setOnItemClickListener(ChooseResource.this);
 
 				// Cancel the dialog if you touch outside its area.
 				dialog.setCanceledOnTouchOutside(true);
@@ -36,55 +38,41 @@ public class ChooseResource extends MapDialog implements
 		});
 	}
 
-	public void showDialog(List<String> resList) {
+	public void showDialog(String[] list) {
 
-		this.showDialog(resList, true);
-	}
-	
-	public void showDialog(List<String> resList, boolean isRai) {
-
-		List<String> names;
-		
-		if (isRai) {
-			resourcesRAI = formatList(resList);
-			names = extractResourceNames(resourcesRAI);
-		} else {
-			resourcesRAI = resList;
-			names = resList;
-		}
-		
+		listNames = list;
 		lvAdapter = new ArrayAdapter<String>(activity,
-				android.R.layout.simple_list_item_1, names);
+				android.R.layout.simple_list_item_1, list);
 
-		list.setAdapter(lvAdapter);
+		listView.setAdapter(lvAdapter);
 
 		super.showDialog();
 	}
 
+	public void showDialog(List<ResourceData> list) {
 
-	public List<String> formatList(List<String> resList) {
-
-		List<String> list = new ArrayList<String>();
-
-		for (String s : resList) {
-
-			if (!s.contains("Resource")) {
-
-				list.add(s);
-			}
+		dataFromResouces = formatList(list);
+		String[] names = new String[dataFromResouces.size()];
+		
+		for (int i = 0; i < dataFromResouces.size(); i++) {
+			ResourceData data = dataFromResouces.get(i);
+			
+			// Show in the list a custom tag, if it exits. Show the name otherwise
+			names[i] = data.getTag() != null ? data.getTag() : data.getName();
 		}
-
-		return list;
+		
+		showDialog(names);
 	}
 
-	public List<String> extractResourceNames(List<String> resList) {
+	public List<ResourceData> formatList(List<ResourceData> resList) {
 
-		List<String> list = new ArrayList<String>();
+		List<ResourceData> list = new ArrayList<ResourceData>();
 
-		for (String s : resList) {
+		for (ResourceData data : resList) {
 
-			String[] names = s.split(":");
-			list.add(names[2]);
+			if (!data.getName().contains("Resource")) {
+				list.add(data);
+			}
 		}
 
 		return list;
@@ -99,11 +87,9 @@ public class ChooseResource extends MapDialog implements
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
 
-		String resourceRAI = resourcesRAI.get(position);
+		IChooser chooser = (IChooser) activity;
 
-		IResourceChooser chooser = (IResourceChooser) activity;
-
-		chooser.onRegisteredResourceChoosed(resourceRAI);
+		chooser.onRegisteredResourceChoosed(dataFromResouces.get(position));
 
 		dialog.cancel();
 

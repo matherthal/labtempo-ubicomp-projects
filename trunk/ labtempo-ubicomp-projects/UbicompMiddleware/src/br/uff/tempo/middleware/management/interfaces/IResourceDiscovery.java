@@ -9,7 +9,7 @@ import br.uff.tempo.middleware.management.ResourceData;
 
 public interface IResourceDiscovery {
 	
-	public static final String RDS_IP = "192.168.1.104";
+	public static final String RDS_IP = "192.168.1.115";
 
 	public static final String RDS_NAME = "br.uff.tempo.middleware.management.ResourceDiscovery:ResourceDiscovery";
 	public static final String RDS_ADDRESS = "rai:" + RDS_IP + "//" + RDS_NAME;

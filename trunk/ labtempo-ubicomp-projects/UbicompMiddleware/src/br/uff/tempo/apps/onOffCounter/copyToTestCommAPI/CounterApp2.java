@@ -16,16 +16,17 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
-import br.uff.tempo.apps.map.dialogs.IResourceChooser;
-import br.uff.tempo.apps.map.dialogs.IResourceListGetter;
+import br.uff.tempo.apps.map.dialogs.IChooser;
+import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.resources.Lamp;
 import br.uff.tempo.middleware.resources.interfaces.ILamp;
 import br.uff.tempo.middleware.resources.stubs.LampStub;
 
-public class CounterApp2 extends Activity implements IResourceChooser, IResourceListGetter {
+public class CounterApp2 extends Activity implements IChooser, IListGetter {
 	
 	// My Counter Agent
 	private CounterAg2 counterAg;
@@ -136,37 +137,30 @@ public class CounterApp2 extends Activity implements IResourceChooser, IResource
 	
 	public void chooseClick(View v) {
 
-		MiddlewareOperation m = new MiddlewareOperation(this, "br.uff.tempo.middleware.resources.Lamp");
-		m.execute(null);
-		
+		MiddlewareOperation m = new MiddlewareOperation(this, Lamp.class.getName());
+		m.execute(null);	
 	}
 	
 	@Override
-	public void onGetResourceList(List<String> result) {
+	public void onGetList(List<ResourceData> result) {
 		
 		dialog.showDialog(result);
 	}
 	
 	@Override
-	public void onRegisteredResourceChoosed(String resourceRAI) {
+	public void onRegisteredResourceChoosed(ResourceData data) {
 		
 		//instantiate the stub (proxy) from lamp 
-		lamp = new LampStub(resourceRAI);
+		lamp = new LampStub(data.getRai());
 		
 		//register my counter agent in "isOn" method in the lamp agent
 		lamp.registerStakeholder("isOn", counterAg.getRAI());
 		
 		boolean on = lamp.isOn();	
 		onOff.setChecked(on);
-		tvName.setText(resourceRAI);	
+		tvName.setText(data.getName());	
 		
 		Log.d("CounterLamp", "Lamp choosed...");
-	}
-
-	@Override
-	public void onDialogFinished(Dialog dialog) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	public void onOffclick(View v) {

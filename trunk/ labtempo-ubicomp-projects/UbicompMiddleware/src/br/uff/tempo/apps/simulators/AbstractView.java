@@ -6,13 +6,15 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Window;
-import br.uff.tempo.apps.map.dialogs.IResourceChooser;
+import br.uff.tempo.apps.map.dialogs.IChooser;
+import br.uff.tempo.apps.map.dialogs.IDialogFinishHandler;
 import br.uff.tempo.apps.map.dialogs.ResourceConfig;
 import br.uff.tempo.apps.map.objects.RegistryData;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public abstract class AbstractView extends FragmentActivity implements
-		IResourceChooser {
+		IDialogFinishHandler {
 
 	private IResourceAgent agent;
 	private boolean fromMap = false;
@@ -57,8 +59,7 @@ public abstract class AbstractView extends FragmentActivity implements
 		}
 	}
 
-	public void onRegisteredResourceChoosed(String resourceRAI) {}
-
+	@Override
 	public void onDialogFinished(Dialog dialog) {
 		
 		agent = createNewResourceAgent(resConf.getData());

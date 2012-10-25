@@ -18,7 +18,7 @@ import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
  * @author dbarreto
  * 
  */
-public class MiddlewareOperation extends AsyncTask<String, Void, List<String>> {
+public class MiddlewareOperation extends AsyncTask<String, Void, List<ResourceData>> {
 
 	private ResourceDiscoveryStub rd;
 	private ProgressDialog progress;
@@ -40,7 +40,7 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<String>> {
 	}
 
 	@Override
-	protected List<String> doInBackground(String... params) {
+	protected List<ResourceData> doInBackground(String... params) {
 
 		act.runOnUiThread(new Runnable() {
 
@@ -63,16 +63,13 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<String>> {
 		// Get registered resources references from Resource Discovery that
 		// matches the query
 		List<ResourceData> resourceData = rd.searchForAttribute(ResourceData.TYPE, this.query);
-		List<String> result = new ArrayList<String>();
-		for (ResourceData r : resourceData) {
-			result.add(r.getRai());
-		}
-		return result;
+
+		return resourceData;
 	}
 
 	// Executed when search finishes
 	@Override
-	protected void onPostExecute(List<String> result) {
+	protected void onPostExecute(List<ResourceData> result) {
 
 		super.onPostExecute(result);
 
@@ -80,8 +77,8 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<String>> {
 		progress.dismiss();
 
 		// call a method from the activity (callback)
-		IResourceListGetter lg = (IResourceListGetter) act;
-		lg.onGetResourceList(result);
+		IListGetter lg = (IListGetter) act;
+		lg.onGetList(result);
 	}
 
 }

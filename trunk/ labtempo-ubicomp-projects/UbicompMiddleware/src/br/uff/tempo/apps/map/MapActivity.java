@@ -58,8 +58,9 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
-import br.uff.tempo.apps.map.dialogs.IResourceChooser;
-import br.uff.tempo.apps.map.dialogs.IResourceListGetter;
+import br.uff.tempo.apps.map.dialogs.IChooser;
+import br.uff.tempo.apps.map.dialogs.IDialogFinishHandler;
+import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.apps.map.dialogs.ResourceConfig;
 import br.uff.tempo.apps.map.log.LogActivity;
@@ -75,12 +76,12 @@ import br.uff.tempo.apps.map.quickaction.QuickAction;
 import br.uff.tempo.apps.map.settings.MapSettings;
 import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.Place;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IPerson;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.PersonStub;
-import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
@@ -94,10 +95,10 @@ import br.uff.tempo.middleware.resources.stubs.LampStub;
 import br.uff.tempo.middleware.resources.stubs.StoveStub;
 import br.uff.tempo.middleware.resources.stubs.TelevisionStub;
 
-public class MapActivity extends /* SimpleLayoutGameActivity */
-SimpleBaseGameActivity implements IOnSceneTouchListener,
-		IScrollDetectorListener, IPinchZoomDetectorListener, IResourceChooser,
-		IResourceListGetter, OnSharedPreferenceChangeListener {
+public class MapActivity extends SimpleBaseGameActivity implements
+		IOnSceneTouchListener, IScrollDetectorListener,
+		IPinchZoomDetectorListener, IChooser, IListGetter,
+		IDialogFinishHandler, OnSharedPreferenceChangeListener {
 
 	// ===========================================================
 	// Constants
@@ -212,14 +213,6 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 	// House map
 	private Space houseMap;
-
-	// ===========================================================
-	// Constructors
-	// ===========================================================
-
-	// ===========================================================
-	// Getter & Setter
-	// ===========================================================
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -406,7 +399,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 		// remove it from local containers
 
 		if (state != null) {
-			
+
 			for (RegistryData regData : state.getData()) {
 				if (regData.isFake()) {
 					regData.getAgent().unregister();
@@ -659,7 +652,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 			if (pos != null) {
 				regData.setPositionX(pos.getX());
 				regData.setPositionY(pos.getY());
-			} else {
+			} else if (regData.getPositionX() == RegistryData.INVALID_POSITION || regData.getPositionY() == RegistryData.INVALID_POSITION){
 
 				float x = houseMap.pixelToMeters(this.mCameraWidth / 2);
 				float y = houseMap.pixelToMeters(this.mCameraHeight / 2);
@@ -924,7 +917,7 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 	// Executed when the activity successfully receives a list of registered
 	// resources
 	@Override
-	public void onGetResourceList(List<String> list) {
+	public void onGetList(List<ResourceData> list) {
 
 		// Call a dialog to show the registered resource list
 		externalList.showDialog(list);
@@ -932,22 +925,22 @@ SimpleBaseGameActivity implements IOnSceneTouchListener,
 
 	// It is called when user select an item from registered resources list
 	@Override
-	public void onRegisteredResourceChoosed(String resourceRAI) {
+	public void onRegisteredResourceChoosed(ResourceData resourceData) {
 
-		regData = new RegistryData(resourceRAI);
+		regData = new RegistryData(resourceData.getRai());
 		regData.setFake(false);
 
 		// TODO Add middleware support to get the resource types
 		// Toast.makeText(this, resourceRAI, Toast.LENGTH_LONG).show();
-		if (resourceRAI.contains("Stove")) {
+		if (resourceData.getType().equals(Stove.class.getName())) {
 			regData.setIconType(STOVE);
-		} else if (resourceRAI.contains("Lamp")) {
+		} else if (resourceData.getType().equals(Lamp.class.getName())) {
 			regData.setIconType(LAMP);
-		} else if (resourceRAI.contains("Bed")) {
+		} else if (resourceData.getType().equals(Bed.class.getName())) {
 			regData.setIconType(BED);
-		} else if (resourceRAI.contains("Television")) {
+		} else if (resourceData.getType().equals(Television.class.getName())) {
 			regData.setIconType(TV);
-		} else if (resourceRAI.contains("Person")) {
+		} else if (resourceData.getType().equals(Person.class.getName())) {
 			regData.setIconType(PERSON);
 		}
 
