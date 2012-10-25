@@ -138,8 +138,7 @@ public class ResourceDirectory {
 		if (raiList != null){
 			List<ResourceData> result = new ArrayList<ResourceData>();
 			for (String raiStr : raiList){
-				ResourceAgentIdentifier rai = new ResourceAgentIdentifier(raiStr);
-				List<ResourceData> tmpResult = searchByName(rai.getName());
+				List<ResourceData> tmpResult = getByRai(raiStr);
 				if (tmpResult!=null){
 					result.addAll(tmpResult);
 				}

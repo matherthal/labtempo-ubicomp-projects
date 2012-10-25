@@ -7,6 +7,7 @@ import br.uff.tempo.R;
 import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.apps.simulators.AbstractView;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public class TrackingView extends AbstractView {
@@ -65,4 +66,5 @@ public class TrackingView extends AbstractView {
 	public AbstractPanel getPanel() {
 		return (AbstractPanel) findViewById(R.id.trackingPanel);
 	}
+
 }

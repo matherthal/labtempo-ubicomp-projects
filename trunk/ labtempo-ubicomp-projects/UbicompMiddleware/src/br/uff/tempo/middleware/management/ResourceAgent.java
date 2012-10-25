@@ -12,6 +12,7 @@ import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.common.Callable;
+import br.uff.tempo.middleware.comm.current.api.Caller;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
@@ -36,29 +37,38 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private String rai;
 	private ArrayList<ResourceAgent> interests;
 	private ArrayList<Stakeholder> stakeholders;
+	private ResourceRegister rRS;
 	private static IResourceDiscovery rDS;
 	private ArrayList<String> registeredList;
+	private String RDS_URL;
+	
 	private IResourceRegister rrs;
+	private Caller caller;
+	
 	private Position position;
 	
 	public ResourceAgent() {
+
 		this("GeneralAgent", "br.uff.tempo.middleware.management.ResourceAgent", 0);
 	}
 
 	public ResourceAgent(String type, int id) {
+
 		this(id + "", type, id);
 	}
 
 	public ResourceAgent(String name, String type, int id) {
+
 		this(name, type, id, null);
 	}
 	
 	public ResourceAgent(String name, String type, int id, Position position) {
+
 		stakeholders = new ArrayList<Stakeholder>();
 		
 		registered = false;
 
-		this.type = type;// address+port+type+name
+		this.type = generateType(this.getClass());
 		this.id = id;
 		this.name = name;
 		rai = "";
@@ -144,6 +154,16 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			return ResourceAgent.this;
 		}
 	}
+	
+	private String generateType(Class type) {
+		String result = type.getSimpleName()+"";
+		type = type.getSuperclass();
+		while (!ResourceAgent.class.equals(type)){
+			result = type.getSimpleName()+"/"+result;
+			type = type.getSuperclass();
+		}
+		return result;
+	}
 
 	@Override
 	public void onCreate() {
@@ -190,7 +210,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			} else {
 				registered = rrs.register(this.rai, ip, prefix, this.rai, resourceData);
 			}
-			
+				
+			String result = "";
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
 			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rai, ip, prefix));
@@ -227,7 +248,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			ResourceData resourceData = new ResourceData(this.rai, this.name, this.type, this.position, place);
 			
 			registered = rrs.registerLocation(this.rai, ip, prefix, this.rai, this.position, resourceData);
-			
+				
+			String result = "";
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
 			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rai, ip, prefix));
@@ -249,7 +271,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			ResourceData resourceData = new ResourceData(this.rai, this.name, this.type, this.position, place);
 			
 			registered = rrs.registerInPlace(null, ip, prefix, this.rai, placeName, this.position, resourceData);
-			
+				
+			String result = "";
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
 			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rai, ip, prefix));

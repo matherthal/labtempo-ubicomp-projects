@@ -1,6 +1,7 @@
 package br.uff.tempo.apps.onoffsample;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
@@ -57,19 +60,18 @@ public class OnOffView extends Activity{
 			String xStr = editX.getText().toString();
 			String yStr = editY.getText().toString();
 			
-			ArrayList<String> list = discovery.search(name);
+			List<ResourceData> list = discovery.searchForAttribute(ResourceData.NAME, name);
 			if (list == null) {
 				agent = getAgent(name,xStr,yStr);
 			} else {
-				String rai = list.get(0);
-				ArrayList<String> type = new ResourceAgentIdentifier(rai).getType();
-				String strType = type.get(type.size()-1);
+				ResourceData rData = list.get(0);
+				String strType = rData.getType();
 				
 				if (strType.contains("OnOff")){//connecting to a existent agent
 					agent = getAgent(name+"Observer",xStr,yStr);
 					//IResourceAgent observableAgent = new ResourceAgentStub(rai);
 					//observableAgent.registerStakeholder("ligaDesliga", agent.getRAI());
-					agent.registerStakeholder("ligaDesliga", rai);
+					agent.registerStakeholder("ligaDesliga", rData.getRai());
 				} else {
 					agent = getAgent(name,xStr,yStr);
 				}
