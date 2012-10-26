@@ -1,9 +1,10 @@
 package br.uff.tempo.apps.baseview;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.widget.TextView;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
@@ -25,10 +26,10 @@ public class BaseListener extends Thread {
 
 	public void run() {
 
-		int count = rD.search("").size();
+		int count = rD.searchForAttribute(ResourceData.TYPE, "//").size();
 		boolean update = true;
 		while (true) {
-			count = rD.search("").size();
+			count = rD.searchForAttribute(ResourceData.TYPE, "//").size();
 			if (update)
 				updateBaseContent();
 			try {
@@ -38,16 +39,16 @@ public class BaseListener extends Thread {
 				e.printStackTrace();
 			}
 
-			update = count != rD.search("").size();
+			update = count != rD.searchForAttribute(ResourceData.TYPE, "//").size();
 		}
 	}
 
 	protected void updateBaseContent() {
-		ArrayList<String> strList = rD.search("");
+		List<ResourceData> rdList = rD.searchForAttribute(ResourceData.TYPE, "//");
 		String rai = "";
-		if (strList != null)
-			for (int i = 0; i < strList.size(); i++)
-				rai += strList.get(i) + "\n";
+		if (rdList != null)
+			for (int i = 0; i < rdList.size(); i++)
+				rai += rdList.get(i).getRai() + "\n";
 
 		final String text = rai;
 		act.runOnUiThread(new Runnable() {

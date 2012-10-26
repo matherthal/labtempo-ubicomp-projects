@@ -1,6 +1,6 @@
 package br.uff.tempo.apps;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,9 +10,11 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Generic;
+import br.uff.tempo.middleware.resources.Lamp;
 import br.uff.tempo.middleware.resources.interfaces.ILamp;
 import br.uff.tempo.middleware.resources.stubs.LampStub;
 
@@ -30,10 +32,10 @@ public class AppLampController extends Activity {
 
 		if (savedInstanceState == null) {
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-			ArrayList<String> lamps = discovery.search("Lamp");
-			String raiLamp = lamps.get(0);
+			List<ResourceData> lamps = discovery.searchForAttribute(ResourceData.TYPE, Lamp.class.getName());
+			ResourceData rdLamp = lamps.get(0);
 			Toast.makeText(this, "Lâmpada encontrada", Toast.LENGTH_SHORT).show();
-			lamp = new LampStub(raiLamp);
+			lamp = new LampStub(rdLamp.getRai());
 
 			// Subscription
 			lampStakeholder = new Generic("Controlador de Lampada", lamp, "isOn") {

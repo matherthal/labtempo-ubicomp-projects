@@ -7,6 +7,8 @@ import java.util.Set;
 
 import android.app.Activity;
 import android.widget.TextView;
+import br.uff.tempo.middleware.management.ResourceData;
+import br.uff.tempo.middleware.management.ResourceLocation;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
@@ -25,7 +27,7 @@ public class BaseLocationListener extends Thread {
 		this.act = act;
 
 		rD = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		rL = new ResourceLocationStub(rD.search("ResourceLocation").get(0));
+		rL = new ResourceLocationStub(rD.searchForAttribute(ResourceData.TYPE, ResourceLocation.class.getName()).get(0).getType());
 	}
 
 	public void run() {
