@@ -40,10 +40,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private IResourceRegister rrs;
 	
 	private Position position;
-	
-	public ResourceAgent() {
-		this("GeneralAgent", "br.uff.tempo.middleware.management.ResourceAgent");
-	}
 
 	public ResourceAgent(String type) {
 		this("", type);

@@ -20,6 +20,10 @@ public class AlarmClock extends ResourceAgent implements IAlarmClock {
 	// private Set<Map<String, Calendar, Integer>> alarmSet;
 	private String id;
 
+	public AlarmClock() {
+		super("AlarmClock", AlarmClock.class.getName());
+	}
+	
 	@Override
 	public void scheduleAlarm(String id, Calendar start) {
 		// get a Calendar object with current time
