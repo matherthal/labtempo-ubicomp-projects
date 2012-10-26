@@ -130,12 +130,6 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	}
 
 	@Override
-	public List<ResourceData> getRegisteredList() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
 	public boolean isRegistered() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 

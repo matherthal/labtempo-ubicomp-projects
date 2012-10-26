@@ -37,7 +37,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private ArrayList<ResourceAgent> interests;
 	private ArrayList<Stakeholder> stakeholders;
 	private static IResourceDiscovery rDS;
-	private List<ResourceData> registeredList;
 	
 	private IResourceRegister rrs;
 	
@@ -132,11 +131,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 
 	@Override
-	public List<ResourceData> getRegisteredList() {
-		return registeredList;
-	}
-
-	@Override
 	public String getResourceClassName() {
 		return this.getClass().getName();
 	}
@@ -162,7 +156,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		super.onCreate();
 
 		initResource();
-		registeredList = rDS.searchForAttribute(ResourceData.TYPE, "//");// search all rR.contains("") = all IAR
 	}
 
 	private void initResource() {
