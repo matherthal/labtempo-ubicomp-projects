@@ -30,7 +30,9 @@ public class CommandExecution extends Thread {
 			String calleeID = call[0];
 			String jsonstring = call[1];
 			
+			Log.d("SmartAndroid", String.format("Receive REMOTE msg %s from %s", jsonstring, calleeID));
 			String result = NewDispatcher.getInstance().dispatch(calleeID, jsonstring) + SocketService.BUFFER_END;
+			Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", result, calleeID));
 			
 			byte[] bufsk = result.getBytes();
 			DatagramPacket out = new DatagramPacket(bufsk, bufsk.length, dgp.getAddress(), dgp.getPort());

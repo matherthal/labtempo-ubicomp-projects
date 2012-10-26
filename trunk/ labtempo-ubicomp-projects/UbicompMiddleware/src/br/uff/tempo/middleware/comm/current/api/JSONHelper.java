@@ -4,6 +4,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.json.JSONException;
 
@@ -29,7 +30,8 @@ public class JSONHelper {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-		JSONRPC jsonRpc = new JSONRPC(method, jsonparams, jsontypes);
+		String id = UUID.randomUUID().toString();
+		JSONRPC jsonRpc = new JSONRPC(id, method, jsonparams, jsontypes);
 
 		return (new Gson()).toJson(jsonRpc, JSONRPC.class);
 	}
@@ -48,16 +50,16 @@ public class JSONHelper {
 		return new Gson().fromJson(jsonRpc.getResponse(), returnType);
 	}
 
-	public static String createReply(Object msg, Class type) {
+	public static String createReply(String id, Object msg, Class type) {
 		if (void.class.equals(type)) {
-			return new Gson().toJson(new JSONRPC(), JSONRPC.class);
+			return new Gson().toJson(new JSONRPC(id), JSONRPC.class);
 		}
 		
 		String jsonString = (new Gson()).toJson(msg, type);
 		
 		String ret = convertPrimitiveToObjectIfNecessary(type);
 		
-		JSONRPC jsonRpc = new JSONRPC(jsonString, ret);						
+		JSONRPC jsonRpc = new JSONRPC(id, jsonString, ret);						
 		
 		String resultMsg = new Gson().toJson(jsonRpc, JSONRPC.class);
 
@@ -135,5 +137,10 @@ public class JSONHelper {
 	public static String getMethodName(String jsonRPCString) {
 		JSONRPC jsonRpc = (new Gson()).fromJson(jsonRPCString, JSONRPC.class);
 		return jsonRpc.getMethod();
+	}
+	
+	public static String getId(String jsonRPCString) {
+		JSONRPC jsonRpc = (new Gson()).fromJson(jsonRPCString, JSONRPC.class);
+		return jsonRpc.getId();
 	}
 }
