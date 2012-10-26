@@ -13,8 +13,8 @@ public class Lamp extends ResourceAgent implements ILamp {
 	private boolean isOn;
 	public static final String CV_ISON = "isOn";
 
-	public Lamp(String name) {
-		super(name, "br.uff.tempo.middleware.resources.Lamp");
+	public Lamp(String name, String rans) {
+		super(name, "br.uff.tempo.middleware.resources.Lamp", rans);
 	}
 
 	@Override

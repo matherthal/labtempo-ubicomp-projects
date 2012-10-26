@@ -43,7 +43,7 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 		addPreferencesFromResource(R.xml.map_prefs);
 		
 		// Get the references to all registered resources
-		new MiddlewareOperation(this, "//", getRDSAddress()).execute(null);
+		new MiddlewareOperation(this, "//", IResourceDiscovery.rans).execute(null);
 		
 		chooseResourceDialog = new ChooseResource(this);
 		stakeholderDialog = new ChooseResource(this);
@@ -91,7 +91,7 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 			
 			new ResourceAgentStub(resource.getRai()).unregister();
 			
-			new MiddlewareOperation(this, "//", getRDSAddress()).execute(null);
+			new MiddlewareOperation(this, "//", IResourceDiscovery.rans).execute(null);
 			
 		// Setup the stakeholders from an Agent
 		} else if (op == OP_SETUP){
@@ -100,10 +100,10 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 			stakeholders = current.getStakeholders();
 			List<ResourceData> shData = new ArrayList<ResourceData>();
 			
-			IResourceDiscovery resData = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+			IResourceDiscovery resData = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 			
 			for (Stakeholder s : stakeholders) {
-				ResourceData d = resData.searchForAttribute(ResourceData.RAI, s.getRAI()).get(0);
+				ResourceData d = resData.searchForAttribute(ResourceData.RAI, s.getRANS()).get(0);
 				d.setTag(d.getName() + " wants " + s.getMethod());
 				
 				shData.add(d);
@@ -133,9 +133,4 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 	public static void setAddress(String address) {
 		rdsAddress = address;
 	}
-	
-	public static String getRDSAddress() {
-		return "rai:" + rdsAddress + "//" + IResourceDiscovery.RDS_NAME;
-	}
-
 }

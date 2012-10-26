@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Timer;
 
 import br.uff.tempo.middleware.management.interfaces.IPerson;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
 
@@ -31,20 +33,20 @@ public class Person extends ResourceAgent implements IPerson {
 	LinkedList<Position> recentPositions;
 	IResourceLocation rLS;
 
-	public Person(String name) {
-		this(name, Person.class.getName(), DEFAULT_PERIOD);
+	public Person(String name, String rans) {
+		this(name, Person.class.getName(), rans, DEFAULT_PERIOD);
 	}
 
-	public Person(String name, String type, long period) {
+	public Person(String name, String type, String rans, long period) {
 		this(new ArrayList<SmartObject>(), new LinkedList<Position>(), name,
-				type, period);
-
+				type, rans, period);
 	}
 
 	public Person(List<SmartObject> sensors,
 			LinkedList<Position> recentPositions, String name, String type,
+			String rans,
 			long period) {
-		super(name, type);
+		super(name, type, rans);
 		this.objects = sensors;
 		this.recentPositions = recentPositions;
 
@@ -70,7 +72,8 @@ public class Person extends ResourceAgent implements IPerson {
 	}
 
 	public void updateRecentLocal() {
-		rLS = new ResourceLocationStub(this.getRDS().searchForAttribute(ResourceData.TYPE, ResourceLocation.class.getName())
+		IResourceDiscovery rDS = new ResourceDiscoveryStub(IResourceDiscovery.rans);
+		rLS = new ResourceLocationStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceLocation.class.getName())
 				.get(0).getRai());
 		for (Position position : recentPositions) {
 			recentLocal.add(rLS.getLocal(position));

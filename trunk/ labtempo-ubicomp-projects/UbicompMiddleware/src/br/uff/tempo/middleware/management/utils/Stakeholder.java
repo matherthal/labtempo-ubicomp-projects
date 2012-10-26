@@ -9,23 +9,23 @@ public class Stakeholder implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	private String method;
-	private String rai;
+	private String rans;
 
-	public Stakeholder(String method, String rai) {
+	public Stakeholder(String method, String rans) {
 		this.method = method;
-		this.rai = rai;
+		this.rans = rans;
 	}
 
 	public Stakeholder(String method, ResourceAgent rA) {
-		this(method, rA.getRAI());
+		this(method, rA.getRANS());
 	}
 
 	public String getMethod() {
 		return method;
 	}
 
-	public String getRAI() {
-		return rai;
+	public String getRANS() {
+		return rans;
 	}
 	
 	@Override
@@ -39,11 +39,11 @@ public class Stakeholder implements Serializable {
 		
 		Stakeholder sh = (Stakeholder) obj;
 		
-		return this.rai.equals(sh.rai) && this.method.equals(sh.method);
+		return this.rans.equals(sh.rans) && this.method.equals(sh.method);
 	}
 	
 	@Override
 	public String toString() {
-		return this.rai + " wants: " + this.method;
+		return this.rans + " wants: " + this.method;
 	}
 }

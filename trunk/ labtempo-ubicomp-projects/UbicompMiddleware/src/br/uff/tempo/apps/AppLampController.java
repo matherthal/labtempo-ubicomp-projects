@@ -31,14 +31,14 @@ public class AppLampController extends Activity {
 		setContentView(R.layout.activity_app_lamp_controller);
 
 		if (savedInstanceState == null) {
-			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+			discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 			List<ResourceData> lamps = discovery.searchForAttribute(ResourceData.TYPE, Lamp.class.getName());
 			ResourceData rdLamp = lamps.get(0);
 			Toast.makeText(this, "Lâmpada encontrada", Toast.LENGTH_SHORT).show();
 			lamp = new LampStub(rdLamp.getRai());
 
 			// Subscription
-			lampStakeholder = new Generic("Controlador de Lampada", lamp, "isOn") {
+			lampStakeholder = new Generic("Controlador de Lampada", "Controlador de Lampada", lamp, "isOn") {
 				
 				private static final long serialVersionUID = 1L;
 				
@@ -50,7 +50,7 @@ public class AppLampController extends Activity {
 					
 					boolean val = Boolean.valueOf(value.toString());
 					// If it's really the lamp
-					if (rai.equals(lamp.getRAI()) && method.equals("isOn"))
+					if (rai.equals(lamp.getRANS()) && method.equals("isOn"))
 						// If value has changed
 						if (count == 0 || lastVal != val) {
 							lastVal = val;

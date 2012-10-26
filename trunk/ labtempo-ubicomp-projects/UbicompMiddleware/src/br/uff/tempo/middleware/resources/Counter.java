@@ -10,8 +10,8 @@ public class Counter extends ResourceAgent{
 	String onOffRai;
 	
 	
-	public Counter(String name) {
-		super(name, "br.uff.tempo.middleware.resources.Counter");
+	public Counter(String name, String rans) {
+		super(name, "br.uff.tempo.middleware.resources.Counter", rans);
 		count =0;
 	}
 	

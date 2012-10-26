@@ -13,10 +13,8 @@ import android.os.IBinder;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.common.Callable;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
-import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
@@ -32,10 +30,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private boolean registered;
 	private String name;
 	private String type;
-	private String rai;
+	private String rans;
 	private ArrayList<ResourceAgent> interests;
 	private ArrayList<Stakeholder> stakeholders;
-	private static IResourceDiscovery rDS;
 	
 	private IResourceRegister rrs;
 	
@@ -48,33 +45,23 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	@SuppressWarnings("unused")
 	private ResourceAgent(String anything) {}
 
-	public ResourceAgent(String name, String type) {
-		this(name, type, null);
+	public ResourceAgent(String name, String type, String rans) {
+		this(name, type, rans, null);
 	}
 	
-	public ResourceAgent(String name, String type, Position position) {
+	public ResourceAgent(String name, String type, String rans, Position position) {
 		stakeholders = new ArrayList<Stakeholder>();
 		
 		registered = false;
 
 		this.type = type;//generateType(this.getClass());
 		this.name = name;
-		rai = "";
-
-		String ipAddress = ResourceAgentIdentifier.getLocalIpAddress();
-
-		rai = ResourceAgentIdentifier.generateRAI(ipAddress, type, name);
-
-		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+		this.rans = rans;
 
 		this.position = position;
 		// initResource();
 		
 		this.registerDefaultInterests();
-	}
-
-	public IResourceDiscovery getRDS() {
-		return rDS;
 	}
 
 	@Override
@@ -88,13 +75,13 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 
 	@Override
-	public String getRAI() {
-		return this.rai;
+	public String getRANS() {
+		return this.rans;
 	}
 
 	@Override
-	public void setRAI(String rai) {
-		this.rai = rai;
+	public void setRANS(String rans) {
+		this.rans = rans;
 	}
 
 	@Override
@@ -146,7 +133,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 
 	private void initResource() {
-		rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 		identify();
 	}
 
@@ -169,23 +155,23 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public boolean identify() {
 
 		if (!registered) {
-			rrs = new ResourceRegisterStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceRegister.class.getName()).get(0).getRai());
+			rrs = new ResourceRegisterStub(IResourceRegister.rans);
 
 			String ip = ResourceAgentIdentifier.getLocalIpAddress();
 			int prefix = ResourceAgentIdentifier.getLocalPrefix();
 			
-			ResourceData resourceData = new ResourceData(this.rai, this.name, this.type, this.position, null);
+			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, null);
 			
 			if (position != null) {
 				resourceData.setPlace(ResourceLocation.getInstance().getLocal(position));
-				registered = rrs.registerLocation(this.rai, ip, prefix, this.rai, this.position, resourceData);
+				registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
 			} else {
-				registered = rrs.register(this.rai, ip, prefix, this.rai, resourceData);
+				registered = rrs.register(this.rans, ip, prefix, resourceData);
 			}
 			
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
-			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rai, ip, prefix));
+			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
 		}
 
 		return registered;
@@ -193,13 +179,11 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	
 	public boolean unregister() {
 		
-		rrs = new ResourceRegisterStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceRegister.class.getName()).get(0).getRai());
-		rrs.unregister(this.rai);
+		rrs = new ResourceRegisterStub(IResourceRegister.rans);
+		rrs.unregister(this.rans);
 		
-		ResourceContainer.getInstance().remove(this.rai);
-		
-		//TODO In the future, RAI will change to RANS, be careful
-		ResourceNSContainer.getInstance().remove(this.rai);
+		ResourceContainer.getInstance().remove(this.rans);
+		ResourceNSContainer.getInstance().remove(this.rans);
 		
 		registered = false;
 		
@@ -209,20 +193,20 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public boolean identifyPosition(Position position) {
 
 		if (!registered) {
-			rrs = new ResourceRegisterStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceRegister.class.getName()).get(0).getRai());
+			rrs = new ResourceRegisterStub(IResourceRegister.rans);
 			this.position = position;
 			
 			String ip = ResourceAgentIdentifier.getLocalIpAddress();
 			int prefix = ResourceAgentIdentifier.getLocalPrefix();
 			
 			Place place = ResourceLocation.getInstance().getLocal(position);
-			ResourceData resourceData = new ResourceData(this.rai, this.name, this.type, this.position, place);
+			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
 			
-			registered = rrs.registerLocation(this.rai, ip, prefix, this.rai, this.position, resourceData);
+			registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
 			
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
-			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rai, ip, prefix));
+			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
 		}
 
 		return registered;
@@ -231,20 +215,20 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public boolean identifyInPlace(String placeName, Position position) {
 
 		if (!registered) {
-			rrs = new ResourceRegisterStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceRegister.class.getName()).get(0).getRai());
+			rrs = new ResourceRegisterStub(IResourceRegister.rans);
 			this.position = position;
 			
 			String ip = ResourceAgentIdentifier.getLocalIpAddress();
 			int prefix = ResourceAgentIdentifier.getLocalPrefix();
 			
 			Place place = ResourceLocation.getInstance().getPlace(placeName);
-			ResourceData resourceData = new ResourceData(this.rai, this.name, this.type, this.position, place);
+			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
 			
-			registered = rrs.registerInPlace(null, ip, prefix, this.rai, placeName, this.position, resourceData);
+			registered = rrs.registerInPlace(this.rans, ip, prefix, placeName, this.position, resourceData);
 			
 			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
-			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rai, ip, prefix));
+			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
 		}
 
 		return registered;
@@ -261,8 +245,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public void notifyStakeholders(String method, Object value) {
 		for (Stakeholder stakeholder : stakeholders) {
 			if (stakeholder.getMethod().equals(method) || stakeholder.getMethod().equalsIgnoreCase("all")) {
-				new ResourceAgentStub(stakeholder.getRAI()).notificationHandler(this.getRAI(), method, value);
-				Log.d("SmartAndroid", String.format("notifying stakeholder: %s method: %s value: %s", stakeholder.getRAI(), method, value));
+				new ResourceAgentStub(stakeholder.getRANS()).notificationHandler(this.getRANS(), method, value);
+				Log.d("SmartAndroid", String.format("notifying stakeholder: %s method: %s value: %s", stakeholder.getRANS(), method, value));
 			}
 		}
 	}

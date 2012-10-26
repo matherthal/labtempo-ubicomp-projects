@@ -11,8 +11,8 @@ public class PresenceSensor extends ResourceAgent implements IPresenceSensor {
 	private static final String TAG = "PresenceSensor";
 	private boolean presence = false;
 
-	public PresenceSensor(String name) {
-		super(name, "br.uff.tempo.middleware.resources.PresenceSensor");
+	public PresenceSensor(String name, String rans) {
+		super(name, "br.uff.tempo.middleware.resources.PresenceSensor", rans);
 	}
 
 	public static final String CV_GETPRESENCE = "getPresence";

@@ -16,8 +16,8 @@ public class Stub implements Serializable {
 
 	public Caller caller;
 
-	public Stub(String calleeAgent) {
-		caller = new Caller(calleeAgent);
+	public Stub(String rans) {
+		caller = new Caller(rans);
 	}
 	
 	public Object makeCall(String methodName, List<Tuple<String, Object>> params, Type returnType) {

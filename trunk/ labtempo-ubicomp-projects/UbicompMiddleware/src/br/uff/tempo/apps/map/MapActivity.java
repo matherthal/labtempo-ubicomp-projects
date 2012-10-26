@@ -82,7 +82,6 @@ import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.PersonStub;
-import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
@@ -424,7 +423,6 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		if (this.mScene.getChildCount() < MIN_OBJECTS) {
 			// Create an Interface Manager instance and register it
 			mAppManager = InterfaceApplicationManager.getInstance();
-			mAppManager.identify();
 
 			state = (SceneState) PersistHelper.loadFromFile("state", prefs);
 
@@ -436,6 +434,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 				pushMap();
 
 				// There is a previous state saved. Restoring it
+				
 			} else {
 
 				houseMap = state.getMapInfo();
@@ -502,8 +501,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 				if (regData.isFake()) {
 
-					realAg = new Stove(regData.getResourceName());
-					proxyAg = new StoveStub(realAg.getRAI());
+					realAg = new Stove(regData.getResourceName(), regData.getResourceName());
+					proxyAg = new StoveStub(realAg.getRANS());
 
 				} else {
 					realAg = null;
@@ -524,8 +523,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 				if (regData.isFake()) {
 
-					realAg = new Lamp(regData.getResourceName());
-					proxyAg = new LampStub(realAg.getRAI());
+					realAg = new Lamp(regData.getResourceName(), regData.getResourceName());
+					proxyAg = new LampStub(realAg.getRANS());
 
 				} else {
 					realAg = null;
@@ -546,8 +545,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 				if (regData.isFake()) {
 
-					realAg = new Television(regData.getResourceName());
-					proxyAg = new TelevisionStub(realAg.getRAI());
+					realAg = new Television(regData.getResourceName(), regData.getResourceName());
+					proxyAg = new TelevisionStub(realAg.getRANS());
 
 				} else {
 					realAg = null;
@@ -568,8 +567,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 				if (regData.isFake()) {
 
-					realAg = new Bed(regData.getResourceName());
-					proxyAg = new BedStub(realAg.getRAI());
+					realAg = new Bed(regData.getResourceName(), regData.getResourceName());
+					proxyAg = new BedStub(realAg.getRANS());
 
 				} else {
 					realAg = null;
@@ -589,8 +588,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 				if (regData.isFake()) {
 
-					realAg = new Person(regData.getResourceName());
-					proxyAg = new PersonStub(realAg.getRAI());
+					realAg = new Person(regData.getResourceName(), regData.getResourceName());
+					proxyAg = new PersonStub(realAg.getRANS());
 
 				} else {
 					realAg = null;
@@ -604,8 +603,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 			// Starts a middleware operation, listing all registered resources
 			// ("//")
-			MiddlewareOperation m = new MiddlewareOperation(this, "//",
-					MapSettings.getRDSAddress());
+			MiddlewareOperation m = new MiddlewareOperation(this, "//", IResourceDiscovery.rans);
 			m.execute(null);
 
 			// An external resource... we must exit this method, not only
@@ -665,7 +663,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 		// Subscribe to the agent (all context variables) to receive
 		// notifications
-		proxyAg.registerStakeholder("all", mAppManager.getRAI());
+		proxyAg.registerStakeholder("all", mAppManager.getRANS());
 
 		// Creates an intent, to pass data to StoveView
 		i = new Intent(this, c);
@@ -674,7 +672,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		INotificationBoxReceiver res = (INotificationBoxReceiver) createSprite(
 				tr, i, regData);
 
-		mAppManager.addResource(proxyAg.getRAI(), res);
+		mAppManager.addResource(proxyAg.getRANS(), res);
 
 		regData.setAgent(realAg);
 		regData.setStub(proxyAg);
@@ -783,19 +781,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		// get(0))
 		final TMXObjectGroup group = this.tiledMap.getTMXObjectGroups().get(0);
 
-		IResourceDiscovery discovery = new ResourceDiscoveryStub(
-				IResourceDiscovery.RDS_ADDRESS);
-
-		List<ResourceData> data = discovery.searchForAttribute(
-				ResourceData.NAME, "ResourceLocation");
-
-		IResourceLocation rl = null;
-
-		if (data != null) {
-			rl = new ResourceLocationStub(data.get(0).getRai());
-			Log.e("SmartAndroid",
-					"Error in push the Map in the server. ResourceLocation not found!");
-		}
+		IResourceLocation rl = new ResourceLocationStub(IResourceLocation.rans);
 
 		final int mapWidth = this.mapFloorLayer.getWidth();
 		final int mapHeight = this.mapFloorLayer.getHeight();

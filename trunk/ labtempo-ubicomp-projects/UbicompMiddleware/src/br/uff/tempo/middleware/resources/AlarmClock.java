@@ -21,7 +21,7 @@ public class AlarmClock extends ResourceAgent implements IAlarmClock {
 	private String id;
 
 	public AlarmClock() {
-		super("AlarmClock", AlarmClock.class.getName());
+		super("AlarmClock", AlarmClock.class.getName(), "AlarmClock");
 	}
 	
 	@Override

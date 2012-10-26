@@ -1,6 +1,5 @@
 package br.uff.tempo.apps.map.dialogs;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -26,8 +25,7 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<ResourceDa
 	private String query;
 
 	public MiddlewareOperation(Activity act, String query) {
-		
-		this(act, query, IResourceDiscovery.RDS_ADDRESS);
+		this(act, query, IResourceDiscovery.rans);
 	}
 
 	public MiddlewareOperation(Activity act, String query, String address) {

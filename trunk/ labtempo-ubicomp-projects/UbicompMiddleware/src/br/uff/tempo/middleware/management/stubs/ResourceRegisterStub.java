@@ -17,7 +17,7 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 	}
 	
 	@Override
-	public boolean register(String rans, String ip, int prefix, String rai, ResourceData resourceData) {
+	public boolean register(String rans, String ip, int prefix, ResourceData resourceData) {
 
 		// Set params
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
@@ -25,7 +25,6 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 		params.add(new Tuple<String, Object>(String.class.getName(), rans));
 		params.add(new Tuple<String, Object>(String.class.getName(), ip));
 		params.add(new Tuple<String, Object>(Integer.class.getName(), prefix));
-		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 		params.add(new Tuple<String, Object>(ResourceData.class.getName(), resourceData));
 
 		return (Boolean) makeCall("register", params, Boolean.class);
@@ -40,12 +39,11 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 	}
 
 	@Override
-	public boolean registerLocation(String rans, String ip, int prefix, String rai, Position position, ResourceData resourceData) {
+	public boolean registerLocation(String rans, String ip, int prefix, Position position, ResourceData resourceData) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), rans));
 		params.add(new Tuple<String, Object>(String.class.getName(), ip));
 		params.add(new Tuple<String, Object>(Integer.class.getName(), prefix));
-		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 		params.add(new Tuple<String, Object>(ResourceData.class.getName(), resourceData));
 		
@@ -53,12 +51,11 @@ public class ResourceRegisterStub extends ResourceAgentStub implements IResource
 	}
 
 	@Override
-	public boolean registerInPlace(String rans, String ip, int prefix, String rai, String placeName, Position position, ResourceData resourceData) {
+	public boolean registerInPlace(String rans, String ip, int prefix, String placeName, Position position, ResourceData resourceData) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), rans));
 		params.add(new Tuple<String, Object>(String.class.getName(), ip));
 		params.add(new Tuple<String, Object>(Integer.class.getName(), prefix));
-		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 		params.add(new Tuple<String, Object>(String.class.getName(), placeName));
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 		params.add(new Tuple<String, Object>(ResourceData.class.getName(), resourceData));

@@ -37,12 +37,12 @@ public class Stove extends ResourceAgent implements IStove {
 	//Stove Burners
 	private List<Float> burners;
 
-	public Stove(String name) {
-		this(name, null);
+	public Stove(String name, String rans) {
+		this(name, rans, null);
 	}
 	
-	public Stove(String name, Position position) {
-		super(name, "br.uff.tempo.middleware.resources.Stove", position);
+	public Stove(String name, String rans, Position position) {
+		super(name, "br.uff.tempo.middleware.resources.Stove", rans, position);
 		initBurners();
 	}
 

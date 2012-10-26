@@ -9,7 +9,7 @@ public class LogAgent extends ResourceAgent {
 	public static LogAgent obj; 
 	
 	private LogAgent() {
-		super("LogAgent", LogAgent.class.getName());
+		super("LogAgent", LogAgent.class.getName(), "LogAgent");
 	}
 	
 	public static LogAgent getInstance() {

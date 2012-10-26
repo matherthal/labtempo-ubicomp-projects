@@ -17,7 +17,6 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 
 	public ResourceDiscoveryStub(String calleeID) {
 		super(calleeID);
-		// TODO Auto-generated constructor stub
 	}
 
 	public ArrayList<String> search(String query) {

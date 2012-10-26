@@ -44,7 +44,7 @@ class Avatar {
 		rect = new Rect(centerX - len, centerY - len, centerX + len, centerY
 				+ len);
 
-		this.person = new Person(this.name);
+		this.person = new Person(this.name, this.name);
 		this.person.identify();
 	}
 

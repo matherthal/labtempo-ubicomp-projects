@@ -42,9 +42,9 @@ public class RuleInterpreter extends ResourceAgent {
 	private Formula pNode;
 	private int i_debug = 0;
 
-	public RuleInterpreter(String name) {
-		super(name, "br.uff.tempo.middleware.management.RuleInterpreter");
-		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+	public RuleInterpreter(String name, String rans) {
+		super(name, "br.uff.tempo.middleware.management.RuleInterpreter", rans);
+		discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 	}
 
 	@ContextVariable(name = "Regra disparada")
@@ -244,7 +244,7 @@ public class RuleInterpreter extends ResourceAgent {
 	public void setCondition(String rai, String cv, Object[] params,
 			Operator op, Object value) throws Exception {
 		IResourceAgent ra = new ResourceAgentStub(rai);
-		ra.registerStakeholder(cv, this.getRAI());
+		ra.registerStakeholder(cv, this.getRANS());
 		// re discovery.search(rai).get(0);
 		// cNSet.add(new ComparisonNode(rai, cv, params, op, value, 0));
 		cNSet.add(new Predicate(new Operand(rai, cv, params), op, new Operand(

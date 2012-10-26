@@ -29,7 +29,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	HashMap<String, HashMap<String, Position>> baseIndexer;
 
 	private ResourceLocation() {
-		super("ResourceLocation", ResourceLocation.class.getName());
+		super("ResourceLocation", ResourceLocation.class.getName(), IResourceLocation.rans);
 		
 		currentSpace = new Space();
 		resources = new HashMap<String, Position>();
@@ -49,9 +49,9 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		int prefix = ResourceAgentIdentifier.getLocalPrefix();
 		
 		ResourceContainer.getInstance().add(this);
-		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRAI(), ip, prefix));
-		ResourceRepository.getInstance().add(this.getRAI(), ip, prefix, this.getRAI());
-		ResourceDirectory.getInstance().create(new ResourceData(this.getRAI(), this.getName(), this.getType(), null, null));
+		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRANS(), ip, prefix));
+		ResourceRepository.getInstance().add(this.getRANS(), ip, prefix);
+		ResourceDirectory.getInstance().create(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null));
 		
 		return true;
 	}

@@ -22,28 +22,28 @@ public class NewDispatcher {
 
 	private NewDispatcher() {}
 	
-	public String dispatch(String rai, String jsonRPCString) throws SmartAndroidException {
+	public String dispatch(String rans, String jsonRPCString) throws SmartAndroidException {
 		String id = JSONHelper.getId(jsonRPCString);
 		String methodName = JSONHelper.getMethodName(jsonRPCString);
 		Object[] paramsArray = JSONHelper.getParamsArray(jsonRPCString);
 		
-		ArrayList<Method> methods = ResourceContainer.getInstance().getMethods(rai);
+		ArrayList<Method> methods = ResourceContainer.getInstance().getMethods(rans);
 		
 		for (Method method : methods) {
 			if (method.getName().equals(methodName)) {
 				Log.d("SmartAndroid", String.format("Executing method %s with params %s", method, paramsArray));
-				Object obj = execute(rai, method, paramsArray);
+				Object obj = execute(rans, method, paramsArray);
 				String response = JSONHelper.createReply(id, obj, method.getReturnType());
 				Log.d("SmartAndroid", String.format("Method %s returns response %s", method, response));
 				return response;				
 			}
 		}
 		
-		throw new SmartAndroidException(String.format("Method %s with params %s doesn't exist in rai: %s", methodName, paramsArray, rai));
+		throw new SmartAndroidException(String.format("Method %s with params %s doesn't exist in rai: %s", methodName, paramsArray, rans));
 	}
 	
-	private Object execute(String rai, Method method, Object[] args) throws SmartAndroidException {
-		ResourceAgent rA = ResourceContainer.getInstance().get(rai);
+	private Object execute(String rans, Method method, Object[] args) throws SmartAndroidException {
+		ResourceAgent rA = ResourceContainer.getInstance().get(rans);
 		
 		try {
 			return method.invoke(rA, args);

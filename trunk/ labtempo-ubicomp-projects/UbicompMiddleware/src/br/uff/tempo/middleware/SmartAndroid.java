@@ -1,5 +1,7 @@
 package br.uff.tempo.middleware;
 
+import java.util.UUID;
+
 import android.util.Log;
 import br.uff.tempo.middleware.comm.current.api.SocketService;
 import br.uff.tempo.middleware.management.ResourceAgentNS;
@@ -13,6 +15,9 @@ import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class SmartAndroid {
 	protected static final long TIME_TO_FILL_IP_AND_PREFIX = 5 * 60 * 1000; // 5 min
+
+	//TODO: find a small sufficiently number because this is extremely big
+	public static final String DEVICE_ID = UUID.randomUUID().toString();
 	
 	private static Thread ipPrefixDaemon;
 	
@@ -64,8 +69,7 @@ public class SmartAndroid {
 			ResourceLocation.getInstance().identify();
 		} else {
 			// Should be initialized with ResourceDiscovery IP and PREFIX at beginning to allow communication...
-			ResourceNSContainer.getInstance().add(new ResourceAgentNS(IResourceDiscovery.RDS_ADDRESS, IResourceDiscovery.RDS_IP, 0)); // to keep compatibility for now...
-			//ResourceNSContainer.getInstance().add(new ResourceAgentNS(IResourceDiscovery.rans, IResourceDiscovery.RDS_IP, 0));			
+			ResourceNSContainer.getInstance().add(new ResourceAgentNS(IResourceDiscovery.rans, IResourceDiscovery.RDS_IP, 0));			
 		}
 	}
 	

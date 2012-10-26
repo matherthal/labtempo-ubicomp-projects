@@ -14,8 +14,8 @@ public class DayLightSensor extends ResourceAgent implements IDayLightSensor {
 	public static final String CV_ISDAY = "isDay";
 	public static final String CV_LIGHTAMOUNT = "lightAmount";
 	
-	public DayLightSensor(String name) {
-		super(name, "br.uff.tempo.middleware.resources.DayLightSensor");
+	public DayLightSensor(String name, String rans) {
+		super(name, "br.uff.tempo.middleware.resources.DayLightSensor", rans);
 	}
 
 	@Override

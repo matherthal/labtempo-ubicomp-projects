@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
+import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
@@ -38,7 +39,7 @@ public class InterfaceApplicationManager extends ResourceAgent {
 	// ===========================================================
 
 	private InterfaceApplicationManager() {
-		super("InterfaceManager", "br.uff.tempo.apps.map.objects.InterfaceApplicationManager");
+		super("InterfaceManager", "br.uff.tempo.apps.map.objects.InterfaceApplicationManager", "InterfaceManager" + SmartAndroid.DEVICE_ID);
 		
 		sceneObjects = new HashMap<String, INotificationBoxReceiver>();
 	}

@@ -5,7 +5,6 @@ import br.uff.tempo.R;
 import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.apps.simulators.AbstractView;
-import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.resources.Television;
 import br.uff.tempo.middleware.resources.interfaces.ITelevision;
@@ -26,7 +25,7 @@ public class TvView extends AbstractView {
 
 	@Override
 	public IResourceAgent createNewResourceAgent(RegistryData data) {
-		return new Television(data.getResourceName());		
+		return new Television(data.getResourceName(), data.getResourceName());		
 	}
 
 	@Override

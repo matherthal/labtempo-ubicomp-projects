@@ -54,7 +54,7 @@ public class ResourceNSContainer {
 	
 	private ResourceAgentNS findRANS(String rans) {
 		if (rDS == null) {
-			rDS = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+			rDS = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 		}
 		return rDS.getRANS(rans);
 	}

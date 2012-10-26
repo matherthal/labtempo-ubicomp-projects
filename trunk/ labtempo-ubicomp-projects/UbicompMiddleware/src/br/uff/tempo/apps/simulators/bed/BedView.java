@@ -24,7 +24,7 @@ public class BedView extends AbstractView {
 	@Override
 	public IResourceAgent createNewResourceAgent(RegistryData data) {
 		
-		return new Bed(data.getResourceName());
+		return new Bed(data.getResourceName(), data.getResourceName());
 	}
 
 	public void onRegisterClick(View target) {

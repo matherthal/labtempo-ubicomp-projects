@@ -27,17 +27,13 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 
 	}
 
-	public boolean add(String rans, String ip, int prefix, String rai) {
-
-		// Set params
+	public boolean add(String rans, String ip, int prefix) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), rans));
 		params.add(new Tuple<String, Object>(String.class.getName(), ip));
 		params.add(new Tuple<String, Object>(Integer.class.getName(), prefix));
-		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
 		return (Boolean) makeCall("add", params, Boolean.class);
-
 	}
 
 	public boolean remove(String url) {

@@ -13,8 +13,8 @@ public abstract class Aggregator extends ResourceAgent implements IAggregator {
 	
 	private static final long serialVersionUID = 1L;
 	
-	public Aggregator(String name, String type, Position position) {
-		super(name, type, position);
+	public Aggregator(String name, String type, String rans, Position position) {
+		super(name, type, rans, position);
 	}
 	
 	// Set Interpreted Context Variables
@@ -40,7 +40,7 @@ public abstract class Aggregator extends ResourceAgent implements IAggregator {
 	@Override
 	public boolean addContextVariable(IResourceAgent ra, String method) {
 		this.rawCVSet.add(new Tuple<IResourceAgent, Method>(ra, method));
-		ra.registerStakeholder(method, this.getRAI());
+		ra.registerStakeholder(method, this.getRANS());
 
 		return false;
 	}

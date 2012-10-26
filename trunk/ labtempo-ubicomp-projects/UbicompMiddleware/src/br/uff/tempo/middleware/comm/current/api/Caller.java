@@ -13,25 +13,24 @@ public class Caller implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private ResourceAgentIdentifier calleeAgent;
+	private ResourceAgentNS raNS;
 
-	public Caller(String calleeAgent) {
-		this.calleeAgent = new ResourceAgentIdentifier(calleeAgent);
+	public Caller(String rans) {
+		this.raNS = ResourceNSContainer.getInstance().get(rans); // Works like DNS
 	}
 
 	public String sendMessage(String jsonString) {
 		try {
 			String result = "";
-			if (calleeAgent.getPath().equals(ResourceAgentIdentifier.getLocalIpAddress())) {
-				Log.d("SmartAndroid", String.format("Sending LOCAL msg %s to %s", jsonString, calleeAgent.getRai()));
-				result = NewDispatcher.getInstance().dispatch(calleeAgent.getRai(), jsonString);
-				Log.d("SmartAndroid", String.format("Receive LOCAL msg %s from %s", result, calleeAgent.getRai()));
+
+			if (raNS.getIp().equals(ResourceAgentIdentifier.getLocalIpAddress())) {
+				Log.d("SmartAndroid", String.format("Sending LOCAL msg %s to %s", jsonString, raNS.getRans()));
+				result = NewDispatcher.getInstance().dispatch(raNS.getRans(), jsonString);
+				Log.d("SmartAndroid", String.format("Receive LOCAL msg %s from %s", result, raNS.getRans()));
 			} else {
-				ResourceAgentNS rans = ResourceNSContainer.getInstance().get(this.calleeAgent.getRai());
-				
-				Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", jsonString, calleeAgent.getRai()));
-				result = SocketService.sendReceive(rans.getIp(), rans.getRans() + SocketService.BUFFER_END + jsonString + SocketService.BUFFER_END);
-				Log.d("SmartAndroid", String.format("Receive REMOTE msg %s from %s", result, calleeAgent.getRai()));
+				Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", jsonString, raNS.getRans()));
+				result = SocketService.sendReceive(raNS.getIp(), raNS.getRans() + SocketService.BUFFER_END + jsonString + SocketService.BUFFER_END);
+				Log.d("SmartAndroid", String.format("Receive REMOTE msg %s from %s", result, raNS.getRans()));
 			}
 			
 			return result;

@@ -12,14 +12,14 @@ public class Generic extends ResourceAgent implements IGeneric {
 	private String TAG = "Generic";
 	protected String name = "";
 
-	public Generic(String name) {
-		super(name, "br.uff.tempo.middleware.resources.Generic");
+	public Generic(String name, String rans) {
+		super(name, "br.uff.tempo.middleware.resources.Generic", rans);
 		this.name = name;
 		Log.i(TAG, "New Generic class. Name: " + name);
 	}
 
-	public Generic(String name, IResourceAgent ra, String cv) {
-		super(name, "br.uff.tempo.middleware.resources.Generic");
+	public Generic(String name, String rans, IResourceAgent ra, String cv) {
+		super(name, "br.uff.tempo.middleware.resources.Generic", rans);
 		this.name = name;
 		Log.i(TAG, "New Generic class. Name: " + name);
 
@@ -28,7 +28,7 @@ public class Generic extends ResourceAgent implements IGeneric {
 			this.identify();
 			Log.i(TAG, "Generic stakeholder " + name + " identified");
 			
-			ra.registerStakeholder(cv, this.getRAI());
+			ra.registerStakeholder(cv, this.getRANS());
 			Log.i(TAG, "Generic stakeholder " + name + " subscribed");
 		}
 		

@@ -32,8 +32,8 @@ public class ResourceContainer implements IResourceContainer {
 	}
 
 	public void add(ResourceAgent rA) {
-		container.put(rA.getRAI(), rA);
-		rAMethods.put(rA.getRAI(), new ArrayList<Method>(Arrays.asList(ReflectionUtils.getAllDeclaredMethods(rA.getClass()))));
+		container.put(rA.getRANS(), rA);
+		rAMethods.put(rA.getRANS(), new ArrayList<Method>(Arrays.asList(ReflectionUtils.getAllDeclaredMethods(rA.getClass()))));
 	}
 	
 	public void addAll(ResourceAgent... rAs) {
