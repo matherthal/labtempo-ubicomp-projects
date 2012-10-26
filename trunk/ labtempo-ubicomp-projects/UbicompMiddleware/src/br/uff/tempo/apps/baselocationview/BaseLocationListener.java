@@ -27,7 +27,7 @@ public class BaseLocationListener extends Thread {
 		this.act = act;
 
 		rD = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		rL = new ResourceLocationStub(rD.searchForAttribute(ResourceData.TYPE, ResourceLocation.class.getName()).get(0).getType());
+		rL = new ResourceLocationStub(rD.searchForAttribute(ResourceData.TYPE, ResourceLocation.class.getName()).get(0).getRai());
 	}
 
 	public void run() {
