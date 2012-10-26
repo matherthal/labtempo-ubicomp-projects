@@ -5,6 +5,7 @@ import java.util.List;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
@@ -129,7 +130,7 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	}
 
 	@Override
-	public ArrayList<String> getRegisteredList() {
+	public List<ResourceData> getRegisteredList() {
 		// TODO Auto-generated method stub
 		return null;
 	}

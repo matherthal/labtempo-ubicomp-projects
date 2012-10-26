@@ -70,8 +70,8 @@ public class Person extends ResourceAgent implements IPerson {
 	}
 
 	public void updateRecentLocal() {
-		rLS = new ResourceLocationStub(this.getRDS().search("ResourceLocation")
-				.get(0));
+		rLS = new ResourceLocationStub(this.getRDS().searchForAttribute(ResourceData.TYPE, ResourceLocation.class.getName())
+				.get(0).getRai());
 		for (Position position : recentPositions) {
 			recentLocal.add(rLS.getLocal(position));
 		}

@@ -19,6 +19,8 @@ import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.Operator;
+import br.uff.tempo.middleware.management.ResourceData;
+import br.uff.tempo.middleware.management.ResourceLocation;
 import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
@@ -64,7 +66,7 @@ public class AppLampControlSystem extends Activity {
 
 		if (savedInstanceState == null) {
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-			location = new ResourceLocationStub(discovery.search("ResourceLocation").get(0));
+			location = new ResourceLocationStub(discovery.searchForAttribute(ResourceData.TYPE, ResourceLocation.class.getName()).get(0).getRai());
 
 			createEnvironment();
 			populateSpinnerPresence();
@@ -148,7 +150,7 @@ public class AppLampControlSystem extends Activity {
 						Log.d(TAG, "CHANGE: " + rai + " " + method + " " + value);
 						
 						// Get lamp to turn on or off
-						lamp = new LampStub(discovery.search(lRAI).get(0));
+						lamp = new LampStub(discovery.searchForAttribute(ResourceData.RAI, lRAI).get(0).getRai());
 						//Verify if lamp is blocked
 						String lName = lamp.getName();
 						Tuple tp = lampDictionary.get(lName);
@@ -256,7 +258,7 @@ public class AppLampControlSystem extends Activity {
 	 * Button toggle between day and night
 	 */
 	public void buttonToggleDayNight_Clicked(View view) {
-		String rai = discovery.search("DayLightSensor").get(0);
+		String rai = discovery.searchForAttribute(ResourceData.TYPE, DayLightSensor.class.getName()).get(0).getRai();
 		IDayLightSensor dl = new DayLightSensorStub(rai);
 		if (dl.isDay())
 			dl.setDay(false);

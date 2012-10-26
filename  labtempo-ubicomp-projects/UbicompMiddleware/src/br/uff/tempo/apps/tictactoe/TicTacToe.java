@@ -4,7 +4,7 @@
 
 package br.uff.tempo.apps.tictactoe;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -15,6 +15,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.ResourceData;
+import br.uff.tempo.middleware.management.ResourceRegister;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
@@ -32,7 +34,7 @@ public class TicTacToe extends Activity {
 
   public TicTacToe() {
 		IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		ArrayList<String> gameList = discovery.search("GameAgent");
+		List<ResourceData> gameList = discovery.searchForAttribute(ResourceData.TYPE, GameAgent.class.getName());
 		int id = (int) Math.round(50 * Math.random());
 		gameAgent = new GameAgent("Game"+id);
 		((GameAgent) gameAgent).identify();
@@ -40,10 +42,10 @@ public class TicTacToe extends Activity {
 			if (gameList.size()==1) {
 				gameAgent.setPlayer(Player.Name.O);
 			}
-			for (String iGameAgentRai : gameList) {
-				IGameAgent iGameAgent = new GameAgentStub(iGameAgentRai);
+			for (ResourceData iGameAgentData : gameList) {
+				IGameAgent iGameAgent = new GameAgentStub(iGameAgentData.getRai());
 				((GameAgentStub) iGameAgent).registerStakeholder("setMove", ((GameAgent) gameAgent).getRAI());
-				((GameAgent) gameAgent).registerStakeholder("setMove", iGameAgentRai);
+				((GameAgent) gameAgent).registerStakeholder("setMove", iGameAgentData.getRai());
 			}
 		} else
 		{
@@ -111,7 +113,7 @@ public class TicTacToe extends Activity {
 protected void onDestroy() {
 	super.onDestroy();
 	IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-    IResourceRegister register = new ResourceRegisterStub(discovery.search("ResourceRegister").get(0));
+    IResourceRegister register = new ResourceRegisterStub(discovery.searchForAttribute(ResourceData.TYPE, ResourceRegister.class.getName()).get(0).getRai());
     register.unregister(((GameAgent) gameAgent).getRAI());
     Log.d("TicTacToe", gameAgent.getPlayer().toString()+" destroyed");
 }

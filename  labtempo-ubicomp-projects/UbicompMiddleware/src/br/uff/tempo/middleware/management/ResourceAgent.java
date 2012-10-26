@@ -37,7 +37,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private ArrayList<ResourceAgent> interests;
 	private ArrayList<Stakeholder> stakeholders;
 	private static IResourceDiscovery rDS;
-	private ArrayList<String> registeredList;
+	private List<ResourceData> registeredList;
 	
 	private IResourceRegister rrs;
 	
@@ -132,7 +132,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 
 	@Override
-	public ArrayList<String> getRegisteredList() {
+	public List<ResourceData> getRegisteredList() {
 		return registeredList;
 	}
 
@@ -162,7 +162,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		super.onCreate();
 
 		initResource();
-		registeredList = rDS.search("");// search all rR.contains("") = all IAR
+		registeredList = rDS.searchForAttribute(ResourceData.TYPE, "//");// search all rR.contains("") = all IAR
 	}
 
 	private void initResource() {
@@ -189,7 +189,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public boolean identify() {
 
 		if (!registered) {
-			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
+			rrs = new ResourceRegisterStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceRegister.class.getName()).get(0).getRai());
 
 			String ip = ResourceAgentIdentifier.getLocalIpAddress();
 			int prefix = ResourceAgentIdentifier.getLocalPrefix();
@@ -213,7 +213,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	
 	public boolean unregister() {
 		
-		rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
+		rrs = new ResourceRegisterStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceRegister.class.getName()).get(0).getRai());
 		rrs.unregister(this.rai);
 		
 		ResourceContainer.getInstance().remove(this.rai);
@@ -229,7 +229,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public boolean identifyPosition(Position position) {
 
 		if (!registered) {
-			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
+			rrs = new ResourceRegisterStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceRegister.class.getName()).get(0).getRai());
 			this.position = position;
 			
 			String ip = ResourceAgentIdentifier.getLocalIpAddress();
@@ -251,7 +251,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public boolean identifyInPlace(String placeName, Position position) {
 
 		if (!registered) {
-			rrs = new ResourceRegisterStub(rDS.search("br.uff.tempo.middleware.management.ResourceRegister").get(0));
+			rrs = new ResourceRegisterStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceRegister.class.getName()).get(0).getRai());
 			this.position = position;
 			
 			String ip = ResourceAgentIdentifier.getLocalIpAddress();

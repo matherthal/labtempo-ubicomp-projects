@@ -1,6 +1,6 @@
 package br.uff.tempo.apps.counter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -12,9 +12,11 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Counter;
+import br.uff.tempo.middleware.resources.OnOff;
 import br.uff.tempo.middleware.resources.interfaces.IOnOff;
 import br.uff.tempo.middleware.resources.stubs.OnOffStub;
 
@@ -53,12 +55,12 @@ public class CounterView extends Activity{
 	private void initList()
 	{
 		IResourceDiscovery rD = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		ArrayList<String> raiList = rD.search("OnOff");
-		if (raiList!= null){
-			String[] array_spinner = new String[raiList.size()];
+		List<ResourceData> rdList = rD.searchForAttribute(ResourceData.TYPE, OnOff.class.getName());
+		if (rdList!= null){
+			String[] array_spinner = new String[rdList.size()];
 			int i = 0;
-			for (String rai : raiList) {
-				array_spinner[i++]=rai;				
+			for (ResourceData rData : rdList) {
+				array_spinner[i++]=rData.getRai();				
 			}
 			ArrayAdapter adapter = new ArrayAdapter(this,
 			android.R.layout.simple_spinner_item, array_spinner);

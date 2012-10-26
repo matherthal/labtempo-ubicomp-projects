@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
@@ -76,7 +77,7 @@ public interface IResourceAgent extends Serializable {
 
 	public void setInterests(ArrayList<ResourceAgent> interests);
 
-	public ArrayList<String> getRegisteredList();
+	public List<ResourceData> getRegisteredList();
 
 	public boolean isRegistered();
 

@@ -3,6 +3,7 @@ package br.uff.tempo.apps.rule;
 import android.content.Context;
 import android.util.Log;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
@@ -20,7 +21,8 @@ public class RuleInterpreterTest extends ResourceAgent {
 	public RuleInterpreterTest(Context mContext) {
 		super("Teste regra", "br.uff.tempo.apps.rule.RuleInterpreterTest", 30);
 		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		IResourceAgent ra = new ResourceAgentStub(discovery.search("Regra do Fogao").get(0));
+		//Is "Regra do fogão" a name?
+		IResourceAgent ra = new ResourceAgentStub(discovery.searchForAttribute(ResourceData.NAME, "Regra do Fogao").get(0).getRai());
 
 		// String cv = "Regra disparada";
 		String cv = "ruleTrigger";

@@ -51,6 +51,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		ResourceContainer.getInstance().add(this);
 		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRAI(), ip, prefix));
 		ResourceRepository.getInstance().add(this.getRAI(), ip, prefix, this.getRAI());
+		ResourceDirectory.getInstance().create(new ResourceData(this.getRAI(), this.getName(), this.getType(), null, null));
 		
 		return true;
 	}

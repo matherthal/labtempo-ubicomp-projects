@@ -1,6 +1,7 @@
 package br.uff.tempo.apps.rule;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.app.Activity;
 import android.content.ComponentName;
@@ -17,12 +18,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.comm.interest.api.Stove;
 import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceAgent.ResourceBinder;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.resources.Bed;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Generic;
 import br.uff.tempo.middleware.resources.Rule;
@@ -83,8 +87,8 @@ public class RuleActivity extends Activity {
 
 			discovery = new ResourceDiscoveryStub(
 					IResourceDiscovery.RDS_ADDRESS);
-			ArrayList<String> stoves = discovery.search("Stove");
-			String raiStove = stoves.get(0);
+			List<ResourceData> stoves = discovery.searchForAttribute(ResourceData.TYPE, Stove.class.getName());
+			String raiStove = stoves.get(0).getRai();
 
 			this.runOnUiThread(new Runnable() {
 
@@ -97,7 +101,7 @@ public class RuleActivity extends Activity {
 
 			discovery = new ResourceDiscoveryStub(
 					IResourceDiscovery.RDS_ADDRESS);
-			String raiBed = discovery.search("Bed").get(0);
+			String raiBed = discovery.searchForAttribute(ResourceData.TYPE, Bed.class.getName()).get(0).getRai();
 
 			this.runOnUiThread(new Runnable() {
 
