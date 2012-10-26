@@ -60,19 +60,10 @@ public class TrackingPanel extends AbstractPanel {
 		paint.setColor(Color.WHITE);
 		paint.setStrokeWidth(dpTopixel(10));
 
-		rds = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		List<ResourceData> result = rds.searchForAttribute(ResourceData.NAME,
-				"ResourceLocation");
+		rds = new ResourceDiscoveryStub(IResourceDiscovery.rans);
+		rLocation = new ResourceLocationStub(IResourceLocation.rans);
 
-		if (result != null) {
-			rLocation = new ResourceLocationStub(result.get(0).getRai());
-
-			setupRooms();
-
-		} else {
-			Log.e("SmartAndroid",
-					"Error by downloading the map from system in Tracking Simulator. ResourceLocation not found!");
-		}
+		setupRooms();
 	}
 
 	private void setupRooms() {

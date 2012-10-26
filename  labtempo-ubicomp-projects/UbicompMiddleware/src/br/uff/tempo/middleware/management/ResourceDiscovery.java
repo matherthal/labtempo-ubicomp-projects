@@ -13,7 +13,7 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 	private static ResourceDiscovery instance;
 
 	private ResourceDiscovery() {
-		super("ResourceDiscovery", ResourceDiscovery.class.getName());
+		super("ResourceDiscovery", ResourceDiscovery.class.getName(), IResourceDiscovery.rans);
 	}
 	
 	public static ResourceDiscovery getInstance() {
@@ -28,9 +28,9 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 		int prefix = ResourceAgentIdentifier.getLocalPrefix();
 		
 		ResourceContainer.getInstance().add(this);
-		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRAI(), ip, prefix));
-		ResourceRepository.getInstance().add(this.getRAI(), ip, prefix, this.getRAI());
-		ResourceDirectory.getInstance().create(new ResourceData(this.getRAI(), this.getName(), this.getType(), null, null));
+		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRANS(), ip, prefix));
+		ResourceRepository.getInstance().add(this.getRANS(), ip, prefix);
+		ResourceDirectory.getInstance().create(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null));
 		
 		return true;
 	}

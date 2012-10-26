@@ -54,7 +54,7 @@ public class CounterView extends Activity{
 	
 	private void initList()
 	{
-		IResourceDiscovery rD = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+		IResourceDiscovery rD = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 		List<ResourceData> rdList = rD.searchForAttribute(ResourceData.TYPE, OnOff.class.getName());
 		if (rdList!= null){
 			String[] array_spinner = new String[rdList.size()];
@@ -72,7 +72,7 @@ public class CounterView extends Activity{
 
 		@Override
 		public void onClick(View v) {
-			counter = new Counter(editName.getText().toString());
+			counter = new Counter(editName.getText().toString(), editName.getText().toString());
 			counter.identify();
 		}		
 	};
@@ -84,7 +84,7 @@ public class CounterView extends Activity{
 			String selected = onOffSelector.getSelectedItem().toString();
 			countView.setText(selected);
 			iOnOff = new OnOffStub(onOffSelector.getSelectedItem().toString());
-			iOnOff.registerStakeholder("ligaDesliga", counter.getRAI());
+			iOnOff.registerStakeholder("ligaDesliga", counter.getRANS());
 			countView.setText(counter.getCount()+"");
 			(new Listener()).start();
 		}

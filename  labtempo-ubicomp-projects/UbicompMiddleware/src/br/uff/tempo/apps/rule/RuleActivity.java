@@ -87,7 +87,7 @@ public class RuleActivity extends Activity {
 					.show();
 
 			discovery = new ResourceDiscoveryStub(
-					IResourceDiscovery.RDS_ADDRESS);
+					IResourceDiscovery.rans);
 			List<ResourceData> stoves = discovery.searchForAttribute(ResourceData.TYPE, Stove.class.getName());
 			String raiStove = stoves.get(0).getRai();
 
@@ -101,7 +101,7 @@ public class RuleActivity extends Activity {
 			});
 
 			discovery = new ResourceDiscoveryStub(
-					IResourceDiscovery.RDS_ADDRESS);
+					IResourceDiscovery.rans);
 			String raiBed = discovery.searchForAttribute(ResourceData.TYPE, Bed.class.getName()).get(0).getRai();
 
 			this.runOnUiThread(new Runnable() {
@@ -113,7 +113,7 @@ public class RuleActivity extends Activity {
 				}
 			});
 
-			RuleInterpreter rule = new RuleInterpreter("RegradoFogao");
+			RuleInterpreter rule = new RuleInterpreter("RegradoFogao", "RegradoFogao");
 			try {
 				rule.setCondition(raiStove, "getOvenTemperature", null,
 						Operator.GreaterThan, 50.0f);
@@ -137,7 +137,7 @@ public class RuleActivity extends Activity {
 			// // FIXME: DEBUG
 			// test.context = this;
 
-			new Generic("Stove Urgency Action", rule,
+			new Generic("Stove Urgency Action", "Stove Urgency Action", rule,
 					RuleInterpreter.RULE_TRIGGERED) {
 				private static final long serialVersionUID = 1L;
 

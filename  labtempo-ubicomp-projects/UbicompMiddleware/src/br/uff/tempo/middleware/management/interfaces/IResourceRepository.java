@@ -12,7 +12,7 @@ public interface IResourceRepository {
 	
 	public ResourceAgentNS getRANS(String rans);
 
-	public boolean add(String rans, String ip, int prefix, String rai);
+	public boolean add(String rans, String ip, int prefix);
 
 	public boolean remove(String url);
 

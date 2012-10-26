@@ -60,9 +60,9 @@ public interface IResourceAgent extends Serializable {
 
 	public void setName(String name);
 
-	public String getRAI();
+	public String getRANS();
 
-	public void setRAI(String rai);
+	public void setRANS(String rai);
 
 	public String getType();
 

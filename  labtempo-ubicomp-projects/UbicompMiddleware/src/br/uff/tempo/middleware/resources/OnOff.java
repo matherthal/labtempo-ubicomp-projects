@@ -12,14 +12,14 @@ public class OnOff extends ResourceAgent implements IOnOff{
 	private boolean statusOn;
 	private ToggleButton onOff;
 
-	public OnOff(String name, ToggleButton onOff) {
-		super(name, "br.uff.tempo.middleware.resources.OnOff");
+	public OnOff(String name, String rans, ToggleButton onOff) {
+		super(name, "br.uff.tempo.middleware.resources.OnOff", rans);
 		statusOn = false;
 		this.onOff = onOff;		
 	}
 	
-	public OnOff(String name, Position position, ToggleButton onOff) {
-		super(name, "br.uff.tempo.middleware.resources.OnOff", position);
+	public OnOff(String name, String rans, Position position, ToggleButton onOff) {
+		super(name, "br.uff.tempo.middleware.resources.OnOff", rans, position);
 		statusOn = false;
 		this.onOff = onOff;		
 	}

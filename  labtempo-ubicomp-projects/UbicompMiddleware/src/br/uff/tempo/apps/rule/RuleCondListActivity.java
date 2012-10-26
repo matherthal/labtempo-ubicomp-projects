@@ -64,7 +64,7 @@ public class RuleCondListActivity extends Activity {
 				// Add condition to list of conditions
 				// >>>conds.add(cond);
 				// Add condition to list in the view
-				Teapot ra = new Teapot("teapot01", "Teapot");
+				Teapot ra = new Teapot("teapot01", Teapot.class.getName(), "teapot01");
 				ra.identify();
 				Condition cond = null;
 				try {

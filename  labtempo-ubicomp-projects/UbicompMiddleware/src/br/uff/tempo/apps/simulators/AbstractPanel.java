@@ -111,7 +111,7 @@ public abstract class AbstractPanel extends View {
 		// When the agent change its state, redraw the screen
 		IResourceAgent res = getAgentFromView();
 		
-		new Generic(res.getName() + "Stakeholder" + getNextID(), res, "all") {
+		new Generic(res.getName() + "Stakeholder" + getNextID(), res.getName() + "Stakeholder" + getNextID(), res, "all") {
 			
 			private static final long serialVersionUID = 1L;
 

@@ -17,7 +17,7 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	private static ResourceRepository instance;
 
 	private ResourceRepository() {
-		super("ResourceRepository", ResourceRepository.class.getName());
+		super("ResourceRepository", ResourceRepository.class.getName(), IResourceRepository.rans);
 		
 		directory = ResourceDirectory.getInstance();
 	}
@@ -35,9 +35,9 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		int prefix = ResourceAgentIdentifier.getLocalPrefix();
 		
 		ResourceContainer.getInstance().add(this);
-		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRAI(), ip, prefix));
-		ResourceRepository.getInstance().add(this.getRAI(), ip, prefix, this.getRAI());
-		ResourceDirectory.getInstance().create(new ResourceData(this.getRAI(), this.getName(), this.getType(), null, null));
+		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRANS(), ip, prefix));
+		ResourceRepository.getInstance().add(this.getRANS(), ip, prefix);
+		ResourceDirectory.getInstance().create(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null));
 		
 		return true;
 	}
@@ -68,8 +68,8 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		return list;
 	}
 
-	public boolean add(String rans, String ip, int prefix, String rai) {
-		return repository.add(new ResourceAgentDescription(new ResourceAgentNS(rans, ip, prefix), rai));
+	public boolean add(String rans, String ip, int prefix) {
+		return repository.add(new ResourceAgentDescription(new ResourceAgentNS(rans, ip, prefix), rans));
 	}
 	
 	public boolean remove(String url) {

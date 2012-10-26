@@ -20,8 +20,8 @@ public class Person extends Aggregator {
 	private boolean isWalking = false;
 	private boolean isRunning = false;
 	
-	public Person(String name, Position position) {
-		super(name, "br.uff.tempo.middleware.resources.Person", position);
+	public Person(String name, String rans, Position position) {
+		super(name, "br.uff.tempo.middleware.resources.Person", rans, position);
 	}
 
 	@ContextVariable(name = "Nome")

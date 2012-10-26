@@ -9,8 +9,8 @@ public class CounterAg extends ResourceAgent {
 	
 	private CounterApp view;
 
-	public CounterAg (String name, CounterApp view) {
-		super(name, "br.uff.tempo.apps.onOffCounter.CounterAg");
+	public CounterAg (String name, String rans, CounterApp view) {
+		super(name, "br.uff.tempo.apps.onOffCounter.CounterAg", rans);
 		this.view = view;
 	}
 	@Override

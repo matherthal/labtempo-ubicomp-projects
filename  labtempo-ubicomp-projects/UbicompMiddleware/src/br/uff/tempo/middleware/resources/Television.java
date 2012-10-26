@@ -14,8 +14,8 @@ public class Television extends ResourceAgent implements ITelevision {
 	
 	private String message = "";
 
-	public Television(String name) {
-		super(name, "br.uff.tempo.middleware.resources.Television");
+	public Television(String name, String rans) {
+		super(name, "br.uff.tempo.middleware.resources.Television", rans);
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 	private Set<ConditionalResult> conditionalResultSet = new HashSet<ConditionalResult>();
 
 	public Interpreter() {
-		super("Interpreter", "br.uff.tempo.middleware.management.Interpreter");
+		super("Interpreter", "br.uff.tempo.middleware.management.Interpreter", "Interpreter");
 	}
 
 	// @Override
@@ -37,7 +37,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 				if (m.getAnnotation(IResourceAgent.ContextVariable.class).name() == cvName) {
 					this.cv = m;
 					this.ra = ra;
-					ra.registerStakeholder(cv.getName(), this.getRAI());
+					ra.registerStakeholder(cv.getName(), this.getRANS());
 					return true;
 				}
 		return false;
@@ -49,7 +49,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 		if (cv.isAnnotationPresent(ContextVariable.class)) {
 			this.cv = cv;
 			this.ra = ra;
-			ra.registerStakeholder(cv.getName(), this.getRAI());
+			ra.registerStakeholder(cv.getName(), this.getRANS());
 		}
 		return false;
 	}

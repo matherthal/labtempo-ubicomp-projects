@@ -7,7 +7,6 @@ package br.uff.tempo.apps.onOffCounter;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,6 +18,7 @@ import br.uff.tempo.apps.map.dialogs.ChooseResource;
 import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
+import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
@@ -57,13 +57,13 @@ public class CounterApp extends Activity implements IChooser, IListGetter {
 		dialog = new ChooseResource(this);
 
 		// get an reference to the Resource Discovery Service
-		rds = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+		rds = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 
 		// use the specified GUI layout
 		setContentView(R.layout.onoffcounter);
 		
 		//instantiate my counter agent
-		counterAg = new CounterAg("CounterByDavid", this);
+		counterAg = new CounterAg("CounterByDavid", "CounterByDavid" + SmartAndroid.DEVICE_ID, this);
 		
 		//register
 		counterAg.identify();
@@ -122,7 +122,7 @@ public class CounterApp extends Activity implements IChooser, IListGetter {
 	
 	public String getCurrentRAI() {
 		
-		return lamp.getRAI();
+		return lamp.getRANS();
 	}
 	
 	public void chooseClick(View v) {
@@ -145,7 +145,7 @@ public class CounterApp extends Activity implements IChooser, IListGetter {
 		lamp = new LampStub(data.getRai());
 		
 		//register my counter agent in "isOn" method in the lamp agent
-		lamp.registerStakeholder("isOn", counterAg.getRAI());
+		lamp.registerStakeholder("isOn", counterAg.getRANS());
 		
 		boolean on = lamp.isOn();	
 		onOff.setChecked(on);

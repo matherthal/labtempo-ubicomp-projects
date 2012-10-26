@@ -50,7 +50,7 @@ public class OnOffView extends Activity{
 		
 		onOff.setOnClickListener(onOffClick);
 		register.setOnClickListener(registerClick);
-		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+		discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 	}
 	
 	private OnClickListener registerClick = new OnClickListener() {
@@ -85,11 +85,11 @@ public class OnOffView extends Activity{
     private OnOff getAgent(String name, String xStr, String yStr)
     {
     	if (xStr.equals("X")||yStr.equals("Y")){
-			return new OnOff(name, onOff);
+			return new OnOff(name, name, onOff);
 		}
 		int x = Integer.valueOf(xStr);
 		int y = Integer.valueOf(yStr);
-		return new OnOff(name, new Position(x,y), onOff);	
+		return new OnOff(name, name, new Position(x,y), onOff);	
     }
     
     private OnClickListener onOffClick = new OnClickListener() {

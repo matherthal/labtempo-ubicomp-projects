@@ -19,14 +19,14 @@ public class RuleInterpreterTest extends ResourceAgent {
 	public Context context;
 
 	public RuleInterpreterTest(Context mContext) {
-		super("Teste regra", "br.uff.tempo.apps.rule.RuleInterpreterTest");
-		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+		super("Teste regra", "br.uff.tempo.apps.rule.RuleInterpreterTest", "TesteRegra");
+		discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 		//Is "Regra do fogão" a name?
 		IResourceAgent ra = new ResourceAgentStub(discovery.searchForAttribute(ResourceData.NAME, "Regra do Fogao").get(0).getRai());
 
 		// String cv = "Regra disparada";
 		String cv = "ruleTrigger";
-		ra.registerStakeholder(cv, this.getRAI());
+		ra.registerStakeholder(cv, this.getRANS());
 
 		this.context = mContext;
 	}

@@ -20,8 +20,8 @@ public class BaseListener extends Thread {
 		this.tv = tv;
 		this.act = act;
 
-		rD = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		//rL = new ResourceLocationStub(rD.search("ResourceLocation").get(0));
+		rD = new ResourceDiscoveryStub(IResourceDiscovery.rans);
+		//rL = new ResourceLocationStub(IResourceLocation.rans);
 	}
 
 	public void run() {

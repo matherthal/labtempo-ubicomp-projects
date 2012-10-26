@@ -10,8 +10,8 @@ public class Bed extends ResourceAgent implements IBed {
 	private Integer numUsers = 0;
 	private boolean hasSomeone;
 
-	public Bed(String name) {
-		super(name, "br.uff.tempo.middleware.resources.Bed");
+	public Bed(String name, String rans) {
+		super(name, "br.uff.tempo.middleware.resources.Bed", rans);
 	}
 
 	@Override

@@ -7,7 +7,7 @@ public class SmartObject extends ResourceAgent{
 	private static final long serialVersionUID = 1L;
 	
 	public SmartObject() {
-		super("SmartObject", SmartObject.class.getName());
+		super("SmartObject", SmartObject.class.getName(), "SmartObject");
 	}
 
 	Place local;

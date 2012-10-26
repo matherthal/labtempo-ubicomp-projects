@@ -15,11 +15,11 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private String rai;
+	private String rans;
 
-	public ResourceAgentStub(String rai) {
-		super(rai);
-		this.rai = rai;
+	public ResourceAgentStub(String rans) {
+		super(rans);
+		this.rans = rans;
 	}
 
 	public void notificationHandler(String rai, String method, Object value) {
@@ -71,20 +71,20 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 	}
 
 	@Override
-	public String getRAI() {
+	public String getRANS() {
 //		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 //
 //		return makeCall("getRAI", params).toString();
 		
-		return rai;
+		return rans;
 	}
 
 	@Override
-	public void setRAI(String rai) {
+	public void setRANS(String rai) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
-		makeCall("setRAI", params, void.class);
+		makeCall("setRANS", params, void.class);
 	}
 
 	@Override

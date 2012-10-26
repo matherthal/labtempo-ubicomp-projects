@@ -1,6 +1,5 @@
 package br.uff.tempo.middleware.resources;
 
-import android.graphics.Canvas;
 import br.uff.tempo.apps.tictactoe.Board;
 import br.uff.tempo.apps.tictactoe.Game;
 import br.uff.tempo.apps.tictactoe.Location;
@@ -19,8 +18,8 @@ public class GameAgent extends ResourceAgent implements IGameAgent {
 	private Board board;
 	private Location move;
 
-	public GameAgent(String name) {
-		super(name, "br.uff.tempo.middleware.resources.GameAgent");
+	public GameAgent(String name, String rans) {
+		super(name, "br.uff.tempo.middleware.resources.GameAgent", rans);
 	}
 
 	@Override
