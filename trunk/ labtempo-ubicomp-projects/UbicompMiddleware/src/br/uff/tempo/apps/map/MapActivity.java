@@ -652,7 +652,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			if (pos != null) {
 				regData.setPositionX(pos.getX());
 				regData.setPositionY(pos.getY());
-			} else if (regData.getPositionX() == RegistryData.INVALID_POSITION || regData.getPositionY() == RegistryData.INVALID_POSITION){
+			} else if (regData.getPositionX() == RegistryData.INVALID_POSITION
+					|| regData.getPositionY() == RegistryData.INVALID_POSITION) {
 
 				float x = houseMap.pixelToMeters(this.mCameraWidth / 2);
 				float y = houseMap.pixelToMeters(this.mCameraHeight / 2);
@@ -785,8 +786,16 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		IResourceDiscovery discovery = new ResourceDiscoveryStub(
 				IResourceDiscovery.RDS_ADDRESS);
 
-		String rlRAI = discovery.search("ResourceLocation").get(0);
-		IResourceLocation rl = new ResourceLocationStub(rlRAI);
+		List<ResourceData> data = discovery.searchForAttribute(
+				ResourceData.NAME, "ResourceLocation");
+
+		IResourceLocation rl = null;
+
+		if (data != null) {
+			rl = new ResourceLocationStub(data.get(0).getRai());
+			Log.e("SmartAndroid",
+					"Error in push the Map in the server. ResourceLocation not found!");
+		}
 
 		final int mapWidth = this.mapFloorLayer.getWidth();
 		final int mapHeight = this.mapFloorLayer.getHeight();
@@ -818,8 +827,10 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			houseMap.addPlace(place);
 		}
 
-		rl.insertMap(houseMap);
-
+		if (rl != null) {
+			rl.insertMap(houseMap);
+		}
+		
 		state.setMapInfo(houseMap);
 	}
 
