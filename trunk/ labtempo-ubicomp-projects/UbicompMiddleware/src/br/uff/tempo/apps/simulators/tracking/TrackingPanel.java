@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.middleware.management.Place;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
@@ -53,22 +54,24 @@ public class TrackingPanel extends AbstractPanel {
 
 	@Override
 	public final void initialization() {
-		
+
 		paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setColor(Color.WHITE);
 		paint.setStrokeWidth(dpTopixel(10));
 
 		rds = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
-		List<String> result = rds.search("ResourceLocation");
+		List<ResourceData> result = rds.searchForAttribute(ResourceData.NAME,
+				"ResourceLocation");
 
 		if (result != null) {
-			rLocation = new ResourceLocationStub(result.get(0));
+			rLocation = new ResourceLocationStub(result.get(0).getRai());
 
 			setupRooms();
 
 		} else {
-			Log.e(TAG, "ResourceLocation doesn't exist...");
+			Log.e("SmartAndroid",
+					"Error by downloading the map from system in Tracking Simulator. ResourceLocation not found!");
 		}
 	}
 
@@ -203,7 +206,7 @@ public class TrackingPanel extends AbstractPanel {
 
 	@Override
 	public void drawCanvas(Canvas canvas) {
-		
+
 		for (Rect rect : rooms.values()) {
 
 			canvas.drawRect(rect, paint);
