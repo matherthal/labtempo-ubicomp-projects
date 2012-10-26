@@ -5,6 +5,7 @@ import java.io.Serializable;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.interest.api.NewDispatcher;
 import br.uff.tempo.middleware.e.SmartAndroidException;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.ResourceAgentNS;
 import br.uff.tempo.middleware.management.ResourceNSContainer;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
@@ -17,6 +18,10 @@ public class Caller implements Serializable {
 
 	public Caller(String rans) {
 		this.raNS = ResourceNSContainer.getInstance().get(rans); // Works like DNS
+		
+		if (this.raNS == null) {
+			throw new SmartAndroidRuntimeException("You are trying to use a Stub with an agent that does not exist yet. Check if you has called agent.identify() before calling this Stub.");
+		}
 	}
 
 	public String sendMessage(String jsonString) {

@@ -1,0 +1,17 @@
+package br.uff.tempo.middleware.e;
+
+import android.util.Log;
+
+public class SmartAndroidRuntimeException extends RuntimeException {
+
+	private static final long serialVersionUID = 1L;
+
+	public SmartAndroidRuntimeException(String message, Throwable t) {
+		super(message, t);
+		Log.d("SmartAndroid", String.format("SmartAndroidException. Message: %s with %s", message, t));
+	}
+	
+	public SmartAndroidRuntimeException(String message) {
+		super(message);
+	}
+}
