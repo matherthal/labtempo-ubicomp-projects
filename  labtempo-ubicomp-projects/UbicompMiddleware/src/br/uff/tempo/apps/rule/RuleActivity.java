@@ -30,6 +30,7 @@ import br.uff.tempo.middleware.resources.Bed;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Generic;
 import br.uff.tempo.middleware.resources.Rule;
+import br.uff.tempo.middleware.resources.Television;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 import br.uff.tempo.middleware.resources.interfaces.ITelevision;
 import br.uff.tempo.middleware.resources.stubs.StoveStub;
@@ -142,7 +143,7 @@ public class RuleActivity extends Activity {
 
 				private int counter = 0;
 
-				String tvRai = discovery.search("Television").get(0);
+				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, Television.class.getName()).get(0).getName();
 				private ITelevision tv = new TelevisionStub(tvRai);
 
 				@Override
