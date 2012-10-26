@@ -37,14 +37,14 @@ public class Person extends ResourceAgent implements IPerson {
 
 	public Person(String name, String type, long period) {
 		this(new ArrayList<SmartObject>(), new LinkedList<Position>(), name,
-				type, 4312, period);
+				type, period);
 
 	}
 
 	public Person(List<SmartObject> sensors,
 			LinkedList<Position> recentPositions, String name, String type,
-			int id, long period) {
-		super(name, type, id);
+			long period) {
+		super(name, type);
 		this.objects = sensors;
 		this.recentPositions = recentPositions;
 

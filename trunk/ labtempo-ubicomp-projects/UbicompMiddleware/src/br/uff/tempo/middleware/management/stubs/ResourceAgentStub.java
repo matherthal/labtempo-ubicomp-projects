@@ -5,7 +5,6 @@ import java.util.List;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.ResourceAgent;
-import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
@@ -54,21 +53,6 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
 		return (List<Stakeholder>) makeCall("getStakeholders", params, new TypeToken<List<Stakeholder>>() {}.getType());		
-	}
-	
-	@Override
-	public int getId() {
-		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-
-		return (Integer) makeCall("getName", params, int.class);
-	}
-
-	@Override
-	public void setId(int id) {
-		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(Integer.class.getName(), id));
-
-		makeCall("setId", params, void.class);
 	}
 
 	@Override

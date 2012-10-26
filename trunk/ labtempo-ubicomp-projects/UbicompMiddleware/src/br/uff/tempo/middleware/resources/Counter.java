@@ -11,7 +11,7 @@ public class Counter extends ResourceAgent{
 	
 	
 	public Counter(String name) {
-		super(name, "br.uff.tempo.middleware.resources.Counter", 0);
+		super(name, "br.uff.tempo.middleware.resources.Counter");
 		count =0;
 	}
 	

@@ -1,7 +1,5 @@
 package br.uff.tempo.middleware.resources;
 
-import java.util.Random;
-
 import android.util.Log;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
@@ -15,15 +13,13 @@ public class Generic extends ResourceAgent implements IGeneric {
 	protected String name = "";
 
 	public Generic(String name) {
-		// FIXME: consertar id passada por param
-		super(name, "br.uff.tempo.middleware.resources.Generic", new Random().nextInt() + 1000);
+		super(name, "br.uff.tempo.middleware.resources.Generic");
 		this.name = name;
 		Log.i(TAG, "New Generic class. Name: " + name);
 	}
 
 	public Generic(String name, IResourceAgent ra, String cv) {
-		// FIXME: consertar id passada por param
-		super(name, "br.uff.tempo.middleware.resources.Generic", new Random().nextInt() + 1000);
+		super(name, "br.uff.tempo.middleware.resources.Generic");
 		this.name = name;
 		Log.i(TAG, "New Generic class. Name: " + name);
 

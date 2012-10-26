@@ -26,7 +26,7 @@ public class Interpreter extends ResourceAgent implements IInterpreter {
 	private Set<ConditionalResult> conditionalResultSet = new HashSet<ConditionalResult>();
 
 	public Interpreter() {
-		super("br.uff.tempo.middleware.management.Interpreter", 1432);
+		super("br.uff.tempo.middleware.management.Interpreter");
 	}
 
 	// @Override

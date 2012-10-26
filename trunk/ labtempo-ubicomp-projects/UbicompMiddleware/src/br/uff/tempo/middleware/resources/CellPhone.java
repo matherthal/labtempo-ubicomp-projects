@@ -10,7 +10,7 @@ public class CellPhone extends ResourceAgent implements ICellPhone {
 	private boolean isCallComming;
 		
 	public CellPhone(String name) {
-		super(name, "br.uff.tempo.middleware.resources.Lamp", 425);
+		super(name, "br.uff.tempo.middleware.resources.Lamp");
 	}
 	
 	@Override

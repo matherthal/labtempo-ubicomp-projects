@@ -12,8 +12,7 @@ public class PresenceSensor extends ResourceAgent implements IPresenceSensor {
 	private boolean presence = false;
 
 	public PresenceSensor(String name) {
-		// FIXME: get correct id
-		super(name, "br.uff.tempo.middleware.resources.PresenceSensor", 16);
+		super(name, "br.uff.tempo.middleware.resources.PresenceSensor");
 	}
 
 	public static final String CV_GETPRESENCE = "getPresence";

@@ -11,8 +11,7 @@ public class Bed extends ResourceAgent implements IBed {
 	private boolean hasSomeone;
 
 	public Bed(String name) {
-		// FIXME: get correct id
-		super(name, "br.uff.tempo.middleware.resources.Bed", 6);
+		super(name, "br.uff.tempo.middleware.resources.Bed");
 	}
 
 	@Override

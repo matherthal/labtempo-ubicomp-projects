@@ -11,8 +11,8 @@ public class Teapot extends ResourceAgent implements ITeapot {
 	
 	public float temperature = 0.0f;
 	
-	public Teapot(String name, String type, int id) {
-		super(name, type, id);
+	public Teapot(String name, String type) {
+		super(name, type);
 	}
 
 	@Override

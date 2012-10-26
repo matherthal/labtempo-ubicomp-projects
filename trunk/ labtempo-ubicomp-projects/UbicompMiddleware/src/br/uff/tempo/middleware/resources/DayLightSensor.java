@@ -15,8 +15,7 @@ public class DayLightSensor extends ResourceAgent implements IDayLightSensor {
 	public static final String CV_LIGHTAMOUNT = "lightAmount";
 	
 	public DayLightSensor(String name) {
-		// FIXME: get correct id
-		super(name, "br.uff.tempo.middleware.resources.DayLightSensor", 17);
+		super(name, "br.uff.tempo.middleware.resources.DayLightSensor");
 	}
 
 	@Override

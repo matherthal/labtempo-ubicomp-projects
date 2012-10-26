@@ -14,8 +14,7 @@ public class Lamp extends ResourceAgent implements ILamp {
 	public static final String CV_ISON = "isOn";
 
 	public Lamp(String name) {
-		// FIXME: get correct id
-		super(name, "br.uff.tempo.middleware.resources.Lamp", 15);
+		super(name, "br.uff.tempo.middleware.resources.Lamp");
 	}
 
 	@Override
