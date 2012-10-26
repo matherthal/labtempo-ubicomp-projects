@@ -502,6 +502,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 				if (regData.isFake()) {
 
 					realAg = new Stove(regData.getResourceName(), regData.getResourceName());
+					realAg.identify();
 					proxyAg = new StoveStub(realAg.getRANS());
 
 				} else {
@@ -524,6 +525,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 				if (regData.isFake()) {
 
 					realAg = new Lamp(regData.getResourceName(), regData.getResourceName());
+					realAg.identify();
 					proxyAg = new LampStub(realAg.getRANS());
 
 				} else {
@@ -546,6 +548,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 				if (regData.isFake()) {
 
 					realAg = new Television(regData.getResourceName(), regData.getResourceName());
+					realAg.identify();
 					proxyAg = new TelevisionStub(realAg.getRANS());
 
 				} else {
@@ -568,6 +571,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 				if (regData.isFake()) {
 
 					realAg = new Bed(regData.getResourceName(), regData.getResourceName());
+					realAg.identify();
 					proxyAg = new BedStub(realAg.getRANS());
 
 				} else {
@@ -589,6 +593,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 				if (regData.isFake()) {
 
 					realAg = new Person(regData.getResourceName(), regData.getResourceName());
+					realAg.identify();
 					proxyAg = new PersonStub(realAg.getRANS());
 
 				} else {
@@ -637,11 +642,6 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			// if receive an invalid option, exit method
 			// (and doesn't execute the lines above!)
 			return;
-		}
-
-		// Register the real agent, if it exists
-		if (realAg != null) {
-			realAg.identify();
 		}
 
 		if (!regData.isFake()) {

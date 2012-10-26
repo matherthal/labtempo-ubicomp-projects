@@ -1,5 +1,7 @@
 package br.uff.tempo.middleware.management;
 
+import java.io.Serializable;
+
 /**
  * Contains essential information to communicate with the ResourceAgent
  * 
@@ -7,8 +9,10 @@ package br.uff.tempo.middleware.management;
  * 
  * Represents the idea of Domain Name System (DNS) at SmartAndroid 
  */
-public class ResourceAgentNS {
+public class ResourceAgentNS implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	/**
 	 * rans is the effective name
 	 * 
