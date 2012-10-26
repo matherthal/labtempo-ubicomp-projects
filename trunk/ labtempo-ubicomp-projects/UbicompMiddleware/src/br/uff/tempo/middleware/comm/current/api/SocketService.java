@@ -1,9 +1,15 @@
 package br.uff.tempo.middleware.comm.current.api;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.util.zip.DataFormatException;
+import java.util.zip.Deflater;
+import java.util.zip.Inflater;
 
 import android.util.Log;
 
@@ -29,20 +35,22 @@ public class SocketService {
 
 	public static String sendReceive(String address, String message) throws Exception {
 		DatagramSocket s = new DatagramSocket();
-		String outString = message;
-		int msg_length = outString.length();
+		
+		byte[] output = compress(message);
+
 		byte[] bufDP = new byte[1500];
-		byte[] buf = outString.getBytes();
 		DatagramPacket dp = new DatagramPacket(bufDP, bufDP.length);
 
 		InetAddress hostAddress = InetAddress.getByName(address);
 		DatagramPacket out = null;
-		out = new DatagramPacket(buf, msg_length, hostAddress, SERVER_PORT);
+		out = new DatagramPacket(output, output.length, hostAddress, SERVER_PORT);
 		
 		s.send(out);
 
 		s.receive(dp);
-		String rcvd = new String(dp.getData());
+		
+		String rcvd = decompress(dp.getData());
+
 		rcvd = rcvd.substring(0, rcvd.lastIndexOf(BUFFER_END));
 		s.close();
 		
@@ -61,5 +69,44 @@ public class SocketService {
 
 		CommandExecution command = new CommandExecution(sk, dgp);
 		command.start();
+	}
+
+	public static byte[] compress(String msg) throws UnsupportedEncodingException {
+		Deflater deflater = new Deflater();
+		deflater.setInput(msg.getBytes("UTF-8"));
+		deflater.finish();
+		
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		
+		byte[] buf = new byte[8192];
+		while (!deflater.finished()) {
+			int byteCount = deflater.deflate(buf);
+			baos.write(buf, 0, byteCount);
+		}
+		
+		deflater.end();
+		byte[] compressedBytes = baos.toByteArray();
+		return compressedBytes;
+	}
+
+	public static String decompress(byte[] compressedBytes) throws DataFormatException, IOException, UnsupportedEncodingException {
+		Inflater inflater = new Inflater();			
+		inflater.setInput(compressedBytes);
+
+		ByteArrayOutputStream baosI = new ByteArrayOutputStream(compressedBytes.length);
+		
+		byte[] buff = new byte[8192];
+		while (!inflater.finished()) {
+			int count = inflater.inflate(buff);
+			baosI.write(buff, 0, count);
+		}
+		
+		baosI.close();
+		inflater.end();
+		
+		byte[] output = baosI.toByteArray();
+		
+		String msgI = new String(output, "UTF-8");
+		return msgI;
 	}
 }
