@@ -41,9 +41,12 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	
 	private Position position;
 
-	public ResourceAgent(String type) {
-		this("", type);
-	}
+	// Everybody must initialize ResourceAgent at least with name and type
+	@SuppressWarnings("unused")
+	private ResourceAgent() {}
+	// Everybody must initialize ResourceAgent at least with name and type
+	@SuppressWarnings("unused")
+	private ResourceAgent(String anything) {}
 
 	public ResourceAgent(String name, String type) {
 		this(name, type, null);

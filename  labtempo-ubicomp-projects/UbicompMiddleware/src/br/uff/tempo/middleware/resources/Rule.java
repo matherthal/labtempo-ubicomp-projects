@@ -29,7 +29,7 @@ public class Rule extends ResourceAgent {
 	public String expression = "";
 
 	public Rule() {
-		super("br.uff.tempo.middleware.resources.Rule");
+		super("Rule", "br.uff.tempo.middleware.resources.Rule");
 
 		// IResourceDiscovery rds = getRDS();
 		// ArrayList<String> rAlist = rds.search("StoveAgent/stovekitchen");
