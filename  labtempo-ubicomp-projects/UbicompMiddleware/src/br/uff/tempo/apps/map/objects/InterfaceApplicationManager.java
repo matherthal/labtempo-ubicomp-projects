@@ -38,9 +38,7 @@ public class InterfaceApplicationManager extends ResourceAgent {
 	// ===========================================================
 
 	private InterfaceApplicationManager() {
-
-		super("InterfaceManager",
-				"br.uff.tempo.apps.map.objects.InterfaceApplicationManager", 37);
+		super("InterfaceManager", "br.uff.tempo.apps.map.objects.InterfaceApplicationManager");
 		
 		sceneObjects = new HashMap<String, INotificationBoxReceiver>();
 	}

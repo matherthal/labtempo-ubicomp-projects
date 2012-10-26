@@ -20,7 +20,7 @@ public class GameAgent extends ResourceAgent implements IGameAgent {
 	private Location move;
 
 	public GameAgent(String name) {
-		super(name, "br.uff.tempo.middleware.resources.GameAgent", 0);
+		super(name, "br.uff.tempo.middleware.resources.GameAgent");
 	}
 
 	@Override

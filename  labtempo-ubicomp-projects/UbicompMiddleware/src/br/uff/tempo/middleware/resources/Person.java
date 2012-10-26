@@ -21,8 +21,7 @@ public class Person extends Aggregator {
 	private boolean isRunning = false;
 	
 	public Person(String name, Position position) {
-		// FIXME: get correct id
-		super(name, "br.uff.tempo.middleware.resources.Person", 134, position);
+		super(name, "br.uff.tempo.middleware.resources.Person", position);
 	}
 
 	@ContextVariable(name = "Nome")

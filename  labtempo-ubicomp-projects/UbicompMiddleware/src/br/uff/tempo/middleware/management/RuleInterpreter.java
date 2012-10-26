@@ -9,20 +9,14 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.sourceforge.jeval.EvaluationException;
-import net.sourceforge.jeval.Evaluator;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.google.gson.JsonObject;
 
 import android.util.Log;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.management.utils.datastructure.GeneralTree;
 
 public class RuleInterpreter extends ResourceAgent {
 
@@ -49,7 +43,7 @@ public class RuleInterpreter extends ResourceAgent {
 	private int i_debug = 0;
 
 	public RuleInterpreter(String name) {
-		super(name, "br.uff.tempo.middleware.management.RuleInterpreter", 9);
+		super(name, "br.uff.tempo.middleware.management.RuleInterpreter");
 		discovery = new ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 	}
 

@@ -11,7 +11,7 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	private static ResourceRegister instance;
 
 	private ResourceRegister() {
-		super("ResourceRegister", ResourceRegister.class.getName(), 1);
+		super("ResourceRegister", ResourceRegister.class.getName());
 	}
 
 	public static ResourceRegister getInstance() {

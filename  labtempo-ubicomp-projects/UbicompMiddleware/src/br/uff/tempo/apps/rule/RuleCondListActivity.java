@@ -11,9 +11,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.middleware.management.Operator;
-import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.resources.Condition;
-import br.uff.tempo.middleware.resources.Stove;
 import br.uff.tempo.middleware.resources.Teapot;
 
 public class RuleCondListActivity extends Activity {
@@ -66,7 +64,7 @@ public class RuleCondListActivity extends Activity {
 				// Add condition to list of conditions
 				// >>>conds.add(cond);
 				// Add condition to list in the view
-				Teapot ra = new Teapot("teapot01", "Teapot", 0001);
+				Teapot ra = new Teapot("teapot01", "Teapot");
 				ra.identify();
 				Condition cond = null;
 				try {

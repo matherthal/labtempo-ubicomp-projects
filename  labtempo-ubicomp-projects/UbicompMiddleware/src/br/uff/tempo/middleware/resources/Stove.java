@@ -38,13 +38,11 @@ public class Stove extends ResourceAgent implements IStove {
 	private List<Float> burners;
 
 	public Stove(String name) {
-		// FIXME: get correct id
 		this(name, null);
 	}
 	
 	public Stove(String name, Position position) {
-		// FIXME: get correct id
-		super(name, "br.uff.tempo.middleware.resources.Stove", 5, position);
+		super(name, "br.uff.tempo.middleware.resources.Stove", position);
 		initBurners();
 	}
 

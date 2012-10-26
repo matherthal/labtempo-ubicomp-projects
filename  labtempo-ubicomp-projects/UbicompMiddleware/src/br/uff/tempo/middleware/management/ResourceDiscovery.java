@@ -13,7 +13,7 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 	private static ResourceDiscovery instance;
 
 	private ResourceDiscovery() {
-		super("ResourceDiscovery", ResourceDiscovery.class.getName(), 2);		
+		super("ResourceDiscovery", ResourceDiscovery.class.getName());
 	}
 	
 	public static ResourceDiscovery getInstance() {

@@ -30,7 +30,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 
 	// Agent's attributes
 	private boolean registered;
-	private int id;
 	private String name;
 	private String type;
 	private String rai;
@@ -43,24 +42,23 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private Position position;
 	
 	public ResourceAgent() {
-		this("GeneralAgent", "br.uff.tempo.middleware.management.ResourceAgent", 0);
+		this("GeneralAgent", "br.uff.tempo.middleware.management.ResourceAgent");
 	}
 
-	public ResourceAgent(String type, int id) {
-		this(id + "", type, id);
+	public ResourceAgent(String type) {
+		this("", type);
 	}
 
-	public ResourceAgent(String name, String type, int id) {
-		this(name, type, id, null);
+	public ResourceAgent(String name, String type) {
+		this(name, type, null);
 	}
 	
-	public ResourceAgent(String name, String type, int id, Position position) {
+	public ResourceAgent(String name, String type, Position position) {
 		stakeholders = new ArrayList<Stakeholder>();
 		
 		registered = false;
 
 		this.type = type;//generateType(this.getClass());
-		this.id = id;
 		this.name = name;
 		rai = "";
 
@@ -78,16 +76,6 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 
 	public IResourceDiscovery getRDS() {
 		return rDS;
-	}
-
-	@Override
-	public int getId() {
-		return id;
-	}
-
-	@Override
-	public void setId(int id) {
-		this.id = id;
 	}
 
 	@Override

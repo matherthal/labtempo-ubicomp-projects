@@ -29,7 +29,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	HashMap<String, HashMap<String, Position>> baseIndexer;
 
 	private ResourceLocation() {
-		super("ResourceLocation", ResourceLocation.class.getName(), 3);
+		super("ResourceLocation", ResourceLocation.class.getName());
 		
 		currentSpace = new Space();
 		resources = new HashMap<String, Position>();
