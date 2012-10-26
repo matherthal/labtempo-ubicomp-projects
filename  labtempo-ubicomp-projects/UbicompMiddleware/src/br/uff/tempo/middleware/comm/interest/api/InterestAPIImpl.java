@@ -10,6 +10,7 @@ import ufrj.coppe.lcp.repa.RepaMessage;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.common.Callable;
 import br.uff.tempo.middleware.comm.common.InterestAPI;
+import br.uff.tempo.middleware.comm.current.api.SocketService;
 import br.uff.tempo.middleware.e.SmartAndroidException;
 
 public class InterestAPIImpl implements InterestAPI {
@@ -58,14 +59,14 @@ public class InterestAPIImpl implements InterestAPI {
 	}
 
 	private static String dispatchJSONRPC(String messageContent) {
-		String[] msgTokens = messageContent.split(";");
+		String[] msgTokens = messageContent.split(SocketService.BUFFER_END);
 		
 		String raiFrom = msgTokens[0];
 		String jsonRPCString = msgTokens[1];
 		
 		String response = null;
 		try {
-			response = NewDispatcher.getInstance().dispatch(raiFrom, jsonRPCString) + ";";
+			response = NewDispatcher.getInstance().dispatch(raiFrom, jsonRPCString) + SocketService.BUFFER_END;
 		} catch (SmartAndroidException e) {
 			e.printStackTrace();
 		}

@@ -23,6 +23,7 @@ public class NewDispatcher {
 	private NewDispatcher() {}
 	
 	public String dispatch(String rai, String jsonRPCString) throws SmartAndroidException {
+		String id = JSONHelper.getId(jsonRPCString);
 		String methodName = JSONHelper.getMethodName(jsonRPCString);
 		Object[] paramsArray = JSONHelper.getParamsArray(jsonRPCString);
 		
@@ -32,7 +33,7 @@ public class NewDispatcher {
 			if (method.getName().equals(methodName)) {
 				Log.d("SmartAndroid", String.format("Executing method %s with params %s", method, paramsArray));
 				Object obj = execute(rai, method, paramsArray);
-				String response = JSONHelper.createReply(obj, method.getReturnType());
+				String response = JSONHelper.createReply(id, obj, method.getReturnType());
 				Log.d("SmartAndroid", String.format("Method %s returns response %s", method, response));
 				return response;				
 			}
