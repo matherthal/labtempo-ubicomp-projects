@@ -5,6 +5,10 @@ import br.uff.tempo.middleware.management.utils.Position;
 public class SmartObject extends ResourceAgent{
 	
 	private static final long serialVersionUID = 1L;
+	
+	public SmartObject() {
+		super("SmartObject", SmartObject.class.getName());
+	}
 
 	Place local;
 	Position position;

@@ -4,9 +4,13 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 
 public class LogAgent extends ResourceAgent {
 
+	private static final long serialVersionUID = 1L;
+	
 	public static LogAgent obj; 
 	
-	private LogAgent() {}
+	private LogAgent() {
+		super("LogAgent", LogAgent.class.getName());
+	}
 	
 	public static LogAgent getInstance() {
 	
