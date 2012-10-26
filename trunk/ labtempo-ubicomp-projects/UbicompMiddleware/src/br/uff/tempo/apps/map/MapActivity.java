@@ -424,7 +424,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			// Create an Interface Manager instance and register it
 			mAppManager = InterfaceApplicationManager.getInstance();
 
-			state = (SceneState) PersistHelper.loadFromFile("state", prefs);
+			state = null; //(SceneState) PersistHelper.loadFromFile("state", prefs);
 
 			// There is no state saved
 			if (state == null) {
