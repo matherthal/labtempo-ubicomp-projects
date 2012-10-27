@@ -11,6 +11,9 @@ public interface IResourceDiscovery {
 	
 	public static final String RDS_IP = "192.168.1.104";
 
+	public static final String RDS_NAME = "br.uff.tempo.middleware.management.ResourceDiscovery:ResourceDiscovery";
+	public static final String RDS_ADDRESS = "rai:" + RDS_IP + "//" + RDS_NAME;
+	
 	public static final String rans = "resourcediscovery.ra";
 	
 	public ArrayList<String> search(String query);// return URI of resources
