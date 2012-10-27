@@ -1,5 +1,9 @@
 package br.uff.tempo.apps.rule;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,76 +53,80 @@ public class RuleActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		// AlarmClock alarm = new AlarmClock(RuleActivity.this);
-		// Calendar start = Calendar.getInstance();
-		// start.add(Calendar.SECOND, 20);
-		// alarm.scheduleAlarm("my alarm", start);
-
-		// Intent intent = new Intent(RuleActivity.this,
-		// AlarmClock.AlarmReceiver.class);
-		// PendingIntent pendingIntent =
-		// PendingIntent.getBroadcast(RuleActivity.this, 001000, intent, 0);
-		// AlarmManager alarmManager = (AlarmManager)
-		// getSystemService(ALARM_SERVICE);
-		// alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
-		// + (5 * 1000), pendingIntent);
-
-		// NotificationManager manger = (NotificationManager)
-		// RuleActivity.this.getSystemService(Context.NOTIFICATION_SERVICE);
-		// Notification notification = new Notification(R.drawable.icon,
-		// "Wake up alarm", System.currentTimeMillis());
-		// Intent intent = new Intent(RuleActivity.this, AlarmReceiver.class);
-		// PendingIntent contentIntent =
-		// PendingIntent.getBroadcast(RuleActivity.this, 001000, intent, 0);
-		// notification.setLatestEventInfo(RuleActivity.this, "Context Title",
-		// "Context text", contentIntent);
-		// notification.flags = Notification.FLAG_INSISTENT;
-		//
-		// notification.sound = (Uri) intent.getParcelableExtra("Ringtone");
-		// notification.vibrate = (long[])
-		// intent.getExtras().get("vibrationPatern");
-		//
-		// // The PendingIntent to launch our activity if the user selects this
-		// notification
-		// manger.notify(NOTIFICATION_ID, notification);
-
 		if (savedInstanceState == null) {
-			Toast.makeText(this, "Regra Inicializada", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(this, "Regra Inicializada", Toast.LENGTH_SHORT).show();
 
+			RuleInterpreter ri = new RuleInterpreter("RegraFogaoEsquecido", "RegraFogaoEsquecido");
+			BufferedReader in = null;
+			try {
+				in = new BufferedReader(new InputStreamReader(this.getAssets().open("interpreter.json")));
+
+				String line;
+				StringBuilder buffer = new StringBuilder();
+
+				while ((line = in.readLine()) != null) {
+					buffer.append(line).append('\n');
+				}
+
+				ri.setExpression(buffer.toString());
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (Exception e) {
+				e.printStackTrace();
+			} finally {
+				try {
+					in.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			// FIXME
+			if (1 != 2)
+				return;
+
+			// discovery = new
+			// ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+			// ArrayList<String> stoves = discovery.search("Stove");
+			// String raiStove = stoves.get(0);
 			discovery = new ResourceDiscoveryStub(
 					IResourceDiscovery.rans);
 			List<ResourceData> stoves = discovery.searchForAttribute(ResourceData.TYPE, Stove.class.getName());
 			String raiStove = stoves.get(0).getRai();
+//			String raiStove = discovery.searchForAttribute(ResourceData.TYPE, "br.uff.tempo.middleware.resources.Stove").get(0).getRai();
 
-			this.runOnUiThread(new Runnable() {
+			Toast.makeText(RuleActivity.this, "Fogão encontrado", Toast.LENGTH_SHORT).show();
+			// this.runOnUiThread(new Runnable() {
+			//
+			// @Override
+			// public void run() {
+			// Toast.makeText(RuleActivity.this, "Fogão encontrado",
+			// Toast.LENGTH_SHORT).show();
+			// }
+			// });
 
-				@Override
-				public void run() {
-					Toast.makeText(RuleActivity.this, "Fogão encontrado",
-							Toast.LENGTH_SHORT).show();
-				}
-			});
-
+			// discovery = new
+			// ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
+			// String raiBed = discovery.search("Bed").get(0);
 			discovery = new ResourceDiscoveryStub(
 					IResourceDiscovery.rans);
 			String raiBed = discovery.searchForAttribute(ResourceData.TYPE, Bed.class.getName()).get(0).getRai();
+//			String raiBed = discovery.searchForAttribute(ResourceData.TYPE, "br.uff.tempo.middleware.resources.Bed").get(0).getRai();
 
-			this.runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					Toast.makeText(RuleActivity.this, "Cama encontrada", Toast.LENGTH_SHORT)
-							.show();
-				}
-			});
+			Toast.makeText(RuleActivity.this, "Cama encontrada", Toast.LENGTH_SHORT).show();
+			// this.runOnUiThread(new Runnable() {
+			//
+			// @Override
+			// public void run() {
+			// Toast.makeText(RuleActivity.this, "Cama encontrada",
+			// Toast.LENGTH_SHORT).show();
+			// }
+			// });
 
 			RuleInterpreter rule = new RuleInterpreter("RegradoFogao", "RegradoFogao");
 			try {
-				rule.setCondition(raiStove, "getOvenTemperature", null,
-						Operator.GreaterThan, 50.0f);
-				rule.setCondition(raiBed, "occupied", null, Operator.Equal,
-						true);
+				rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, 50.0f);
+				rule.setCondition(raiBed, "occupied", null, Operator.Equal, true);
 				int time = 10;
 				Log.i(TAG, "Timeout " + time + "seg");
 				rule.setTimeout(time);
@@ -143,20 +151,21 @@ public class RuleActivity extends Activity {
 
 				private int counter = 0;
 
-				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, Television.class.getName()).get(0).getName();
+//				String tvRai = discovery.search("Television").get(0);
+				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, "br.uff.tempo.middleware.resources.Television").get(0).getRai();
+//				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, Television.class.getName()).get(0).getName();
 				private ITelevision tv = new TelevisionStub(tvRai);
 
 				@Override
-				public void notificationHandler(String rai, String method,
-						Object value) {
+				public void notificationHandler(String rai, String method, Object value) {
 					Log.i(TAG, "CHANGE: " + rai + " " + method + " " + value);
 					Message msg = mHandler.obtainMessage();
 					msg.obj = counter++;
 					mHandler.sendMessage(msg);
 					mHandler.post(mUpdateResults);
-					
+
 					RuleActivity.this.runOnUiThread(new Runnable() {
-						
+
 						@Override
 						public void run() {
 							tv.showMessage("Alert!");
@@ -264,8 +273,7 @@ public class RuleActivity extends Activity {
 	 * Button call Condition List
 	 */
 	public void buttonConds_Clicked(View view) {
-		Intent intent = new Intent(RuleActivity.this,
-				RuleCondListActivity.class);
+		Intent intent = new Intent(RuleActivity.this, RuleCondListActivity.class);
 		startActivityForResult(intent, 1);
 	}
 
@@ -273,8 +281,7 @@ public class RuleActivity extends Activity {
 	 * Button call Action List
 	 */
 	public void buttonActions_Clicked(View view) {
-		Intent intent = new Intent(RuleActivity.this,
-				RuleActionListActivity.class);
+		Intent intent = new Intent(RuleActivity.this, RuleActionListActivity.class);
 		startActivityForResult(intent, 1);
 	}
 
@@ -300,8 +307,7 @@ public class RuleActivity extends Activity {
 				// //DEBUG
 
 				// createCond(condStr[0], condStr[1], condStr[2], condStr[3]);
-				Toast.makeText(this, "Novas Condições", Toast.LENGTH_SHORT)
-						.show();
+				Toast.makeText(this, "Novas Condições", Toast.LENGTH_SHORT).show();
 			} else if (resultCode == RESULT_CANCELED) {
 			}
 		}
@@ -311,10 +317,11 @@ public class RuleActivity extends Activity {
 	 * Creates a condition and adds to the list. Then a rule could be created
 	 * after.
 	 */
-	public void createCond(String raID, String attrib, Operator operator,
-			String value) {
+	public void createCond(String raID, String attrib, Operator operator, String value) {
 		// ResourceAgent ra =
 		// (ResourceAgent)discovery.search(s.getSelectedItem().toString()).get(0);
+//		ResourceAgent ra = new Stove();// FIXME: get it out of here, just for
+										// debug. The correct is above
 
 		// Get attribute's acess method
 		// Method mtd = null;
@@ -358,24 +365,19 @@ public class RuleActivity extends Activity {
 			// result = rule.runScript("true||false&&true");
 			TextView tv = (TextView) view.findViewById(R.id.textViewLog);
 			tv.setText(result ? "ação disparada" : " ação não disparada");
-			tv.append("\nRegra <" + rule.expression + "> "
-					+ (result ? "ação disparada" : " ação não disparada"));
+			tv.append("\nRegra <" + rule.expression + "> " + (result ? "ação disparada" : " ação não disparada"));
 
 			if (rule != null)
-				Toast.makeText(RuleActivity.this, "Regra sobreescrita",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(RuleActivity.this, "Regra sobreescrita", Toast.LENGTH_SHORT).show();
 		} catch (Exception e) {
-			Toast.makeText(RuleActivity.this, "Erro ao criar a regra",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(RuleActivity.this, "Erro ao criar a regra", Toast.LENGTH_SHORT).show();
 		}
 
 	}
 
 	public void buttonRunScript_Clicked(View view) {
 		if (rule == null)
-			Toast.makeText(RuleActivity.this,
-					"É necessário criar a regra primeiro", Toast.LENGTH_SHORT)
-					.show();
+			Toast.makeText(RuleActivity.this, "É necessário criar a regra primeiro", Toast.LENGTH_SHORT).show();
 		else {
 			boolean result = false;
 			try {
@@ -385,14 +387,12 @@ public class RuleActivity extends Activity {
 				// Toast.makeText(RuleActivity.this, "Erro ao Executar a regra",
 				// Toast.LENGTH_SHORT).show();
 			} catch (Exception e) {
-				Toast.makeText(RuleActivity.this, "Erro ao Executar a regra",
-						Toast.LENGTH_SHORT).show();
+				Toast.makeText(RuleActivity.this, "Erro ao Executar a regra", Toast.LENGTH_SHORT).show();
 			}
 
 			try {
 				TextView tv = (TextView) view.findViewById(R.id.textViewLog);
-				tv.append("\nRegra <" + rule.expression + "> "
-						+ (result ? "ação disparada" : " ação não disparada"));
+				tv.append("\nRegra <" + rule.expression + "> " + (result ? "ação disparada" : " ação não disparada"));
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -407,8 +407,7 @@ public class RuleActivity extends Activity {
 			String str = "";
 			if (msg.obj != null)
 				str = " Contador em " + msg.obj.toString();
-			Toast.makeText(a, "Regra disparada!" + str, Toast.LENGTH_LONG)
-					.show();
+			Toast.makeText(a, "Regra disparada!" + str, Toast.LENGTH_LONG).show();
 			// Toast.makeText(a, "Regra disparada! Contador em ",
 			// Toast.LENGTH_LONG).show();
 		}
@@ -421,14 +420,12 @@ public class RuleActivity extends Activity {
 			rule = (Rule) binder.getService();
 
 			// Tell the user about this for our demo.
-			Toast.makeText(RuleActivity.this, "Agente de Regras Conectado",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(RuleActivity.this, "Agente de Regras Conectado", Toast.LENGTH_SHORT).show();
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
 			rule = null;
-			Toast.makeText(RuleActivity.this, "Agente de Regras Desconectado",
-					Toast.LENGTH_SHORT).show();
+			Toast.makeText(RuleActivity.this, "Agente de Regras Desconectado", Toast.LENGTH_SHORT).show();
 		}
 	};
 }
