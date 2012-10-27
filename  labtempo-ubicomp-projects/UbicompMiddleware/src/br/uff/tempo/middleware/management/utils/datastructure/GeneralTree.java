@@ -14,6 +14,7 @@ public class GeneralTree extends AbstractTree {
 	protected Object key;
 	protected int degree;
 	protected LinkedList list;
+	protected GeneralTree father = null;
 
 	public GeneralTree(Object key) {
 		this.key = key;
@@ -40,6 +41,7 @@ public class GeneralTree extends AbstractTree {
 	}
 
 	public void attachSubtree(GeneralTree t) {
+		t.father = this;
 		list.append(t);
 		++degree;
 	}
@@ -50,9 +52,12 @@ public class GeneralTree extends AbstractTree {
 		return t;
 	}
 
+	public boolean isRoot() {
+		return father == null;
+	}
+
 	@Override
 	public boolean isLeaf() {
-		//FIXME: IS IT RIGHT???
 		return list.isEmpty();
 	}
 
@@ -65,6 +70,10 @@ public class GeneralTree extends AbstractTree {
 	public int getHeight() {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public GeneralTree getFather() {
+		return father;
 	}
 
 	@Override
