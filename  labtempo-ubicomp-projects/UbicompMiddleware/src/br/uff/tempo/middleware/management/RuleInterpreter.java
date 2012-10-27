@@ -9,14 +9,20 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import net.sourceforge.jeval.EvaluationException;
+import net.sourceforge.jeval.Evaluator;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.google.gson.JsonObject;
 
 import android.util.Log;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.management.utils.datastructure.GeneralTree;
 
 public class RuleInterpreter extends ResourceAgent {
 
@@ -41,6 +47,7 @@ public class RuleInterpreter extends ResourceAgent {
 	private Formula formula;
 	private Formula pNode;
 	private int i_debug = 0;
+	private String formulaStr = "";
 
 	public RuleInterpreter(String name, String rans) {
 		super(name, "br.uff.tempo.middleware.management.RuleInterpreter", rans);
@@ -76,6 +83,7 @@ public class RuleInterpreter extends ResourceAgent {
 				formula = new Formula();
 				pNode = formula;
 				formula.attachFormula(buildTree(intp.getJSONArray(key)));
+				Log.i(TAG, "FORMULA STRING: " + formulaStr);
 				hasForm = true;
 			}
 		}
@@ -98,17 +106,34 @@ public class RuleInterpreter extends ResourceAgent {
 					val = jobj.get(key);
 					if (key.equals("predicate")) {
 						Log.i(TAG, "PREDICATE: " + val.toString());
-						subtree.attachFormula(getPredicate((JSONArray) val));
+						formulaStr += "p ";
+						Predicate p = getPredicate((JSONArray) val);
+						subtree.attachFormula(p);
+						pNode = p;
 					} else if (key.equals("timer")) {
 						Log.i(TAG, "TIMER: " + val.toString());
+						// formulaStr = formulaStr.substring(0,
+						// formulaStr.length()-2) + "* ";
 						subtree.setTimeout(getTimerInSec(val.toString()));
 					} else if (key.equals("connective")) {
 						Log.i(TAG, "CONNECTIVE: " + val.toString());
+						if (val.toString().equals("and")) {
+							formulaStr += "&& ";
+						} else if (val.toString().equals("or")) {
+							formulaStr += "|| ";
+							pNode = (Formula) pNode.getFather();
+						}
 					} else if (key.equals("not")) {
 						Log.i(TAG, "NOT CLAUSE: " + val.toString());
+						formulaStr += "!";
+						Formula f = buildTree((JSONArray) val);
+						f.setNotClause(true);
+						subtree.attachFormula(f);
 					} else if (key.equals("formula")) {
 						Log.i(TAG, "FORMULA: " + val.toString());
+						formulaStr += "(";
 						subtree.attachFormula(buildTree((JSONArray) val));
+						formulaStr += ") ";
 					} else {
 						Log.e(TAG, "UNKNOWN: " + jobj.get(key).toString());
 						throw new Exception("Unknown object in JSON file: " + o.toString());
@@ -159,9 +184,7 @@ public class RuleInterpreter extends ResourceAgent {
 				else if (op2 == null)
 					op2 = new Operand(rai, elem, params);
 				else
-					throw new Exception(
-							"Wrong parameters in Interpreter's Predicate: "
-									+ jsonPredicate);
+					throw new Exception("Wrong parameters in Interpreter's Predicate: " + jsonPredicate);
 				// Get Value
 			} else if ("val".equals(s_component)) {
 				// If op1 has already been got, put operand in op2
@@ -170,9 +193,7 @@ public class RuleInterpreter extends ResourceAgent {
 				else if (op2 == null)
 					op2 = new Operand(component.toString());
 				else
-					throw new Exception(
-							"Wrong parameters in Interpreter's Predicate: "
-									+ jsonPredicate);
+					throw new Exception("Wrong parameters in Interpreter's Predicate: " + jsonPredicate);
 				// Get operator
 			} else if ("op".equals(s_component)) {
 				op = getOperator(component.toString());
@@ -180,9 +201,7 @@ public class RuleInterpreter extends ResourceAgent {
 			} else if ("timer".equals(s_component)) {
 				timer = getTimerInSec(component.toString());
 			} else
-				throw new Exception(
-						"Unknown timer in Interpreter's Predicate: "
-								+ jsonPredicate);
+				throw new Exception("Unknown timer in Interpreter's Predicate: " + jsonPredicate);
 		}
 
 		// If the second operand has not been given, then probably the first one
@@ -194,9 +213,7 @@ public class RuleInterpreter extends ResourceAgent {
 		else if (op != null)
 			return new Predicate(op1, op, op2, 0);
 		else
-			throw new Exception(
-					"Wrong parameters in Interpreterr's Predicate: "
-							+ jsonPredicate);
+			throw new Exception("Wrong parameters in Interpreterr's Predicate: " + jsonPredicate);
 	}
 
 	private Operator getOperator(String op) throws Exception {
@@ -241,14 +258,12 @@ public class RuleInterpreter extends ResourceAgent {
 	}
 
 	@Deprecated
-	public void setCondition(String rai, String cv, Object[] params,
-			Operator op, Object value) throws Exception {
+	public void setCondition(String rai, String cv, Object[] params, Operator op, Object value) throws Exception {
 		IResourceAgent ra = new ResourceAgentStub(rai);
 		ra.registerStakeholder(cv, this.getRANS());
 		// re discovery.search(rai).get(0);
 		// cNSet.add(new ComparisonNode(rai, cv, params, op, value, 0));
-		cNSet.add(new Predicate(new Operand(rai, cv, params), op, new Operand(
-				value), 0));
+		cNSet.add(new Predicate(new Operand(rai, cv, params), op, new Operand(value), 0));
 	}
 
 	// @Deprecated
@@ -267,15 +282,15 @@ public class RuleInterpreter extends ResourceAgent {
 	 * this.
 	 */
 	private boolean evaluateExpr() {
-		//TODO: implement evaluator using jeval
-//		try {
-//			Evaluator ev = new Evaluator();
-//			Log.i(TAG, "Eval: " + ev.getBooleanResult("1 && (1 || 0)"));
-//		} catch (EvaluationException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
+		// TODO: implement evaluator using jeval
+		// try {
+		// Evaluator ev = new Evaluator();
+		// Log.i(TAG, "Eval: " + ev.getBooleanResult("1 && (1 || 0)"));
+		// } catch (EvaluationException e) {
+		// // TODO Auto-generated catch block
+		// e.printStackTrace();
+		// }
+
 		// boolean prevValid = valid;
 		valid = true; // Temporary. If it's false, it'll turn again to false
 		for (Predicate cn : cNSet) {
