@@ -1,7 +1,59 @@
 package br.uff.tempo.middleware.comm.common;
 
+import br.uff.tempo.middleware.management.ResourceAgentNS;
+
 
 public interface InterestAPI {
+
+	// AGENTE se identifica pro mundo
+	public void registerInterest(String rans) throws Exception;
+	
+	// AGENTE recebe msg de AGENTE com JSONRPC exemplo: "registerInterest("lampadadasala.ra/jsonrpc", new JSONRPCCallback(this))
+	// AGENTE recebe msg de AGENTE com REPAMESSAGE
+	// AGENTE recebe msg de COISA com REPAMESSAGE
+	public void registerInterest(String rans, String interest, Callable callback) throws Exception; 
+
+	// COISA recebe msg de AGENTE com REPAMESSAGE
+	// COISA recebe msg de COISA com REPAMESSAGE
+	public void registerInterest(String interest, Callable callback) throws Exception;
+	
+	// Begin of Sync
+	
+	// AGENTE manda msg pra AGENTE com JSONRPC
+//	public String sendJSONRPC(ResourceAgentNS raNSfrom, ResourceAgentNS raNSto, String jsonRPC) throws Exception;
+	
+	// AGENTE manda msg pra AGENTE com REPAMESSAGE
+	public String sendMessage(ResourceAgentNS raNSFrom, ResourceAgentNS raNSTo, String interest, String message) throws Exception;
+	
+	// AGENTE manda msg pra COISA com REPAMESSAGE
+	public String sendMessage(ResourceAgentNS raNSFrom, Integer prefixTo, String interest, String message) throws Exception;	
+	
+	// COISA manda msg pra AGENTE com REPAMESSAGE
+	public String sendMessage(Integer prefixFrom, ResourceAgentNS raNSTo, String interest, String message) throws Exception;	
+	
+	// COISA manda msg pra COISA com REPAMESSAGE
+	public String sendMessage(Integer prefixFrom, Integer prefixTo, String interest, String message) throws Exception;	
+	
+	// End of Sync
+	
+	
+	
+//	// Begin of Async
+//
+//	// AGENTE manda msg Async pra AGENTE com REPAMESSAGE
+//	public void sendAsyncMessage(ResourceAgentNS raNSfrom, ResourceAgentNS raNSto, String interest, String message, Callable callback) throws Exception;
+//	
+//	// AGENTE manda msg Async pra COISA com REPAMESSAGE
+//	public void sendAsyncMessage(ResourceAgentNS raNSfrom, int prefixTo, String interest, String message, Callable callback) throws Exception;	
+//	
+//	// COISA manda msg Async pra AGENTE com REPAMESSAGE
+//	public void sendAsyncMessage(int prefixFrom, ResourceAgentNS raNSto, String interest, String message, Callable callback) throws Exception;	
+//	
+//	// COISA manda msg Async pra COISA com REPAMESSAGE
+//	public void sendAsyncMessage(int prefixFrom, int prefixTo, String interest, String message, Callable callback) throws Exception;
+//	
+//	// End of Async	
+	
 	
 	
 	// 1st step
@@ -12,7 +64,11 @@ public interface InterestAPI {
 	public Object callService(String serviceName, String rai) throws Exception;
 	
 	// registerStakeholders
-	public void registerInterest(String contextVariable, String rai, Callable callback) throws Exception;
+//	public void registerInterest(String contextVariable, String rai, Callable callback) throws Exception;
+	
+
+	
+//	public String sendMessage(int prefixfrom, ResourceAgentNS raNSto, String interest, String message) throws Exception;
 	
 	// notifyStakeholders
 	public void sendMessageTo(String rai, String contextVariable, String value) throws Exception;
@@ -30,13 +86,15 @@ public interface InterestAPI {
 	
 	// registerStakeholders, callback = notificationHandler
 	// (1 contextVariable could have N callbacks)
-	public void registerInterest(String contextVariable, Callable callback) throws Exception;
+//	public void registerInterest(String contextVariable, Callable callback) throws Exception;
 
 	// removeStakeholders
 	public void removeInterest(String contextVariable) throws Exception;
 
 	// removeNotificationHandlers
 	public void removeInterestCallback(String contextVariable, Callable callback) throws Exception;
+
+	
 	
 	
 	// 3rd step

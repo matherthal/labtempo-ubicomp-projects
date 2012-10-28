@@ -1,10 +1,16 @@
 package br.uff.tempo.middleware.comm.interest.api;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
+import java.util.zip.DataFormatException;
 
 import ufrj.coppe.lcp.repa.PrefixAddress;
 import ufrj.coppe.lcp.repa.RepaMessage;
 import ufrj.coppe.lcp.repa.RepaSocket;
+import br.uff.tempo.middleware.SmartAndroid;
+import br.uff.tempo.middleware.comm.current.api.JSONHelper;
+import br.uff.tempo.middleware.comm.current.api.SocketService;
 
 public class CommREPAD {
 
@@ -30,13 +36,15 @@ public class CommREPAD {
 		myThread.start();
 	}
 	
-	public String serve(RepaMessage repaMessage) {
+	public String serve(RepaMessageContent repaMessageContent) {
 		return null;
 	}
 
 	private class REPASession implements Runnable {
 
 		private RepaMessage repaMessage;
+		
+		private long timeToStart;
 
 		public REPASession(RepaMessage repaMessage) {
 			this.repaMessage = repaMessage;
@@ -45,24 +53,82 @@ public class CommREPAD {
 			t.setDaemon(true);
 			t.start();
 		}
+		
+		public REPASession(RepaMessage repaMessage, long timeToStart) {
+			this.repaMessage = repaMessage;
+			this.timeToStart = timeToStart;
+			
+			Thread t = new Thread(this);
+			t.setDaemon(true);
+			t.start();			
+		}
 
 		public void run() {
-			if (this.repaMessage == null) {
-				return;
+			try {
+				if (this.timeToStart > 0) {
+					Thread.sleep(this.timeToStart);
+				}
+				
+				if (this.repaMessage == null) {
+					return;
+				}
+				
+				RepaMessageContent repaMessageContent = messageDataToRepaMessageContent();
+				
+				String response = serve(repaMessageContent);
+				
+				if (response != null) {
+					repaMessageContent.setReply(true);
+					
+					repaMessageContent.swapRaNS();
+					repaMessageContent.swapPrefix();
+					
+					repaMessageContent.setContent(response);
+					
+					repaSend(repaMessageContent);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
+		}
 
-			String r = serve(this.repaMessage);
-			if (r != null) {
-				//sendResponse(r.status, r.mimeType, r.header, r.data);
-			}
+		private RepaMessageContent messageDataToRepaMessageContent() throws DataFormatException, IOException, UnsupportedEncodingException {
+			String repaMessageContentJSON = SocketService.decompress(repaMessage.getData());
+			RepaMessageContent repaMessageContent = (RepaMessageContent) JSONHelper.fromJson(repaMessageContentJSON, RepaMessageContent.class);
+			return repaMessageContent;
 		}
 	}
 
+	public void repaSend(RepaMessageContent messageContent) throws Exception {
+		RepaMessage repaMessage = new RepaMessage();
+		
+		Integer prefix = messageContent.getPrefixTo();
+		String interest = messageContent.getInterest();
+		if (messageContent.getRaNSTo() != null) {
+			prefix = messageContent.getRaNSTo().getPrefix();
+			interest = messageContent.getRaNSTo().getRans();
+		}
+		repaMessage.setPrefix(prefix == -1 ? new PrefixAddress() : new PrefixAddress(prefix));
+		repaMessage.setInterest(interest);
+		repaMessage.setData(messageContentToMessageData(messageContent));
+		
+		// Loopback
+		if (repaMessage.getPrefix().getPrefix() == SmartAndroid.getLocalPrefix()) {
+			new REPASession(repaMessage, 30);
+		} else {
+			this.repaSocket.repaSend(repaMessage);			
+		}
+	}
+	
+	
+	
+	
+	
 	public PrefixAddress getRepaNodeAdress() {
 		return this.repaSocket.getRepaNodeAdress();
 	}
-
-	public void repaSend(RepaMessage repaMessage) throws Exception {
+	
+	public void repaSendAsync(RepaMessage repaMessage) throws Exception {
 		this.repaSocket.repaSend(repaMessage);
 	}
 
@@ -72,5 +138,11 @@ public class CommREPAD {
 
 	public void unregisterInterest(String interest) throws Exception {
 		this.repaSocket.unregisterInterest(interest);
+	}
+	
+	private byte[] messageContentToMessageData(RepaMessageContent messageContent) throws UnsupportedEncodingException {
+		String repaMessageContentJSON = JSONHelper.toJson(messageContent);
+		byte[] messageData = SocketService.compress(repaMessageContentJSON);
+		return messageData;
 	}
 }

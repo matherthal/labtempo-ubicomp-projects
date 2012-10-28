@@ -2,20 +2,27 @@ package br.uff.tempo.middleware.comm.interest.api;
 
 import java.net.SocketException;
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import ufrj.coppe.lcp.repa.RepaMessage;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.common.Callable;
 import br.uff.tempo.middleware.comm.common.InterestAPI;
-import br.uff.tempo.middleware.comm.current.api.SocketService;
-import br.uff.tempo.middleware.e.SmartAndroidException;
+import br.uff.tempo.middleware.management.ResourceAgentNS;
 
 public class InterestAPIImpl implements InterestAPI {
 	
+	private static final String INDEX_SEPARATOR = "://:";
+	
 	private static ConcurrentHashMap<String, BlockingQueue<Callable>> myInterests = new ConcurrentHashMap<String, BlockingQueue<Callable>>();
+	
+	private static ConcurrentHashMap<String, BlockingQueue<Callable>> agentsInterestsIndex = new ConcurrentHashMap<String, BlockingQueue<Callable>>();
+	
+	private static ConcurrentHashMap<String, REPAComm> repaCommMap = new ConcurrentHashMap<String, InterestAPIImpl.REPAComm>();
 	
 	private static InterestAPIImpl api;
 	
@@ -32,8 +39,8 @@ public class InterestAPIImpl implements InterestAPI {
 		try {
 			commREPAD = new CommREPAD() {
 				@Override
-				public String serve(RepaMessage repaMessage) {
-					return dispatchRepaMessage(repaMessage);
+				public String serve(RepaMessageContent repaMessageContent) {
+					return dispatchRepaMessage(repaMessageContent);
 				}
 			};
 		} catch (SocketException e) {
@@ -41,39 +48,100 @@ public class InterestAPIImpl implements InterestAPI {
 		}
 	}
 
-	private static String dispatchRepaMessage(RepaMessage message) {
-		String messageContent = new String(message.getData());
-		
-		if (messageContent.contains("jsonrpc\":\"2.0")) {
-			return dispatchJSONRPC(messageContent);
+	private static String dispatchRepaMessage(RepaMessageContent messageContent) {
+		if (messageContent.isReply()) {
+			repaCommMap.get(messageContent.getId()).notifyResponseReceived(messageContent.getContent());
+			return null;
 		}
 		
-		BlockingQueue<Callable> callbacks = myInterests.get(message.getInterest());
-		Log.d("SmartAndroid", "Vou chamar os callbacks");
+		BlockingQueue<Callable> callbacks;
+		ResourceAgentNS raNSFrom = null;
+		if (messageContent.getRaNSTo() == null) {
+			callbacks = myInterests.get(messageContent.getInterest());
+		} else {
+			String indexKey = messageContent.getRaNSTo().getRans() + INDEX_SEPARATOR + messageContent.getInterest();
+			callbacks = agentsInterestsIndex.get(indexKey);
+			raNSFrom = messageContent.getRaNSFrom();
+		}
+		
+		Log.d("SmartAndroid", "Vou chamar os callbacks do agente: " + messageContent.getRaNSTo());
+		String callbackResult = null;
 		for (Callable callback : callbacks) {
-			callback.call(null, message.getInterest(), messageContent);
+			callbackResult = callback.call(raNSFrom, messageContent.getInterest(), messageContent.getContent());
 		}
-		Log.d("SmartAndroid", "Fim das chamadas aos callbacks");
+		Log.d("SmartAndroid", "Fim das chamadas aos callbacksdo agente: " + messageContent.getRaNSTo());
 		
-		return null;
-	}
-
-	private static String dispatchJSONRPC(String messageContent) {
-		String[] msgTokens = messageContent.split(SocketService.BUFFER_END);
-		
-		String raiFrom = msgTokens[0];
-		String jsonRPCString = msgTokens[1];
-		
-		String response = null;
-		try {
-			response = NewDispatcher.getInstance().dispatch(raiFrom, jsonRPCString) + SocketService.BUFFER_END;
-		} catch (SmartAndroidException e) {
-			e.printStackTrace();
-		}
-		return response;
+		return callbackResult;
 	}
 	
-	public void addInterest(String interest, Callable callback) throws Exception {
+	@Override
+	public void registerInterest(String rans) throws Exception {
+		this.commREPAD.registerInterest(rans);
+	}
+	
+	@Override
+	public void registerInterest(String rans, String interest, Callable callback) throws Exception {
+		// Adding to default interests map
+		this.addInterest(interest, callback);
+
+		// Adding to specific agents interests map index
+		String indexKey = rans + INDEX_SEPARATOR + interest;
+		if (agentsInterestsIndex.get(indexKey) == null) {
+			Log.d("SmartAndroid", "Adicionando o primeiro callback do interesse: " + interest);
+			// first callback
+			agentsInterestsIndex.put(indexKey, new LinkedBlockingQueue<Callable>(Arrays.asList(callback)));
+		} else {
+			Log.d("SmartAndroid", "Adicionando um novo callback do interesse" + interest);
+			// add new callback of the same interest
+			agentsInterestsIndex.get(indexKey).add(callback);	
+		}
+		
+		Log.d("SmartAndroid", "Chamando registro de interesse da repa para o interesse: " + interest);
+		this.commREPAD.registerInterest(interest);
+	}	
+
+	@Override
+	public void registerInterest(String interest, Callable callback) throws Exception {
+		// Adding to default interests map
+		this.addInterest(interest, callback);
+
+		Log.d("SmartAndroid", "Chamando registro de interesse da repa para o interesse: " + interest);
+		this.commREPAD.registerInterest(interest);
+	}
+
+	@Override
+	public String sendMessage(ResourceAgentNS raNSFrom, ResourceAgentNS raNSTo, String interest, String message) throws Exception {
+		String commId = UUID.randomUUID().toString();
+		RepaMessageContent repaMessageContent = new RepaMessageContent(commId, raNSFrom, raNSTo, interest, message);
+		
+		return send(commId, repaMessageContent);
+	}
+	
+	@Override
+	public String sendMessage(ResourceAgentNS raNSFrom, Integer prefixTo, String interest, String message) throws Exception {
+		String commId = UUID.randomUUID().toString();
+		RepaMessageContent repaMessageContent = new RepaMessageContent(commId, raNSFrom, prefixTo, interest, message);
+		
+		return send(commId, repaMessageContent);
+	}
+	
+	@Override
+	public String sendMessage(Integer prefixFrom, ResourceAgentNS raNSTo, String interest, String message) throws Exception {
+		String commId = UUID.randomUUID().toString();
+		RepaMessageContent repaMessageContent = new RepaMessageContent(commId, prefixFrom, raNSTo, interest, message);
+		
+		return send(commId, repaMessageContent);
+	}
+	
+	@Override
+	public String sendMessage(Integer prefixFrom, Integer prefixTo, String interest, String message) throws Exception {
+		String commId = UUID.randomUUID().toString();
+		RepaMessageContent repaMessageContent = new RepaMessageContent(commId, prefixFrom, prefixTo, interest, message);
+		
+		return send(commId, repaMessageContent);
+	}
+	
+	private void addInterest(String interest, Callable callback) throws Exception {
 		if (myInterests.get(interest) == null) {
 			Log.d("SmartAndroid", "Adicionando o primeiro callback do interesse: " + interest);
 			// first callback
@@ -83,10 +151,35 @@ public class InterestAPIImpl implements InterestAPI {
 			// add new callback of the same interest
 			myInterests.get(interest).add(callback);	
 		}
-
-		Log.d("SmartAndroid", "Chamando registro de interesse da repa para o interesse: " + interest);
-		this.commREPAD.registerInterest(interest);
 	}
+
+	private String send(String commId, RepaMessageContent repaMessageContent) throws Exception, InterruptedException {
+		CountDownLatch countDownLatch = new CountDownLatch(1);
+		
+		repaCommMap.put(commId, new REPAComm(countDownLatch));
+		
+		this.commREPAD.repaSend(repaMessageContent);
+		
+		countDownLatch.await();
+		
+		REPAComm repaComm = repaCommMap.get(commId);
+		
+		repaCommMap.remove(commId);
+		
+		return repaComm.getResponse();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	public void removeInterestCallback(String interest, Callable callback) throws Exception {
 		for (Callable c : myInterests.get(interest)) {
@@ -96,10 +189,10 @@ public class InterestAPIImpl implements InterestAPI {
 			}
 		}
 	}
-
+	
 	@Override
 	public void sendMessage(String contextVariable, String value) throws Exception {
-		this.commREPAD.repaSend(new RepaMessage(contextVariable, value));
+		this.commREPAD.repaSendAsync(new RepaMessage(contextVariable, value));
 	}
 	
 	@Override
@@ -114,11 +207,11 @@ public class InterestAPIImpl implements InterestAPI {
 		return null;
 	}
 
-	@Override
-	public void registerInterest(String interest, String rai, Callable callback) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void registerInterest(String interest, String rai, Callable callback) throws Exception {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	@Override
 	public void sendMessageTo(String rai, String contextVariable, String value) throws Exception {
@@ -139,22 +232,6 @@ public class InterestAPIImpl implements InterestAPI {
 	}
 
 	@Override
-	public void registerInterest(String interest, Callable callback) throws Exception {
-		if (myInterests.get(interest) == null) {
-			Log.d("SmartAndroid", "Adicionando o primeiro callback do interesse: " + interest);
-			// first callback
-			myInterests.put(interest, new LinkedBlockingQueue<Callable>(Arrays.asList(callback)));
-		} else {
-			Log.d("SmartAndroid", "Adicionando um novo callback do interesse: " + interest);
-			// add new callback of the same interest
-			myInterests.get(interest).add(callback);	
-		}
-
-		Log.d("SmartAndroid", "Chamando registro de interesse da repa para o interesse: " + interest);
-		this.commREPAD.registerInterest(interest);
-	}
-
-	@Override
 	public void removeInterest(String contextVariable) throws Exception {
 		// TODO Auto-generated method stub
 		
@@ -162,5 +239,25 @@ public class InterestAPIImpl implements InterestAPI {
 	
 	public int getPrefix() {
 		return this.commREPAD.getRepaNodeAdress().getPrefix();
+	}
+	
+	public class REPAComm {
+		
+		private CountDownLatch countDownLatch;
+		
+		private String response;
+		
+		public REPAComm(CountDownLatch countDownLatch) {
+			this.countDownLatch = countDownLatch;
+		}
+
+		public void notifyResponseReceived(String response) {
+			this.response = response;
+			this.countDownLatch.countDown();
+		}
+
+		public String getResponse() {
+			return response;
+		}
 	}
 }

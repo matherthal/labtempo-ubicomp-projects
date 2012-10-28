@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.Set;
 
 import android.util.Log;
+import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.utils.Position;
-import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Sorter;
 import br.uff.tempo.middleware.management.utils.Space;
 
@@ -45,8 +45,8 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 
 	@Override
 	public boolean identify() {
-		String ip = ResourceAgentIdentifier.getLocalIpAddress();
-		int prefix = ResourceAgentIdentifier.getLocalPrefix();
+		String ip = SmartAndroid.getLocalIpAddress();
+		int prefix = SmartAndroid.getLocalPrefix();
 		
 		ResourceContainer.getInstance().add(this);
 		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRANS(), ip, prefix));

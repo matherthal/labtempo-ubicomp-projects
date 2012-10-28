@@ -11,16 +11,18 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-import br.uff.tempo.middleware.comm.common.Callable;
+import br.uff.tempo.middleware.SmartAndroid;
+import br.uff.tempo.middleware.comm.common.InterestAPI;
+import br.uff.tempo.middleware.comm.interest.api.InterestAPIImpl;
+import br.uff.tempo.middleware.comm.interest.api.JSONRPCCallback;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
 import br.uff.tempo.middleware.management.utils.Position;
-import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
-public abstract class ResourceAgent extends Service implements IResourceAgent, Serializable, Callable {
+public abstract class ResourceAgent extends Service implements IResourceAgent, Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -157,8 +159,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		if (!registered) {
 			rrs = new ResourceRegisterStub(IResourceRegister.rans);
 
-			String ip = ResourceAgentIdentifier.getLocalIpAddress();
-			int prefix = ResourceAgentIdentifier.getLocalPrefix();
+			String ip = SmartAndroid.getLocalIpAddress();
+			int prefix = SmartAndroid.getLocalPrefix();
 			
 			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, null);
 			
@@ -173,7 +175,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			ResourceContainer.getInstance().add(this);
 			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
 		}
-
+		
 		return registered;
 	}
 	
@@ -196,8 +198,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			rrs = new ResourceRegisterStub(IResourceRegister.rans);
 			this.position = position;
 			
-			String ip = ResourceAgentIdentifier.getLocalIpAddress();
-			int prefix = ResourceAgentIdentifier.getLocalPrefix();
+			String ip = SmartAndroid.getLocalIpAddress();
+			int prefix = SmartAndroid.getLocalPrefix();
 			
 			Place place = ResourceLocation.getInstance().getLocal(position);
 			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
@@ -208,7 +210,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			ResourceContainer.getInstance().add(this);
 			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
 		}
-
+		
 		return registered;
 	}
 	
@@ -218,8 +220,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			rrs = new ResourceRegisterStub(IResourceRegister.rans);
 			this.position = position;
 			
-			String ip = ResourceAgentIdentifier.getLocalIpAddress();
-			int prefix = ResourceAgentIdentifier.getLocalPrefix();
+			String ip = SmartAndroid.getLocalIpAddress();
+			int prefix = SmartAndroid.getLocalPrefix();
 			
 			Place place = ResourceLocation.getInstance().getPlace(placeName);
 			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
@@ -272,20 +274,15 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	
 	
 
-	private void registerDefaultInterests() {
-//		InterestAPI ia = InterestAPIImpl.getInstance();
-//		try {
-//			ia.registerInterest(this.rai + "://ContextVariable", this);
-//			ia.registerInterest(this.rai + "://Service", this);
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-		// TODO: André - add default interests related with context variables and services
-		// TODO: André - find methods annotated with @ContextVariable and @Service and register in communication API
-	}
-	
-	@Override
-	public Object call(String rai, String interest, String message) {
-		return null;
+	protected void registerDefaultInterests() {
+		if (SmartAndroid.interestAPIEnable) {
+			InterestAPI ia = InterestAPIImpl.getInstance();
+			try {
+				ia.registerInterest(this.rans);
+				ia.registerInterest(this.rans, "jsonrpc", new JSONRPCCallback());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}			
+		}
 	}
 }

@@ -3,12 +3,13 @@ package br.uff.tempo.middleware.comm.current.api;
 import java.io.Serializable;
 
 import android.util.Log;
+import br.uff.tempo.middleware.SmartAndroid;
+import br.uff.tempo.middleware.comm.interest.api.InterestAPIImpl;
 import br.uff.tempo.middleware.comm.interest.api.NewDispatcher;
 import br.uff.tempo.middleware.e.SmartAndroidException;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.ResourceAgentNS;
 import br.uff.tempo.middleware.management.ResourceNSContainer;
-import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class Caller implements Serializable {
 	
@@ -28,14 +29,20 @@ public class Caller implements Serializable {
 		try {
 			String result = "";
 
-			if (raNS.getIp().equals(ResourceAgentIdentifier.getLocalIpAddress())) {
-				Log.d("SmartAndroid", String.format("Sending LOCAL msg %s to %s", jsonString, raNS.getRans()));
-				result = NewDispatcher.getInstance().dispatch(raNS.getRans(), jsonString);
-				Log.d("SmartAndroid", String.format("Receive LOCAL msg %s from %s", result, raNS.getRans()));
+			if (SmartAndroid.interestAPIEnable) {
+				String message = raNS.getRans() + SocketService.BUFFER_END + jsonString + SocketService.BUFFER_END;
+				String resultTemp = InterestAPIImpl.getInstance().sendMessage(SmartAndroid.getLocalPrefix(), raNS, "jsonrpc", message);
+				result = resultTemp.substring(0, resultTemp.lastIndexOf(SocketService.BUFFER_END));
 			} else {
-				Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", jsonString, raNS.getRans()));
-				result = SocketService.sendReceive(raNS.getIp(), raNS.getRans() + SocketService.BUFFER_END + jsonString + SocketService.BUFFER_END);
-				Log.d("SmartAndroid", String.format("Receive REMOTE msg %s from %s", result, raNS.getRans()));
+				if (raNS.getIp().equals(SmartAndroid.getLocalIpAddress())) {
+					Log.d("SmartAndroid", String.format("Sending LOCAL msg %s to %s", jsonString, raNS.getRans()));
+					result = NewDispatcher.getInstance().dispatch(raNS.getRans(), jsonString);
+					Log.d("SmartAndroid", String.format("Receive LOCAL msg %s from %s", result, raNS.getRans()));
+				} else {
+					Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", jsonString, raNS.getRans()));
+					result = SocketService.sendReceive(raNS.getIp(), raNS.getRans() + SocketService.BUFFER_END + jsonString + SocketService.BUFFER_END);
+					Log.d("SmartAndroid", String.format("Receive REMOTE msg %s from %s", result, raNS.getRans()));
+				}				
 			}
 			
 			return result;

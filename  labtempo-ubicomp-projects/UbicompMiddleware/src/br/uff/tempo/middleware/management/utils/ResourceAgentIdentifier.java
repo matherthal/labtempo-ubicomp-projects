@@ -23,9 +23,7 @@ public class ResourceAgentIdentifier implements Serializable {
 
 	private int pointer;
 	
-	private static String defaultMyIp = "127.0.0.1";
-	private static String myIp = defaultMyIp;
-	private static int myLocalPrefix = 0;
+
 
 	public ResourceAgentIdentifier(String rai) {
 		this.rai = rai;
@@ -79,37 +77,5 @@ public class ResourceAgentIdentifier implements Serializable {
 
 	public static String generateRAI(String path, String type, String name) {
 		return "rai:" + path + "//" + type + ":" + name;
-	}
-
-	public static String getLocalIpAddress() {
-		return myIp;
-	}
-	
-	public static int getLocalPrefix() {
-		return myLocalPrefix;
-	}
-	
-	public static void fillLocalIpAddress() {
-		try {
-			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-				NetworkInterface intf = en.nextElement();
-				for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-					InetAddress inetAddress = enumIpAddr.nextElement();
-					if (!inetAddress.isLoopbackAddress() && !inetAddress.getHostAddress().contains(":")) {
-						myIp = inetAddress.getHostAddress();
-						return;
-					}
-				}
-			}
-		} catch (SocketException ex) {
-			Log.e("ResourceAgent", ex.getMessage());
-		}
-		myIp = defaultMyIp; //just to keep compatibility
-	}
-	
-	public static void fillLocalPrefixAddress() {
-		myLocalPrefix = 0; //to keep compatibility for now 
-		//myLocalPrefix = InterestAPIImpl.getInstance().getPrefix();		
-	}
-	
+	}	
 }

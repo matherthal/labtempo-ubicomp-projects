@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
-import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceDirectory {
 	private static final String TAG = ResourceDirectory.class.getSimpleName();
