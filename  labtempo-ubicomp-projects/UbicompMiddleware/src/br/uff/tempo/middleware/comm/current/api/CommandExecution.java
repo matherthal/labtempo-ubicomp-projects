@@ -7,7 +7,7 @@ import java.net.DatagramSocket;
 import java.util.zip.DataFormatException;
 
 import android.util.Log;
-import br.uff.tempo.middleware.comm.interest.api.NewDispatcher;
+import br.uff.tempo.middleware.comm.common.NewDispatcher;
 import br.uff.tempo.middleware.e.SmartAndroidException;
 
 public class CommandExecution extends Thread {

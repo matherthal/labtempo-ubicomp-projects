@@ -8,7 +8,7 @@ public class SmartAndroidRuntimeException extends RuntimeException {
 
 	public SmartAndroidRuntimeException(String message, Throwable t) {
 		super(message, t);
-		Log.d("SmartAndroid", String.format("SmartAndroidException. Message: %s with %s", message, t));
+		Log.d("SmartAndroid", String.format("SmartAndroidRuntimeException. Message: %s with %s", message, t));
 	}
 	
 	public SmartAndroidRuntimeException(String message) {

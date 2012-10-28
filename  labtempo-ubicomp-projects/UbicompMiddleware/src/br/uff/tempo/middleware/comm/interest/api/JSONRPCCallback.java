@@ -1,6 +1,7 @@
 package br.uff.tempo.middleware.comm.interest.api;
 
 import br.uff.tempo.middleware.comm.common.Callable;
+import br.uff.tempo.middleware.comm.common.NewDispatcher;
 import br.uff.tempo.middleware.comm.current.api.SocketService;
 import br.uff.tempo.middleware.e.SmartAndroidException;
 import br.uff.tempo.middleware.management.ResourceAgentNS;
