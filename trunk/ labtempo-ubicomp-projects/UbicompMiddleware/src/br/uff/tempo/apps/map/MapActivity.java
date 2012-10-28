@@ -74,6 +74,7 @@ import br.uff.tempo.apps.map.objects.SceneState;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
 import br.uff.tempo.apps.map.settings.MapSettings;
+import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceData;
@@ -263,7 +264,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		String rdsIP = prefs.getString("rdsAddress", null);
 
 		if (rdsIP == null) {
-			editor.putString("rdsAddress", IResourceDiscovery.RDS_IP);
+			editor.putString("rdsAddress", SmartAndroid.resourceDiscoveryIP);
 			editor.commit();
 		} else {
 			testRDSAddress(rdsIP);

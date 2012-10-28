@@ -1,6 +1,5 @@
 package br.uff.tempo.apps.onoffsample;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -14,10 +13,8 @@ import android.widget.ToggleButton;
 import br.uff.tempo.R;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.utils.Position;
-import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 import br.uff.tempo.middleware.resources.OnOff;
 
 public class OnOffView extends Activity{

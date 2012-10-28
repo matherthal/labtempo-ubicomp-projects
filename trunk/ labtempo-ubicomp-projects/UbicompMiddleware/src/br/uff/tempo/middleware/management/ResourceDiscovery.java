@@ -3,8 +3,8 @@ package br.uff.tempo.middleware.management;
 import java.util.ArrayList;
 import java.util.List;
 
+import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class ResourceDiscovery extends ResourceAgent implements IResourceDiscovery {
 	
@@ -24,8 +24,8 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 
 	@Override
 	public boolean identify() {
-		String ip = ResourceAgentIdentifier.getLocalIpAddress();
-		int prefix = ResourceAgentIdentifier.getLocalPrefix();
+		String ip = SmartAndroid.getLocalIpAddress();
+		int prefix = SmartAndroid.getLocalPrefix();
 		
 		ResourceContainer.getInstance().add(this);
 		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRANS(), ip, prefix));

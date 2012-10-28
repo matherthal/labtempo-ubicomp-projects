@@ -143,4 +143,12 @@ public class JSONHelper {
 		JSONRPC jsonRpc = (new Gson()).fromJson(jsonRPCString, JSONRPC.class);
 		return jsonRpc.getId();
 	}
+	
+	public static String toJson(Object value) {
+		return new Gson().toJson(value);
+	}
+	
+	public static Object fromJson(String json, Type type) {
+		return new Gson().fromJson(json, type);
+	}
 }

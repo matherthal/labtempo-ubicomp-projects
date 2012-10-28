@@ -1,7 +1,9 @@
 package br.uff.tempo.middleware.comm.common;
 
+import br.uff.tempo.middleware.management.ResourceAgentNS;
+
 public interface Callable {
 	
-	Object call(String rai, String contextVariable, String value);
+	String call(ResourceAgentNS raNS, String interest, String message);
 
 }
