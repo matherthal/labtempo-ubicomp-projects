@@ -4,11 +4,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.util.zip.DataFormatException;
 
 import android.util.Log;
-import br.uff.tempo.middleware.comm.common.NewDispatcher;
-import br.uff.tempo.middleware.e.SmartAndroidException;
+import br.uff.tempo.middleware.comm.common.Dispatcher;
 
 public class CommandExecution extends Thread {
 	
@@ -31,7 +29,7 @@ public class CommandExecution extends Thread {
 			String jsonstring = call[1];
 			
 			Log.d("SmartAndroid", String.format("Receive REMOTE msg %s from %s", jsonstring, calleeID));
-			String result = NewDispatcher.getInstance().dispatch(calleeID, jsonstring) + SocketService.BUFFER_END;
+			String result = Dispatcher.getInstance().dispatch(calleeID, jsonstring) + SocketService.BUFFER_END;
 			Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", result, calleeID));
 			
 			byte[] bufsk = SocketService.compress(result);
@@ -41,10 +39,6 @@ public class CommandExecution extends Thread {
 		} catch (UnsupportedEncodingException e) {
 			Log.d("SmartAndroid", String.format("CommandExecution. Exception: %s", e));
 		} catch (IOException e) {
-			Log.d("SmartAndroid", String.format("CommandExecution. Exception: %s", e));
-		} catch (SmartAndroidException e) {
-			Log.d("SmartAndroid", String.format("CommandExecution. Exception: %s", e));
-		} catch (DataFormatException e) {
 			Log.d("SmartAndroid", String.format("CommandExecution. Exception: %s", e));
 		}
 	}

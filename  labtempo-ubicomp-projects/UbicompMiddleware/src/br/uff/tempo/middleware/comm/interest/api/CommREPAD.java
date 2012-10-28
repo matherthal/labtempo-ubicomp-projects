@@ -1,9 +1,6 @@
 package br.uff.tempo.middleware.comm.interest.api;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.SocketException;
-import java.util.zip.DataFormatException;
 
 import ufrj.coppe.lcp.repa.PrefixAddress;
 import ufrj.coppe.lcp.repa.RepaMessage;
@@ -70,35 +67,39 @@ public class CommREPAD {
 		}
 
 		public void run() {
-			try {
-				if (this.timeToStart > 0) {
+			if (this.timeToStart > 0) {
+				try {
 					Thread.sleep(this.timeToStart);
+				} catch (InterruptedException e) {
+					throw new SmartAndroidRuntimeException("Unable sleep REPASession.thread", e);
 				}
+			}
+			
+			if (this.repaMessage == null) {
+				return;
+			}
+			
+			RepaMessageContent repaMessageContent = messageDataToRepaMessageContent();
+			
+			String response = serve(repaMessageContent);
+			
+			if (response != null) {
+				repaMessageContent.setReply(true);
 				
-				if (this.repaMessage == null) {
-					return;
-				}
+				repaMessageContent.swapRaNS();
+				repaMessageContent.swapPrefix();
 				
-				RepaMessageContent repaMessageContent = messageDataToRepaMessageContent();
+				repaMessageContent.setContent(response);
 				
-				String response = serve(repaMessageContent);
-				
-				if (response != null) {
-					repaMessageContent.setReply(true);
-					
-					repaMessageContent.swapRaNS();
-					repaMessageContent.swapPrefix();
-					
-					repaMessageContent.setContent(response);
-					
+				try {
 					repaSend(repaMessageContent);
+				} catch (Exception e) {
+					throw new SmartAndroidRuntimeException("Unable to send response: " + repaMessageContent, e);
 				}
-			} catch (Exception e) {
-				e.printStackTrace();
 			}
 		}
 
-		private RepaMessageContent messageDataToRepaMessageContent() throws DataFormatException, IOException, UnsupportedEncodingException {
+		private RepaMessageContent messageDataToRepaMessageContent() {
 			String repaMessageContentJSON = SocketService.decompress(repaMessage.getData());
 			RepaMessageContent repaMessageContent = (RepaMessageContent) JSONHelper.fromJson(repaMessageContentJSON, RepaMessageContent.class);
 			return repaMessageContent;
@@ -146,7 +147,7 @@ public class CommREPAD {
 		this.repaSocket.unregisterInterest(interest);
 	}
 	
-	private byte[] messageContentToMessageData(RepaMessageContent messageContent) throws UnsupportedEncodingException {
+	private byte[] messageContentToMessageData(RepaMessageContent messageContent) {
 		String repaMessageContentJSON = JSONHelper.toJson(messageContent);
 		byte[] messageData = SocketService.compress(repaMessageContentJSON);
 		return messageData;

@@ -45,7 +45,6 @@ public class InterestAPIImpl implements InterestAPI {
 
 	private static String dispatchRepaMessage(RepaMessageContent messageContent) {
 		if (messageContent.isReply()) {
-			Log.d("SmartAndroid", String.format("Response %s was received to %s", messageContent.getContent(), messageContent.getRaNSTo()));
 			repaCommMap.get(messageContent.getId()).notifyResponseReceived(messageContent.getContent());
 			return null;
 		}
@@ -60,12 +59,10 @@ public class InterestAPIImpl implements InterestAPI {
 			raNSFrom = messageContent.getRaNSFrom();
 		}
 		
-		Log.d("SmartAndroid", "Starting calling callbacks of rans: " + messageContent.getRaNSTo());
 		String callbackResult = null;
 		for (Callable callback : callbacks) {
 			callbackResult = callback.call(raNSFrom, messageContent.getInterest(), messageContent.getContent());
 		}
-		Log.d("SmartAndroid", "End of calling callback of rans: " + messageContent.getRaNSTo());
 		
 		return callbackResult;
 	}
@@ -86,11 +83,9 @@ public class InterestAPIImpl implements InterestAPI {
 		} else {
 			agentsInterestsIndex.get(indexKey).add(callback); // add new callback of the same interest
 		}
-		Log.d("SmartAndroid", "agentsInterestsIndex - Adding a new callback of interest: " + interest);
+		Log.d("SmartAndroid", String.format("rans: %s interested in: %s", rans, interest));
 		
 		this.commREPAD.registerInterest(interest);
-		
-		Log.d("SmartAndroid", "REPA registerInterest was called with interest: " + interest);
 	}	
 
 	@Override
@@ -98,8 +93,6 @@ public class InterestAPIImpl implements InterestAPI {
 		this.addInterest(interest, callback); // Adding to default interests map
 
 		this.commREPAD.registerInterest(interest);
-		
-		Log.d("SmartAndroid", "REPA registerInterest was called with interest: " + interest);
 	}
 
 	@Override
@@ -140,11 +133,9 @@ public class InterestAPIImpl implements InterestAPI {
 		} else {
 			myInterests.get(interest).add(callback); // add new callback of the same interest
 		}
-		
-		Log.d("SmartAndroid", "myInterests - Adding a new callback of interest: " + interest);
 	}
 
-	private String send(String commId, RepaMessageContent repaMessageContent) throws Exception, InterruptedException {
+	private String send(String commId, RepaMessageContent repaMessageContent) throws Exception {
 		CountDownLatch countDownLatch = new CountDownLatch(1);
 		
 		repaCommMap.put(commId, new REPAComm(countDownLatch));

@@ -4,9 +4,8 @@ import java.io.Serializable;
 
 import android.util.Log;
 import br.uff.tempo.middleware.SmartAndroid;
-import br.uff.tempo.middleware.comm.common.NewDispatcher;
+import br.uff.tempo.middleware.comm.common.Dispatcher;
 import br.uff.tempo.middleware.comm.interest.api.InterestAPIImpl;
-import br.uff.tempo.middleware.e.SmartAndroidException;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.ResourceAgentNS;
 import br.uff.tempo.middleware.management.ResourceNSContainer;
@@ -30,18 +29,22 @@ public class Caller implements Serializable {
 			String result = "";
 
 			if (SmartAndroid.interestAPIEnable) {
+				Log.d("SmartAndroid", "   ");
+				Log.d("SmartAndroid", String.format("SENDING to %s \"REMOTE\" %s", raNS.getRans(), jsonString));
 				String message = raNS.getRans() + SocketService.BUFFER_END + jsonString + SocketService.BUFFER_END;
 				String resultTemp = InterestAPIImpl.getInstance().sendMessage(SmartAndroid.getLocalPrefix(), raNS, "jsonrpc", message);
 				result = resultTemp.substring(0, resultTemp.lastIndexOf(SocketService.BUFFER_END));
+				Log.d("SmartAndroid", String.format("RECEIVE from %s \"REMOTE\" %s", raNS.getRans(), result));
+				Log.d("SmartAndroid", "   ");
 			} else {
 				if (raNS.getIp().equals(SmartAndroid.getLocalIpAddress())) {
-					Log.d("SmartAndroid", String.format("Sending LOCAL msg %s to %s", jsonString, raNS.getRans()));
-					result = NewDispatcher.getInstance().dispatch(raNS.getRans(), jsonString);
-					Log.d("SmartAndroid", String.format("Receive LOCAL msg %s from %s", result, raNS.getRans()));
+					Log.d("SmartAndroid", String.format("DISPATCH SND LOCAL %s to %s", jsonString, raNS.getRans()));
+					result = Dispatcher.getInstance().dispatch(raNS.getRans(), jsonString);
+					Log.d("SmartAndroid", String.format("DISPATCH RST LOCAL %s to %s", result, raNS.getRans()));
 				} else {
-					Log.d("SmartAndroid", String.format("Sending REMOTE msg %s to %s", jsonString, raNS.getRans()));
+					Log.d("SmartAndroid", String.format("SENDING to %s REMOTE %s", raNS.getRans(), jsonString));
 					result = SocketService.sendReceive(raNS.getIp(), raNS.getRans() + SocketService.BUFFER_END + jsonString + SocketService.BUFFER_END);
-					Log.d("SmartAndroid", String.format("Receive REMOTE msg %s from %s", result, raNS.getRans()));
+					Log.d("SmartAndroid", String.format("RECEIVE from %s REMOTE %s", raNS.getRans(), result));
 				}				
 			}
 			
@@ -49,9 +52,6 @@ public class Caller implements Serializable {
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			Log.e("Caller", "IllegalArgumentException: " + e.getMessage());
-		} catch (SmartAndroidException e) {
-			e.printStackTrace();
-			Log.e("Caller", "Exception: " + e.getMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 			Log.e("Caller", "Exception: " + e.getMessage());
