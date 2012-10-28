@@ -115,7 +115,7 @@ public class SmartAndroid {
 						throw new SmartAndroidRuntimeException("Unable to find ResourceDiscovery prefix. Impossible to initialize communication.");
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					throw new SmartAndroidRuntimeException("Exception finding ResourceDiscovery prefix. Impossible to initialize communication.", e);
 				}
 			}			
 			// Should be initialized with ResourceDiscovery IP and PREFIX at beginning to allow communication...

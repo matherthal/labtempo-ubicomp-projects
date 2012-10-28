@@ -1,6 +1,5 @@
 package br.uff.tempo.middleware.comm.interest.api;
 
-import java.net.SocketException;
 import java.util.Arrays;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
@@ -36,20 +35,17 @@ public class InterestAPIImpl implements InterestAPI {
 	}
 	
 	public InterestAPIImpl() {
-		try {
-			commREPAD = new CommREPAD() {
-				@Override
-				public String serve(RepaMessageContent repaMessageContent) {
-					return dispatchRepaMessage(repaMessageContent);
-				}
-			};
-		} catch (SocketException e) {
-			Log.d("SmartAndroid", "Erro criando CommREPAD: " + e);
-		}
+		commREPAD = new CommREPAD() {
+			@Override
+			public String serve(RepaMessageContent repaMessageContent) {
+				return dispatchRepaMessage(repaMessageContent);
+			}
+		};
 	}
 
 	private static String dispatchRepaMessage(RepaMessageContent messageContent) {
 		if (messageContent.isReply()) {
+			Log.d("SmartAndroid", String.format("Response %s was received to %s", messageContent.getContent(), messageContent.getRaNSTo()));
 			repaCommMap.get(messageContent.getId()).notifyResponseReceived(messageContent.getContent());
 			return null;
 		}
@@ -64,12 +60,12 @@ public class InterestAPIImpl implements InterestAPI {
 			raNSFrom = messageContent.getRaNSFrom();
 		}
 		
-		Log.d("SmartAndroid", "Vou chamar os callbacks do agente: " + messageContent.getRaNSTo());
+		Log.d("SmartAndroid", "Starting calling callbacks of rans: " + messageContent.getRaNSTo());
 		String callbackResult = null;
 		for (Callable callback : callbacks) {
 			callbackResult = callback.call(raNSFrom, messageContent.getInterest(), messageContent.getContent());
 		}
-		Log.d("SmartAndroid", "Fim das chamadas aos callbacksdo agente: " + messageContent.getRaNSTo());
+		Log.d("SmartAndroid", "End of calling callback of rans: " + messageContent.getRaNSTo());
 		
 		return callbackResult;
 	}
@@ -81,32 +77,29 @@ public class InterestAPIImpl implements InterestAPI {
 	
 	@Override
 	public void registerInterest(String rans, String interest, Callable callback) throws Exception {
-		// Adding to default interests map
-		this.addInterest(interest, callback);
+		this.addInterest(interest, callback); // Adding to default interests map
 
 		// Adding to specific agents interests map index
 		String indexKey = rans + INDEX_SEPARATOR + interest;
 		if (agentsInterestsIndex.get(indexKey) == null) {
-			Log.d("SmartAndroid", "Adicionando o primeiro callback do interesse: " + interest);
-			// first callback
-			agentsInterestsIndex.put(indexKey, new LinkedBlockingQueue<Callable>(Arrays.asList(callback)));
+			agentsInterestsIndex.put(indexKey, new LinkedBlockingQueue<Callable>(Arrays.asList(callback))); // first callback
 		} else {
-			Log.d("SmartAndroid", "Adicionando um novo callback do interesse" + interest);
-			// add new callback of the same interest
-			agentsInterestsIndex.get(indexKey).add(callback);	
+			agentsInterestsIndex.get(indexKey).add(callback); // add new callback of the same interest
 		}
+		Log.d("SmartAndroid", "agentsInterestsIndex - Adding a new callback of interest: " + interest);
 		
-		Log.d("SmartAndroid", "Chamando registro de interesse da repa para o interesse: " + interest);
 		this.commREPAD.registerInterest(interest);
+		
+		Log.d("SmartAndroid", "REPA registerInterest was called with interest: " + interest);
 	}	
 
 	@Override
 	public void registerInterest(String interest, Callable callback) throws Exception {
-		// Adding to default interests map
-		this.addInterest(interest, callback);
+		this.addInterest(interest, callback); // Adding to default interests map
 
-		Log.d("SmartAndroid", "Chamando registro de interesse da repa para o interesse: " + interest);
 		this.commREPAD.registerInterest(interest);
+		
+		Log.d("SmartAndroid", "REPA registerInterest was called with interest: " + interest);
 	}
 
 	@Override
@@ -143,14 +136,12 @@ public class InterestAPIImpl implements InterestAPI {
 	
 	private void addInterest(String interest, Callable callback) throws Exception {
 		if (myInterests.get(interest) == null) {
-			Log.d("SmartAndroid", "Adicionando o primeiro callback do interesse: " + interest);
-			// first callback
-			myInterests.put(interest, new LinkedBlockingQueue<Callable>(Arrays.asList(callback)));
+			myInterests.put(interest, new LinkedBlockingQueue<Callable>(Arrays.asList(callback))); // first callback
 		} else {
-			Log.d("SmartAndroid", "Adicionando um novo callback do interesse" + interest);
-			// add new callback of the same interest
-			myInterests.get(interest).add(callback);	
+			myInterests.get(interest).add(callback); // add new callback of the same interest
 		}
+		
+		Log.d("SmartAndroid", "myInterests - Adding a new callback of interest: " + interest);
 	}
 
 	private String send(String commId, RepaMessageContent repaMessageContent) throws Exception, InterruptedException {

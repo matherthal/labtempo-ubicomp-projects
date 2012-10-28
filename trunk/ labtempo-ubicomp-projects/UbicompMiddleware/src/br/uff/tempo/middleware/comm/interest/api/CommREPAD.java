@@ -11,6 +11,7 @@ import ufrj.coppe.lcp.repa.RepaSocket;
 import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.comm.current.api.SocketService;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 
 public class CommREPAD {
 
@@ -18,10 +19,14 @@ public class CommREPAD {
 
 	private RepaSocket repaSocket;
 
-	public CommREPAD() throws SocketException {
-		repaSocket = RepaSocket.getRepaSocket();
-		repaSocket.repaOpen();
-
+	public CommREPAD() {
+		try {
+			repaSocket = RepaSocket.getRepaSocket();
+			repaSocket.repaOpen();
+		} catch (SocketException e) {
+			throw new SmartAndroidRuntimeException("Error creating CommREPAD. Problem getting or opening RepaSocket", e);
+		}
+		
 		myThread = new Thread(new Runnable() {
 			public void run() {
 				try {
@@ -29,6 +34,7 @@ public class CommREPAD {
 						new REPASession(repaSocket.repaRecv());
 					}
 				} catch (Exception e) {
+					throw new SmartAndroidRuntimeException("Error in repaSocket.repaRecv()", e);
 				}
 			}
 		}, "CommREPAD");

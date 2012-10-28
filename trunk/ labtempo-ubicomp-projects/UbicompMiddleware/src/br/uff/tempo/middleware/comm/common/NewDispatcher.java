@@ -1,4 +1,4 @@
-package br.uff.tempo.middleware.comm.interest.api;
+package br.uff.tempo.middleware.comm.common;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

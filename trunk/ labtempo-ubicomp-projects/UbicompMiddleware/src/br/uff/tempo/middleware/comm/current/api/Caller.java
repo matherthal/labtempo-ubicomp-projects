@@ -4,8 +4,8 @@ import java.io.Serializable;
 
 import android.util.Log;
 import br.uff.tempo.middleware.SmartAndroid;
+import br.uff.tempo.middleware.comm.common.NewDispatcher;
 import br.uff.tempo.middleware.comm.interest.api.InterestAPIImpl;
-import br.uff.tempo.middleware.comm.interest.api.NewDispatcher;
 import br.uff.tempo.middleware.e.SmartAndroidException;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.ResourceAgentNS;
