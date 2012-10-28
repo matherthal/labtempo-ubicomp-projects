@@ -1,17 +1,15 @@
 package br.uff.tempo.middleware.comm.current.api;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.util.zip.DataFormatException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import android.util.Log;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 
 public class SocketService {
 	public final static String BUFFER_END = "#@#";
@@ -71,42 +69,50 @@ public class SocketService {
 		command.start();
 	}
 
-	public static byte[] compress(String msg) throws UnsupportedEncodingException {
-		Deflater deflater = new Deflater();
-		deflater.setInput(msg.getBytes("UTF-8"));
-		deflater.finish();
-		
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		
-		byte[] buf = new byte[8192];
-		while (!deflater.finished()) {
-			int byteCount = deflater.deflate(buf);
-			baos.write(buf, 0, byteCount);
+	public static byte[] compress(String msg) {
+		try {
+			Deflater deflater = new Deflater();
+			deflater.setInput(msg.getBytes("UTF-8"));
+			deflater.finish();
+			
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			
+			byte[] buf = new byte[8192];
+			while (!deflater.finished()) {
+				int byteCount = deflater.deflate(buf);
+				baos.write(buf, 0, byteCount);
+			}
+			
+			deflater.end();
+			byte[] compressedBytes = baos.toByteArray();
+			return compressedBytes;
+		} catch (Exception e) {
+			throw new SmartAndroidRuntimeException("Exception compressing: " + msg, e);
 		}
-		
-		deflater.end();
-		byte[] compressedBytes = baos.toByteArray();
-		return compressedBytes;
 	}
 
-	public static String decompress(byte[] compressedBytes) throws DataFormatException, IOException, UnsupportedEncodingException {
-		Inflater inflater = new Inflater();			
-		inflater.setInput(compressedBytes);
-
-		ByteArrayOutputStream baosI = new ByteArrayOutputStream(compressedBytes.length);
-		
-		byte[] buff = new byte[8192];
-		while (!inflater.finished()) {
-			int count = inflater.inflate(buff);
-			baosI.write(buff, 0, count);
+	public static String decompress(byte[] compressedBytes) {
+		try {
+			Inflater inflater = new Inflater();			
+			inflater.setInput(compressedBytes);
+	
+			ByteArrayOutputStream baosI = new ByteArrayOutputStream(compressedBytes.length);
+			
+			byte[] buff = new byte[8192];
+			while (!inflater.finished()) {
+				int count = inflater.inflate(buff);
+				baosI.write(buff, 0, count);
+			}
+			
+			baosI.close();
+			inflater.end();
+			
+			byte[] output = baosI.toByteArray();
+			
+			String msgI = new String(output, "UTF-8");
+			return msgI;
+		} catch (Exception e) {
+			throw new SmartAndroidRuntimeException("Exception decompressing: " + compressedBytes, e);
 		}
-		
-		baosI.close();
-		inflater.end();
-		
-		byte[] output = baosI.toByteArray();
-		
-		String msgI = new String(output, "UTF-8");
-		return msgI;
 	}
 }
