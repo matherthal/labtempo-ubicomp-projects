@@ -124,53 +124,9 @@ public class Game{
 			    
 					if (!flag.equals("local")) {
 						gameAgent.setMove(move.getRow(), move.getColumn(), this.currentPlayer.toString());
-		//				if (this.currentPlayer.getType() == Player.Type.Human) {
-		//			        this.playerPrompts.get(this.currentPlayer.getName()).hide();
-		//				}
-					}//else
-		//			{				
-		//				if (this.currentPlayer.getType() == Player.Type.Human) {
-		//			        if (this.currentPlayer.equals(playerX)) {
-		//			        	this.playerPrompts.get(this.playerO.getName()).hide();
-		//			        }else {
-		//			        	this.playerPrompts.get(this.playerX.getName()).hide();
-		//			        }
-		//				}
-		//			}
-				      
-					if (this.currentPlayer.getType() == Player.Type.Human) {
-				        this.playerPrompts.get(this.currentPlayer.getName()).hide();
 					}
-					
-				
-					this.board.invalidate();
-				    this.numberOfMoves++;
-				
-				    // Check for the end of the game.
-				    if (this.checkForWin()) {
-					      this.output("Player " + this.currentPlayer.getName() + " wins!");
-					      this.gameOver = true;
-				    }
-				    else if (this.numberOfMoves == 9) {
-				        this.output("Draw");
-				        this.gameOver = true;
-				    }
-				    else {
-				
-				        // Switch players.
-				        if (this.currentPlayer == this.playerX) {
-				        	this.currentPlayer = this.playerO;
-				        }
-				        else {
-				        	this.currentPlayer = this.playerX;
-				        }
-				
-				        // Show the prompt for the human player.
-				        if (this.currentPlayer.getType() == Player.Type.Human) {
-				        	this.playerPrompts.get(this.currentPlayer.getName()).show();
-				        }
-				
-				    }
+				      				
+					this.update();
 	    		}
 	    	}
 	

@@ -19,16 +19,17 @@ import br.uff.tempo.middleware.management.ResourceNSContainer;
 import br.uff.tempo.middleware.management.ResourceRegister;
 import br.uff.tempo.middleware.management.ResourceRepository;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class SmartAndroid {
-	
-	public static String resourceDiscoveryIP = "192.168.1.104";
-	public static Integer resourceDiscoveryPREFIX = 0;
-	public static boolean interestAPIEnable = false;
 	
 	private static String defaultMyIp = "127.0.0.1";
 	private static String myIp = defaultMyIp;
 	private static int myLocalPrefix = 0;
+	
+	public static String resourceDiscoveryIP = "192.168.1.104";;
+	public static Integer resourceDiscoveryPREFIX = 0;
+	public static boolean interestAPIEnable = false;
 	
 	protected static final long TIME_TO_FILL_IP_AND_PREFIX = 5 * 60 * 1000; // 5 min
 
@@ -39,6 +40,8 @@ public class SmartAndroid {
 	private static Thread commDaemon;
 	
 	private static SmartAndroid instance;
+	
+	private static String myLocalIp;
 	
 	public synchronized static void newInstance() {
 		if (instance == null) {
@@ -166,8 +169,28 @@ public class SmartAndroid {
 		}
 	}
 
-	public static String getLocalIpAddress() {
+	public static String getLocalIpAddress(){
 		return myIp;
+	}
+	
+	public static String getLocalIpAddressForRds() {
+		if ( myLocalIp == null) {	
+			try {
+				for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
+					NetworkInterface intf = en.nextElement();
+					for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+						InetAddress inetAddress = enumIpAddr.nextElement();
+						if (!inetAddress.isLoopbackAddress() && !inetAddress.getHostAddress().contains(":")) {
+							myLocalIp = inetAddress.getHostAddress();
+							return  myLocalIp;
+						}
+					}
+				}
+			} catch (SocketException ex) {
+				Log.e("ResourceAgent", ex.getMessage());
+			}
+		} 
+		return myLocalIp;
 	}
 	
 	public static int getLocalPrefix() {
