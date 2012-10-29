@@ -36,20 +36,6 @@ public class GameAgent extends ResourceAgent implements IGameAgent {
 		}
 
 	}
-	
-//	@Override
-//	public void notificationHandler(String rai, String method, Object value) {
-//		if (method.equals("setMove")) {
-//			if (game != null) {
-//				String[] valueArray = value.toString().split(";");
-//				int row = Integer.valueOf(valueArray[0]);
-//				int column = Integer.valueOf(valueArray[1]);
-//				move = new Location(row, column);
-//				((TicTacToe)game.context).runOnUiThread(updateTimeTask);
-//			}
-//		}
-//
-//	}
 
 	@Override
 	public void setGame(Game game) {
@@ -74,7 +60,7 @@ public class GameAgent extends ResourceAgent implements IGameAgent {
 	    public void run() {
 	    	game.update();
 	    }
-  };
+	};
 
 	@Override
 	public Name getPlayer() {
