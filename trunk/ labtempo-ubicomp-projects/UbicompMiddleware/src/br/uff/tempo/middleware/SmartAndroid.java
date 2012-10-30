@@ -27,7 +27,7 @@ public class SmartAndroid {
 	private static String myIp = defaultMyIp;
 	private static int myLocalPrefix = 0;
 	
-	public static String resourceDiscoveryIP = "192.168.1.104";;
+	public static String resourceDiscoveryIP = "192.168.1.70";
 	public static Integer resourceDiscoveryPREFIX = 0;
 	public static boolean interestAPIEnable = false;
 	

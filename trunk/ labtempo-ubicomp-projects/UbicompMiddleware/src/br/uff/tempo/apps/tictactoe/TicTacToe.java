@@ -15,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.ResourceRegister;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
@@ -34,7 +35,7 @@ public class TicTacToe extends Activity {
 
   public TicTacToe() {
 		IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-		List<ResourceData> gameList = discovery.searchForAttribute(ResourceData.TYPE, GameAgent.class.getName());
+		List<ResourceData> gameList = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(GameAgent.class));
 		int id = (int) Math.round(50 * Math.random());
 		gameAgent = new GameAgent("Game"+id, "Game"+id);
 		((GameAgent) gameAgent).identify();

@@ -56,7 +56,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		
 		registered = false;
 
-		this.type = type;//generateType(this.getClass());
+		this.type = type(this.getClass());
 		this.name = name;
 		this.rans = rans;
 
@@ -117,7 +117,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		}
 	}
 	
-	private String generateType(Class type) {
+	public static String type(Class type) {
 		String result = type.getSimpleName()+"";
 		type = type.getSuperclass();
 		while (!ResourceAgent.class.equals(type)){

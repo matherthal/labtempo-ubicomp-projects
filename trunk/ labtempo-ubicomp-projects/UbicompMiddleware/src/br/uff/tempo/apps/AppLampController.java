@@ -10,6 +10,7 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
@@ -32,7 +33,7 @@ public class AppLampController extends Activity {
 
 		if (savedInstanceState == null) {
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-			List<ResourceData> lamps = discovery.searchForAttribute(ResourceData.TYPE, Lamp.class.getName());
+			List<ResourceData> lamps = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Lamp.class));
 			ResourceData rdLamp = lamps.get(0);
 			Toast.makeText(this, "Lâmpada encontrada", Toast.LENGTH_SHORT).show();
 			lamp = new LampStub(rdLamp.getRai());
