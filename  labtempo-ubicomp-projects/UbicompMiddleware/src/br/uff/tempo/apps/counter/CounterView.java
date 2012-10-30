@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
@@ -55,7 +56,7 @@ public class CounterView extends Activity{
 	private void initList()
 	{
 		IResourceDiscovery rD = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-		List<ResourceData> rdList = rD.searchForAttribute(ResourceData.TYPE, OnOff.class.getName());
+		List<ResourceData> rdList = rD.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(OnOff.class));
 		if (rdList!= null){
 			String[] array_spinner = new String[rdList.size()];
 			int i = 0;

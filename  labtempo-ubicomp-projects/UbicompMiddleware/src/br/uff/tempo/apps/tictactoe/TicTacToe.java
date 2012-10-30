@@ -114,7 +114,7 @@ public class TicTacToe extends Activity {
 protected void onDestroy() {
 	super.onDestroy();
 	IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-    IResourceRegister register = new ResourceRegisterStub(discovery.searchForAttribute(ResourceData.TYPE, ResourceRegister.class.getName()).get(0).getRai());
+    IResourceRegister register = new ResourceRegisterStub(discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(ResourceRegister.class)).get(0).getRai());
     register.unregister(((GameAgent) gameAgent).getRANS());
     Log.d("TicTacToe", gameAgent.getPlayer().toString()+" destroyed");
 }

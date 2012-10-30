@@ -19,6 +19,7 @@ import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.middleware.SmartAndroid;
+import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
@@ -137,7 +138,7 @@ public class CounterApp2 extends Activity implements IChooser, IListGetter {
 	
 	public void chooseClick(View v) {
 
-		MiddlewareOperation m = new MiddlewareOperation(this, Lamp.class.getName());
+		MiddlewareOperation m = new MiddlewareOperation(this, ResourceAgent.type(Lamp.class));
 		m.execute(null);	
 	}
 	

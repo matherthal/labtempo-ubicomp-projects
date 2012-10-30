@@ -78,6 +78,7 @@ import br.uff.tempo.apps.map.settings.MapSettings;
 import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.Place;
+import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IPerson;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
@@ -943,15 +944,15 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 		// TODO Add middleware support to get the resource types
 		// Toast.makeText(this, resourceRAI, Toast.LENGTH_LONG).show();
-		if (resourceData.getType().equals(Stove.class.getName())) {
+		if (resourceData.getType().equals(ResourceAgent.type(Stove.class))) {
 			regData.setIconType(STOVE);
-		} else if (resourceData.getType().equals(Lamp.class.getName())) {
+		} else if (resourceData.getType().equals(ResourceAgent.type(Lamp.class))) {
 			regData.setIconType(LAMP);
-		} else if (resourceData.getType().equals(Bed.class.getName())) {
+		} else if (resourceData.getType().equals(ResourceAgent.type(Bed.class))) {
 			regData.setIconType(BED);
-		} else if (resourceData.getType().equals(Television.class.getName())) {
+		} else if (resourceData.getType().equals(ResourceAgent.type(Television.class))) {
 			regData.setIconType(TV);
-		} else if (resourceData.getType().equals(Person.class.getName())) {
+		} else if (resourceData.getType().equals(ResourceAgent.type(Person.class))) {
 			regData.setIconType(PERSON);
 		}
 
