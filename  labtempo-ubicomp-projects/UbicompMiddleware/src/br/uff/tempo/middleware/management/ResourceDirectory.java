@@ -1,7 +1,9 @@
 package br.uff.tempo.middleware.management;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import android.util.Log;
 
@@ -10,10 +12,14 @@ public class ResourceDirectory {
 	
 	Type directory;
 	
+	Map<String,String> pathList;//Map type easy the create type process
+	
 	private static ResourceDirectory instance;
 	
 	private ResourceDirectory() {
+		pathList = new HashMap<String,String>();
 		directory = new Type("//");
+		pathList.put(directory.getName(),directory.getName());
 	}
 	
 	public static synchronized ResourceDirectory getInstance() {
@@ -56,13 +62,14 @@ public class ResourceDirectory {
 							}
 						}
 						isInserted = true;
+						pathList.put(resource.getType(),resource.getType());// if type already exist subscribes it
 					}
 				}
 			}		
 		}
 		Log.d(TAG, "Created");
 	}
-	
+
 	private boolean contains(List<ResourceData> resources, ResourceData resource) {
 		for (ResourceData resourceData : resources) {
 			if (resourceData.getName().equals(resource.getName())) {
@@ -153,6 +160,16 @@ public class ResourceDirectory {
 		Log.d(TAG, "searchByType");
 		if (query.equals("")){
 			return getResources(directory);
+		} 
+		String path = pathList.get(query);
+		if (path != null && path != "//"){
+			String[] list = path.split("/");
+			Type typeTemp = directory;
+			for (String strPath : list) {
+				Type typeSubTemp = this.search(strPath,typeTemp.getSubTypeList());
+				typeTemp = typeSubTemp;
+			}
+			return typeTemp.resources;
 		}
 		return typeTreeSearch(query, directory);	
 	}
