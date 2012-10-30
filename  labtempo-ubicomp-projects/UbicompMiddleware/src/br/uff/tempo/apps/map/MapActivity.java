@@ -73,6 +73,7 @@ import br.uff.tempo.apps.map.objects.ResourceObject;
 import br.uff.tempo.apps.map.objects.SceneState;
 import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
+import br.uff.tempo.apps.map.rule.RuleComposeBar;
 import br.uff.tempo.apps.map.settings.MapSettings;
 import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.management.Person;
@@ -128,7 +129,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 	public static final int EXTERNAL = LUMINOSITY + 1;
 	public static final int LOG = EXTERNAL + 1;
 	public static final int SETTINGS = LOG + 1;
-	private static final int ERASE = SETTINGS + 1;
+	public static final int ERASE = SETTINGS + 1;
+	public static final int RULE = ERASE  + 1;
 
 	// constants to QuickAction (it's not been used yet)
 	public static final int ID_UNREG = 1;
@@ -213,6 +215,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 	// House map
 	private Space houseMap;
+
+	private RuleComposeBar mBar;
 
 	// ===========================================================
 	// Methods for/from SuperClass/Interfaces
@@ -317,6 +321,9 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		} catch (TextureAtlasBuilderException e) {
 			Debug.e(e);
 		}
+		
+		this.mBar = new RuleComposeBar(this.mCamera, getVertexBufferObjectManager());
+		this.mCamera.setHUD(this.mBar);
 
 		Log.i(TAG, "Create Resources");
 	}
@@ -638,6 +645,12 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			editor.commit();
 
 			return;
+			
+		case RULE:
+			
+			this.mBar.show();
+			
+			return;
 
 		default:
 			// if receive an invalid option, exit method
@@ -854,7 +867,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		// Option to load a different map file
 		menu.add("Load Map").setIcon(R.drawable.map);
 		// Option to create a logical expression (called context rule)
-		menu.add("Create rule").setIcon(R.drawable.thunder);
+		menu.add(Menu.NONE, RULE, Menu.NONE, "Create rule").setIcon(R.drawable.thunder);
 
 		menu.add(Menu.NONE, LOG, Menu.NONE, "View Log").setIcon(
 				R.drawable.log_icon);
@@ -1111,6 +1124,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 						// Reset the zoom to 100%
 						MapActivity.this.mCamera.setZoomFactor(1f);
+						MapActivity.this.mBar.dismiss();
 
 						return true;
 					}
