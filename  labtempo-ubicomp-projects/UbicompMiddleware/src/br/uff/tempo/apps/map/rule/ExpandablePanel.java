@@ -11,8 +11,9 @@ public class ExpandablePanel extends Entity {
 	private Sprite btnUp;
 	private Sprite button;
 	
+	//comment
 	public ExpandablePanel(VertexBufferObjectManager vertexBuffObjMan) {
-		
+
 	}
 	
 	public void add(IEntity entity) {
