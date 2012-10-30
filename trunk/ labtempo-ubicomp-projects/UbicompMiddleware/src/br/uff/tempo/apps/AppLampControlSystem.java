@@ -19,6 +19,7 @@ import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.Operator;
+import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
@@ -257,7 +258,7 @@ public class AppLampControlSystem extends Activity {
 	 * Button toggle between day and night
 	 */
 	public void buttonToggleDayNight_Clicked(View view) {
-		String rai = discovery.searchForAttribute(ResourceData.TYPE, DayLightSensor.class.getName()).get(0).getRai();
+		String rai = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(DayLightSensor.class)).get(0).getRai();
 		IDayLightSensor dl = new DayLightSensorStub(rai);
 		if (dl.isDay())
 			dl.setDay(false);

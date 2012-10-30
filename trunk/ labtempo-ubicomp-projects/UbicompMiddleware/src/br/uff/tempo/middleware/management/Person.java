@@ -34,7 +34,7 @@ public class Person extends ResourceAgent implements IPerson {
 	IResourceLocation rLS;
 
 	public Person(String name, String rans) {
-		this(name, Person.class.getName(), rans, DEFAULT_PERIOD);
+		this(name, ResourceAgent.type(Person.class), rans, DEFAULT_PERIOD);
 	}
 
 	public Person(String name, String type, String rans, long period) {
@@ -73,7 +73,7 @@ public class Person extends ResourceAgent implements IPerson {
 
 	public void updateRecentLocal() {
 		IResourceDiscovery rDS = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-		rLS = new ResourceLocationStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceLocation.class.getName())
+		rLS = new ResourceLocationStub(rDS.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(ResourceLocation.class))
 				.get(0).getRai());
 		for (Position position : recentPositions) {
 			recentLocal.add(rLS.getLocal(position));

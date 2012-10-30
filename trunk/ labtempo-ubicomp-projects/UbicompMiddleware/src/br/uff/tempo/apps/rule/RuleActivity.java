@@ -90,7 +90,7 @@ public class RuleActivity extends Activity {
 			// String raiStove = stoves.get(0);
 			discovery = new ResourceDiscoveryStub(
 					IResourceDiscovery.rans);
-			List<ResourceData> stoves = discovery.searchForAttribute(ResourceData.TYPE, Stove.class.getName());
+			List<ResourceData> stoves = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Stove.class));
 			String raiStove = stoves.get(0).getRai();
 //			String raiStove = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Stove.class)).get(0).getRai();
 
@@ -109,7 +109,7 @@ public class RuleActivity extends Activity {
 			// String raiBed = discovery.search("Bed").get(0);
 			discovery = new ResourceDiscoveryStub(
 					IResourceDiscovery.rans);
-			String raiBed = discovery.searchForAttribute(ResourceData.TYPE, Bed.class.getName()).get(0).getRai();
+			String raiBed = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Bed.class)).get(0).getRai();
 //			String raiBed = discovery.searchForAttribute(ResourceData.TYPE, "br.uff.tempo.middleware.resources.Bed").get(0).getRai();
 
 			Toast.makeText(RuleActivity.this, "Cama encontrada", Toast.LENGTH_SHORT).show();
@@ -152,7 +152,7 @@ public class RuleActivity extends Activity {
 
 //				String tvRai = discovery.search("Television").get(0);
 				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Television.class)).get(0).getRai();
-//				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, Television.class.getName()).get(0).getName();
+//				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Television.class)).get(0).getName();
 				private ITelevision tv = new TelevisionStub(tvRai);
 
 				@Override
