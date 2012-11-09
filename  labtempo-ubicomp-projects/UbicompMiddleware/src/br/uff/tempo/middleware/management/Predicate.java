@@ -33,11 +33,13 @@ public class Predicate extends Formula {
 	 * @throws Exception
 	 */
 	public Predicate(Operand op1, Operator operator, Operand op2, long timeout) throws Exception {
-		super();
+		super("0");
 		this.op1 = op1;
 		this.op2 = op2;
 		this.operator = operator;
 		this.setTimeout(timeout);
+		count = 1;
+		//evaluate();
 	}
 
 	/**
@@ -52,6 +54,8 @@ public class Predicate extends Formula {
 		super();
 		this.op1 = op;
 		this.setTimeout(timeout);
+		count = 1;
+		//evaluate();
 	}
 
 	public boolean evaluate() {
@@ -78,15 +82,14 @@ public class Predicate extends Formula {
 			else
 				this.valid = false;
 		}
+		this.key = valid ? "1" : "0";
 		return isValid();
 	}
 
-	// @Override
-	// public String toString() {
-	// // return this.rai() + " " + this.method + " " + this.operator + " " +
-	// // this.value;
-	// return "";
-	// }
+	@Override
+	public String toString() {
+		return valid ? "1" : "0";
+	}
 
 	/**
 	 * @return the op1

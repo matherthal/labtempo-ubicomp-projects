@@ -21,7 +21,11 @@ public class Formula extends GeneralTree {
 	}
 
 	public Formula() {
-		super(0);
+		super("f");
+	}
+
+	public Formula(Object key) {
+		super(key);
 	}
 
 	/**
@@ -42,4 +46,17 @@ public class Formula extends GeneralTree {
 	public void attachFormula(Formula f) {
 		this.attachSubtree(f);
 	}
+	
+	public void setAndClause() {
+		this.attachSubtree(new AndNode());
+	}
+	
+	public void setOrClause() {
+		this.attachSubtree(new OrNode());
+	}
+	
+//	@Override
+//	public String toString() {
+//		return "(" + this.getSubtree().toString() + ")";
+//	}
 }

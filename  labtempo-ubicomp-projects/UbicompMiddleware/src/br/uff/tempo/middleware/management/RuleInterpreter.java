@@ -9,20 +9,15 @@ import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import net.sourceforge.jeval.EvaluationException;
-import net.sourceforge.jeval.Evaluator;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
-
-import com.google.gson.JsonObject;
 
 import android.util.Log;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.management.utils.datastructure.GeneralTree;
+import br.uff.tempo.middleware.management.utils.datastructure.PrePostVisitor;
 
 public class RuleInterpreter extends ResourceAgent {
 
@@ -62,6 +57,13 @@ public class RuleInterpreter extends ResourceAgent {
 	@Service(name = "Definir expressão")
 	public void setExpression(String expr) throws Exception {
 		parseExpression(expr.replace('\t', ' ').replace('\n', ' ').trim());
+//		formula = new Formula();
+//		formula.attachFormula(new Predicate(new Operand(3), Operator.Equal, new Operand(3), 0));
+		//FIXME : test visitor
+//		formula.breadthFirstTraversal(new ExprComposerVisitor());
+		ExprComposerVisitor v = new ExprComposerVisitor();
+		formula.depthFirstTraversal(v);
+		Log.i(TAG, "EXPRESSION: " + v.getExpression());
 	}
 
 	private void parseExpression(String expr) throws Exception {
@@ -80,9 +82,9 @@ public class RuleInterpreter extends ResourceAgent {
 			else if (key.equals("formula")) {
 				if (hasForm)
 					throw new Exception("Interpreter has two formulas");
-				formula = new Formula();
-				pNode = formula;
-				formula.attachFormula(buildTree(intp.getJSONArray(key)));
+				//this.formula = new Formula();
+				//pNode = this.formula;
+				this.formula = buildTree(intp.getJSONArray(key));
 				Log.i(TAG, "FORMULA STRING: " + formulaStr);
 				hasForm = true;
 			}
@@ -119,6 +121,7 @@ public class RuleInterpreter extends ResourceAgent {
 						Log.i(TAG, "CONNECTIVE: " + val.toString());
 						if (val.toString().equals("and")) {
 							formulaStr += "&& ";
+							subtree.setAndClause();
 						} else if (val.toString().equals("or")) {
 							formulaStr += "|| ";
 							pNode = (Formula) pNode.getFather();
@@ -129,11 +132,13 @@ public class RuleInterpreter extends ResourceAgent {
 						Formula f = buildTree((JSONArray) val);
 						f.setNotClause(true);
 						subtree.attachFormula(f);
+						pNode = f;
 					} else if (key.equals("formula")) {
 						Log.i(TAG, "FORMULA: " + val.toString());
 						formulaStr += "(";
 						subtree.attachFormula(buildTree((JSONArray) val));
 						formulaStr += ") ";
+						pNode = subtree;
 					} else {
 						Log.e(TAG, "UNKNOWN: " + jobj.get(key).toString());
 						throw new Exception("Unknown object in JSON file: " + o.toString());
@@ -393,6 +398,61 @@ public class RuleInterpreter extends ResourceAgent {
 			Log.i("TIME", new Date().toGMTString());
 			if (evaluateExpr())
 				notifyActionPerformers();
+		}
+	}
+
+	/**
+	 * A visitor that composes de logical expression.
+	 **/
+//	private static class ExprComposerVisitor extends AbstractVisitor {
+//		private final static String TAG = "ExprComposerVisitor";
+//		private String expression = ""; 
+//		
+//		public void visit(Object object) {
+//			Log.i(TAG, object.toString());
+//			expression.concat(object.toString());
+//		}
+//		
+//		public void finish() {
+//			Log.i(TAG, "Finish");
+//		}
+//	}
+
+	/**
+	 * A visitor that composes de logical expression.
+	 **/
+	public static class ExprComposerVisitor implements PrePostVisitor {
+		private final static String TAG = "ExprComposerVisitor";
+		private String expression = ""; 
+
+		@Override
+		public void preVisit(Object object) {
+			Log.i(TAG, "visit: " + object.toString());
+			//expression = expression + "( " + object.toString();
+			String s = object.toString();
+			if (s.equals("f")) s = "(";
+			expression = expression + s;
+		}
+
+		@Override
+		public void inVisit(Object object) {
+			Log.i(TAG, "inVisit: " +object.toString());
+			// this.expression.concat(object.toString());
+		}
+
+		@Override
+		public void postVisit(Object object) {
+			String s = object.toString();
+			if (s.equals("f")) expression = expression + ")";
+		}
+
+		@Override
+		public boolean isDone() {
+			return false;
+		}
+		
+		public String getExpression() {
+			return expression;
 		}
 	}
 }
