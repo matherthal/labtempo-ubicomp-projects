@@ -28,6 +28,7 @@ import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.management.utils.datastructure.AbstractVisitor;
 import br.uff.tempo.middleware.resources.Bed;
 import br.uff.tempo.middleware.resources.Condition;
 import br.uff.tempo.middleware.resources.Generic;
@@ -62,10 +63,8 @@ public class RuleActivity extends Activity {
 
 				String line;
 				StringBuilder buffer = new StringBuilder();
-
-				while ((line = in.readLine()) != null) {
+				while ((line = in.readLine()) != null)
 					buffer.append(line).append('\n');
-				}
 
 				ri.setExpression(buffer.toString());
 			} catch (IOException e) {
@@ -79,7 +78,7 @@ public class RuleActivity extends Activity {
 					e.printStackTrace();
 				}
 			}
-
+			
 			// FIXME
 			if (1 != 2)
 				return;
@@ -88,8 +87,7 @@ public class RuleActivity extends Activity {
 			// ResourceDiscoveryStub(IResourceDiscovery.RDS_ADDRESS);
 			// ArrayList<String> stoves = discovery.search("Stove");
 			// String raiStove = stoves.get(0);
-			discovery = new ResourceDiscoveryStub(
-					IResourceDiscovery.rans);
+			discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 			List<ResourceData> stoves = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Stove.class));
 			String raiStove = stoves.get(0).getRai();
 //			String raiStove = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Stove.class)).get(0).getRai();
@@ -319,8 +317,8 @@ public class RuleActivity extends Activity {
 	public void createCond(String raID, String attrib, Operator operator, String value) {
 		// ResourceAgent ra =
 		// (ResourceAgent)discovery.search(s.getSelectedItem().toString()).get(0);
-//		ResourceAgent ra = new Stove();// FIXME: get it out of here, just for
-										// debug. The correct is above
+		// ResourceAgent ra = new Stove();// FIXME: get it out of here, just for
+		// debug. The correct is above
 
 		// Get attribute's acess method
 		// Method mtd = null;
