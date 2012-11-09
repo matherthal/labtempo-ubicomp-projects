@@ -28,7 +28,6 @@ public abstract class AbstractTree extends AbstractContainer implements Tree {
 						queue.enqueue(child);
 				}
 			} catch (InvalidOperationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -44,7 +43,6 @@ public abstract class AbstractTree extends AbstractContainer implements Tree {
 					getSubtree(i).depthFirstTraversal(visitor);
 				visitor.postVisit(getKey());
 			} catch (InvalidOperationException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
