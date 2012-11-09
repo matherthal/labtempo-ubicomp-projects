@@ -19,6 +19,7 @@ public class GeneralTree extends AbstractTree {
 	public GeneralTree(Object key) {
 		this.key = key;
 		degree = 0;
+		count = 1;
 		list = new LinkedList();
 	}
 
@@ -44,11 +45,13 @@ public class GeneralTree extends AbstractTree {
 		t.father = this;
 		list.append(t);
 		++degree;
+		++count;
 	}
 
 	public GeneralTree detachSubtree(GeneralTree t) {
 		list.extract(t);
 		--degree;
+		--count;
 		return t;
 	}
 
