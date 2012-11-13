@@ -1,0 +1,139 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+
+\usepackage{graphicx,url}
+\usepackage[space]{grffile}
+
+\usepackage[brazil]{babel}   
+\usepackage[latin1]{inputenc}  
+
+     
+\sloppy
+
+\title{Interpretação de Contexto em Ambientes Inteligentes}
+%acho q \\ pula linha
+\author{Matheus Erthal\inst{1}, Douglas Mareli\inst{1}, David Barreto\inst{1}, Orlando Loques\inst{1}}
+
+
+\address{Instituto de Computação -- Universidade Federal Fluminense (UFF)\\
+  Niterói -- RJ -- Brazil
+% \nextinstitute
+%   Department of Computer Science -- University of Durham\\
+%   Durham, U.K.
+% \nextinstitute
+%   Departamento de Sistemas e Computação\\
+%   Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
+  \email{\{merthal,dmareli,dbarreto,loques\}@ic.uff.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+% \begin{abstract}
+% \end{abstract}
+%      
+\begin{resumo} 
+
+\end{resumo}
+
+%%%%%%%%%%%%%%
+% INTRODUÇÃO %
+%%%%%%%%%%%%%%
+\section{Introdução}
+A Computação Ubíqua, como proposta por Weiser na década de 90~\cite{weiser1991computer}, prevê uma mudança no paradigma de interação entre o usuário e os sistemas computacionais. Weiser previu o surgimento do que chamou de ``computação calma'', onde a interação entre os usuário e os computadores ocorre de forma indireta. O sistema identifica as necessidades do usuário obtendo informação de contexto através de sensores, e provê serviços através de atuadores. 
+
+A Computação Ubíqua está intimamente relacionada com uma área de particular interesse para este trabalho, chamada de Computação Ciente de Contexto~\cite{Dey2001}, também chamada de Computação Sensível ao Contexto. Área esta que vem crescendo devido à riqueza de informação que só o contexto pode dar, ao invés de se esperar que o usuário entre com todas as informações úteis no sistema. Um exemplo deste tipo de sistema bem conhecido é o site tocador de músicas Last.fm, que constrói um perfil do usuário baseado no que ele tem buscado, no seu histórico, nas músicas que tem pulado, nas músicas que disse que não gostou, etc, em seguida o sistema provê um serviço de maior qualidade. Outro exemplo é o sistema de propagandas Adwords do Google, que sugere propagandas baseado nas buscas do usuário, oferecendo assim propagandas às quais o usuário pode se realmente interessar.
+
+A informação de contexto está presente não apenas no nível de software, mas também no nível de dispositivos físicos. Na Computação Ubíqua o contexto é qualquer coisa fisicamente mensurável ou detectável, como a presença da pessoa, a hora do dia ou condições atmosféricas~\cite{coulouris2005distributed}. Com os avanços recentes nas tecnologias de comunicação sem fio, assim como nos dispositivos móveis, abre-se espaço para o, já previsto, crescimento da Computação Ubíqua~\cite{coulouris2005distributed, lyytinen2002ubiquitous}, também chamada de Computação Pervasiva~\cite{saha2003pervasive, satyanarayanan2001pervasive}, Inteligência Ambiente (AmI)~\cite{augusto2007ambient}, ou outros~\cite{ranganathan2005olympus, augusto2007ambient}. 
+
+Pode-se ver como a Computação Ubíqua vem se popularizando já nos dias de hoje. Carros novos contém diversos sensores e atuadores que prestam serviços ao motorista e passageiros, sem que se deem conta; sensores de presença acionam lâmpadas nos corredores à noite; pedágios identificam a presença de veículos que pagam pelo serviço mensalmente, e abrem a cancela automaticamente; e outros. Entretanto, percebe-se que todos estes serviços funcionam em um nível menor: eles não compartilham informações de contexto entre si e nem disponibilizam suas funcionalidades para outros.
+
+Para suprir a necessidade de maior interação entre os recursos distribuídos no ambiente, este trabalho propõe um \textit{framework},
+que inclui suporte conceitual e de infraestrutura, para a construção de aplicações ubíquas. Uma camada intermediária se dispõe, entre os recursos e as aplicações, possibilitando uma fácil manipulação do contexto. Do ponto de vista no desenvolvimento de aplicações, esta abstração provê uma separação de interesses, permitindo que os desenvolvedores se preocupem com a lógica das aplicações, e não com os detalhes de comunicação dos recursos. Tomando o compartilhamento de informações como premissa básica, é fácil imaginar diversas aplicações rodando sobre o mesmo ambiente, como por exemplo: aplicações de vigilância da casa, aplicações de cuidados domiciliares (\textit{homecare}), sistemas de combate a incêndio (capazes inclusive de destrancar portas, por exemplo), dentre outras. É fato que este tipo de sistema traz uma série de questões de segurança, mas estas estão também sendo estudadas.
+
+No modelo adotado, cada recurso é representado no sistema por um Agente de Recurso (AR), que por sua vez expõe suas informações de contexto através de Variáveis de Contexto (VC). Por exemplo, o AR da TV poderia expor as VCs: ``está ligada'', ``localização'', ``canal'', ``volume'', etc; o AR do ar-condicionado poderia expor a ``temperatura do cômodo'', seu ``modo de operação''; a lâmpada poderia dizer se ``está ligada''; o acelerômetro do celular poderia identificar se a pessoas ``está sentada'', ``está andando'', etc; e muitos outro recursos poderiam ser também incorporados ao sistema. Os ARs são entidades distribuídas mas que, no entanto, podem ser encontradas através do Serviço de Descoberta de Recursos (SDR). A comunicação com os mesmos ocorre através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), onde uns ARs podem registrar seu interesse nas VCs de outros ARs, sendo posteriormente notificados quando da modificação dos valores. Adicionalmente é também possível uma comunicação direta 
+com um AR, uma vez obtida sua identificação.
+
+Com tanta informação sendo compartilhada faz-se necessário a agregação da informação de contexto em uma entidade única, chamada, no sistema, de Interpretador de Contexto (IC). O IC é capaz de agrupar diversas VCs, organizadas em uma expressão lógica. Sendo também um AR, o IC deve ser subscrito para que se saiba da validação da expressão lógica. Na ``computação calma'' não só há uma maior integração entre os recursos, mas há também uma reação à mudança do contexto, portanto, os ARs atuadores devem se subscrever em ICs para desempenharem ações no meio.
+
+Um dos focos deste trabalho é a simplicidade no desenvolvimento das aplicações, onde o esforço do desenvolvedor é minimizado. Um outro foco é na declaração das preferências por parte do usuário final. Junto do protótipo está sendo contruída uma interface gráfica que possibilita a usuários não expecializados definir regras para serem avaliadas no sistema, caracterizando um sistema de programação por usuários finais (\textit{end-user programming}).
+
+%TODO: falar das próximas sessões
+
+%%%%%%%%%%%%%%%%
+% RELACIONADOS %
+%%%%%%%%%%%%%%%%
+\section{Trabalhos Relacionados}
+%Diversos trabalhos vem sendo desenvolvidos nas áreas de Computação Ubíqua ou Pervasiva, Computação Sensível ao Contexto, 
+%essencialmente focamos em sistemas distribuídos, <não vamos falar dos sistemas 
+
+%falar dos sistemas q tb tem uma arquitetura em camadas, mas nas diferenças entre o deles e o nosso
+
+%~\cite{liu2003dios++}
+
+%%%%%%%%%%%%%%%%
+% BASICO       %
+%%%%%%%%%%%%%%%%
+\section{Conceitos Básicos}
+
+\subsection{Prototipagem de Aplicações Pervasivas}
+
+
+%%%%%%%%%%%%%%%%
+% FRAMEWORK    %
+%%%%%%%%%%%%%%%%
+\section{Proposta do Framework}
+
+\subsection{Modelo de Componentes Distribuídos}
+
+\subsection{Comunicação}
+
+\subsection{Suporte ao Gerenciamento de Recursos}
+%falar sobre serviços de descoberta, registro e localização
+
+\subsection{Variáveis de Contexto e Operações}
+Figura: Arquitetura que mostre as portas de entrada e saída dos ARs (VCs e Operações). Deve mostrar, ou ser explicado como se ligar.
+	
+\subsection{Interpretador de Contexto}
+Figura: Arquitetura em camadas: desde os recursos até a aplicação, passando pelo IC
+
+\subsubsection{Criação de Interpretador de Contexto}
+Figura: Figura que demonstre essa rotina.
+
+\subsubsection{Interpretador de Contexto em Funcionamento}
+Figura: Figura que permita mostrar o funcionamento passo-a-passo do IC
+
+\subsubsection{Temporização}
+Figura: Figura equivalente à anterior, mas mostrando com o temporizador.
+
+\subsection{Interface Gráfica de Composição de Regras}
+Se tiver alguma coisa da GUI pronta até lá, colocar uma figura aqui.
+
+\section{SmartAndroid}
+
+
+%%%%%%%%%%%%%
+% CONCLUSÃO %
+%%%%%%%%%%%%%
+\section{Conclusão e Trabalhos Futuros}
+
+
+%\cite{boulic:91}
+\nocite{abowd1999towards}
+\nocite{Brandle2007}
+\nocite{Cardoso2006}
+\nocite{Chen2002}
+\nocite{chen2010context}
+\nocite{Dey2001}
+\nocite{lee2012mobicon}
+\nocite{liu2003dios++}
+\nocite{sudha2007ubiquitous}
+\nocite{wang2005towards}
+
+
+\bibliographystyle{sbc}
+\bibliography{references}
+
+\end{document}

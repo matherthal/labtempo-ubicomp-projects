@@ -1,0 +1,48 @@
+This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
+The top-level auxiliary file: ubicomp-middleware.aux
+The style file: sbc.bst
+Database file #1: references.bib
+Warning--empty journal in Chen2002
+Warning--there's a number but no volume in Chen2002
+You've used 17 entries,
+            1935 wiz_defined-function locations,
+            578 strings with 6463 characters,
+and the built_in function-call counts, 7152 in all, are:
+= -- 710
+> -- 292
+< -- 15
++ -- 100
+- -- 98
+* -- 601
+:= -- 1223
+add.period$ -- 54
+call.type$ -- 17
+change.case$ -- 133
+chr.to.int$ -- 17
+cite$ -- 19
+duplicate$ -- 282
+empty$ -- 495
+format.name$ -- 127
+if$ -- 1417
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 18
+newline$ -- 88
+num.names$ -- 51
+pop$ -- 119
+preamble$ -- 1
+purify$ -- 134
+quote$ -- 0
+skip$ -- 217
+stack$ -- 0
+substring$ -- 478
+swap$ -- 49
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 100
+warning$ -- 2
+while$ -- 66
+width$ -- 0
+write$ -- 223
+(There were 2 warnings)
