@@ -1,0 +1,39 @@
+Resumo
+
+1. Introdução
+
+2. Contexto
+
+	2.1. Interpretação de Contexto
+
+3. SmartAndroid
+	Figura: Arquitetura bem alto nível, mostrando os recursos, a infraestrutura e a aplicação. Também devem aparecer os ARs e tentar fazer a aparecer o ambiente distribuído.
+	
+	3.1. Comunicação
+	(Opcional) Figura: Comunicação direta e indireta em alto nível
+
+4. Interpretação de Contexto no SmartAndroid
+
+	4.1. Variáveis de Contexto e Operações
+	Figura: Arquitetura que mostre as portas de entrada e saída dos ARs (VCs e Operações). Deve mostrar, ou ser explicado como se ligar.
+	
+	4.2. Interpretador de Contexto
+	Figura: Arquitetura em camadas: desde os recursos até a aplicação, passando pelo IC
+
+		4.2.1. Criação de Interpretador de Contexto
+		Figura: Figura que demonstre essa rotina.
+
+		4.2.2. Interpretador de Contexto em Funcionamento
+		Figura: Figura que permita mostrar o funcionamento passo-a-passo do IC
+
+	4.3. Temporização
+	Figura: Figura equivalente à anterior, mas mostrando com o temporizador.
+
+	4.4. Interface Gráfica de Composição de Regras
+	Se tiver alguma coisa da GUI pronta até lá, colocar uma figura aqui.
+	
+5. Trabalhos Relacionados
+
+6. Conclusão e Trabalhos Futuros
+
+Referêcias

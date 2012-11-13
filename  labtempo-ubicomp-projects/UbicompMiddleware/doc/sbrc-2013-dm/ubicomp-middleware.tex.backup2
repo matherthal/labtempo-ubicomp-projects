@@ -1,0 +1,135 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+
+\usepackage{graphicx,url}
+\usepackage[space]{grffile}
+
+\usepackage[brazil]{babel}   
+\usepackage[latin1]{inputenc}  
+
+     
+\sloppy
+
+\title{Interpretação de Contexto em Ambientes Inteligentes}
+%acho q \\ pula linha
+\author{Matheus Erthal\inst{1}, Douglas Mareli\inst{1}, David Barreto\inst{1}, Orlando Loques\inst{1}}
+
+
+\address{Instituto de Computação -- Universidade Federal Fluminense (UFF)\\
+  Niterói -- RJ -- Brazil
+% \nextinstitute
+%   Department of Computer Science -- University of Durham\\
+%   Durham, U.K.
+% \nextinstitute
+%   Departamento de Sistemas e Computação\\
+%   Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
+  \email{\{merthal,dmareli,dbarreto,loques\}@ic.uff.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+% \begin{abstract}
+% \end{abstract}
+%      
+\begin{resumo} 
+
+\end{resumo}
+
+%%%%%%%%%%%%%%
+% INTRODUÇÃO %
+%%%%%%%%%%%%%%
+\section{Introdução}
+
+
+%%%%%%%%%%%%
+% CONTEXTO %
+%%%%%%%%%%%%
+\section{Contexto}
+O contexto exerce um papel de fundamental importância na Computação Ubíqua. Durante a década de 90, diversos autores procuraram definir contexto, muitas delas pouco apuradas. Baseado em definições de autores anteriores, Dey e Abowd~\cite{Dey2001} descreveram contexto da seguinte maneira:
+
+\begin{quotation}
+  ``Qualquer informação que pode ser usada para caracterizar a situação de entidades (i.e., pessoa, lugar ou objeto) que são consideradas relevantes para a interação entre um usuário e uma aplicação, incluindo o próprio usuário e aplicação. Contexto é tipicamente a localização, identidade, e estado de pessoas, grupos, e objetos computacionais e físicos''
+\end{quotation}
+
+Considerando um ambiente domiciliar, pode-se imaginar diversas fontes de contexto, como sensores de luz do dia, sensores de presença, televisões, camas, dispositivos médicos (medidores de pressão arterial), balanças, etc. Pode-se ainda imaginar \textit{softwares} que produzem contexto, como por exemplo um sistema que interprete a imagem de uma câmera e identifique as atividades de pessoas (e.g., cozinhando, dormindo, estudando, varrendo). 
+
+Segundo~\cite{Dey2001} três entidades de contexto foram identificadas como de maior importância, são elas: lugares, pessoas e coisas. No ambiente de uma smarthome, ``Lugares'' são os cômodos, os andares de uma edificação, ou espaços em geral; ``Pessoas'' são indivíduos que povoam a smarthome e interagem com o ambiente; e ``Coisas'' são representações virtuais de objetos físicos ou componentes de \textit{software}.
+
+Após a identificação das entidades, são introduzidas quatro categorias de contexto essenciais: identidade, localização, estado e tempo. ``Identidade'' corresponde à identificação única de uma entidade. ``Localização'' diz respeito não só a posição de uma entidade, proximidade em relação a outra entidade, posição geográfica, etc. ``Estado'' identifica características intrínsecas da entidade (e.g., temperatura de uma sala, sinal vital de uma pessoa). ``Tempo'' é uma informação de contexto quando ajuda a caracterizar a situação, geralmente usado com outras informações de contexto, indicando um instante ou período durante o qual alguma informação contextual é conhecida ou relevante.
+
+
+%%%%%%%%%%%%%%%%
+% SMARTANDROID %
+%%%%%%%%%%%%%%%%
+\section{Arquitetura do SmartAndroid}
+O SmartAndroid é uma plataforma que provê facilidades e padrões de programação a aplicações cientes de contexto focadas em ambientes inteligentes (\textit{smarthomes}). Esta plataforma foi construída utilizando o \textit{framework} Android, da Google, o que facilita sua implantação em dispositivos móveis. Atualmente os principais dispositivos que possuem o Android embutido são celulares e tablets, porém pode-se assumir que mais dispositivos adotarão esta tecnologia, conforme sua popularidade aumenta. Embora o sistema tenha sido constuído para Android, nenhum dos conceitos expressos pelo SmartAndroid o restringe para a esta plataforma, assim sendo, o sistema poderia ser adaptado para outros sistemas operacionais.
+
+Atualmente, para se construir aplicações que interajam de alguma forma com o ambiente, é necessário um grande esforço por parte dos desenvolvedores, o que inclui conhecer detalhes dos dispositivos em específico. Para se abstrair os detalhes dos dispositivos espalhados no ambiente, o SmartAndroid utiliza componentes chamados Agentes de Recurso (AR). Os ARs são os elementos de primeira ordem da plataforma, e representam recursos de \textit{hardware} ou \textit{software}, disponíveis no ambiente. Eles têm como responsabilidade coletar as diversas medidas dos sensores ou componentes de \textit{software} presentes no contexto de execução do das aplicações~\cite{bezerrauso}. Os ARs resolvem a complexidade de tratamento com os componente de baixo nível e disponibilizam interfaces padrões de interação tanto local como em rede. No ambiente de smarthome, podem ser criados ARs para representar, por exemplo: uma televisão que expõe suas informações de contexto e provê serviços para as aplicações; sensores de temperatura 
+da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
+
+%TODO: Não gostei deste paragrafo, talvez uni-lo ao anterior
+O AR é a unidade básica de modularização do ambiente distribuído implementado pelo SmartAndroid, assim sendo, os mesmos podem também ser usados na modelagens das aplicações. Se uma aplicação necessita de uma entidade distribuída, pode representá-la através de um AR. Um dos usos para esta abordagem é em jogos, poderiam ser representados através de ARs os jogadores, o tabuleiro, os monstros, recursos do cenário, etc. 
+
+Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe do Serviço de Gerenciamento de Agentes de Recurso (SGAR) que é instanciado apenas uma vez no ambiente. Este serviço gerencia os ARs, mantendo informações de identificação e localização, dentre outras.
+
+Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recurso (SGAR) e é instanciado apenas uma vez no sistema distribuído. Como apresentado na Figura~\ref{fig:middl_layers}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
+
+O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos ARs e tornar a comunicação transparente para o programador das aplicações. 
+
+\subsection{Comunicação} %TODO: subscreve está certo? e co-localizada?
+A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
+
+A abordagem adotada no SmartAndroid difere daquelas onde 
+
+%%%%%%%%%%%%%%%%%
+% INTERPRETAÇÃO %
+%%%%%%%%%%%%%%%%%
+\section{Modelo de Contexto do SmartAndroid}
+Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) envolve a escolha de um modelo de contexto. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, onde os dispositivos ou entitades que os representam enviam suas medições para este serviço de gerenciamento. O serviço se encarrega então de enviar as medidas para os interessados. Este é o caso, por exemplo do 
+
+\subsection{Variáveis de Contexto e Operações} \label{subsec:cv}
+
+
+\subsection{Interpretador de Contexto} \label{subsec-intp} 
+
+\subsubsection{Criação de Interpretador de Contexto} \label{subsubsec-new_ri}
+
+\subsubsection{Interpretador de Contexto em Funcionamento} \label{subsubsec-intp_no_timer}
+
+\subsection{Temporização}
+
+\subsection{Interface Gráfica de Composição de Regras} \label{subsec-annotations}
+
+
+%%%%%%%%%%%%%%%%
+% RELACIONADOS %
+%%%%%%%%%%%%%%%%
+\section{Trabalhos Relacionados}
+
+
+%%%%%%%%%%%%%
+% CONCLUSÃO %
+%%%%%%%%%%%%%
+\section{Conclusão e Trabalhos Futuros}
+
+
+%\cite{boulic:91}
+\nocite{abowd1999towards}
+\nocite{Brandle2007}
+\nocite{Cardoso2006}
+\nocite{Chen2002}
+\nocite{chen2010context}
+\nocite{Dey2001}
+\nocite{lee2012mobicon}
+\nocite{liu2003dios++}
+\nocite{sudha2007ubiquitous}
+\nocite{wang2005towards}
+
+
+\bibliographystyle{sbc}
+\bibliography{references}
+
+\end{document}
