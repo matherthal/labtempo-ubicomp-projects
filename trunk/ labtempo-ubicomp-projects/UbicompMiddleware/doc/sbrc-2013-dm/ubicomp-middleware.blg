@@ -4,45 +4,45 @@ The style file: sbc.bst
 Database file #1: references.bib
 Warning--empty journal in Chen2002
 Warning--there's a number but no volume in Chen2002
-You've used 17 entries,
+You've used 11 entries,
             1935 wiz_defined-function locations,
-            578 strings with 6463 characters,
-and the built_in function-call counts, 7152 in all, are:
-= -- 710
-> -- 292
-< -- 15
-+ -- 100
-- -- 98
-* -- 601
-:= -- 1223
-add.period$ -- 54
-call.type$ -- 17
-change.case$ -- 133
-chr.to.int$ -- 17
-cite$ -- 19
-duplicate$ -- 282
-empty$ -- 495
-format.name$ -- 127
-if$ -- 1417
+            546 strings with 5563 characters,
+and the built_in function-call counts, 4805 in all, are:
+= -- 477
+> -- 200
+< -- 10
++ -- 70
+- -- 68
+* -- 400
+:= -- 817
+add.period$ -- 35
+call.type$ -- 11
+change.case$ -- 89
+chr.to.int$ -- 11
+cite$ -- 13
+duplicate$ -- 189
+empty$ -- 327
+format.name$ -- 85
+if$ -- 955
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 18
-newline$ -- 88
-num.names$ -- 51
-pop$ -- 119
+missing$ -- 11
+newline$ -- 58
+num.names$ -- 33
+pop$ -- 80
 preamble$ -- 1
-purify$ -- 134
+purify$ -- 89
 quote$ -- 0
-skip$ -- 217
+skip$ -- 149
 stack$ -- 0
-substring$ -- 478
-swap$ -- 49
-text.length$ -- 5
+substring$ -- 327
+swap$ -- 38
+text.length$ -- 4
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 100
+type$ -- 66
 warning$ -- 2
-while$ -- 66
+while$ -- 44
 width$ -- 0
-write$ -- 223
+write$ -- 145
 (There were 2 warnings)
