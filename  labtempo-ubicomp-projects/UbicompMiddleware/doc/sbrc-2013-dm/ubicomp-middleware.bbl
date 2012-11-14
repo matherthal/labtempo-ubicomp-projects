@@ -5,11 +5,6 @@ Abowd, G., Dey, A., Brown, P., Davies, N., Smith, M., and Steggles, P. (1999).
 \newblock Towards a better understanding of context and context-awareness.
 \newblock In {\em Handheld and Ubiquitous Computing}, pages 304--307. Springer.
 
-\bibitem[Augusto and McCullagh 2007]{augusto2007ambient}
-Augusto, J. and McCullagh, P. (2007).
-\newblock Ambient intelligence: Concepts and applications.
-\newblock {\em Computer Science and Information Systems/ComSIS}, 4(1):1--26.
-
 \bibitem[Cardoso and Sztajnberg 2006]{Cardoso2006}
 Cardoso, L. and Sztajnberg, A. (2006).
 \newblock {Self-adaptive applications using ADL contracts}.
@@ -25,11 +20,6 @@ Chen, G. and Kotz, D. (2002).
 \newblock {Context-aware services based on OSGi for smart homes}.
 \newblock {\em Ubi-media Computing (U-Media), 2010 3rd IEEE International
   Conference on}, 11:392.
-
-\bibitem[Coulouris et~al. 2005]{coulouris2005distributed}
-Coulouris, G., Dollimore, J., and Kindberg, T. (2005).
-\newblock {\em Distributed systems: concepts and design}.
-\newblock Addison-Wesley Longman.
 
 \bibitem[Dey et~al. 2001]{Dey2001}
 Dey, A., Abowd, G., and Salber, D. (2001).
@@ -48,29 +38,6 @@ Liu, H. and Parashar, M. (2003).
 \newblock Dios++: A framework for rule-based autonomic management of
   distributed scientific applications.
 \newblock {\em Euro-Par 2003 Parallel Processing}, pages 66--73.
-
-\bibitem[Lyytinen and Yoo 2002]{lyytinen2002ubiquitous}
-Lyytinen, K. and Yoo, Y. (2002).
-\newblock Ubiquitous computing.
-\newblock {\em COMMUNICATIONSOF THE ACM}, 45(12):63.
-
-\bibitem[Ranganathan et~al. 2005]{ranganathan2005olympus}
-Ranganathan, A., Chetan, S., Al-Muhtadi, J., Campbell, R., and Mickunas, M.
-  (2005).
-\newblock Olympus: A high-level programming model for pervasive computing
-  environments.
-\newblock In {\em Pervasive Computing and Communications, 2005. PerCom 2005.
-  Third IEEE International Conference on}, pages 7--16. IEEE.
-
-\bibitem[Saha and Mukherjee 2003]{saha2003pervasive}
-Saha, D. and Mukherjee, A. (2003).
-\newblock Pervasive computing: a paradigm for the 21st century.
-\newblock {\em Computer}, 36(3):25--31.
-
-\bibitem[Satyanarayanan 2001]{satyanarayanan2001pervasive}
-Satyanarayanan, M. (2001).
-\newblock Pervasive computing: Vision and challenges.
-\newblock {\em Personal Communications, IEEE}, 8(4):10--17.
 
 \bibitem[Sudha et~al. 2007]{sudha2007ubiquitous}
 Sudha, R., Rajagopalan, M., Selvanayaki, M., and Selvi, S. (2007).
