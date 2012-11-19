@@ -76,12 +76,27 @@ Este artigo é organizado da seguinte forma: a Seção 2 apresenta os conceitos bás
 \subsection{Computação Ciente de Contexto}
 
 \subsection{Prototipagem de Aplicações Pervasivas}
-
+Figura~\ref{fig:ipgap}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.8\textwidth]{imgs/ipgap/ipgap.png}
+  \caption{Interface de Prototipagem}
+  \label{fig:ipgap}
+\end{figure}
 
 %%%%%%%%%%%%%%%%
 %  FRAMEWORK   %
 %%%%%%%%%%%%%%%%
 \section{Proposta do Framework}
+Figura~\ref{fig:arquitetura}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.7\textwidth]{imgs/framework/arquiteturaGeral.png}
+  \caption{Arquitetura do \textit{Framework}}
+  \label{fig:arquitetura}
+\end{figure}
+
+
 O framework provê facilidades e padrões de programação a aplicações cientes de contexto focadas em ambientes inteligentes (\textit{smarthomes}).
 
 Ao invés de se lidar diretamente com sensores e atuadores espalhados no ambiente, o \textit{framework} utiliza, como abstração, componentes chamados Agentes de Recurso (AR). Os ARs são elementos de primeira ordem da plataforma, representando recursos de hardware ou software disponíveis no ambiente. Eles têm como responsabilidade coletar as diversas medidas dos sensores ou componentes de \textit{software} presentes no contexto de execução do das aplicações~\cite{bezerrauso}. Os ARs resolvem a complexidade de tratamento com os componente de baixo nível e disponibilizam interfaces padrões de interação tanto local como em rede. Em ambientes inteligentes podem ser criados ARs para representar, por exemplo: uma televisão que expõe suas informações de contexto e provê serviços para as aplicações; sensores de temperatura da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
@@ -110,6 +125,29 @@ A principal forma de comunicação no SmartAndroid é através de um mecanismo de pu
 %A abordagem adotada no SmartAndroid difere daquelas onde 
 
 \subsection{Suporte ao Gerenciamento de Recursos}
+Figura~\ref{fig:suporte}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.7\textwidth]{imgs/suporte/suporte.png}
+  \caption{Serviços de Suporte}
+  \label{fig:suporte}
+\end{figure}
+
+Figura~\ref{fig:agente}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.4\textwidth]{imgs/suporte/instanciaAR.png}
+  \caption{Instância do Agente de Recurso}
+  \label{fig:agente}
+\end{figure}
+
+Figura~\ref{fig:repositorio}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.6\textwidth]{imgs/suporte/repositorio.png}
+  \caption{Repositório de Recursos}
+  \label{fig:repositorio}
+\end{figure}
 
 \subsection{Modelo de Contexto}
 %Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) envolve a escolha de um modelo de contexto. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, onde os dispositivos ou entitades que os representam enviam suas medições para este serviço de gerenciamento. O serviço se encarrega então de enviar as medidas para os interessados. Este é o caso, por exemplo do 
@@ -156,7 +194,13 @@ Figura: Figura que permita mostrar o funcionamento passo-a-passo do IC
 %  AVALIACAO   %
 %%%%%%%%%%%%%%%%
 \section{Avaliação}
-
+Figura~
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.8\textwidth]{imgs/app/tictactoe.png}
+  \caption{Comparação entre os modelos das aplicações Android e SmartAndroid}
+  \label{fig:tictactoe}
+\end{figure}
 
 %%%%%%%%%%%%%%%%
 % RELACIONADOS %
