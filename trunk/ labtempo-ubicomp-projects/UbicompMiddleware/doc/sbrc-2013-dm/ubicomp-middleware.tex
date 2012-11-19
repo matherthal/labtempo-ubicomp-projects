@@ -82,6 +82,15 @@ Este artigo é organizado da seguinte forma: a Seção 2 apresenta os conceitos bás
 %  FRAMEWORK   %
 %%%%%%%%%%%%%%%%
 \section{Proposta do Framework}
+O framework provê facilidades e padrões de programação a aplicações cientes de contexto focadas em ambientes inteligentes (\textit{smarthomes}).
+
+Ao invés de se lidar diretamente com sensores e atuadores espalhados no ambiente, o \textit{framework} utiliza, como abstração, componentes chamados Agentes de Recurso (AR). Os ARs são elementos de primeira ordem da plataforma, representando recursos de hardware ou software disponíveis no ambiente. Eles têm como responsabilidade coletar as diversas medidas dos sensores ou componentes de \textit{software} presentes no contexto de execução do das aplicações~\cite{bezerrauso}. Os ARs resolvem a complexidade de tratamento com os componente de baixo nível e disponibilizam interfaces padrões de interação tanto local como em rede. Em ambientes inteligentes podem ser criados ARs para representar, por exemplo: uma televisão que expõe suas informações de contexto e provê serviços para as aplicações; sensores de temperatura da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
+
+O AR é a unidade básica de modularização do ambiente distribuído proposto pelo \textit{framework}, assim sendo, o mesmo pode também ser utilizado na modelagem das aplicações. Se uma aplicação necessita de uma entidade distribuída, pode representá-la através de um AR. Por exemplo, um desenvolvedor poderia construir um jogo, representando através de ARs os jogadores, o tabuleiro, os monstros, recursos do cenário, etc. 
+
+Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recurso (SGAR) e é instanciado apenas uma vez no sistema distribuído. Como apresentado na Figura~\ref{fig:middl_layers}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
+
+O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos ARs e tornar a comunicação transparente para o programador das aplicações. 
 
 \begin{figure}[ht]
   \centering
@@ -110,6 +119,7 @@ Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicaç
 Este trabalho adotou uma abordagem distribuída, onde a informação de contexto não é armazenada em um servidor centralizado, mas é mantida pelos ARs. O processo de aquisição do contexto envolve a descoberta do AR de interesse através do SDR, com a posterior subscrição do mesmo, como apresentado na Subsessão~\ref{subsec-comunicacao}. 
 
 
+
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.7\textwidth]{imgs/interpretador-fogao-cute.png}
@@ -117,9 +127,14 @@ Este trabalho adotou uma abordagem distribuída, onde a informação de contexto nã
   \label{fig:inpt_cute}
 \end{figure}
 
-\subsubsection{Variáveis de Contexto e Operações}
+\subsubsection{Variáveis de Contexto e Operações} \label{subsec:cv}
+As informações de contexto respectivas de cada AR são expostas através de Variáveis de Contexto (VC). Se, por exemplo, há um agente para a televisão registrado no sistema, possivelmente ele provê VCs para qual a programação que está sendo exibida, qual a programação agendada, se a própria televisão está ligada, se está gravando alguma programação, enfim, tudo que diz respeito ao estado da televisão e é efetivamente coletado.
+
+As VCs possibilitam que as informações de contexto sejam acessadas sem que haja um componente centralizado armazenando-as e disponibilizando-as, %como são as abordagens que utilizam tuple space (T Space, Google Interactive Space (acho q tb usa), outras) %TODO: Falar disso tudo
+
 %Figura: Arquitetura que mostre as portas de entrada e exit dos ARs (VCs e Operações). Deve mostrar, ou ser explicado como se ligar.
-	
+
+
 \subsubsection{Interpretador de Contexto}
 %Figura: Arquitetura em camadas: desde os recursos até a aplicação, passando pelo IC
 
