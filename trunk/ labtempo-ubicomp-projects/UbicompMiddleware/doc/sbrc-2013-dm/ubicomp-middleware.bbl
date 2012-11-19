@@ -5,7 +5,12 @@ Abowd, G., Dey, A., Brown, P., Davies, N., Smith, M., and Steggles, P. (1999).
 \newblock Towards a better understanding of context and context-awareness.
 \newblock In {\em Handheld and Ubiquitous Computing}, pages 304--307. Springer.
 
-\bibitem[Cardoso and Sztajnberg 2006]{Cardoso2006}
+\bibitem[Augusto and McCullagh 2007]{augusto2007ambient}
+Augusto, J. and McCullagh, P. (2007).
+\newblock Ambient intelligence: Concepts and applications.
+\newblock {\em Computer Science and Information Systems/ComSIS}, 4(1):1--26.
+
+\bibitem[Cardoso and Sztajnberg 2006]{cardoso2006}
 Cardoso, L. and Sztajnberg, A. (2006).
 \newblock {Self-adaptive applications using ADL contracts}.
 \newblock {\em Self-Managed Networks, Systems,}, pages 87--101.
@@ -21,11 +26,23 @@ Chen, G. and Kotz, D. (2002).
 \newblock {\em Ubi-media Computing (U-Media), 2010 3rd IEEE International
   Conference on}, 11:392.
 
+\bibitem[de~Araujo 2003]{araujo2003}
+de~Araujo, R. (2003).
+\newblock {Computa\c{c}\~{a}o ub\'{\i}qua: Princ\'{\i}pios, tecnologias e
+  desafios}.
+\newblock {\em XXI Simp\'{o}sio Brasileiro de Redes de \ldots}, pages 45--115.
+
 \bibitem[Dey et~al. 2001]{Dey2001}
 Dey, A., Abowd, G., and Salber, D. (2001).
 \newblock {A Conceptual Framework and a Toolkit for Supporting the Rapid
   Prototyping of Context-Aware Applications}.
 \newblock {\em Human-Computer Interaction}, 16(2):97--166.
+
+\bibitem[Helal et~al. 2005]{helal2005gator}
+Helal, S., Mann, W., El-Zabadani, H., King, J., Kaddoura, Y., and Jansen, E.
+  (2005).
+\newblock {The Gator Tech Smart House: a programmable pervasive space}.
+\newblock {\em Computer}, 38(3):50--60.
 
 \bibitem[Lee et~al. 2012]{lee2012mobicon}
 Lee, Y., Iyengar, S., Min, C., Ju, Y., Kang, S., Park, T., Lee, J., Rhee, Y.,
@@ -38,6 +55,14 @@ Liu, H. and Parashar, M. (2003).
 \newblock Dios++: A framework for rule-based autonomic management of
   distributed scientific applications.
 \newblock {\em Euro-Par 2003 Parallel Processing}, pages 66--73.
+
+\bibitem[Ranganathan et~al. 2005]{ranganathan2005olympus}
+Ranganathan, A., Chetan, S., Al-Muhtadi, J., Campbell, R., and Mickunas, M.
+  (2005).
+\newblock Olympus: A high-level programming model for pervasive computing
+  environments.
+\newblock In {\em Pervasive Computing and Communications, 2005. PerCom 2005.
+  Third IEEE International Conference on}, pages 7--16. IEEE.
 
 \bibitem[Sudha et~al. 2007]{sudha2007ubiquitous}
 Sudha, R., Rajagopalan, M., Selvanayaki, M., and Selvi, S. (2007).
@@ -60,5 +85,10 @@ Weis, T., Knoll, M., and Ulbrich, A. (2007).
 Weiser, M. (1991).
 \newblock The computer for the 21st century.
 \newblock {\em Scientific American}, 265(3):94--104.
+
+\bibitem[Winograd 2001]{winograd2001architectures}
+Winograd, T. (2001).
+\newblock Architectures for context.
+\newblock {\em Human-Computer Interaction}, 16(2):401--419.
 
 \end{thebibliography}
