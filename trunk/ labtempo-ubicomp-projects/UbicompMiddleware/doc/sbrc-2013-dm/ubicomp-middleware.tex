@@ -44,7 +44,11 @@
 %%%%%%%%%%%%%%
 \section{Introdução}
 %(motivação: jogar pra cima ubicomp introduzindo a inteligência ambiental como aplicação funamental)
-A Computação Ubíqua, como proposta por Weiser na década de 90~\cite{weiser1991computer}, prevê uma mudança no paradigma de interação entre o usuário e os sistemas computacionais. Weiser previu o surgimento do que chamou de "computação calma", onde a interação entre os usuários e os computadores ocorre de forma indireta. Uma aplicação ubíqua identifica as necessidades do usuário obtendo informação de contexto através de sensores, e provê serviços através de atuadores. Este tipo de sistema de aplicações está geralmente associado a um espaço denominado de ambiente inteligente~\cite{augusto2007ambient}. %TODO: (matheus) Douglas, não é melhor colocarmos uma referência para SmartHome, ao invés de Ambient Inteligence, pq este último só fala de IA... se vc quiser, eu acho q tenho até a referência pra qm criou este termo ``smarthome'', só que isso foi criado num relatório técnico (é difícil de achar, mas eu acho q tenho uma cópia pq pedi à própria autora)
+A Computação Ubíqua, como proposta por Weiser na década de 90~\cite{weiser1991computer}, prevê uma mudança no paradigma de interação entre o usuário e os sistemas computacionais. Weiser previu o surgimento do que chamou de "computação calma", onde a interação entre os usuários e os computadores ocorre de forma indireta. Uma aplicação ubíqua identifica as necessidades do usuário obtendo informação de contexto através de sensores, e provê serviços através de atuadores. Este tipo de sistema de aplicações está geralmente associado a um espaço denominado de ambiente inteligente~\cite{augusto2007ambient}. 
+
+%TODO: (matheus) Douglas, não é melhor colocarmos uma referência para SmartHome, ao invés de Ambient Inteligence, pq este último só fala de IA... se vc quiser, eu acho q tenho até a referência pra qm criou este termo ``smarthome'', só que isso foi criado num relatório técnico (é difícil de achar, mas eu acho q tenho uma cópia pq pedi à própria autora). 
+
+%TODO:(douglas) Não acho apropriado citar algo diferente do que já vinha sendo citado e aconselhado pelo orlando, e há uma concenso de que smart home é uma instancia de ambientes inteligentes. Quando houver citação do caso específico de smarthome (exemplos) esta referência de ''smarthome'' é bem vinda
    
 %(as dificuldades, ?mas desenvolver é caro, difícil?, etc.)
 A construção e manipulação de aplicações ubíquas representam um grande desafio para desenvolvedores com pouco conhecimento técnico e recursos escassos. Alguns problemas estão mais em evidência como a diversidade de requisitos não funcionais característicos de sistemas distribuídos, como segurança e tolerância a falhas. Para construção e teste de aplicações há a necessidade de um contingente de recursos como dispositivos embarcados e espaço físico. Há uma dificuldade de estabelecer um protocolo comum de comunicação em boa parte destes dispositivos. E por fim, a quantidade e variedade de informações de contexto disponível no ambiente dificulta a interatividade das aplicações ubíquas. Atendendo a esta demanda é proposto um \textit{framework} com o objetivo de facilitar a aplicação dos conceitos de computação ubíqua em ambientes inteligentes de forma simples e confiável. %TODO: (matheus) Está meio confuso o meio deste parágrafo, depois a gente dá uma olhada
@@ -62,10 +66,9 @@ A qualidade do suporte do \textit{framework} foi avaliada durante o processo de 
   
 %(dependendo do tamanho: e nós concluímos que é possível fazer isso, isso e isso)
 
-%(resumo das seções)
+%(resumo das seções, falar das próximas seções)
 Este artigo é organizado da seguinte forma: a Seção 2 apresenta os conceitos básicos utilizados ao longo do texto. A Seção 3 apresenta a arquitetura geral do SmartAndroid incluindo o modelo de componentes distribuídos e de regras. Na Seção 4 é apresentada uma prova de conceito demonstrando a eficiência do \textit{framework} em construir aplicações ubíquas. Após a avaliação, a Seção 5 apresenta uma comparação com trabalhos relacionados. E para finalizar, a Seção 7 apresenta as conclusões e trabalhos futuros.
 
-%TODO: falar das próximas sessões
 
 
 %%%%%%%%%%%%%%%%
@@ -73,9 +76,22 @@ Este artigo é organizado da seguinte forma: a Seção 2 apresenta os conceitos bás
 %%%%%%%%%%%%%%%%
 \section{Conceitos Básicos}
 
+%[(introduzir e motivar os conceitos abordados por nossa proposta)
+%(ambientes inteligentes(smarthome como um tipo de))
+%(modelo de componentes distrbuídos(agente de recurso como definição de componente básico))]
+
+%apresentação das próximas subseções
+
 \subsection{Computação Ciente de Contexto}
+%introduzir o conceito de contexto
+%descrever sobre importancia para ambientes inteligentes (áreas relacionadas e aplicações)
+%descrever importancia em nossa proposta
 
 \subsection{Prototipagem de Aplicações Pervasivas}
+%falar sobre a importancia de testar aplicaçoes ubíquas
+%falar sobre travalho do david
+%demonstrar uso em nossa proposta com exemplo (vide figura)
+
 Figura~\ref{fig:ipgap}
 \begin{figure}[ht]
   \centering
@@ -87,23 +103,19 @@ Figura~\ref{fig:ipgap}
 %%%%%%%%%%%%%%%%
 %  FRAMEWORK   %
 %%%%%%%%%%%%%%%%
-\section{Proposta do Framework}
-Figura~\ref{fig:arquitetura}
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=.7\textwidth]{imgs/framework/arquiteturaGeral.png}
-  \caption{Arquitetura do \textit{Framework}}
-  \label{fig:arquitetura}
-\end{figure}
+\section{Proposta do \textit{Framework}}
 
+%definição geral do framework
+O framework provê facilidades e padrões de programação a aplicações cientes de contexto focadas em ambientes inteligentes (incluindo \textit{smarthomes}).
 
-O framework provê facilidades e padrões de programação a aplicações cientes de contexto focadas em ambientes inteligentes (\textit{smarthomes}).
-
+%definição da unidade básica do framework (AR)
 Ao invés de se lidar diretamente com sensores e atuadores espalhados no ambiente, o \textit{framework} utiliza, como abstração, componentes chamados Agentes de Recurso (AR). Os ARs são elementos de primeira ordem da plataforma, representando recursos de hardware ou software disponíveis no ambiente. Eles têm como responsabilidade coletar as diversas medidas dos sensores ou componentes de \textit{software} presentes no contexto de execução do das aplicações~\cite{bezerrauso}. Os ARs resolvem a complexidade de tratamento com os componente de baixo nível e disponibilizam interfaces padrões de interação tanto local como em rede. Em ambientes inteligentes podem ser criados ARs para representar, por exemplo: uma televisão que expõe suas informações de contexto e provê serviços para as aplicações; sensores de temperatura da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
 
+%definiçao de uso geral da AR
 O AR é a unidade básica de modularização do ambiente distribuído proposto pelo \textit{framework}, assim sendo, o mesmo pode também ser utilizado na modelagem das aplicações. Se uma aplicação necessita de uma entidade distribuída, pode representá-la através de um AR. Por exemplo, um desenvolvedor poderia construir um jogo, representando através de ARs os jogadores, o tabuleiro, os monstros, recursos do cenário, etc. 
 
-Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recurso (SGAR) e é instanciado apenas uma vez no sistema distribuído. Como apresentado na Figura~\ref{fig:middl_layers}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
+%introduzindo o SGAR
+Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recurso (SGAR) e é instanciado apenas uma vez no sistema distribuído. Como apresentado na Figura~\ref{fig:suporte}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
 
 O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos ARs e tornar a comunicação transparente para o programador das aplicações. 
 
@@ -114,24 +126,18 @@ O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos 
   \label{fig:cmd-intp}
 \end{figure}
 
-\subsection{Modelo de Componentes Distribuídos}
-%falar sobre serviços de descoberta, registro e localização
+\subsection{Modelo de Componentes Distribuídos}%falar sobre interfaces de serviços do AR e os serviços de descoberta, registro e localização
 
-\subsection{Comunicação} \label{subsec-comunicacao}
-Figura: Comunicação direta e indireta em alto nível
-
-A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
-
-%A abordagem adotada no SmartAndroid difere daquelas onde 
-
-\subsection{Suporte ao Gerenciamento de Recursos}
-Figura~\ref{fig:suporte}
+%descrever de forma geral o componente distribuido (figura arqGeral)
+Figura~\ref{fig:arquitetura}
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=.7\textwidth]{imgs/suporte/suporte.png}
-  \caption{Serviços de Suporte}
-  \label{fig:suporte}
+  \includegraphics[width=.7\textwidth]{imgs/framework/arquiteturaGeral.png}
+  \caption{Arquitetura do \textit{Framework}}
+  \label{fig:arquitetura}
 \end{figure}
+
+%descrever a estrutura do agente (figura instanciaAR)
 
 Figura~\ref{fig:agente}
 \begin{figure}[ht]
@@ -141,6 +147,26 @@ Figura~\ref{fig:agente}
   \label{fig:agente}
 \end{figure}
 
+%descrever as portas de interação (VC e operações) do AR 
+
+\subsubsection{Suporte ao Gerenciamento de Recursos}
+
+%falar sobre uso geral do SGAR (figura Suporte)
+Figura~\ref{fig:suporte}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.7\textwidth]{imgs/suporte/suporte.png}
+  \caption{Serviços de Suporte}
+  \label{fig:suporte}
+\end{figure}
+
+%descrever o serviço de registro e exemplos
+
+%descrever o serviço de descoberta e exemplos
+
+%descrever o serviço de localização e exemplos
+
+%descrever estrutura de repositorio (figura repositorio) 
 Figura~\ref{fig:repositorio}
 \begin{figure}[ht]
   \centering
@@ -148,6 +174,18 @@ Figura~\ref{fig:repositorio}
   \caption{Repositório de Recursos}
   \label{fig:repositorio}
 \end{figure}
+
+\subsection{Comunicação} \label{subsec-comunicacao}
+Figura: Comunicação direta e indireta em alto nível
+%contextualizaçao da comunicaçao no modelo de componentes distribuídos
+
+%descrição breve do mecanismo RPC para o SmartAndroid
+
+%descriçao do mecanismo p/s 
+A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
+
+
+%A abordagem adotada no SmartAndroid difere daquelas onde 
 
 \subsection{Modelo de Contexto}
 %Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) envolve a escolha de um modelo de contexto. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, onde os dispositivos ou entitades que os representam enviam suas medições para este serviço de gerenciamento. O serviço se encarrega então de enviar as medidas para os interessados. Este é o caso, por exemplo do 
@@ -194,7 +232,11 @@ Figura: Figura que permita mostrar o funcionamento passo-a-passo do IC
 %  AVALIACAO   %
 %%%%%%%%%%%%%%%%
 \section{Avaliação}
-Figura~
+
+%falar sobre o que foi desenvolvido para avaliar a qualidade do framework (jogo da velha e aplicação de economia de luz)
+
+%descrição da prova de conceito jogo da velha (figura tictactoe)
+Figura~\ref{fig:tictactoe}
 \begin{figure}[ht]
   \centering
   \includegraphics[height=.8\textwidth]{imgs/app/tictactoe.png}
@@ -202,14 +244,21 @@ Figura~
   \label{fig:tictactoe}
 \end{figure}
 
+%descrição da aplicação de economia de energia
+
 %%%%%%%%%%%%%%%%
 % RELACIONADOS %
 %%%%%%%%%%%%%%%%
 \section{Trabalhos Relacionados}
 %Diversos trabalhos vem sendo desenvolvidos nas áreas de Computação Ubíqua ou Pervasiva, Computação Sensível ao Contexto, 
-%essencialmente focamos em sistemas distribuídos, <não vamos falar dos sistemas 
 
+%trabalhos relacionados a middlewares e frameworks
+%\cite{Cardoso2006}
+%\cite{helal2005gator}
+%\cite{santi2011jaca}
+%essencialmente focamos em sistemas distribuídos, <não vamos falar dos sistemas 
 %falar dos sistemas q tb tem uma arquitetura em camadas, mas nas diferenças entre o deles e o nosso
+%\cite{bruneau2009diasim}
 
 %~\cite{liu2003dios++}
 
@@ -218,6 +267,7 @@ Figura~
 % CONCLUSÃO %
 %%%%%%%%%%%%%
 \section{Conclusão e Trabalhos Futuros}
+
 
 
 %\cite{boulic:91}
