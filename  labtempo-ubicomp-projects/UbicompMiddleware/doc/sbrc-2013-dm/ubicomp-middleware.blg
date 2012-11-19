@@ -1,48 +1,58 @@
 This is BibTeX, Version 0.99c (TeX Live 2009/Debian)
 The top-level auxiliary file: ubicomp-middleware.aux
+Case mismatch error between cite keys Cardoso2006 and cardoso2006
+---line 29 of file ubicomp-middleware.aux
+ : \citation{Cardoso2006
+ :                      }
+I'm skipping whatever remains of this command
 The style file: sbc.bst
 Database file #1: references.bib
+Repeated entry---line 228 of file references.bib
+ : @article{cardoso2006
+ :                     ,
+I'm skipping whatever remains of this entry
+Warning--I didn't find a database entry for "david2012ipgap"
 Warning--empty journal in Chen2002
 Warning--there's a number but no volume in Chen2002
-You've used 11 entries,
+You've used 16 entries,
             1935 wiz_defined-function locations,
-            546 strings with 5563 characters,
-and the built_in function-call counts, 4805 in all, are:
-= -- 477
-> -- 200
-< -- 10
-+ -- 70
-- -- 68
-* -- 400
-:= -- 817
-add.period$ -- 35
-call.type$ -- 11
-change.case$ -- 89
-chr.to.int$ -- 11
-cite$ -- 13
-duplicate$ -- 189
-empty$ -- 327
-format.name$ -- 85
-if$ -- 955
+            573 strings with 6429 characters,
+and the built_in function-call counts, 7026 in all, are:
+= -- 702
+> -- 288
+< -- 15
++ -- 100
+- -- 98
+* -- 588
+:= -- 1190
+add.period$ -- 51
+call.type$ -- 16
+change.case$ -- 129
+chr.to.int$ -- 16
+cite$ -- 18
+duplicate$ -- 275
+empty$ -- 482
+format.name$ -- 122
+if$ -- 1399
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 11
-newline$ -- 58
-num.names$ -- 33
-pop$ -- 80
+missing$ -- 16
+newline$ -- 83
+num.names$ -- 48
+pop$ -- 114
 preamble$ -- 1
-purify$ -- 89
+purify$ -- 129
 quote$ -- 0
-skip$ -- 149
+skip$ -- 216
 stack$ -- 0
-substring$ -- 327
-swap$ -- 38
-text.length$ -- 4
+substring$ -- 493
+swap$ -- 55
+text.length$ -- 6
 text.prefix$ -- 0
 top$ -- 0
-type$ -- 66
+type$ -- 96
 warning$ -- 2
-while$ -- 44
+while$ -- 66
 width$ -- 0
-write$ -- 145
-(There were 2 warnings)
+write$ -- 211
+(There were 2 error messages)
