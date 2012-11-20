@@ -172,10 +172,10 @@ Figura~\ref{fig:arquitetura}
 \end{figure}
 
 %descrever a estrutura do agente 
-O AR foi definido para padronizar os componentes de interação do ambiente, e dessa forma resolver questão da heterogeneidade apresentada em \cite{araujo2003}. A estrutura geral do AR é composta por nome único, tipo, localização, código(classe) com variáveis e métodos e uma lista de interessados em informações de contexto. O tipo é definido por uma hierarquia que vai se especializando desde o tipo raiz até o tipo da classe(código) específico da classe. Todo AR possui como super pai o tipo raiz. A lista de interessados possui registros com dois campos, um com a variável de contexto AR corrente e outro com a referência do outro AR interessado nela.  
+O AR foi definido para padronizar os componentes de interação do ambiente, e dessa forma resolver questão da heterogeneidade apresentada em \cite{araujo2003}. A estrutura geral do AR é composta por nome único, tipo, localização, código(que define a classe) com variáveis e métodos e uma lista de interessados em informações de contexto. O tipo é definido por uma hierarquia que vai se especializando desde o tipo raiz até o tipo da classe(que representa o código) específico da classe. Todo AR possui como super pai o tipo raiz. A lista de interessados possui registros com dois campos, um com a variável de contexto AR corrente e outro com a referência do outro AR interessado nela.  
 
 %descrever instancia do agente (figura instanciaAR)
-A Figura~\ref{fig:agente} ilustra um exemplo de instancia de AR representando um televisor em ambiente residencial. O nome identifica unicamente a TV no ambiente residencial ("tvDaSala"), a localização é definida como a sala de estar da casa. O tipo "TV", nome da classe corrente, é definido como especialização do tipo "Visual". O código possui as variáveis e as operações específicas da classe, como o número de canais. E a lista de interessador possui a lista de variáveis que tem como alvo de interesse os AR associados, por exemplo celular está interessado no canal da TV. 
+A Figura~\ref{fig:agente} ilustra um exemplo de instancia de AR representando um televisor em ambiente residencial. O nome identifica unicamente a TV no ambiente residencial ("tvDaSala"), a localização é definida como a sala de estar da casa. O tipo "TV", nome da classe corrente, é definido como especialização do tipo "Visual". O código possui as variáveis e as operações específicas da classe, como indicado na Figura ~\ref{fig:agente}, o número de canais ("numChannels"). E a lista de interessados possui cada registro representando um interesse, o qual contem o campo da variável e outro campo com o AR interessado na mudança de valor da respectiva variável. Por exemplo, o registro da Figura~\ref{fig:agente} indica que o AR do celular está interessado na mudança de canal da TV. 
 
 Figura~\ref{fig:agente}
 \begin{figure}[ht]
@@ -212,7 +212,7 @@ Figura~\ref{fig:suporte}
 O Repositório de Recursos possui o Diretório de Recursos e o Mapa do ambiente. O Diretório contém os dados dos ARs armazenados conforme o tipo de cada um. Estes dados consistem do nome, tipo, localização e a referência de acesso. A referência de acesso permite a interação através do mecanismo de comunicação por invocação remota (RPC) (vide Seção~\ref{subsec-comunicacao}). O Mapa possui o conjunto de espaços físicos definidos no ambiente. Cada espaço possui uma área e um nome. No caso de uma \textit{smarthome} os cômodos da casa representam estes espaços. Cada entrada do Mapa referencia um conjunto de AR contidos no respectivo espaço como pode ser visto na Figura~\ref{fig:repositorio}.
 
 %descrever exemplo da (figura repositorio)
-Na Figura~\ref{fig:repositorio} é apresentada a organização de um conjunto de recursos no Repositório. Neste caso há três recursos registrados, uma TV ("tvDaSala"), e dois \textit{tablets} ("iPadQuarto" e "tabSala"). Os três fazem parte do conjunto de ARs do tipo "Audiovisual", estes tipos funcionam como subdiretórios de recursos. E por fim, o Mapa indexa cada um ao cômodo respectivo.
+Na Figura~\ref{fig:repositorio} é apresentada a organização de um conjunto de recursos no Repositório. Neste caso há três recursos registrados, uma TV ("tvDaSala"), e dois \textit{tablets} ("iPadQuarto" e "tabSala"). Os três fazem parte do conjunto de ARs do tipo "Audiovisual", estes tipos funcionam como subdiretórios de recursos. E por fim, o Mapa indexa cada um ao respectivo cômodo indicado pelo atributo de localização.
  
 Figura~\ref{fig:repositorio}
 \begin{figure}[ht]
@@ -224,6 +224,12 @@ Figura~\ref{fig:repositorio}
 
 \subsection{Comunicação} \label{subsec-comunicacao}
 Figura: Comunicação direta e indireta em alto nível
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.7\textwidth]{imgs/com/p_s.png}
+  \caption{Esquema de \textit{publish-subscribe}}
+  \label{fig:repositorio}
+\end{figure}
 %contextualizaçao da comunicaçao no modelo de componentes distribuídos
 
 
