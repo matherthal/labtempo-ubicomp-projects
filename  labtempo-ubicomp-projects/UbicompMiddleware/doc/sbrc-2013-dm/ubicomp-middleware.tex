@@ -235,18 +235,17 @@ Figura: Comunicação direta e indireta em alto nível
 Foi definido um esquema de comunicação por eventos para atender a um requisito essencial do \textit{framework}, a interpretação de contexto. Este esquema é denominado de \textit{publish-subscribe}, o qual muito utilizado em sistemas distribuídos.Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. No esquema ilustrado na Figura~\ref{fig:pubsub}, os ARs 4, 5 e 6 se subscrevem a eventos que podem ser gerados pelos ARs 1, 2 e 3 respectivamente. Como auxilio a este esquema é utilizado conceitos de Programação Orientada a Aspectos (POA), no qual é utilizado para definir pontos de aviso (\textit{advice}) para VCs alvos de interesse. Estes pontos de aviso indicam o disparo de uma notificação \textit{unicast} a todos os ARs interessados.
 
 %descrição breve do mecanismo RPC para o SmartAndroid
-
+Existe ainda possibilidade de comunicação direta com os ARs, o SDR pode ser utilizado para encontrar as referências de acesso direto a um em específico. Neste caso além de possuir a referência é necessário instanciar um \textit{proxy} correspondente a mesma classe do AR alvo. Com o \textit{proxy} instanciado, o mecanismo de RPC pode ser utilizado para fazer as invocações remotas das suas operações. A IPGAP utiliza a comunicação direta como meio para controlar remotamente os ARs visualizados no mapa
 
 %A abordagem adotada no SmartAndroid difere daquelas onde 
+O framework possui uma flexibilidade de comunicação que amplia o escopo de desenvolvimento de aplicações ubíquas, enquanto que muitas abordagens se restringem a comunicação baseada em eventos por ser mais econômica. 
 
 \subsection{Modelo de Contexto} \label{subsec-contexto}
 %Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) envolve a escolha de um modelo de contexto. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, onde os dispositivos ou entitades que os representam enviam suas medições para este serviço de gerenciamento. O serviço se encarrega então de enviar as medidas para os interessados. Este é o caso, por exemplo do 
 
 Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) pode ter uma abordagem centralizada ou distribuída. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, responsável por manter a informação contextual e oferecer interfaces para subscrições e consultas. Este tipo de abordagem corresponde à uma arquitetura do tipo \textit{blackboard} (ou quadro-negro), onde uma entidade envia uma mensagem para uma memória compartilhada entre todas as entidades, e também pode se subscrever para receber mensagens que respeitam algum padrão especificado~\cite{winograd2001architectures}. Todas as comunicações ocorrem através de um servidor centralizado e as mensagens são redirecionadas para os interessados.
 
-Este trabalho adotou uma abordagem distribuída, onde a informação de contexto não é armazenada em um servidor centralizado, mas é mantida pelos ARs. O processo de aquisição do contexto envolve a descoberta do AR de interesse através do SDR, com a posterior subscrição do mesmo, como apresentado na Subsessão~\ref{subsec-comunicacao}. 
-
-
+Este trabalho adotou uma abordagem distribuída, onde a informação de contexto não é armazenada em um servidor centralizado, mas é mantida pelos ARs. O processo de aquisição do contexto envolve a descoberta do AR de interesse através do SDR, com a posterior subscrição do mesmo, como apresentado na Subseção~\ref{subsec-comunicacao}. 
 
 \begin{figure}[ht]
   \centering
