@@ -146,8 +146,11 @@ O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos 
 
 \subsection{Modelo de Componentes Distribuídos}%falar sobre interfaces de serviços do AR e os serviços de descoberta, registro e localização
 
-%descrever de forma geral o componente distribuido (figura arqGeral)
+%descrever de forma geral o componente distribuido
+O modelo de componentes distribuídos mapeia as aplicações ubíquas em um ambiente inteligente genérico. Em geral este mapeamento é dividido em três camadas essenciais: a camada física ou conceitual dos recursos, a camada intermediária (\mbox{\textit{middleware}}) com os ARs dos respectivos recursos e componentes de ciência do contexto (interpretadores), e a camada das aplicações que agregam os componentes do \mbox{\textit{middleware}} em aplicativos. O modelo de componentes distribuído pode variar dentre estas camadas de acordo com as aplicações ubíquas implantadas no ambiente.
 
+%descrever um exemplo de modelo de componente distribuído (figura arqGeral)
+Na Figura~\ref{fig:arquitetura}, um exemplo de \textit{smarthome} gerenciado pelo \textit{framework} é apresentado. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (como \textit{smartphones} e \textit{tablets}) ou criados virtualmente através da IPGAP. A Figura~\ref{fig:arquitetura} apresenta exemplos como televisor, cama e fogão. No \mbox{\textit{middleware}} são apresentados os seus ARs representativos, além de um AR de interpretação de contexto para verificar se o fogão foi esquecido ligado por um ocupante da casa. O interpretador verifica se alguém está presente na cama e por quanto tempo o fogão está ligado, se um tempo limite for ultrapassado uma ação é disparada para que o fogão seja desligado. Os ARs referentes a cama e ao fogão coletam os dados destes recursos e os representam na camada do \mbox{\textit{middleware}}.
 
 Figura~\ref{fig:arquitetura}
 \begin{figure}[ht]
