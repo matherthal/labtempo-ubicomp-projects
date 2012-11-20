@@ -111,11 +111,10 @@ O \textit{famework} proposto permite ao desenvolvedor criar aplicações nas dimen
 
 \subsection{Computação Ciente de Contexto}
 %introduzir o conceito de contexto
-O contexto exerce um papel de fundamental importância na computação ubíqua. Durante a década de 90, diversos autores procuraram definir contexto, muitas delas pouco apuradas. Baseado em definições de autores anteriores, Dey e Abowd~\cite{Dey2001} compuseram a seguinte definição para contexto:
+O contexto exerce um papel de fundamental importância na computação ubíqua. Durante a década de 90, diversos autores procuraram definir contexto, muitas delas pouco apuradas. Baseados em definições de autores anteriores, Dey e Abowd~\cite{Dey2001} compuseram a seguinte definição para contexto:
 
 \begin{quotation}
   ``Qualquer informação que pode ser usada para caracterizar a situação de entidades (i.e., pessoa, lugar ou objeto) que são consideradas relevantes para a interação entre um usuário e uma aplicação, incluindo o próprio usuário e aplicação. Contexto é tipicamente a localização, identidade, e estado de pessoas, grupos, e objetos computacionais e físicos''
-  %``Qualquer informação que pode ser utilizada para caracterizar o estado de uma entidade. Considerando-se entidades uma pessoa, lugar ou objeto que seja considerado relevante para a interação entre o usuário e uma aplicação, incluindo estes próprios.''  
 \end{quotation}
 
 Segundo~\cite{Dey2001} três entidades de contexto foram identificadas como de maior importância, são elas: lugares, pessoas e coisas. No ambiente de uma smarthome, ``Lugares'' são os cômodos, os andares de uma edificação, ou espaços em geral; ``Pessoas'' são indivíduos que povoam o ambiente e interagem com o mesmo; e ``Coisas'' são representações virtuais de objetos físicos ou componentes de \textit{software}.
@@ -123,9 +122,10 @@ Segundo~\cite{Dey2001} três entidades de contexto foram identificadas como de ma
 Após a identificação das entidades, são introduzidas quatro categorias de contexto essenciais: identidade, localização, estado e tempo. ``Identidade'' corresponde à identificação única de uma entidade. ``Localização'' não só diz respeito à posição de uma pessoa e sua inserção em uma área ou subárea, mas diz também respeito à proximidade de uma pessoa em relação à outra, ou à uma coisa. ``Estado'' identifica características intrínsecas da entidade (e.g., temperatura de uma sala, sinal vital de uma pessoa). ``Tempo'' é uma informação de contexto quando ajuda a caracterizar a situação, geralmente usado com outras informações de contexto, indicando um instante ou período durante o qual alguma informação contextual é conhecida ou relevante.
 
 %descrever sobre importancia para ambientes inteligentes (áreas relacionadas e aplicações)
-Uma meta da aquisição de contexto é determinar o que o usuário está tentando realizar, por exemplo, se uma pessoa sai de casa e deixa a torneira aberta, pode ser que tenha esquecido. O conhecimento de contexto aumenta o 
+Uma meta da aquisição de contexto é determinar o que o usuário está tentando realizar, por exemplo, se uma pessoa sai de casa e deixa a torneira aberta, pode ser que a tenha esquecido. A aquisição do contexto de forma automatizada contribui para a construção de aplicações para ambientes inteligentes que, de outra maneira, seriam inviáveis, por exigir a entrada de dados ou comandos diretamente por parte dos usuários.
 
 %descrever importancia em nossa proposta   
+O \textit{framework} proposto neste trabalho
 
 %%%%%%%%%%%%%%%%
 %  FRAMEWORK   %
@@ -181,7 +181,7 @@ Figura~\ref{fig:agente}
 
 %descrever as portas de interação (VC e operações) do AR 
 
-\subsubsection{Suporte ao Gerenciamento de Recursos}
+\subsubsection{Suporte ao Gerenciamento de Recursos} \label{subsubsec-sgr}
 
 %falar sobre uso geral do SGAR (figura Suporte)
 Figura~\ref{fig:suporte}
@@ -221,7 +221,7 @@ A principal forma de comunicação no SmartAndroid é através de um mecanismo de pu
 
 %A abordagem adotada no SmartAndroid difere daquelas onde 
 
-\subsection{Modelo de Contexto}
+\subsection{Modelo de Contexto} \label{subsec-contexto}
 %Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) envolve a escolha de um modelo de contexto. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, onde os dispositivos ou entitades que os representam enviam suas medições para este serviço de gerenciamento. O serviço se encarrega então de enviar as medidas para os interessados. Este é o caso, por exemplo do 
 
 Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) pode ter uma abordagem centralizada ou distribuída. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, responsável por manter a informação contextual e oferecer interfaces para subscrições e consultas. Este tipo de abordagem corresponde à uma arquitetura do tipo \textit{blackboard} (ou quadro-negro), onde uma entidade envia uma mensagem para uma memória compartilhada entre todas as entidades, e também pode se subscrever para receber mensagens que respeitam algum padrão especificado~\cite{winograd2001architectures}. Todas as comunicações ocorrem através de um servidor centralizado e as mensagens são redirecionadas para os interessados.
@@ -237,7 +237,7 @@ Este trabalho adotou uma abordagem distribuída, onde a informação de contexto nã
   \label{fig:inpt_cute}
 \end{figure}
 
-\subsubsection{Variáveis de Contexto e Operações} \label{subsec:cv}
+\subsubsection{Variáveis de Contexto e Operações} \label{subsubsec:cv}
 As informações de contexto respectivas de cada AR são expostas através de Variáveis de Contexto (VC). Se, por exemplo, há um agente para a televisão registrado no sistema, possivelmente ele provê VCs para qual a programação que está sendo exibida, qual a programação agendada, se a própria televisão está ligada, se está gravando alguma programação, enfim, tudo que diz respeito ao estado da televisão e é efetivamente coletado.
 
 As VCs possibilitam que as informações de contexto sejam acessadas sem que haja um componente centralizado armazenando-as e disponibilizando-as, %como são as abordagens que utilizam tuple space (T Space, Google Interactive Space (acho q tb usa), outras) %TODO: Falar disso tudo
@@ -245,7 +245,7 @@ As VCs possibilitam que as informações de contexto sejam acessadas sem que haja 
 %Figura: Arquitetura que mostre as portas de entrada e exit dos ARs (VCs e Operações). Deve mostrar, ou ser explicado como se ligar.
 
 
-\subsubsection{Interpretador de Contexto}
+\subsubsection{Interpretador de Contexto} \label{subsubsec-ic}
 %Figura: Arquitetura em camadas: desde os recursos até a aplicação, passando pelo IC
 
 %\subsubsection{Criação de Interpretador de Contexto}
@@ -265,7 +265,7 @@ Figura: Figura que permita mostrar o funcionamento passo-a-passo do IC
 %%%%%%%%%%%%%%%%
 %  AVALIACAO   %
 %%%%%%%%%%%%%%%%
-\section{Avaliação}
+\section{Avaliação} \label{sec-av}
 
 %falar sobre o que foi desenvolvido para avaliar a qualidade do framework (jogo da velha e aplicação de economia de luz)
 
@@ -283,7 +283,7 @@ Figura~\ref{fig:tictactoe}
 %%%%%%%%%%%%%%%%
 % RELACIONADOS %
 %%%%%%%%%%%%%%%%
-\section{Trabalhos Relacionados}
+\section{Trabalhos Relacionados} \label{sec-trab_rel}
 %Diversos trabalhos vem sendo desenvolvidos nas áreas de Computação Ubíqua ou Pervasiva, Computação Sensível ao Contexto, 
 
 %trabalhos relacionados a middlewares e frameworks
@@ -300,7 +300,7 @@ Figura~\ref{fig:tictactoe}
 %%%%%%%%%%%%%
 % CONCLUSÃO %
 %%%%%%%%%%%%%
-\section{Conclusão e Trabalhos Futuros}
+\section{Conclusão e Trabalhos Futuros} \label{sec-conclusao}
 
 
 
