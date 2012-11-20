@@ -223,19 +223,16 @@ Figura~\ref{fig:repositorio}
 \end{figure}
 
 \subsection{Comunicação} \label{subsec-comunicacao}
+
 Figura: Comunicação direta e indireta em alto nível
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.7\textwidth]{imgs/com/p_s.png}
   \caption{Esquema de \textit{publish-subscribe}}
-  \label{fig:repositorio}
+  \label{fig:pubsub}
 \end{figure}
-%contextualizaçao da comunicaçao no modelo de componentes distribuídos
-
-
-
-%descriçao do mecanismo p/s 
-A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
+%contextualizaçao da comunicaçao no modelo de componentes distribuídos descriçao do mecanismo p/s 
+Foi definido um esquema de comunicação por eventos para atender a um requisito essencial do \textit{framework}, a interpretação de contexto. Este esquema é denominado de \textit{publish-subscribe}, o qual muito utilizado em sistemas distribuídos.Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. No esquema ilustrado na Figura~\ref{fig:pubsub}, os ARs 4, 5 e 6 se subscrevem a eventos que podem ser gerados pelos ARs 1, 2 e 3 respectivamente. Como auxilio a este esquema é utilizado conceitos de Programação Orientada a Aspectos (POA), no qual é utilizado para definir pontos de aviso (\textit{advice}) para VCs alvos de interesse. Estes pontos de aviso indicam o disparo de uma notificação \textit{unicast} a todos os ARs interessados.
 
 %descrição breve do mecanismo RPC para o SmartAndroid
 
