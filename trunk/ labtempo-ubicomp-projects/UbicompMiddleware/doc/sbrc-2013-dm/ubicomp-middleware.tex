@@ -46,7 +46,7 @@
 %(motivação: jogar pra cima ubicomp introduzindo a inteligência ambiental como aplicação funamental)
 A Computação Ubíqua, como proposta por Weiser na década de 90~\cite{weiser1991computer}, prevê uma mudança no paradigma de interação entre o usuário e os sistemas computacionais. Weiser previu o surgimento do que chamou de "computação calma", onde a interação entre os usuários e os computadores ocorre de forma indireta. Uma aplicação ubíqua identifica as necessidades do usuário obtendo informação de contexto através de sensores, e provê serviços através de atuadores. Este tipo de sistema de aplicações está geralmente associado a um espaço denominado de ambiente inteligente~\cite{augusto2007ambient}. 
 
-%TODO: (matheus) Douglas, não é melhor colocarmos uma referência para SmartHome, ao invés de Ambient Inteligence, pq este último só fala de IA... se vc quiser, eu acho q tenho até a referência pra qm criou este termo ``smarthome'', só que isso foi criado num relatório técnico (é difícil de achar, mas eu acho q tenho uma cópia pq pedi à própria autora). 
+%TODO: (matheus) Douglas, não é melhor colocarmos uma referência para, ao invés de Ambient Inteligence, pq este último só fala de IA... se vc quiser, eu acho q tenho até a referência pra qm criou este termo ``smarthome'', só que isso foi criado num relatório técnico (é difícil de achar, mas eu acho q tenho uma cópia pq pedi à própria autora). 
 
 %TODO:(douglas) Não acho apropriado citar algo diferente do que já vinha sendo citado e aconselhado pelo orlando, e há uma concenso de que smart home é uma instancia de ambientes inteligentes. Quando houver citação do caso específico de smarthome (exemplos) esta referência de ''smarthome'' é bem vinda
    
@@ -192,7 +192,8 @@ No código dos AR exitem ainda as Variáveis de Contexto (VC) e as Operações
 \subsubsection{Suporte ao Gerenciamento de Recursos} \label{subsubsec-sgr}
 
 %falar sobre uso geral do SGAR (figura Suporte)
-O SGAR é o responsável por gerenciar o conjunto de AR de um ambiente inteligente
+O SGAR é o responsável por gerenciar o conjunto de ARs de um ambiente inteligente. O controle de registro (através do SRR) e descoberta (através do SDR) de ARs segue a ideia geral sobre serviços de registro e descoberta de recursos apresentada em \cite{Cardoso2006}. Neste trabalho foi acrescentado o SLR que tem a função de localização física. A Figura~\ref{fig:suporte} ilustra as principais operações de cada serviço de suporte. O SRR é utilizado para registrar ou remover o registro, o SDR é utilizado na busca e o SLR na localização de ARs. Estas operações manipulam dados representativos dos respectivos ARs no Repositório de Recursos.
+
 Figura~\ref{fig:suporte}
 \begin{figure}[ht]
   \centering
@@ -207,7 +208,12 @@ Figura~\ref{fig:suporte}
 
 %descrever o serviço de localização e exemplos
 
-%descrever estrutura de repositorio (figura repositorio) 
+%descrever estrutura de repositorio 
+O Repositório de Recursos possui o Diretório de Recursos e o Mapa do ambiente. O Diretório contém os dados dos ARs armazenados conforme o tipo de cada um. Estes dados consistem do nome, tipo, localização e a referência de acesso. A referência de acesso permite a interação através do mecanismo de comunicação por invocação remota (RPC) (vide Seção~\ref{subsec-comunicacao}). O Mapa possui o conjunto de espaços físicos definidos no ambiente. Cada espaço possui uma área e um nome. No caso de uma \textit{smarthome} os cômodos da casa representam estes espaços. Cada entrada do Mapa referencia um conjunto de AR contidos no respectivo espaço como pode ser visto na Figura~\ref{fig:repositorio}.
+
+%descrever exemplo da (figura repositorio)
+Na Figura~\ref{fig:repositorio} é apresentada a organização de um conjunto de recursos no Repositório. Neste caso há três recursos registrados, uma TV ("tvDaSala"), e dois \textit{tablets} ("iPadQuarto" e "tabSala"). Os três fazem parte do conjunto de ARs do tipo "Audiovisual", estes tipos funcionam como subdiretórios de recursos. E por fim, o Mapa indexa cada um ao cômodo respectivo.
+ 
 Figura~\ref{fig:repositorio}
 \begin{figure}[ht]
   \centering
