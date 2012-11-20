@@ -92,14 +92,21 @@ Para que as aplicações ubíquas possam ser integradas a elementos de baixo nível 
 
 \subsection{Computação Ciente de Contexto}
 %introduzir o conceito de contexto
+
 %descrever sobre importancia para ambientes inteligentes (áreas relacionadas e aplicações)
+
 %descrever importancia em nossa proposta
 
 \subsection{Prototipagem de Aplicações Pervasivas}
-%falar sobre a importancia de testar aplicaçoes ubíquas
-%falar sobre travalho do david
-%demonstrar uso em nossa proposta com exemplo (vide figura)
+%falar sobre travalho do david e da importancia de testar apicaçoes ubíquas
+No contexto do \textit{framework}, a prototipagem de aplicações pervasivas é fundamental para a depuração e teste em um ambiente inteligente. No trabalho \cite{david2012sbrc} é proposta a Interface de Prototipagem para Aplicações Pervasivas (IPGAP), um aparato ferramental que permite ao desenvolvedor de aplicações ter acesso a esses benefícios. Além disso, a IPGAP possui uma GUI (sigla em inglês para Interface Gráfica de Usuário) que proporciona ao usuário final controlar remotamente recursos do ambiente.
 
+%detalhar elementos da IPGAP
+Estas capacidades destacadas são proporcionadas pelas seguintes funcionalidades: mapeamento do ambiente, instalação de novas aplicações ubíquas e ligação com aplicações já existentes. Através destas funcionalidades é possível ter uma ambiente preenchido de recursos simulados (como televisor virtual, geladeira virtual, etc.) e fazê-los executar junto a recursos reais que podem ser representados em sua GUI. A GUI da IPGAP foi elaborada apropriadamente para o universo dos  \textit{tablets} e \textit{smartphones}, nela podem ser visualizados os recursos reais e virtuais localizados no mapa como ilustrado na Figura~\ref{fig:ipgap}.     
+
+%demonstrar uso em nossa proposta com exemplo (vide figura)
+Na Figura~\ref{fig:ipgap} é ilustrado um \textit{tablet} executando o aplicativo da IPGAP e \textit{smartphones} simulando recursos como TV, lampada e um termômetro. Através da IPGAP é possível visualizar cada um desses elementos e representá-los no mapa. Repare que na figura há outros recursos além dos representados pelos \textit{smartphones}, estes são recursos criados na própria IPGAP. Com isso o desenvolvedor de aplicações não fica limitado pela disponibilidade de recursos físicos, ou seja, não é preciso ter uma a mesma quantidade de dispositivos disponíveis que uma aplicação exige para que ocorra sua execução.
+ 
 Figura~\ref{fig:ipgap}
 \begin{figure}[ht]
   \centering
@@ -109,6 +116,7 @@ Figura~\ref{fig:ipgap}
 \end{figure}
 
 %(descrever sua utilização na proposta)
+O \textit{famework} proposto permite ao desenvolvedor criar aplicações nas dimensões e quantidade que desejar para um ambiente real. A IPGAP permite verificar a viabilidade do funcionamento das aplicações desenvolvidas em ambiente real. As restrições deste ambiente para o representado na IPGAP são semelhantes permitindo avaliar o desempenho antes da implantação efetiva das aplicações. Nas próximas seções são apresentados os elementos do \textit{framework} que possibilitam a construção e gerenciamento da lógica de interação das aplicações ubíquas.   
 
 %%%%%%%%%%%%%%%%
 %  FRAMEWORK   %
