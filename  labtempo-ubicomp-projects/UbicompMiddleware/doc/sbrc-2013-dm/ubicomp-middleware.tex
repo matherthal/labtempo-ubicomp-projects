@@ -94,19 +94,18 @@ Para que as aplicações ubíquas possam ser integradas a elementos de baixo nível 
 %falar sobre travalho do david e da importancia de testar apicaçoes ubíquas
 No contexto do \textit{framework}, a prototipagem de aplicações pervasivas é fundamental para a depuração e teste em um ambiente inteligente. No trabalho \cite{david2012sbrc} é proposta a Interface de Prototipagem para Aplicações Pervasivas (IPGAP), um aparato ferramental que permite ao desenvolvedor de aplicações ter acesso a esses benefícios. Além disso, a IPGAP possui uma GUI (sigla em inglês para Interface Gráfica de Usuário) que proporciona ao usuário final controlar remotamente recursos do ambiente.
 
-%detalhar elementos da IPGAP
-Estas capacidades destacadas são proporcionadas pelas seguintes funcionalidades: mapeamento do ambiente, instalação de novas aplicações ubíquas e ligação com aplicações já existentes. Através destas funcionalidades é possível ter uma ambiente preenchido de recursos simulados (como televisor virtual, geladeira virtual, etc.) e fazê-los executar junto a recursos reais que podem ser representados em sua GUI. A GUI da IPGAP foi elaborada apropriadamente para o universo dos  \textit{tablets} e \textit{smartphones}, nela podem ser visualizados os recursos reais e virtuais localizados no mapa como ilustrado na Figura~\ref{fig:ipgap}.     
-
-%demonstrar uso em nossa proposta com exemplo (vide figura)
-Na Figura~\ref{fig:ipgap} é ilustrado um \textit{tablet} executando o aplicativo da IPGAP e \textit{smartphones} simulando recursos como TV, lampada e um termômetro. Através da IPGAP é possível visualizar cada um desses elementos e representá-los no mapa. Repare que na figura há outros recursos além dos representados pelos \textit{smartphones}, estes são recursos criados na própria IPGAP. Com isso o desenvolvedor de aplicações não fica limitado pela disponibilidade de recursos físicos, ou seja, não é preciso ter uma a mesma quantidade de dispositivos disponíveis que uma aplicação exige para que ocorra sua execução.
- 
-Figura~\ref{fig:ipgap}
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.8\textwidth]{imgs/ipgap/ipgap.PNG}
   \caption{Interface de Prototipagem}
   \label{fig:ipgap}
 \end{figure}
+
+%detalhar elementos da IPGAP
+Estas capacidades destacadas são proporcionadas pelas seguintes funcionalidades: mapeamento do ambiente, instalação de novas aplicações ubíquas e ligação com aplicações já existentes. Através destas funcionalidades é possível ter uma ambiente preenchido de recursos simulados (como televisor virtual, geladeira virtual, etc.) e fazê-los executar junto a recursos reais que podem ser representados em sua GUI. A GUI da IPGAP foi elaborada apropriadamente para o universo dos  \textit{tablets} e \textit{smartphones}, nela podem ser visualizados os recursos reais e virtuais localizados no mapa como ilustrado na Figura~\ref{fig:ipgap}.     
+
+%demonstrar uso em nossa proposta com exemplo (vide figura)
+Na Figura~\ref{fig:ipgap} é ilustrado um \textit{tablet} executando o aplicativo da IPGAP e \textit{smartphones} simulando recursos como TV, lampada e um termômetro. Através da IPGAP é possível visualizar cada um desses elementos e representá-los no mapa. Repare que na figura há outros recursos além dos representados pelos \textit{smartphones}, estes são recursos criados na própria IPGAP. Com isso o desenvolvedor de aplicações não fica limitado pela disponibilidade de recursos físicos, ou seja, não é preciso ter uma a mesma quantidade de dispositivos disponíveis que uma aplicação exige para que ocorra sua execução.
 
 %(descrever sua utilização na proposta)
 O \textit{famework} proposto permite ao desenvolvedor criar aplicações nas dimensões e quantidade que desejar para um ambiente real. A IPGAP permite verificar a viabilidade do funcionamento das aplicações desenvolvidas em ambiente real. As restrições deste ambiente para o representado na IPGAP são semelhantes, o que permite avaliar o desempenho antes da implantação efetiva das aplicações.
@@ -289,16 +288,22 @@ Para consolidar a proposta do \textit{framework} foi desenvolvido um projeto par
 %falar sobre o que foi desenvolvido para avaliar a qualidade do framework (jogo da velha e aplicação de economia de luz)
 A qualidade do \textit{framework} foi avaliado em duas fases. Primeiro foi avaliado o fator de transparência de comunicação na construção de aplicações ubíquas. Esta avaliação ocorre através do processo de transformação de uma aplicação estritamente local \textit{Android} em uma aplicação ubíqua através do \textit{SmartAndroid}. Depois é avaliada a transparência no desenvolvimento de aplicações sensíveis ao contexto e manipulação das informações de contexto promovida pelo modelo de regras.
 
-%descrição da prova de conceito jogo da velha (figura tictactoe)
-Para a primeira avaliação utilizou-se a aplicação do jogo da velha (tic tac toe) como base. Nesta aplicação em sua versão \textit{Android}, os jogadores interagem através de uma mesma tela de dispositivo (\textit{tablet} ou \textit{smartphone}). Na sua versão desenvolvida com o SmartAndroid os jogadores interagem sobre um mesmo tabuleiro em dispositivos diferentes. A Figura~\ref{fig:tictactoe} ilustra o modelo de aplicação das duas versões. A versão original possui o componente da GUI ("Tic Tac Toe"), motor do jogo ("Game"), a estrutura do tabuleiro ("Board") e a identidade dos jogadores ("Player") que pode ser do tipo "X" ou "O". O motor do jogo atualiza a estrutura da borda ("update"), a qual atualiza periodicamente a GUI ("show"). O tipo do jogador é verificado para indicar qual simbolo é marcado no tabuleiro ("X" ou "O") ("set moves"). Na versão \textit{SmartAndroid} é inserido um componente de interação remota ("Game Agent"), o qual esta associado a um motor de jogo de um dispositivo de um dos jogadores (Jogador "X"). O componente de interação intercepta a atualização deste motor ("set moves") e encaminha para um componente de interação remota do dispositivo do outro jogador (Jogador "O"). Este componente do Jogador "O" atualiza o tabuleiro com a jogada do jogador "X" ("update" do "Game Agent"). Para evitar que um jogador jogue na vez do outro, por exemplo o Jogador "X" jogue no turno do Jogador "O" é verificada a identidade do jogador da vez como jogador que tenta a jogada ("check permission"). Na Figura~\ref{fig:tictactoe} as flechas em amarelo indicam as alterações realizadas na transformação
- 
-Figura~\ref{fig:tictactoe}
 \begin{figure}[ht]
   \centering
   \includegraphics[height=.8\textwidth]{imgs/app/tictactoe.PNG}
   \caption{Comparação entre os modelos das aplicações Android e SmartAndroid}
   \label{fig:tictactoe}
 \end{figure}
+
+%descrição da prova de conceito jogo da velha (figura tictactoe)
+Para a primeira avaliação utilizou-se a aplicação do jogo da velha (tic tac toe) como base. Nesta aplicação em sua versão \textit{Android}, os jogadores interagem através de uma mesma tela de dispositivo (\textit{tablet} ou \textit{smartphone}). Na sua versão desenvolvida com o SmartAndroid os jogadores interagem sobre um mesmo tabuleiro em dispositivos diferentes. A Figura~\ref{fig:tictactoe} ilustra o modelo de aplicação das duas versões. A versão original possui o componente da GUI ("Tic Tac Toe"), motor do jogo ("Game"), a estrutura do tabuleiro ("Board") e a identidade dos jogadores ("Player") que pode ser do tipo "X" ou "O". O motor do jogo atualiza a estrutura da borda ("update"), a qual atualiza periodicamente a GUI ("show"). O tipo do jogador é verificado para indicar qual simbolo é marcado no tabuleiro ("X" ou "O") ("set moves"). 
+
+%descrição do processo de transformação
+Na versão \textit{SmartAndroid} é inserido um AR do jogo para interação remota ("Game Agent"), o qual esta associado a um motor de jogo de um dispositivo de um dos jogadores (Jogador "X"). O AR do jogo intercepta a atualização deste motor ("set moves") e encaminha para o AR do outro jogador (Jogador "O"). Este AR do Jogador "O" atualiza o tabuleiro com a jogada do jogador "X" ("update" do "Game Agent"). Para evitar que um jogador jogue na vez do outro, por exemplo o Jogador "X" jogue no turno do Jogador "O" é verificada a identidade do jogador da vez como jogador que tenta a jogada ("check permission"). Na Figura~\ref{fig:tictactoe} as ligações unidirecionais em amarelo indicam as alterações realizadas no processo transformação. A parte de inicialização do jogo foi modificada para registrar o AR do jogo e este registrar interesse em ARs participantes do jogo já registrados anteriormente para receber notificação de novos movimentos. Através do SDR é verificada a existência deste tipo de AR. Caso não haja nenhum então o AR passa a representar o Jogador "X", caso haja um apenas então o AR representa o Jogador "O", caso haja mais de um, o AR é apenas observador do jogo.
+
+%avaliação jogo da velha
+Foi observado que o uso de elementos do suporte como SDR e SRR e do esquema de \textit{publish-subscribe} facilitou o processo de transformação da aplicação. Na etapa de inicialização do jogo, o SRR foi utilizado para registrar o AR do jogo e o SDR foi utilizado para descobri-los e o esquema de \textit{publish-subscribe} foi utilizada para cada jogador registrar interesse nos movimentos do respectivo adversário. Após isso, a aplicação segue seu fluxo de execução padrão com o os procedimentos adicionais destacados em amarelo na Figura~\ref{fig:tictactoe}. Portanto, após a etapa de inicialização nenhuma alteração no nível de comunicação ou contexto foi necessária, todas as alterações posteriores ocorreram para promover a interação com o AR do jogo local ao dispositivo. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
+
 
 %descrição da aplicação de economia de energia
 
