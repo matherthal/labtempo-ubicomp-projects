@@ -304,7 +304,6 @@ Na versão \textit{SmartAndroid} é inserido um AR do jogo para interação remota (
 %avaliação jogo da velha
 Foi observado que o uso de elementos do suporte como SDR e SRR e do esquema de \textit{publish-subscribe} facilitou o processo de transformação da aplicação. Na etapa de inicialização do jogo, o SRR foi utilizado para registrar o AR do jogo e o SDR foi utilizado para descobri-los e o esquema de \textit{publish-subscribe} foi utilizada para cada jogador registrar interesse nos movimentos do respectivo adversário. Após isso, a aplicação segue seu fluxo de execução padrão com o os procedimentos adicionais destacados em amarelo na Figura~\ref{fig:tictactoe}. Portanto, após a etapa de inicialização nenhuma alteração no nível de comunicação ou contexto foi necessária, todas as alterações posteriores ocorreram para promover a interação com o AR do jogo local ao dispositivo. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
 
-
 %descrição da aplicação de economia de energia
 
 %%%%%%%%%%%%%%%%
@@ -312,14 +311,24 @@ Foi observado que o uso de elementos do suporte como SDR e SRR e do esquema de \
 %%%%%%%%%%%%%%%%
 \section{Trabalhos Relacionados} \label{sec-trab_rel}
 %Diversos trabalhos vem sendo desenvolvidos nas áreas de Computação Ubíqua ou Pervasiva, Computação Sensível ao Contexto, 
+	Diversos trabalhos vem sendo desenvolvidos nas áreas de Computação Ubíqua e Computação Sensível ao Contexto aplicados a ambientes inteligentes. Alguns abordam a arquitetura do \textit{framework} \cite{helal2005gator} \cite{ranganathan2005olympus} \cite{bruneau2009diasim}, outros enfatizam aspectos de comunicação  \cite{villanueva2009framework} \cite{santi2011jaca}, e há aqueles que focam em técnicas de Computação Sensível ao Contexto \cite{liu2003dios++} \cite{Chen2002} \cite{sudha2007ubiquitous} \cite{lee2012mobicon}. 
+
 
 %trabalhos relacionados a middlewares e frameworks
-%\cite{Cardoso2006}
 %\cite{helal2005gator}
+Em \cite{helal2005gator} é proposta uma arquitetura de camadas. Dentre estas há a camada física com seus sensores, atuadores e outros dispositivos. Logo acima encontra-se a camada de plataforma de sensores onde ocorre a homogenização dos recursos físicos. A camada de serviços possui a representação dos recursos (serviços). Em analogia com nossa proposta, os serviços podem ser vistos como ARs, existem os mais básicos que representam diretamente os recursos e os mais complexos que é composto de vários serviços. As camadas de conhecimento e de contexto manipulam esta camada de serviços, a camada de conhecimento além de possuir elementos com funções similares ao do SGAR, na qual aplica um motor de raciocínio que permite avaliar se alguns serviços complexos estão disponíveis no ambiente. E a camada de contexto tem função similar ao nosso modelo de regras só que atuando em uma granularidade mais grossa. O gerenciamento destes serviços ocorre através dos elementos da camada de aplicações (aplicações ubíquas). A conclusão é que o nosso \textit{framework} possui uma estrutura semelhante, porém há neste trabalho uma série de mecanismos não considerados em \cite{helal2005gator} para a construção e instalação de novas aplicações. Além disso o \textit{framework} não se restringe a se aplicar apenas a um  ambiente do tipo \textit{smarthome}.
+
+Em \cite{ranganathan2005olympus} é proposto um conjunto de operações de alto nível para ambientes inteligentes (espaços ativos). As operações básicas são semelhantes as funções de um sistema operacional, só que ao invés de manipular recursos deste tipo sistema, entidades do ambiente são manipuladas. Em nosso \textit{framework} há apenas funções de manipulação que seguem o paradigma CRUD \cite{wikiCRUD}. As outras funções como parar, iniciar, suspender, reiniciar são definidas por cada AR e aplicação ubíqua do sistema, permitindo uma distribuição do controle de serviços do ambiente.
+
+%\cite{bruneau2009diasim}
+
+O artigo \cite{villanueva2009framework} é uma proposta com abordagem distribuída para o serviço de descoberta, o qual ocorre através de um protocolo sobre comunicação \textit{multicast}. O módulo de descoberta possui portas especializadas para escuta, busca e manipulação. Em analogia com a nossa proposta de registro de recursos, pode ser estipulado registro local de recursos através da porta de escuta. Porém o custo de espaço desta abordagem é muito alto devido a ocorrência de replicação de dados sobre o ambiente, o que ocasiona sobrecarga na comunicação tendo em conta a escalabilidade no número de dispositivos na casa inteligente.
+
 %\cite{santi2011jaca}
+O JaCa-Android \cite{santi2011jaca} é uma plataforma baseada em agentes para lidar com concorrência, eventos assíncronos, gerenciamento de recursos e sensibilidade ao contexto para possibilitar a construção de aplicações de manipulação de eventos. Para seu desenvolvimento são utilizadas as ferramentas de programação orientada a agentes. Os componentes do \textit{framework} do Android são  mapeados como artefatos para serem manipulados pela aplicação baseada em eventos definida utilizando a plataforma JaCa-Android. Este trabalho traz um modo de captura de mudança de estado em recursos através de eventos, em nossa proposta esta mesma abordagem é utilizada para interessados em informações de um agente de  recurso específico.
 %essencialmente focamos em sistemas distribuídos, <não vamos falar dos sistemas 
 %falar dos sistemas q tb tem uma arquitetura em camadas, mas nas diferenças entre o deles e o nosso
-%\cite{bruneau2009diasim}
+
 
 %~\cite{liu2003dios++}
 
