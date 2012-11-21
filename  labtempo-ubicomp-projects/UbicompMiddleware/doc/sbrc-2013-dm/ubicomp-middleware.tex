@@ -311,7 +311,7 @@ Foi observado que o uso de elementos do suporte como SDR e SRR e do esquema de \
 %%%%%%%%%%%%%%%%
 \section{Trabalhos Relacionados} \label{sec-trab_rel}
 %Diversos trabalhos vem sendo desenvolvidos nas áreas de Computação Ubíqua ou Pervasiva, Computação Sensível ao Contexto, 
-	Diversos trabalhos vem sendo desenvolvidos nas áreas de Computação Ubíqua e Computação Sensível ao Contexto aplicados a ambientes inteligentes. Alguns abordam a arquitetura do \textit{framework} \cite{helal2005gator} \cite{ranganathan2005olympus} \cite{bruneau2009diasim}, outros enfatizam aspectos de comunicação  \cite{villanueva2009framework} \cite{santi2011jaca}, e há aqueles que focam em técnicas de Computação Sensível ao Contexto \cite{liu2003dios++} \cite{Chen2002} \cite{sudha2007ubiquitous} \cite{lee2012mobicon}. 
+	Diversos trabalhos vem sendo desenvolvidos nas áreas de Computação Ubíqua e Computação Sensível ao Contexto aplicados a ambientes inteligentes. Alguns abordam a arquitetura do \textit{framework} \cite{helal2005gator} \cite{ranganathan2005olympus}, outros enfatizam aspectos de comunicação  \cite{villanueva2009framework} \cite{santi2011jaca}, e há aqueles que focam em técnicas de Computação Sensível ao Contexto \cite{liu2003dios++} \cite{Chen2002} \cite{sudha2007ubiquitous} \cite{lee2012mobicon}. 
 
 
 %trabalhos relacionados a middlewares e frameworks
@@ -320,9 +320,7 @@ Em \cite{helal2005gator} é proposta uma arquitetura de camadas. Dentre estas há 
 
 Em \cite{ranganathan2005olympus} é proposto um conjunto de operações de alto nível para ambientes inteligentes (espaços ativos). As operações básicas são semelhantes as funções de um sistema operacional, só que ao invés de manipular recursos deste tipo sistema, entidades do ambiente são manipuladas. Em nosso \textit{framework} há apenas funções de manipulação que seguem o paradigma CRUD \cite{wikiCRUD}. As outras funções como parar, iniciar, suspender, reiniciar são definidas por cada AR e aplicação ubíqua do sistema, permitindo uma distribuição do controle de serviços do ambiente.
 
-%\cite{bruneau2009diasim}
-
-O artigo \cite{villanueva2009framework} é uma proposta com abordagem distribuída para o serviço de descoberta, o qual ocorre através de um protocolo sobre comunicação \textit{multicast}. O módulo de descoberta possui portas especializadas para escuta, busca e manipulação. Em analogia com a nossa proposta de registro de recursos, pode ser estipulado registro local de recursos através da porta de escuta. Porém o custo de espaço desta abordagem é muito alto devido a ocorrência de replicação de dados sobre o ambiente, o que ocasiona sobrecarga na comunicação tendo em conta a escalabilidade no número de dispositivos na casa inteligente.
+Boa parte dos \textit{frameworks} propostos relutam em levantar pontos sobre a sobrecarga de comunicação decorrente em sistemas ubíquos. O artigo \cite{villanueva2009framework} é uma proposta com abordagem distribuída para a parte de suporte (SGAR). O serviço de descoberta ocorre através de um protocolo de comunicação do tipo \textit{multicast}. O módulo de descoberta possui portas especializadas para escuta, busca e manipulação em cada componente do sistema. Em analogia com a nossa proposta de registro de recursos, pode ser estipulado registro local de recursos através da porta de escuta, tendo assim cada componente um repositório local de recursos. Porém o custo de espaço desta abordagem é muito alto devido a ocorrência de replicação de dados sobre o ambiente, e acaba ocasionando sobrecarga no consumo de energia devido a comunicação excessiva característica do padrão \textit{multicast}.
 
 %\cite{santi2011jaca}
 O JaCa-Android \cite{santi2011jaca} é uma plataforma baseada em agentes para lidar com concorrência, eventos assíncronos, gerenciamento de recursos e sensibilidade ao contexto para possibilitar a construção de aplicações de manipulação de eventos. Para seu desenvolvimento são utilizadas as ferramentas de programação orientada a agentes. Os componentes do \textit{framework} do Android são  mapeados como artefatos para serem manipulados pela aplicação baseada em eventos definida utilizando a plataforma JaCa-Android. Este trabalho traz um modo de captura de mudança de estado em recursos através de eventos, em nossa proposta esta mesma abordagem é utilizada para interessados em informações de um agente de  recurso específico.
@@ -331,6 +329,7 @@ O JaCa-Android \cite{santi2011jaca} é uma plataforma baseada em agentes para lid
 
 
 %~\cite{liu2003dios++}
+%\cite{Chen2002} \cite{sudha2007ubiquitous} \cite{lee2012mobicon}
 
 
 %%%%%%%%%%%%%
