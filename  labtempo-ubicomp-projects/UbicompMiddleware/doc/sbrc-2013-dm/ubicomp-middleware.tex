@@ -138,16 +138,16 @@ O \textit{framework} proposto neste trabalho oferece uma maneira de se represent
 \section{Proposta do \textit{Framework}}
 
 %definição geral do framework
-O \textit{framework} provê facilidades e padrões de programação a aplicações sensíveis ao contexto focadas em ambientes inteligentes (incluindo \textit{smarthomes}). O \textit{framework} torna o mais transparente possível as partes da aplicação que envolve a comunicação, a aquisição de contexto e a localização de recursos no ambiente.
+O \textit{framework} provê facilidades e padrões de programação a aplicações sensíveis ao contexto focadas em AmbI (incluindo \textit{smarthomes}). O \textit{framework} torna mais transparente as partes da aplicação que envolvem a comunicação, a aquisição de contexto e a localização de recursos no ambiente.
 
 %definição da unidade básica do framework (AR)
-Ao invés de se lidar diretamente com sensores e atuadores espalhados no ambiente, o \textit{framework} utiliza, como abstração, componentes chamados Agentes de Recurso (AR). Os ARs são elementos de primeira ordem da plataforma, representando recursos de hardware ou software disponíveis no ambiente. Eles têm como responsabilidade coletar as diversas medidas dos sensores ou componentes de software presentes no contexto de execução do das aplicações~\cite{bezerrauso}. Os ARs resolvem a complexidade de tratamento com os componente de baixo nível e disponibilizam interfaces padrões de interação tanto local como em rede. Em ambientes inteligentes podem ser criados ARs para representar, por exemplo: uma televisão que expõe suas informações de contexto e provê serviços para as aplicações; sensores de temperatura da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
+Ao invés de se lidar diretamente com sensores e atuadores espalhados no ambiente, o \textit{framework} utiliza, como abstração, componentes chamados Agentes de Recursos+ (AR). Os ARs são elementos de primeira ordem da plataforma, representando recursos de hardware ou software disponíveis no ambiente. Eles têm como responsabilidade coletar as diversas medidas dos sensores ou componentes de software presentes no contexto de execução do das aplicações~\cite{bezerrauso}. Os ARs resolvem a complexidade de tratamento com os componentes de baixo nível e disponibilizam interfaces padrões de interação tanto local como em rede. Nos AmbIs podem ser criados ARs para representar, por exemplo: uma televisão que expõe suas informações de contexto e provê serviços para as aplicações; sensores de temperatura da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
 
 %definiçao de uso geral da AR
 O AR é a unidade básica de modularização do ambiente distribuído proposto pelo \textit{framework}, assim sendo, o mesmo pode também ser utilizado na modelagem das aplicações. Se uma aplicação necessita de uma entidade distribuída, pode representá-la através de um AR. Por exemplo, um desenvolvedor poderia construir um jogo, representando através de ARs os jogadores, o tabuleiro, os monstros, recursos do cenário, etc. 
 
 %introduzindo o SGAR
-Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recurso (SGAR) e é instanciado apenas uma vez no sistema distribuído. Como apresentado na Figura~\ref{fig:suporte}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
+Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recurso (SGAR) e encontra-se centralizado no ambiente distribuído. Como apresentado na Figura~\ref{fig:suporte}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
 
 O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos ARs e tornar a comunicação transparente para o programador das aplicações. 
 
@@ -170,7 +170,7 @@ O modelo de componentes distribuídos mapeia as aplicações ubíquas em um ambiente
 O modelo de componentes distribuído pode variar dentre estas camadas de acordo com as aplicações ubíquas implantadas no ambiente.
 
 %descrever um exemplo de modelo de componente distribuído (figura arqGeral)
-Na Figura~\ref{fig:arquitetura} exemplifica-se uma \textit{smarthome} sendo gerenciada pelo \textit{framework}. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (como \textit{smartphones} e \textit{tablets}) ou criados virtualmente através da IPGAP. A figura apresenta como recursos exemplo um televisor, uma cama e um fogão. No \mbox{\textit{middleware}} são apresentados os seus ARs representativos, além do AR de interpretação de contexto para verificar se o fogão foi esquecido ligado por um ocupante da casa. O interpretador verifica se alguém está presente na cama e por quanto tempo o fogão está ligado, se um tempo limite for ultrapassado uma ação é disparada para que o fogão seja desligado. Os ARs referentes a cama e ao fogão coletam os dados destes recursos e os representam na camada do \mbox{\textit{middleware}}.
+Na Figura~\ref{fig:arquitetura} exemplifica-se uma \textit{smarthome} sendo gerenciada pelo \textit{framework}. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (como \textit{smartphones} e \textit{tablets}) ou criados virtualmente através da IPGAP. A figura apresenta como recursos exemplo um televisor, uma cama e um fogão. No \mbox{\textit{middleware}} são apresentados os seus ARs representativos, além do AR de interpretação de contexto para verificar se o fogão foi esquecido ligado por um ocupante da casa. O interpretador verifica se alguém está presente na cama e por quanto tempo o fogão está ligado, se um tempo limite for ultrapassado uma ação é disparada para que o fogão seja desligado. Os ARs referentes a cama e ao fogão coletam os dados destes recursos e os representam na camada do \mbox{\textit{middleware}}, isto permite que estas informações sejam utilizadas pelos componentes da camada da aplicação.
 
 \begin{figure}[ht]
   \centering
@@ -180,10 +180,13 @@ Na Figura~\ref{fig:arquitetura} exemplifica-se uma \textit{smarthome} sendo gere
 \end{figure}
 
 %descrever a estrutura do agente 
-O AR foi definido para padronizar os componentes de interação do ambiente, e dessa forma resolver questão da heterogeneidade apresentada em \cite{araujo2003}. A estrutura geral do AR é composta por nome único, tipo, localização, código(que define a classe) com variáveis e métodos e uma lista de interessados em informações de contexto. O tipo é definido por uma hierarquia que vai se especializando desde o tipo raiz até o tipo da classe(que representa o código) específico da classe. Todo AR possui como super pai o tipo raiz. A lista de interessados possui registros com dois campos, um com a variável de contexto AR corrente e outro com a referência do outro AR interessado nela.  
+O AR foi definido para padronizar os componentes de interação do ambiente, e dessa forma resolver questão da heterogeneidade apresentada em \cite{araujo2003}. A estrutura geral do AR é composta por nome único, tipo, localização, código(que define a classe) com variáveis e métodos e uma lista de interessados em informações de contexto. O tipo é definido por uma hierarquia que vai se especializando desde o tipo raiz até o tipo da classe(que representa o código do AR corrente). Todo AR possui como super pai o tipo raiz. A lista de interessados possui registros com dois campos, um com a variável do AR corrente e outro com a referência do outro AR interessado nesta informação. 
+
+%descrição do uso de tipo no framework
+A definição de tipo do AR é uma etapa importante para a definição de aplicações ubíquas. Em \cite{ranganathan2005olympus} é utilizado uma ontologia para classificar entidades (como os ARs) para possibilitar consultá-las a partir de propriedades predefinidas. Uma aplicação de apresentação de slides é utilizada como exemplo para ilustrar a importância desta ontologia. A aplicação consiste em mostrar os slides no mesmo cômodo residencial onde uma determinada pessoa encontra-se. Então ao invés de definir dispositivos específicos para realizar esta tarefa, a aplicação consulta por dispositivos com as seguintes propriedades: ser do tipo visual e estar no cômodo onde a pessoa alvo está presente. Assim, quando esta pessoa muda de local, o dispositivo que mostra apresentação passa a ser o correspondente ao mesmo local. Em nossa proposta, o SDR possui a busca por tipo que retorna instancias com propriedades predefinidas, tal como em \cite{ranganathan2005olympus}. A forma de utilização de instancias podem ser dinamicamente definidas por Interpretadores de Contexto (vide Seção~\ref{subsubsec-ic}).
 
 %descrever instancia do agente (figura instanciaAR)
-A Figura~\ref{fig:agente} ilustra um exemplo de instancia de AR representando um televisor em ambiente residencial. O nome identifica unicamente a TV no ambiente residencial ("tvDaSala"), a localização é definida como a sala de estar da casa. O tipo "TV", nome da classe corrente, é definido como especialização do tipo "Visual". O código possui as variáveis e as operações específicas da classe, como indicado na Figura ~\ref{fig:agente}, o número de canais ("numChannels"). E a lista de interessados possui cada registro representando um interesse, o qual contem o campo da variável e outro campo com o AR interessado na mudança de valor da respectiva variável. Por exemplo, o registro da Figura~\ref{fig:agente} indica que o AR do celular está interessado na mudança de canal da TV. 
+A Figura~\ref{fig:agente} ilustra um exemplo de instancia de AR representando um televisor em ambiente residencial. O nome identifica unicamente a TV no ambiente residencial ("tvDaSala"), a localização é definida como a sala de estar. O tipo "TV", nome da classe corrente, é definido como especialização do tipo "Visual". O código possui as variáveis e as operações específicas da classe. E a lista de interessados possui cada registro representando um interesse, o qual contem o campo da variável e outro campo com o AR interessado na mudança de valor da respectiva variável. Por exemplo, o registro da Figura~\ref{fig:agente} indica que o AR do celular está interessado na mudança de canal da TV. 
 
 \begin{figure}[ht]
   \centering
@@ -201,7 +204,7 @@ Um AR armazena o seu estado por meio de seus atributos declarados e os expõe atr
 \subsubsection{Suporte ao Gerenciamento de Recursos} \label{subsubsec-sgr}
 
 %falar sobre uso geral do SGAR (figura Suporte)
-O SGAR é o responsável por gerenciar o conjunto de ARs de um ambiente inteligente. O controle de registro (através do SRR) e descoberta (através do SDR) de ARs segue a ideia geral sobre serviços de registro e descoberta de recursos apresentada em \cite{Cardoso2006}. Neste trabalho foi acrescentado o SLR que tem a função de localização física. A Figura~\ref{fig:suporte} ilustra as principais operações de cada serviço de suporte. O SRR é utilizado para registrar ou remover o registro, o SDR é utilizado na busca e o SLR na localização de ARs. Estas operações manipulam dados representativos dos respectivos ARs no Repositório de Recursos.
+O SGAR é o responsável por gerenciar o conjunto de ARs no AmbI. O controle de registro (através do SRR) e descoberta (através do SDR) de ARs segue a ideia geral sobre serviços de registro e descoberta de recursos apresentada em \cite{Cardoso2006}. Neste trabalho foi acrescentado o SLR que tem a função de localização física. A Figura~\ref{fig:suporte} ilustra as principais operações de cada serviço de suporte. O SRR é utilizado para registrar ou remover o registro, o SDR é utilizado na busca e o SLR na localização de ARs. Estas operações manipulam dados representativos dos respectivos ARs no Repositório de Recursos.
 
 \begin{figure}[ht]
   \centering
@@ -209,12 +212,6 @@ O SGAR é o responsável por gerenciar o conjunto de ARs de um ambiente inteligent
   \caption{Serviços de Suporte}
   \label{fig:suporte}
 \end{figure}
-
-%descrever o serviço de registro e exemplos
-
-%descrever o serviço de descoberta e exemplos
-
-%descrever o serviço de localização e exemplos
 
 %descrever estrutura de repositorio 
 O Repositório de Recursos possui o Diretório de Recursos e o Mapa do ambiente. O Diretório contém os dados dos ARs armazenados conforme o tipo de cada um. Estes dados consistem do nome, tipo, localização e a referência de acesso. A referência de acesso permite a interação através do mecanismo de comunicação por invocação remota (RPC) (vide Seção~\ref{subsec-comunicacao}). O Mapa possui o conjunto de espaços físicos definidos no ambiente. Cada espaço possui uma área e um nome. No caso de uma \textit{smarthome} os cômodos da casa representam estes espaços. Cada entrada do Mapa referencia um conjunto de AR contidos no respectivo espaço como pode ser visto na Figura~\ref{fig:repositorio}.
@@ -228,6 +225,16 @@ Na Figura~\ref{fig:repositorio} é apresentada a organização de um conjunto de re
   \caption{Repositório de Recursos}
   \label{fig:repositorio}
 \end{figure}
+
+
+%descrever o serviço de registro
+O SRR é responsável por adicionar, remover e inclusive atualizar informações sobre os ARs no Repositório de Recursos. Através deste serviço, as aplicações podem adicionar novos tipos no Diretório de Recursos e espaços no Mapa. E em cada AR pode ser atualizada a informação sobre localização neste Mapa.  
+
+%descrever o serviço de descoberta e exemplos
+O SDR é responsável por prover acesso as instancias de ARs registradas. O SDR possui três tipos de descobertas: por referência, por nome e por tipo. As consultas por referências e nome podem ou não retornar uma instância única, estes dois tipos de buscas podem ser utilizados quando uma aplicação deseja saber se um AR específico está registrado. As consultas por tipo retornam todos os ARs contidos no subdiretório correspondente. Por exemplo, na Figura~\ref{fig:repositorio} o tipo "Audiovisual" contém três ARs, os quais são "tvDaSala", "iPadQuarto" e "tabSala". Logo, uma consulta neste caso retornaria uma lista contendo as referências para cada um dos três ARs.
+
+%descrever o serviço de localização e exemplos
+O SLR além de prover acesso as instâncias de ARs físicas permite obter os ARs mais próximos a um ponto específico do AmbI. A consulta por localização verifica os ARs indexados a um local especificado do Mapa. No exemplo da Figura~\ref{fig:repositorio}, uma consulta por ARs da sala retornaria a "tvDaSala" e o "tabSala". A consulta por proximidade leva em conta a subdivisão de espaços do ambiente. Então quando for consultado qual o AR mais próximo a "tvDaSala", mesmo que o "iPadQuarto" esteja mais próximo fisicamente, "tabSala" será o retornado como mais próximo. Isto ocorre porque os ARs do mesmo cômodo são verificados primeiro, depois são verificados ARs de cômodos vizinhos e assim por diante. Em exemplos de aplicações de notificação de mensagens esta lógica é favorecida, já que uma aplicação de lembrete de remédios vai querer notificar o paciente através do dispositivo visual mais proximamente visível, ou seja, de preferência no mesmo cômodo.
 
 \subsection{Comunicação} \label{subsec-comunicacao}
 
