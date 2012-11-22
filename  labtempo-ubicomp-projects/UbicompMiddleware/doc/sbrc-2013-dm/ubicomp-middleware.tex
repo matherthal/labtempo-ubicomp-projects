@@ -82,7 +82,7 @@ Este artigo é organizado da seguinte forma: a Seção 2 apresenta os conceitos bás
 \section{Conceitos Básicos}
 
 %[(introduzir e motivar os conceitos abordados por nossa proposta)
-Os \textit{frameworks} para aplicações ubíquas costumam utilizar como base os conceitos de Inteligencia Ambiental (IAmb), de Computação Sensível ao Contexto e de Prototipagem de Aplicações Ubíquas. A IAmb define o espaço onde estas aplicações funcionam. O comportamento de sistemas ubíquos são definidos a partir de técnicas aplicadas na Computação Sensível ao Contexto. E os esquemas de prototipagem são utilizados para manipular e testar o funcionamento do conjunto de aplicações no ambiente.
+Os \textit{frameworks} para aplicações ubíquas costumam utilizar como base os conceitos de Inteligencia Ambiental, de Computação Sensível ao Contexto e de Prototipagem de Aplicações Ubíquas. A Inteligencia Ambiental define o espaço onde estas aplicações funcionam. O comportamento de sistemas ubíquos são definidos a partir de técnicas aplicadas na Computação Sensível ao Contexto. E os esquemas de prototipagem são utilizados para manipular e testar o funcionamento do conjunto de aplicações no ambiente.
   
 %(ambientes inteligentes)
 A computação ubíqua se inclui dentre as inúmeras áreas abrangidas pela IAmb. Em~\cite{augusto2007ambient} é apresentada uma arquitetura em camadas como base para sistemas em ambientes inteligentes. Na camada mais profunda encontra-se o espaço com seus ocupantes, em uma camada acima estão os sensores captando suas interações e atuadores promovendo interações com estes indivíduos. Uma camada intermediária (\textit{middleware}) é definida entre as tomadas de decisões, as quais podem ocorrer por um ocupante ou mecanismos de inteligencia artificial, e as interações com o ambiente. O \textit{middleware} é a parte que melhor define a função geral de nosso \textit{framework}, as aplicações ubíquas são definidas e gerenciadas nesta camada para promover a ligação entre o ambiente e os serviços computacionais. 
@@ -299,6 +299,8 @@ Para consolidar a proposta do \textit{framework} foi desenvolvido um projeto par
 %falar sobre o que foi desenvolvido para avaliar a qualidade do framework (jogo da velha e aplicação de economia de luz)
 A qualidade do \textit{framework} foi avaliado em duas fases. Primeiro foi avaliado o fator de transparência de comunicação na construção de aplicações ubíquas. Esta avaliação ocorre através do processo de transformação de uma aplicação estritamente local \textit{Android} em uma aplicação ubíqua através do \textit{SmartAndroid}. Depois é avaliada a transparência no desenvolvimento de aplicações sensíveis ao contexto e manipulação das informações de contexto promovida pelo modelo de regras.
 
+\subsubsection{Prova de Eficiência Conceitual}
+
 \begin{figure}[ht]
   \centering
   \includegraphics[height=.8\textwidth]{imgs/app/tictactoe.PNG}
@@ -315,7 +317,11 @@ Na versão \textit{SmartAndroid} é inserido um AR do jogo para interação remota (
 %avaliação jogo da velha
 Foi observado que o uso de elementos do suporte como SDR e SRR e do esquema de \textit{publish-subscribe} facilitou o processo de transformação da aplicação. Na etapa de inicialização do jogo, o SRR foi utilizado para registrar o AR do jogo e o SDR foi utilizado para descobri-los e o esquema de \textit{publish-subscribe} foi utilizada para cada jogador registrar interesse nos movimentos do respectivo adversário. Após isso, a aplicação segue seu fluxo de execução padrão com o os procedimentos adicionais destacados em amarelo na Figura~\ref{fig:tictactoe}. Portanto, após a etapa de inicialização nenhuma alteração no nível de comunicação ou contexto foi necessária, todas as alterações posteriores ocorreram para promover a interação com o AR do jogo local ao dispositivo. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
 
+\subsubsection{Aplicação de Controle de Iluminação Residencial}
 %descrição da aplicação de economia de energia
+Para avaliar o uso do serviço de localização e do modelo de regras é proposto um sistema de controle de iluminação para \textit{smarthomes} (CI-Smart). O intuito do CI-Smart é promover a economia de consumo de energia reduzindo gastos com iluminação. O seguinte cenário é criado para construir uma aplicação: cada cômodo (sala, quarto, escritório, etc) do domínio (casa, escola, etc) tem um AR que controla o estado de uma lampada (ligado/desligado) e outro que sente a presença de pessoas no ambiente (ocupado/livre).... %TODO: (douglas) em desenvolvimento
+
+
 
 %%%%%%%%%%%%%%%%
 % RELACIONADOS %
