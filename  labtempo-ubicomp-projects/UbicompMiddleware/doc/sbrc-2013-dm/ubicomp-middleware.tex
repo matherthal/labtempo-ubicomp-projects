@@ -31,9 +31,14 @@
 
 \maketitle
 
-% \begin{abstract}
-% \end{abstract}
-%      
+%%%%%%%%%%%%%%
+%  RESUMOS   %
+%%%%%%%%%%%%%%
+\begin{abstract}
+
+\end{abstract}
+
+
 \begin{resumo} 
 
 \end{resumo}
@@ -108,7 +113,7 @@ Na Figura~\ref{fig:ipgap} é ilustrado um \textit{tablet} executando o aplicativo
 %(descrever sua utilização na proposta)
 O \textit{famework} proposto permite ao desenvolvedor criar aplicações nas dimensões e quantidade que desejar para um ambiente real. A IPGAP permite verificar a viabilidade do funcionamento das aplicações desenvolvidas em ambiente real. As restrições deste ambiente para o representado na IPGAP são semelhantes, o que permite avaliar o desempenho antes da implantação efetiva das aplicações.
 
-\subsection{Computação Ciente de Contexto}
+\subsection{Computação Sensível ao Contexto}
 %introduzir o conceito de contexto
 O contexto exerce um papel de fundamental importância na computação ubíqua. Durante a década de 90, diversos autores procuraram definir contexto, muitas delas pouco apuradas. Baseados em definições de autores anteriores, Dey e Abowd~\cite{Dey2001} compuseram a seguinte definição para contexto:
 
@@ -124,6 +129,7 @@ Após a identificação das entidades, são introduzidas quatro categorias de contex
 Uma meta da aquisição de contexto é determinar o que o usuário está tentando realizar, por exemplo, se uma pessoa sai de casa e deixa a torneira aberta, pode ser que a tenha esquecido. A aquisição do contexto de forma automatizada contribui para a construção de aplicações para ambientes inteligentes que, de outra maneira, seriam inviáveis, por exigir a entrada de dados ou comandos diretamente por parte dos usuários.
 
 %descrever importancia em nossa proposta   
+O \textit{framework} proposto neste trabalho oferece uma maneira de se representar os recursos espalhados pelo ambiente e os recursos no nível de \textit{software}, tornando homogênea a comunicação entre os componentes, de tal maneira que é simples se declarar e consultar as informações de contexto. Através de serviços padrões é possível se encontrar as entidades e obter seu contexto, onde esta pesquisa pode ser feita tanto utilizando a identificação da entidade, como o seu tipo ou localização física. A sensibilidade ao contexto é caracterizada pela reação do sistema aos eventos de mudança do contexto, portanto, o \textit{framework} introduz o Interpretador de Contexto
 
 %%%%%%%%%%%%%%%%
 %  FRAMEWORK   %
@@ -131,7 +137,7 @@ Uma meta da aquisição de contexto é determinar o que o usuário está tentando rea
 \section{Proposta do \textit{Framework}}
 
 %definição geral do framework
-O \textit{framework} provê facilidades e padrões de programação a aplicações cientes de contexto focadas em ambientes inteligentes (incluindo \textit{smarthomes}). O \textit{framework} torna o mais transparente possível as partes da aplicação que envolve a comunicação, a aquisição de contexto e a localização de recursos no ambiente.
+O \textit{framework} provê facilidades e padrões de programação a aplicações sensíveis ao contexto focadas em ambientes inteligentes (incluindo \textit{smarthomes}). O \textit{framework} torna o mais transparente possível as partes da aplicação que envolve a comunicação, a aquisição de contexto e a localização de recursos no ambiente.
 
 %definição da unidade básica do framework (AR)
 Ao invés de se lidar diretamente com sensores e atuadores espalhados no ambiente, o \textit{framework} utiliza, como abstração, componentes chamados Agentes de Recurso (AR). Os ARs são elementos de primeira ordem da plataforma, representando recursos de hardware ou software disponíveis no ambiente. Eles têm como responsabilidade coletar as diversas medidas dos sensores ou componentes de software presentes no contexto de execução do das aplicações~\cite{bezerrauso}. Os ARs resolvem a complexidade de tratamento com os componente de baixo nível e disponibilizam interfaces padrões de interação tanto local como em rede. Em ambientes inteligentes podem ser criados ARs para representar, por exemplo: uma televisão que expõe suas informações de contexto e provê serviços para as aplicações; sensores de temperatura da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
@@ -154,12 +160,17 @@ O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos 
 \subsection{Modelo de Componentes Distribuídos}%falar sobre interfaces de serviços do AR e os serviços de descoberta, registro e localização
 
 %descrever de forma geral o componente distribuido
-O modelo de componentes distribuídos mapeia as aplicações ubíquas em um ambiente inteligente genérico. Em geral este mapeamento é dividido em três camadas essenciais: a camada física ou conceitual dos recursos, a camada intermediária (\mbox{\textit{middleware}}) com os ARs dos respectivos recursos e componentes de ciência do contexto (interpretadores), e a camada das aplicações que agregam os componentes do \mbox{\textit{middleware}} em aplicativos. O modelo de componentes distribuído pode variar dentre estas camadas de acordo com as aplicações ubíquas implantadas no ambiente.
+O modelo de componentes distribuídos mapeia as aplicações ubíquas em um ambiente inteligente genérico. Em geral este mapeamento é dividido em três camadas essenciais: 
+\begin{enumerate}
+  \item A camada física ou conceitual dos recursos
+  \item A camada intermediária (\mbox{\textit{middleware}}) com os ARs dos respectivos recursos e componentes de ciência do contexto (interpretadores)
+  \item A camada das aplicações que agregam os componentes do \mbox{\textit{middleware}} em aplicativos. 
+\end{enumerate}
+O modelo de componentes distribuído pode variar dentre estas camadas de acordo com as aplicações ubíquas implantadas no ambiente.
 
 %descrever um exemplo de modelo de componente distribuído (figura arqGeral)
-Na Figura~\ref{fig:arquitetura}, um exemplo de \textit{smarthome} gerenciado pelo \textit{framework} é apresentado. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (como \textit{smartphones} e \textit{tablets}) ou criados virtualmente através da IPGAP. A Figura~\ref{fig:arquitetura} apresenta exemplos como televisor, cama e fogão. No \mbox{\textit{middleware}} são apresentados os seus ARs representativos, além do AR de interpretação de contexto para verificar se o fogão foi esquecido ligado por um ocupante da casa. O interpretador verifica se alguém está presente na cama e por quanto tempo o fogão está ligado, se um tempo limite for ultrapassado uma ação é disparada para que o fogão seja desligado. Os ARs referentes a cama e ao fogão coletam os dados destes recursos e os representam na camada do \mbox{\textit{middleware}}.
+Na Figura~\ref{fig:arquitetura} exemplifica-se uma \textit{smarthome} sendo gerenciada pelo \textit{framework}. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (como \textit{smartphones} e \textit{tablets}) ou criados virtualmente através da IPGAP. A figura apresenta como recursos exemplo um televisor, uma cama e um fogão. No \mbox{\textit{middleware}} são apresentados os seus ARs representativos, além do AR de interpretação de contexto para verificar se o fogão foi esquecido ligado por um ocupante da casa. O interpretador verifica se alguém está presente na cama e por quanto tempo o fogão está ligado, se um tempo limite for ultrapassado uma ação é disparada para que o fogão seja desligado. Os ARs referentes a cama e ao fogão coletam os dados destes recursos e os representam na camada do \mbox{\textit{middleware}}.
 
-Figura~\ref{fig:arquitetura}
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.7\textwidth]{imgs/framework/arquiteturaGeral.PNG}
@@ -173,7 +184,6 @@ O AR foi definido para padronizar os componentes de interação do ambiente, e des
 %descrever instancia do agente (figura instanciaAR)
 A Figura~\ref{fig:agente} ilustra um exemplo de instancia de AR representando um televisor em ambiente residencial. O nome identifica unicamente a TV no ambiente residencial ("tvDaSala"), a localização é definida como a sala de estar da casa. O tipo "TV", nome da classe corrente, é definido como especialização do tipo "Visual". O código possui as variáveis e as operações específicas da classe, como indicado na Figura ~\ref{fig:agente}, o número de canais ("numChannels"). E a lista de interessados possui cada registro representando um interesse, o qual contem o campo da variável e outro campo com o AR interessado na mudança de valor da respectiva variável. Por exemplo, o registro da Figura~\ref{fig:agente} indica que o AR do celular está interessado na mudança de canal da TV. 
 
-Figura~\ref{fig:agente}
 \begin{figure}[ht]
   \centering
   \includegraphics[height=.4\textwidth]{imgs/suporte/instanciaAR.PNG}
@@ -182,15 +192,16 @@ Figura~\ref{fig:agente}
 \end{figure}
 
 %descrever as portas de interação (VC e operações) do AR 
-No código dos AR exitem ainda as Variáveis de Contexto (VC) e as Operações
-%TODO: (douglas) escrever aqui matheus!! \o
+Um AR armazena o seu estado por meio de seus atributos declarados e os expõe através da criação de Variáveis de Contexto (VC), como será visto na Seção~\ref{subsubsec:cv}. Da mesma forma ele pode declarar suas possíveis Operações, como será estudado na mesma seção. Do ponto de vista da arquitetura, as VCs são as portas de saída de informação, e as Operações são as portas de entrada de comando.
+%Como pode-se ver na figura, as informações de contexto são armazenadas em variáveis e as funcionalidades de que o recurso dispõe são 
+%As variáveis, como representado na Figura~\ref{fig:agente} armazenam o estado do AR, e os métodos do exemplo possibilitam acessar as funcionalidades dos ARs, ou Operações. Através desses recursos, um AR pode expor o acesso à sua informação de contexto através da criação de Variáveis de Contexto
+%Em tempo de programação, pode-se declarar quais são 
 
 \subsubsection{Suporte ao Gerenciamento de Recursos} \label{subsubsec-sgr}
 
 %falar sobre uso geral do SGAR (figura Suporte)
 O SGAR é o responsável por gerenciar o conjunto de ARs de um ambiente inteligente. O controle de registro (através do SRR) e descoberta (através do SDR) de ARs segue a ideia geral sobre serviços de registro e descoberta de recursos apresentada em \cite{Cardoso2006}. Neste trabalho foi acrescentado o SLR que tem a função de localização física. A Figura~\ref{fig:suporte} ilustra as principais operações de cada serviço de suporte. O SRR é utilizado para registrar ou remover o registro, o SDR é utilizado na busca e o SLR na localização de ARs. Estas operações manipulam dados representativos dos respectivos ARs no Repositório de Recursos.
 
-Figura~\ref{fig:suporte}
 \begin{figure}[ht]
   \centering
   \includegraphics[width=.7\textwidth]{imgs/suporte/suporte.PNG}
@@ -209,8 +220,7 @@ O Repositório de Recursos possui o Diretório de Recursos e o Mapa do ambiente. O
 
 %descrever exemplo da (figura repositorio)
 Na Figura~\ref{fig:repositorio} é apresentada a organização de um conjunto de recursos no Repositório. Neste caso há três recursos registrados, uma TV ("tvDaSala"), e dois \textit{tablets} ("iPadQuarto" e "tabSala"). Os três fazem parte do conjunto de ARs do tipo "Audiovisual", estes tipos funcionam como subdiretórios de recursos. E por fim, o Mapa indexa cada um ao respectivo cômodo indicado pelo atributo de localização.
- 
-Figura~\ref{fig:repositorio}
+
 \begin{figure}[ht]
   \centering
   \includegraphics[height=.6\textwidth]{imgs/suporte/repositorio.png}
@@ -227,6 +237,10 @@ Figura: Comunicação direta e indireta em alto nível
   \caption{Esquema de \textit{publish-subscribe}}
   \label{fig:pubsub}
 \end{figure}
+
+%descriçao do mecanismo p/s 
+%A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
+
 %contextualizaçao da comunicaçao no modelo de componentes distribuídos descriçao do mecanismo p/s 
 Foi definido um esquema de comunicação por eventos para atender a um requisito essencial do \textit{framework}, a interpretação de contexto. Este esquema é denominado de \textit{publish-subscribe}, o qual muito utilizado em sistemas distribuídos.Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. No esquema ilustrado na Figura~\ref{fig:pubsub}, os ARs 4, 5 e 6 se subscrevem a eventos que podem ser gerados pelos ARs 1, 2 e 3 respectivamente. Como auxilio a este esquema é utilizado conceitos de Programação Orientada a Aspectos (POA), no qual é utilizado para definir pontos de aviso (\textit{advice}) para VCs alvos de interesse. Estes pontos de aviso indicam o disparo de uma notificação \textit{unicast} a todos os ARs interessados.
 
@@ -237,11 +251,11 @@ Existe ainda possibilidade de comunicação direta com os ARs, o SDR pode ser util
 O framework possui uma flexibilidade de comunicação que amplia o escopo de desenvolvimento de aplicações ubíquas, enquanto que muitas abordagens se restringem a comunicação baseada em eventos por ser mais econômica. 
 
 \subsection{Modelo de Contexto} \label{subsec-contexto}
-%Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) envolve a escolha de um modelo de contexto. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, onde os dispositivos ou entitades que os representam enviam suas medições para este serviço de gerenciamento. O serviço se encarrega então de enviar as medidas para os interessados. Este é o caso, por exemplo do 
+%Uma infraestrutura para construção de aplicações sensíveis ao contexto (ou aplicações ubíquas) envolve a escolha de um modelo de contexto. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, onde os dispositivos ou entitades que os representam enviam suas medições para este serviço de gerenciamento. O serviço se encarrega então de enviar as medidas para os interessados. Este é o caso, por exemplo do 
 
-Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) pode ter uma abordagem centralizada ou distribuída. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, responsável por manter a informação contextual e oferecer interfaces para subscrições e consultas. Este tipo de abordagem corresponde à uma arquitetura do tipo \textit{blackboard} (ou quadro-negro), onde uma entidade envia uma mensagem para uma memória compartilhada entre todas as entidades, e também pode se subscrever para receber mensagens que respeitam algum padrão especificado~\cite{winograd2001architectures}. Todas as comunicações ocorrem através de um servidor centralizado e as mensagens são redirecionadas para os interessados.
+Uma infraestrutura para construção de aplicações sensíveis ao contexto (ou aplicações ubíquas) pode ter uma abordagem centralizada ou distribuída. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, responsável por manter a informação contextual e oferecer interfaces para subscrições e consultas. Este tipo de abordagem corresponde à uma arquitetura do tipo \textit{blackboard} (ou quadro-negro), onde uma entidade envia uma mensagem para uma memória compartilhada entre todas as entidades, e também pode se subscrever para receber mensagens que respeitam algum padrão especificado~\cite{winograd2001architectures}. Todas as comunicações ocorrem através de um servidor centralizado e as mensagens são redirecionadas para os interessados.
 
-Este trabalho adotou uma abordagem distribuída, onde a informação de contexto não é armazenada em um servidor centralizado, mas é mantida pelos ARs. O processo de aquisição do contexto envolve a descoberta do AR de interesse através do SDR, com a posterior subscrição do mesmo, como apresentado na Subseção~\ref{subsec-comunicacao}. 
+Este trabalho adotou uma abordagem distribuída, onde a informação de contexto não é armazenada em um servidor centralizado, mas é mantida pelos ARs. O processo de aquisição do contexto envolve a descoberta do AR de interesse através do SDR, com a posterior subscrição do mesmo, como apresentado na Seção~\ref{subsec-comunicacao}. 
 
 \begin{figure}[ht]
   \centering
