@@ -150,6 +150,7 @@ O AR é a unidade básica de modularização do ambiente distribuído proposto pelo \
 Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recurso (SGAR) e encontra-se centralizado no ambiente distribuído. Como apresentado na Figura~\ref{fig:suporte}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
 
 O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos ARs e tornar a comunicação transparente para o programador das aplicações. 
+%TODO: talvez possamos falar aqui mesmo que aplicações poderiam ser instaladas no ambiente e inclusive compartilhar informações
 
 \begin{figure}[ht]
   \centering
@@ -244,6 +245,7 @@ O SLR além de prover acesso as instâncias de ARs físicas permite obter os ARs ma
   \caption{Esquema de \textit{publish-subscribe}}
   \label{fig:pubsub}
 \end{figure}
+%TODO: Essa figura está horrível!!!!!!!! Fazer outra!!!!!!!!!!!!!!!!!!
 
 %descriçao do mecanismo p/s 
 %A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
@@ -260,9 +262,23 @@ O framework possui uma flexibilidade de comunicação que amplia o escopo de desen
 \subsection{Modelo de Contexto} \label{subsec-contexto}
 %Uma infraestrutura para construção de aplicações sensíveis ao contexto (ou aplicações ubíquas) envolve a escolha de um modelo de contexto. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, onde os dispositivos ou entitades que os representam enviam suas medições para este serviço de gerenciamento. O serviço se encarrega então de enviar as medidas para os interessados. Este é o caso, por exemplo do 
 
-Uma infraestrutura para construção de aplicações sensíveis ao contexto (ou aplicações ubíquas) pode ter uma abordagem centralizada ou distribuída. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, responsável por manter a informação contextual e oferecer interfaces para subscrições e consultas. Este tipo de abordagem corresponde à uma arquitetura do tipo \textit{blackboard} (ou quadro-negro), onde uma entidade envia uma mensagem para uma memória compartilhada entre todas as entidades, e também pode se subscrever para receber mensagens que respeitam algum padrão especificado~\cite{winograd2001architectures}. Todas as comunicações ocorrem através de um servidor centralizado e as mensagens são redirecionadas para os interessados.
+Uma infraestrutura para construção de aplicações sensíveis ao contexto (ou aplicações ubíquas) pode ter uma abordagem centralizada ou distribuída. Em abordagens centralizadas faz-se necessário a utilização de um serviço de gerenciamento de contexto, responsável por manter a informação contextual e oferecer interfaces para subscrições e consultas. Abordagens como esta correspondem à uma arquitetura do tipo \textit{blackboard} (ou quadro-negro), onde uma entidade envia uma mensagem para uma memória compartilhada entre todas as entidades, e também pode se subscrever para receber mensagens que respeitam algum padrão especificado~\cite{winograd2001architectures}. Todas as comunicações ocorrem através de um servidor centralizado e as mensagens são redirecionadas para os interessados.
 
-Este trabalho adotou uma abordagem distribuída, onde a informação de contexto não é armazenada em um servidor centralizado, mas é mantida pelos ARs. O processo de aquisição do contexto envolve a descoberta do AR de interesse através do SDR, com a posterior subscrição do mesmo, como apresentado na Seção~\ref{subsec-comunicacao}. 
+Este trabalho adotou uma abordagem distribuída, onde a informação de contexto não é armazenada em um servidor centralizado, mas é mantida pelos ARs. O processo de aquisição do contexto envolve a descoberta do AR de interesse através do SDR, com a posterior subscrição do mesmo, como apresentado na Seção~\ref{subsec-comunicacao}. Assim sendo, a informação fica distribuída pelo ambiente e é informada aos interessados diretamente, enquando na abordagem centralizada são utilizados dois pulos. Embora a informação esteja distribuída em diferentes dispositivos, possivelmente com diferentes sistemas, o framework provê um nível de abstração tal que o acesso a qualquer informação é feito de maneira padronizada.
+
+\subsubsection{Variáveis de Contexto e Operações} \label{subsubsec:cv}
+As informações de contexto respectivas de cada AR são expostas através de Variáveis de Contexto (VC). Se, por exemplo, há um agente para a televisão registrado no sistema, possivelmente ele provê VCs para qual a programação que está sendo exibida, qual a programação agendada, se a própria televisão está ligada, se está gravando alguma programação, enfim, tudo que diz respeito ao estado da televisão e é efetivamente coletado.
+%TODO: repito a palavra ``abordagem'' várias vezes
+
+%As VCs possibilitam que as informações de contexto sejam acessadas sem que haja um componente centralizado armazenando-as e disponibilizando-as, %como são as abordagens que utilizam tuple space (T Space, Google Interactive Space (acho q tb usa), outras) %TODO: Falar disso tudo
+
+O papel da Operações é expor as funcionalidades do AR, possibilitando às aplicações interagir ativamente no ambiente. Por exemplo, uma televisão integrada ao sistema pode oferecer Operações como para desligá-la, mudar de canal, gravar alguma programação, mostrar uma mensagem na tela, perguntar algo ao usuário, gerar um alerta, pausar a programação, etc.
+
+A Figura~\ref{fig:inpt_cute} representa a subscrição às VCs ``Em uso'' do AR da cama e ``Ligado'' do AR do fogão. Na mesma figura pode-se observar a atuação no ambiente ao se utilizar as Operações ``Mostrar mensagem'' da televisão e ``Disparar'' do despertador. 
+
+Tanto a VC como a Operação são interfaces, ou portas, do AR. Diferentes aplicações, instaladas no mesmo ambiente podem usar estas interfaces para interagir com o próprio ambiente. O SmartAndroid possui implementado uma estrutura de tipos que facilita a descoberta de ARs de interesse e possibilita o conhecimento de suas interfaces. Na implementação foi criado uma hierarquia de tipos com foco em \textit{smarthomes}, porém novos tipos podem ser criados.
+
+As questões de segurança, inerentes ao problema, são resolvidas com duas técnicas: a própria segurança da rede e com a criação de domínios dentro de um ambiente. A segurança da rede (criptografia de pacotes em redes LAN, como WAP2 e WEP) evita que aplicações estrangeiras possam acessar os recursos de um ambiente. O domínio é uma abstração que provê restrições de acesso aos ARs que contém, o que impõe uma barreira para aplicações maliciosas, que devem requisitar permissão de acesso.
 
 \begin{figure}[ht]
   \centering
@@ -271,22 +287,24 @@ Este trabalho adotou uma abordagem distribuída, onde a informação de contexto nã
   \label{fig:inpt_cute}
 \end{figure}
 
-\subsubsection{Variáveis de Contexto e Operações} \label{subsubsec:cv}
-As informações de contexto respectivas de cada AR são expostas através de Variáveis de Contexto (VC). Se, por exemplo, há um agente para a televisão registrado no sistema, possivelmente ele provê VCs para qual a programação que está sendo exibida, qual a programação agendada, se a própria televisão está ligada, se está gravando alguma programação, enfim, tudo que diz respeito ao estado da televisão e é efetivamente coletado.
+\subsubsection{Interpretação de Contexto} \label{subsubsec-ic}
+%A interpretação tem a função de aumentar a abstração em torno das VCs. 
+%Geralmente aplicações necessitam de informações em um nível mais alto do que sensores proveem. Como um sensor é representado no sistema através do AR que o controla, uma outra abstração é usada para representar a informação interpretada, chamado de Interpretador de Regra (IR).
 
-As VCs possibilitam que as informações de contexto sejam acessadas sem que haja um componente centralizado armazenando-as e disponibilizando-as, %como são as abordagens que utilizam tuple space (T Space, Google Interactive Space (acho q tb usa), outras) %TODO: Falar disso tudo
+%Pode-se dizer que o primeiro nível de abstração ocorre no próprio AR. Contudo, posteriormente, pode ser necessário aumentar a abstração desta informação para um nível acima, o que pode ser feito inclusive em tempo de execução.
 
-%Figura: Arquitetura que mostre as portas de entrada e exit dos ARs (VCs e Operações). Deve mostrar, ou ser explicado como se ligar.
+%A interpretação de contexto possibilita que diversas informações de contexto, relacionadas através de uma expressão lógica, sejam manipuladas em uma entidade em separado, provendo separação de interesses. O interessado poderá referenciar apenas uma entidade, ao invés de várias, a fim de se obter a informação interpretada.
+
+Como foi representado na Figura~\ref{fig:cmd-intp}, o IR se posiciona entre os ARs e a aplicação, aumentando assim o nível de abstração.
 
 
-\subsubsection{Interpretador de Contexto} \label{subsubsec-ic}
 %Figura: Arquitetura em camadas: desde os recursos até a aplicação, passando pelo IC
 
 %\subsubsection{Criação de Interpretador de Contexto}
 %Figura: Figura que demonstre essa rotina.
 
 %\subsubsection{Interpretador de Contexto em Funcionamento}
-Figura: Figura que permita mostrar o funcionamento passo-a-passo do IC
+% Figura: Figura que permita mostrar o funcionamento passo-a-passo do IC
 
 %\subsubsection{Temporização}
 %Figura: Figura equivalente à anterior, mas mostrando com o temporizador.
@@ -328,6 +346,13 @@ Foi observado que o uso de elementos do suporte como SDR e SRR e do esquema de \
 %descrição da aplicação de economia de energia
 Para avaliar o uso do serviço de localização e do modelo de regras é proposto um sistema de controle de iluminação para \textit{smarthomes} (CI-Smart). O intuito do CI-Smart é promover a economia de consumo de energia reduzindo gastos com iluminação. O seguinte cenário é criado para construir uma aplicação: cada cômodo (sala, quarto, escritório, etc) do domínio (casa, escola, etc) tem um AR que controla o estado de uma lampada (ligado/desligado) e outro que sente a presença de pessoas no ambiente (ocupado/livre).... %TODO: (douglas) em desenvolvimento
 
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.4\textwidth]{imgs/ipgap/app_controle_lamps.png}
+  \caption{Aplicação de Controle de Iluminação na IPGAP}
+  \label{fig:app_lamps}
+\end{figure}
 
 
 %%%%%%%%%%%%%%%%
