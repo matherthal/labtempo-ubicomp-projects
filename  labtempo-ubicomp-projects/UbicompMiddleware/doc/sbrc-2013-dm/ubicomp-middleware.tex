@@ -61,12 +61,11 @@ Muitos trabalhos tem por objetivo definir, no estado da arte, um arcabouço de té
 Neste trabalho é proposto um \textit{framework} de desenvolvimento de aplicações ubíquas em AmbI. O objetivo é dar suporte a programação, teste e execução de aplicações permitindo lidar de forma consistente com sistemas de grande complexidade. Este \textit{framework} destaca-se por cobrir grande parte dos desafios destacados na computação ubíqua~\cite{araujo2003}, como o tratamento da heterogeneidade de dispositivos, o tratamento de informações de contexto e a descoberta de serviços. A heterogeneidade é tratada através da definição de um Modelo de Componentes Distribuídos, no qual o componente básico tem uma estrutura uniforme definida como um Agente de Recurso (AR). Segundo~\cite{cardoso2006}, AR é a entidade de coleta de informações de contexto. Neste trabalho, esta definição é ampliada para qualquer módulo que interage com elementos deste modelo de componentes. Para o tratamento de informações de contexto é proposto o Modelo de Contexto que consiste de um conjunto de interpretadores de contexto. Além disso, no \textit{framework} é proposta a aplicação de Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas (IPGAP) (Trabalho submetido ao SBRC 2013) que permite a visualização e o teste de aplicações ubíquas, as quais mesclam componentes reais e virtuais. %TODO: (matheus) nós vamos citar a comutação ubíqua com letras maiúsculas ou minúsculas? Temos q decidir de pronto.
 %TODO: (matheus) Douglas, nós não vamos citar o david e a ipgap dessa maneira aí. Nós temos que falar que essa parte tb foi submetida para o SBRC 2013
 
-%5 - (mostrar uma prova de conceito: 1 (exatamente) aplicação, seja a de saúde, ou outra)
-A qualidade de suporte do \textit{framework} foi avaliada durante o processo de transformação de uma aplicação com funcionamento estritamente local em uma aplicação ubíqua. Com isso foi possível provar conceitualmente que o \textit{framework} facilita o processo de construção de aplicações ubíquas. Para testar a eficiência do Modelo de Contexto, foi construída uma aplicação que explora os mecanismos de comunicação utilizados no modelo de componentes distribuídos e utiliza as informações básicas de um agente de recurso, como localização e identificação de tipo.
+%5 - falar do smartandroid usado na avaliação(mostrar uma prova de conceito: 1 (exatamente) aplicação, seja a de saúde, ou outra)
+Os conceitos do \textit{framework} foi efetivado sobre a plataforma Android através do projeto SmartAndroid (www.tempo.uff.br/smartandroid). Através deste projeto foi possível avaliar a qualidade de suporte do \textit{framework}. Esta avaliação ocorreu durante o processo de transformação de uma aplicação com funcionamento estritamente local em uma aplicação ubíqua. Com isso foi possível provar conceitualmente que o \textit{framework} facilita o processo de construção de aplicações ubíquas. Outra avaliação foi realizada para testar a eficiência do Modelo de Contexto, foi então construída uma aplicação que explora os mecanismos de comunicação utilizados no modelo de componentes distribuídos e utiliza as informações básicas de um agente de recurso, como localização e identificação de tipo.
 
 %6 - (resumo das seções, falar das próximas seções)
-O restante deste 
-artigo é organizado da seguinte forma: a Seção 2 apresenta os conceitos básicos utilizados ao longo do texto. A Seção 3 apresenta a arquitetura geral do \textit{framework} incluindo o Modelo de Componentes Distribuídos e o Modelo de Contexto. Na Seção 4 é apresentada uma prova de conceito demonstrando a eficiência do \textit{framework} em construir aplicações ubíquas e demonstrada uma aplicação que explora, através da implantação em uma \textit{smarthome}, as principais características do AmbI. Após a avaliação, a Seção 5 apresenta uma comparação com trabalhos relacionados. E para finalizar, a Seção 6 apresenta as conclusões e trabalhos futuros.
+O restante deste artigo é organizado da seguinte forma: a Seção 2 apresenta os conceitos básicos utilizados ao longo do texto. A Seção 3 apresenta a arquitetura geral do \textit{framework} incluindo o Modelo de Componentes Distribuídos e o Modelo de Contexto. Na Seção 4 é apresentada uma prova de conceito demonstrando a eficiência do \textit{framework} em construir aplicações ubíquas e demonstrada uma aplicação que explora, através da implantação em uma \textit{smarthome}, as principais características do AmbI. Após a avaliação, a Seção 5 apresenta uma comparação com trabalhos relacionados. E para finalizar, a Seção 6 apresenta as conclusões e trabalhos futuros.
 
 
 
@@ -85,9 +84,9 @@ A Computação Ubíqua se inclui dentre as inúmeras áreas abrangidas pela Inteligên
 Um AmbI é o meio onde se agrega inteligencia computacional. Há diversos exemplos na literatura que utilizam especificações deste tipo de ambiente, dentre eles o termo ``smarthome'' (casa inteligente) se mostra como um dos mais populares. Há diversas propostas no estado da arte explorando este tipo de espaço~\cite{helal2005gator,augusto2007ambient,ranganathan2005olympus}. Estes trabalhos costumam explorar a heterogeneidade de dispositivos e as rotinas de seus ocupantes tendo a casa inteligente como cenário. Apesar do \textit{framework} proposto neste trabalho abranger qualquer tipo de AmbI, boa parte dos exemplos de aplicações focam um ambiente residencial típico de modo a facilitar sua apresentação.
  
 %10 - (modelo de componentes distrbuídos(agente de recurso como definição de componente básico))]
-Para que as aplicações ubíquas possam ser integradas a elementos de baixo nível do AmbI é necessário que este espaço seja representado no nível de \textit{middleware}. Este trabalho define um modelo de componentes arquiteturais distribuídos \cite{brown1998dcom} para representar de forma geral sistemas construídos pelo nosso \textit{framework}.
+Para que as aplicações ubíquas possam ser integradas a elementos de baixo nível do AmbI é necessário que este espaço seja representado no nível de \textit{middleware}. Este trabalho define um modelo de componentes arquiteturais distribuídos \cite{brown1998dcom} para representar de forma geral sistemas construídos pelo nosso \textit{framework}. Utilizando-se dos benefícios deste modelos são apresentados os conceitos da aplicação de prototipagem para teste do AmbI (Seção~\ref{subsec-ipgap}), e o Modelo de Contexto (Seção~\ref{subsec-contexto}). Na Seção~\ref{subsec-comunicacao} são apresentados os mecanismos de comunicação utilizados como suporte na interação entre os componentes do modelo distribuído. 
 
-\subsection{Prototipagem de Aplicações Pervasivas}
+\subsection{Prototipagem de Aplicações Pervasivas} \label{subsec-ipgap}
 %11 - falar sobre trabalho do david e da importancia de testar apicaçoes ubíquas
 No contexto do \textit{framework}, a prototipagem de aplicações pervasivas é fundamental para a depuração e teste em um AmbI. Num desenvolvimento paralelo, a IPGAP é proposta como um aparato ferramental que permite ao desenvolvedor de aplicações ter acesso a estes benefícios. Além disso, a IPGAP possui uma  Interface Gráfica de Usuário (\textit{Graphic User Interface} -- GUI) que proporciona ao usuário final controlar remotamente recursos do ambiente.
 
@@ -107,7 +106,7 @@ Na Figura~\ref{fig:ipgap} é ilustrado um \textit{tablet} executando o aplicativo
 %14 - (descrever sua utilização na proposta)
 O \textit{framework} proposto permite ao desenvolvedor criar aplicações nas dimensões e quantidade que desejar para um ambiente real. A IPGAP permite verificar a viabilidade do funcionamento das aplicações desenvolvidas em ambiente próximo ao real. As restrições deste AmbI real são semelhantes as que ocorrem no AmbI simulado na IPGAP. Isto permite avaliar o desempenho antes da implantação efetiva das aplicações.
 
-\subsection{Computação Sensível ao Contexto}
+\subsection{Computação Sensível ao Contexto} \label{subsec-contexto}
 %15 - introduzir o conceito de contexto
 O contexto exerce um papel de fundamental importância na computação ubíqua. Durante a década de 90, diversos autores procuraram definir contexto, muitas delas pouco apuradas. Baseados em definições de autores anteriores, Dey e Abowd~\cite{Dey2001} compuseram a seguinte definição para contexto:
 
@@ -129,6 +128,27 @@ O \textit{framework} proposto neste trabalho oferece uma maneira de se represent
 %TODO: terminar de escrever este paragrafo!
 
 %deslocar para cá a seção de comunicação
+\subsection{Comunicação} \label{subsec-comunicacao}
+%passar para conceitos básicos
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.7\textwidth]{imgs/com/p_s.png}
+  \caption{Esquema de \textit{publish-subscribe}}
+  \label{fig:pubsub}
+\end{figure}
+%TODO: Essa figura está horrível!!!!!!!! Fazer outra!!!!!!!!!!!!!!!!!!
+
+%descriçao do mecanismo p/s 
+%A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
+
+%37 - contextualizaçao da comunicaçao no modelo de componentes distribuídos descriçao do mecanismo p/s 
+Em relação a comunicação, foi definido um esquema de publicação e interesse por eventos para atender a um requisito essencial do \textit{framework}, a interpretação de contexto. Este esquema é denominado de \textit{publish-subscribe}, o qual muito utilizado em sistemas distribuídos. Este paradigma corresponde à uma comunicação assíncrona, que envolve por parte da entidade interessada no registro de interesse na variável do AR alvo. No esquema ilustrado na Figura~\ref{fig:pubsub}, os ARs 4, 5 e 6 se subscrevem a eventos que podem ser gerados pelos ARs 1, 2 e 3 respectivamente. Como auxilio a este esquema é utilizado conceitos de Programação Orientada a Aspectos (POA)~\cite{akait1997aop}, no qual é utilizado para definir pontos de aviso (\textit{advices}) para VCs alvos de interesse. Estes pontos de aviso indicam o disparo de uma notificação \textit{unicast} a todos os ARs interessados.
+
+%38 - descrição breve do mecanismo RPC para o SmartAndroid
+Existe ainda possibilidade de comunicação direta com os ARs, o SDR pode ser utilizado para encontrar as referências de acesso direto a um em específico. Neste caso além de possuir a referência é necessário instanciar um \textit{proxy} correspondente a mesma classe do AR alvo. Com o \textit{proxy} instanciado, o mecanismo de RPC~\cite{birrell1984rpc} pode ser utilizado para fazer as invocações remotas das suas operações. A IPGAP utiliza a comunicação direta como meio para controlar remotamente os ARs visualizados no mapa.
+
+%39 - A abordagem adotada no SmartAndroid difere daquelas onde 
+O \textit{framework} possui uma flexibilidade de comunicação que amplia o escopo de desenvolvimento de aplicações ubíquas, enquanto que muitas abordagens se restringem a comunicação baseada em eventos por ser mais econômica. A parte de comunicação do \textit{framework} necessita de uma infraestrutura básica de rede Wi-Fi, o que garante o mínimo de segurança contra acesso de agentes externos a rede do ambiente e agrega benefícios de mecanismos de criptografia como a WPA (sigla em inglês para Proteção de Acesso a Wi-Fi). 
 
 %%%%%%%%%%%%%%%%
 %  FRAMEWORK   %
@@ -240,29 +260,7 @@ O SRR é responsável por adicionar, remover e inclusive atualizar informações sob
 O SDR é responsável por prover acesso as instancias de ARs registradas. O SDR possui três tipos de descobertas: por referência, por nome e por tipo. As consultas por referências e nome podem ou não retornar uma instância única, estes dois tipos de buscas podem ser utilizados quando uma aplicação deseja saber se um AR específico está registrado. As consultas por tipo retornam todos os ARs contidos no subdiretório correspondente. Por exemplo, na Figura~\ref{fig:repositorio} o tipo ``Audiovisual'' contém três ARs, os quais são ``tvDaSala'', ``iPadQuarto'' e ``tabSala''. Logo, uma consulta neste caso retornaria uma lista contendo as referências para cada um dos três ARs.
 
 %36 - descrever o serviço de localização e exemplos
-O SLR, além de prover acesso as instâncias de ARs físicas, permite obter os ARs mais próximos a um ponto específico do AmbI. A consulta por localização verifica os ARs indexados a um local especificado do Mapa. No exemplo da Figura~\ref{fig:repositorio}, uma consulta por ARs da sala retornaria a ``tvDaSala'' e o ``tabSala''. A consulta por proximidade leva em conta a subdivisão de espaços do ambiente. Então quando for consultado qual o AR mais próximo a ``tvDaSala'', mesmo que o ``iPadQuarto'' esteja mais próximo fisicamente, ``tabSala'' será o retornado como mais próximo. Isto ocorre porque os ARs do mesmo cômodo são verificados primeiro, depois são verificados ARs de cômodos vizinhos e assim por diante. Em exemplos de aplicações de notificação de mensagens esta lógica é favorecida, já que uma aplicação de lembrete de remédios vai querer notificar o paciente através do dispositivo visual mais proximamente visível, ou seja, de preferência no mesmo cômodo sem possíveis paredes atrapalhando.
-
-\subsection{Comunicação} \label{subsec-comunicacao}
-%passar para conceitos básicos
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=.7\textwidth]{imgs/com/p_s.png}
-  \caption{Esquema de \textit{publish-subscribe}}
-  \label{fig:pubsub}
-\end{figure}
-%TODO: Essa figura está horrível!!!!!!!! Fazer outra!!!!!!!!!!!!!!!!!!
-
-%descriçao do mecanismo p/s 
-%A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
-
-%37 - contextualizaçao da comunicaçao no modelo de componentes distribuídos descriçao do mecanismo p/s 
-Em relação a comunicação, foi definido um esquema de publicação e interesse por eventos para atender a um requisito essencial do \textit{framework}, a interpretação de contexto. Este esquema é denominado de \textit{publish-subscribe}, o qual muito utilizado em sistemas distribuídos. Este paradigma corresponde à uma comunicação assíncrona, que envolve por parte da entidade interessada no registro de interesse na variável do AR alvo. No esquema ilustrado na Figura~\ref{fig:pubsub}, os ARs 4, 5 e 6 se subscrevem a eventos que podem ser gerados pelos ARs 1, 2 e 3 respectivamente. Como auxilio a este esquema é utilizado conceitos de Programação Orientada a Aspectos (POA)~\cite{akait1997aop}, no qual é utilizado para definir pontos de aviso (\textit{advices}) para VCs alvos de interesse. Estes pontos de aviso indicam o disparo de uma notificação \textit{unicast} a todos os ARs interessados.
-
-%38 - descrição breve do mecanismo RPC para o SmartAndroid
-Existe ainda possibilidade de comunicação direta com os ARs, o SDR pode ser utilizado para encontrar as referências de acesso direto a um em específico. Neste caso além de possuir a referência é necessário instanciar um \textit{proxy} correspondente a mesma classe do AR alvo. Com o \textit{proxy} instanciado, o mecanismo de RPC~\cite{birrell1984rpc} pode ser utilizado para fazer as invocações remotas das suas operações. A IPGAP utiliza a comunicação direta como meio para controlar remotamente os ARs visualizados no mapa.
-
-%39 - A abordagem adotada no SmartAndroid difere daquelas onde 
-O \textit{framework} possui uma flexibilidade de comunicação que amplia o escopo de desenvolvimento de aplicações ubíquas, enquanto que muitas abordagens se restringem a comunicação baseada em eventos por ser mais econômica. A parte de comunicação do \textit{framework} necessita de uma infraestrutura básica de rede Wi-Fi, o que garante o mínimo de segurança contra acesso de agentes externos a rede do ambiente e agrega benefícios de mecanismos de criptografia como a WPA (sigla em inglês para Proteção de Acesso a Wi-Fi). 
+O SLR, além de prover acesso as instâncias de ARs físicas, permite obter os ARs mais próximos a um ponto específico do AmbI. A consulta por localização verifica os ARs indexados a um local especificado do Mapa. No exemplo da Figura~\ref{fig:repositorio}, uma consulta por ARs da sala retornaria a ``tvDaSala'' e o ``tabSala''. A consulta por proximidade leva em conta a subdivisão de espaços do ambiente. Então quando for consultado qual o AR mais próximo a ``tvDaSala'', mesmo que o ``iPadQuarto'' esteja mais próximo fisicamente, ``tabSala'' será o retornado como mais próximo. Isto ocorre porque os ARs do mesmo cômodo são verificados primeiro, depois são verificados ARs de cômodos vizinhos e assim por diante. Em exemplos de aplicações de notificação de mensagens esta lógica é favorecida, já que uma aplicação de lembrete de remédios vai querer notificar o paciente através do dispositivo visual mais proximamente visível, ou seja, de preferência no mesmo cômodo sem possíveis paredes atrapalhando. 
 
 \subsection{Modelo de Contexto} \label{subsec-contexto}
 %falar que existem duas abordagens, e explica a abordagem centralizada
