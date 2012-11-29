@@ -130,22 +130,27 @@ O \textit{framework} proposto neste trabalho oferece uma maneira de se represent
 %deslocar para cá a seção de comunicação
 \subsection{Comunicação} \label{subsec-comunicacao}
 %passar para conceitos básicos
+
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=.7\textwidth]{imgs/com/p_s.png}
+  \includegraphics[width=.7\textwidth]{imgs/com/publish-subscribe.png}
   \caption{Esquema de \textit{publish-subscribe}}
   \label{fig:pubsub}
 \end{figure}
-%TODO: Essa figura está horrível!!!!!!!! Fazer outra!!!!!!!!!!!!!!!!!!
 
 %descriçao do mecanismo p/s 
 %A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
 
-%37 - contextualizaçao da comunicaçao no modelo de componentes distribuídos descriçao do mecanismo p/s 
-Em relação a comunicação, foi definido um esquema de publicação e interesse por eventos para atender a um requisito essencial do \textit{framework}, a interpretação de contexto. Este esquema é denominado de \textit{publish-subscribe}, o qual muito utilizado em sistemas distribuídos. Este paradigma corresponde à uma comunicação assíncrona, que envolve por parte da entidade interessada no registro de interesse na variável do AR alvo. No esquema ilustrado na Figura~\ref{fig:pubsub}, os ARs 4, 5 e 6 se subscrevem a eventos que podem ser gerados pelos ARs 1, 2 e 3 respectivamente. Como auxilio a este esquema é utilizado conceitos de Programação Orientada a Aspectos (POA)~\cite{akait1997aop}, no qual é utilizado para definir pontos de aviso (\textit{advices}) para VCs alvos de interesse. Estes pontos de aviso indicam o disparo de uma notificação \textit{unicast} a todos os ARs interessados.
+%37 - contextualizaçao da comunicaçao no modelo de componentes distribuídos descriçao do mecanismo p/s
+Os modelos de Componentes Distribuídos e de Contexto necessitam do suporte de mecanismos de comunicação para efetivar as interações entre os elementos do AmbI. Foram desenvolvidos dois mecanismos: a invocação remota de procedimentos (\textit{Remote Procedure Call} - RPC) e a publicação de eventos por interesse através do paradigma \textit{publish-subscribe}~\cite{pubsub2012wiki}. 
 
 %38 - descrição breve do mecanismo RPC para o SmartAndroid
-Existe ainda possibilidade de comunicação direta com os ARs, o SDR pode ser utilizado para encontrar as referências de acesso direto a um em específico. Neste caso além de possuir a referência é necessário instanciar um \textit{proxy} correspondente a mesma classe do AR alvo. Com o \textit{proxy} instanciado, o mecanismo de RPC~\cite{birrell1984rpc} pode ser utilizado para fazer as invocações remotas das suas operações. A IPGAP utiliza a comunicação direta como meio para controlar remotamente os ARs visualizados no mapa.
+A comunicação direta com os ARs, o SDR pode ser utilizado para encontrar as referências de acesso direto a um em específico. Neste caso além de possuir a referência é necessário instanciar um \textit{proxy} correspondente a mesma classe do AR alvo. Com o \textit{proxy} instanciado, o mecanismo de RPC~\cite{birrell1984rpc} pode ser utilizado para fazer as invocações remotas das suas operações. A IPGAP utiliza a comunicação direta como meio para controlar remotamente os ARs visualizados no mapa.
+
+%37 - do mecanismo p/s 
+O paradigma de \textit{publish-subscribe} corresponde à uma comunicação assíncrona, que envolve, por parte da entidade interessada, o registro de interesse na variável do AR alvo. A Figura~\ref{fig:pubsub} ilustra os passos de subscrição e publicação de eventos no contexto de AmbI. Em um primeiro momento entidades se subscrevem a um evento de outra (entidade C) (Passo 1). Em algum momento posterior uma (entidade D) ativa o evento subscrito (Passo 2 e 3). Logo, o evento é publicado para as entidades (A e B) que se subscreveram (Passo 4 e 5). Este esquema é muito utilizado no Modelo de Contexto para aquisição de mudança de estado do contexto. 
+
+Como auxilio a este esquema é utilizado conceitos de Programação Orientada a Aspectos (POA)~\cite{akait1997aop}, no qual é utilizado para definir pontos de aviso (\textit{advices}) para VCs alvos de interesse. Estes pontos de aviso indicam o disparo de uma notificação \textit{unicast} a todos os ARs interessados.
 
 %39 - A abordagem adotada no SmartAndroid difere daquelas onde 
 O \textit{framework} possui uma flexibilidade de comunicação que amplia o escopo de desenvolvimento de aplicações ubíquas, enquanto que muitas abordagens se restringem a comunicação baseada em eventos por ser mais econômica. A parte de comunicação do \textit{framework} necessita de uma infraestrutura básica de rede Wi-Fi, o que garante o mínimo de segurança contra acesso de agentes externos a rede do ambiente e agrega benefícios de mecanismos de criptografia como a WPA (sigla em inglês para Proteção de Acesso a Wi-Fi). 
