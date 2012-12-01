@@ -158,24 +158,17 @@ Enquanto outras abordagens se restringem a comunicação baseada em eventos por se
 %%%%%%%%%%%%%%%%
 \section{Descrição do \textit{Framework}} \label{sec-framework}
 
-%20 - definição geral do framework
-O \textit{framework} provê facilidades e padrões de programação a aplicações sensíveis ao contexto focadas em AmbI (incluindo \textit{smarthomes}). O \textit{framework} torna transparente as partes da aplicação que envolvem a comunicação, a aquisição de contexto e a localização de recursos no ambiente.
+%20 - definição geral do framework - 21 - definiçao de uso geral da AR
+O \textit{framework} provê facilidades e padrões de programação a aplicações sensíveis ao contexto focadas em AmbI (incluindo \textit{smarthomes}). Dentre as facilidades está a capacidade de tornar transparente as partes da aplicação que envolvem a comunicação, a aquisição de contexto e a localização de recursos no ambiente. Como abstração aos recursos, são utilizados componentes chamados Agentes de Recursos (AR). O AR é a unidade básica de modularização do ambiente distribuído proposto pelo \textit{framework}, assim sendo, o mesmo pode também ser utilizado na modelagem das aplicações. Se uma aplicação necessita de uma entidade distribuída, pode representá-la através de um AR, por exemplo: sensores de temperatura da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
 
-%21 - definiçao de uso geral da AR
-O AR é a unidade básica de modularização do ambiente distribuído proposto pelo \textit{framework}, assim sendo, o mesmo pode também ser utilizado na modelagem das aplicações. Se uma aplicação necessita de uma entidade distribuída, pode representá-la através de um AR. Por exemplo, um desenvolvedor poderia construir um jogo, representando através de ARs os jogadores, o tabuleiro, os monstros, recursos do cenário, etc.
- 
-%juntar as descrições do AR em um paragrafo
+%23 - introduzindo o Modelo de Componentes Distribuídos e o Modelo de Contexto
 
-%22 - definição da unidade básica do framework (AR)
-Ao invés de se lidar diretamente com sensores e atuadores espalhados no ambiente, o \textit{framework} utiliza, como abstração, componentes chamados Agentes de Recursos (AR). Os ARs são elementos de primeira ordem da plataforma, representando recursos de hardware ou software disponíveis no ambiente. Eles têm como responsabilidade coletar as diversas medidas dos sensores ou componentes de software presentes no contexto de execução das aplicações~\cite{bezerrauso}. Os ARs resolvem a complexidade de tratamento com os componentes de baixo nível e disponibilizam interfaces padrões de interação tanto local como em rede. Os ARs podem ser criados no AmbI para representar, por exemplo: uma televisão que expõe suas informações de contexto e provê serviços para as aplicações; sensores de temperatura da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
+A arquitetura do \textit{framework} é definida a partir do Modelo de Componentes Distribuídos (Seção~\ref{subsec-mcd}) e do Modelo de Contexto (Seção~\ref{subsec-contexto}). O primeiro apresenta a estrutura do AR e o Suporte ao Gerenciamento de Agentes de Recursos (SGAR). E o segundo apresenta os elementos e Interpretadores de Contexto.
 
-
-
-%23 - introduzindo o SGAR
-Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recursos (SGAR) e encontra-se centralizado no ambiente distribuído. Como apresentado na Figura~\ref{fig:suporte}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
+%Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recursos (SGAR) e encontra-se centralizado no ambiente distribuído. Como apresentado na Figura~\ref{fig:suporte}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
 
 %24 - objetivo do SGAR (talvesz remover daqui para evitar repretição em demasia)
-O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos ARs e tornar a comunicação transparente para o programador das aplicações. A instalação e desinstalação de aplicações ubíquas são viabilizadas pelo SRR. O reconhecimento dos ARs por outras aplicações é possibilitado pelo SDR. E as localizações de ARs de elementos físicos do AmbI podem ser consultadas através da SLR. 
+%O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos ARs e tornar a comunicação transparente para o programador das aplicações. A instalação e desinstalação de aplicações ubíquas são viabilizadas pelo SRR. O reconhecimento dos ARs por outras aplicações é possibilitado pelo SDR. E as localizações de ARs de elementos físicos do AmbI podem ser consultadas através da SLR. 
 %TODO: talvez possamos falar aqui mesmo que aplicações poderiam ser instaladas no ambiente e inclusive compartilhar informações
 
 % \begin{figure}[ht]
@@ -185,7 +178,8 @@ O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos 
 %   \label{fig:cmd-intp}
 % \end{figure}
 
-\subsection{Modelo de Componentes Distribuídos}%falar sobre interfaces de serviços do AR e os serviços de descoberta, registro e localização
+\subsection{Modelo de Componentes Distribuídos} \label{subsec-mcd}
+%falar sobre interfaces de serviços do AR e os serviços de descoberta, registro e localização
 
 %25 - descrever de forma geral o componente distribuido
 O modelo de componentes distribuídos mapeia as aplicações ubíquas em um ambiente inteligente genérico. Em geral este mapeamento é dividido em três camadas essenciais: 
