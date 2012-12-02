@@ -238,6 +238,23 @@ O Repositório de Recursos, como apresentado na Figura~\ref{fig:repositorio}, pos
 \end{figure}
 
 %apresentar a API (estilo olympus)
+%((((((((((((((((((((((((((((tabela 1))))))))))))))))))))))))))))))
+\begin{table} % aqui começa o ambiente tabela
+\centering
+\caption{Operações do SGAR} % igual ao ambiente figura
+\begin{tabular}{|c|c|p{2cm}|p{6.7cm}|} 
+\hline % este comando coloca uma linha na tabela
+Serviço & Operação & Argumentos & Descrição\\ 
+\hline
+SRR & Register & Dados do AR & Adiciona os dados do AR no Diretório de Recursos e Indexa ao espaço correspondente no Mapa  \\ \hline
+SRR & Unregister & Nome ou Referência de AR & Remove os dados do AR do Repositório de Recursos  \\ \hline
+SDR & Search & Atributo e Consulta & Busca ARs no Repositório que atendam a Consulta no Atributo especificado. Atributo pode ser tipo, local, nome ou referência   \\ \hline
+SLR & SearchByProximity & Posição & Retorna uma lista de ARs ordenada por proximidade física \\ \hline
+AR & Subscribe & Referência de AR e VC & Adiciona argumentos a lista de interessados do AR corrente \\ \hline
+AR & Publish & VC e Valor & Notifica ARs associados a VC na lista de interessados do AR corrente \\ \hline
+\end{tabular}
+\label{tab:queda}
+\end{table}
 
 %34 - descrever o serviço de registro
 O SRR é responsável por adicionar, remover e inclusive atualizar informações sobre os ARs no Repositório de Recursos. Através deste serviço, as aplicações podem adicionar novos tipos no Diretório de Recursos e espaços no Mapa. E em cada AR pode ser atualizada a informação sobre localização neste Mapa.  
