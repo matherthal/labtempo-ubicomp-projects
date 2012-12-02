@@ -104,7 +104,7 @@ No contexto do \textit{framework}, a prototipagem de aplicações pervasivas é fun
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=.8\textwidth]{imgs/ipgap/ipgap.PNG}
+  \includegraphics[height=.3\textwidth]{imgs/ipgap/ipgap.PNG}
   \caption{Interface de Prototipagem}
   \label{fig:ipgap}
 \end{figure}    
@@ -139,7 +139,7 @@ Uma meta da aquisição de contexto é determinar o que o usuário está tentando rea
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=.7\textwidth]{imgs/com/publish-subscribe.png}
+  \includegraphics[height=.3\textwidth]{imgs/com/publish-subscribe.png}
   \caption{Esquema de \textit{publish-subscribe}}
   \label{fig:pubsub}
 \end{figure}
@@ -184,13 +184,13 @@ Para consolidar a proposta do \textit{framework} foi implementado o projeto para
 %falar sobre interfaces de serviços do AR e os serviços de descoberta, registro e localização
 
 %25 - descrever de forma geral o componente distribuido - 27 - descrever a estrutura do agente
-Como visto anteriormente, sistemas para AmbI são geralmente estruturados nas camadas física, de \textit{middleware} e de aplicação. O Modelo de Componentes Distribuídos segue esta estrutura para mapear as aplicações ubíquas no AmbI. O AR foi definido para padronizar os componentes de interação do ambiente, e dessa forma resolver questão da heterogeneidade de recursos. A sua estrutura geral, como ilustrada na Figura~\ref{fig:agente}, é composta por nome único (``tvFamília''), hierarquia de tipos (``$\backslash$Visual$\backslash$TV''), localização (``Sala''), classe (classe TV) com variáveis e métodos e uma lista de interessados em informações de contexto. A hierarquia de tipos, que é composta por uma sequencia de classes, foi inspirada na ontologia utilizada em \cite{ranganathan2005olympus} para classificar entidades (como os ARs). Esta hierarquia foi organizada para possibilitar a consulta e instanciação de ARs a partir de propriedades associadas a uma classe específica. Na Seção~\ref{subsubsec-sgar} são apresentados serviços que se beneficiam desta estrutura do AR.
+Como visto anteriormente, sistemas para AmbI são geralmente estruturados nas camadas física, de \textit{middleware} e de aplicação (Figura~\ref{fig:arquitetura}). O Modelo de Componentes Distribuídos segue esta estrutura para mapear as aplicações ubíquas no AmbI. O AR foi definido para padronizar os componentes de interação do ambiente, e dessa forma resolver questão da heterogeneidade de recursos. A sua estrutura geral, como ilustrada na Figura~\ref{fig:arquitetura}~(a), é composta por nome único (``tvFamília''), hierarquia de tipos (``$\backslash$Visual$\backslash$TV''), localização (``Sala''), classe (classe TV) com variáveis e métodos e uma lista de interessados em informações de contexto. A hierarquia de tipos, que é composta por uma sequencia de classes, foi inspirada na ontologia utilizada em \cite{ranganathan2005olympus} para classificar entidades (como os ARs). Esta hierarquia foi organizada para possibilitar a consulta e instanciação de ARs a partir de propriedades associadas a uma classe específica. Na Seção~\ref{subsubsec-sgar} são apresentados serviços que se beneficiam desta estrutura do AR.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[height=.3\textwidth]{imgs/suporte/instanciaAR.PNG}
-  \caption{Instância do Agente de Recurso}
-  \label{fig:agente}
+  \includegraphics[height= .3\textwidth]{imgs/framework/arquiteturaGeral.PNG}
+  \caption{Arquitetura do \textit{Framework}: (a) Estrutura do AR; (b) Camadas }
+  \label{fig:arquitetura}
 \end{figure}
 
 %30 - descrever as portas de interação (VC e operações) do AR 
@@ -198,17 +198,7 @@ A lista de interessados do AR é utilizado pelo Modelo de Contexto (Seção~\ref{su
 
 
 %26 - descrever um exemplo de modelo de componente distribuído (figura arqGeral)
-Na Figura~\ref{fig:arquitetura} são apresentados componentes de uma \textit{smart home}. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (como \textit{smartphones} e \textit{tablets}) ou criados através da IPGAP. A figura apresenta como recursos exemplo um televisor, uma cama e um fogão. No \mbox{\textit{middleware}} são apresentados os seus ARs representativos, além do AR de interpretação de contexto para verificar se o fogão foi esquecido ligado por um ocupante da casa. Este interpretador verifica se alguém está presente na cama e por quanto tempo o fogão está ligado, se um tempo limite for ultrapassado uma ação é disparada para que o fogão seja desligado. Os ARs referentes a cama e ao fogão coletam os dados destes recursos físicos e os representam na camada do \mbox{\textit{middleware}}, isto permite que estas informações sejam utilizadas pelos componentes da camada da aplicação. As aplicações utilizam o SGAR (Seção~\ref{subsubsec-sgar}) para criar, consultar e instanciar ARs no \textit{middleware}. 
-
-\begin{figure}[ht]
-  \centering
-  \includegraphics[height= .3\textwidth]{imgs/framework/arquiteturaGeral.PNG}
-  \caption{Arquitetura do \textit{Framework}}
-  \label{fig:arquitetura}
-\end{figure}
-
-
-
+Na Figura~\ref{fig:arquitetura}~(b) são apresentados componentes de uma \textit{smart home}. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (como \textit{smartphones} e \textit{tablets}) ou criados através da IPGAP. A figura apresenta como recursos exemplo um televisor, uma cama e um fogão. No \mbox{\textit{middleware}} são apresentados os seus ARs representativos, além do AR de interpretação de contexto para verificar se o fogão foi esquecido ligado por um ocupante da casa. Este interpretador verifica se alguém está presente na cama e por quanto tempo o fogão está ligado, se um tempo limite for ultrapassado uma ação é disparada para que o fogão seja desligado. Os ARs referentes a cama e ao fogão coletam os dados destes recursos físicos e os representam na camada do \mbox{\textit{middleware}}, isto permite que estas informações sejam utilizadas pelos componentes da camada da aplicação. As aplicações utilizam o SGAR (Seção~\ref{subsubsec-sgar}) para criar, consultar e instanciar ARs no \textit{middleware}. 
 
 %Como pode-se ver na figura, as informações de contexto são armazenadas em variáveis e as funcionalidades de que o recurso dispõe são 
 %As variáveis, como representado na Figura~\ref{fig:agente} armazenam o estado do AR, e os métodos do exemplo possibilitam acessar as funcionalidades dos ARs, ou Operações. Através desses recursos, um AR pode expor o acesso à sua informação de contexto através da criação de Variáveis de Contexto
@@ -284,7 +274,7 @@ As questões de segurança, inerentes ao problema, são resolvidas com duas técnica
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=.8\textwidth]{imgs/interpretador-fogao-cute.png}
+  \includegraphics[height=.3\textwidth]{imgs/interpretador-fogao-cute.png}
   \caption{Interpretador de Regra}
   \label{fig:inpt_cute}
 \end{figure}
@@ -320,7 +310,7 @@ A qualidade do \textit{framework} foi avaliada em duas fases. Primeiro foi avali
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[height=.8\textwidth]{imgs/app/tictactoe_br.PNG}
+  \includegraphics[height=.4\textwidth]{imgs/app/tictactoe_br.PNG}
   \caption{Comparação entre os modelos das aplicações Android e SmartAndroid}
   \label{fig:tictactoe}
 \end{figure}
@@ -335,26 +325,22 @@ Para a primeira avaliação utilizou-se a aplicação do jogo da velha como base. Ne
 %\usebox{\mylisting}% Print box mylisting
 
 %descrição do processo de transformação
-Na versão \textit{SmartAndroid} é inserido um AR do jogo para interação remota (Agente do Jogo), o qual esta associado ao Motor de Jogo do dispositivo de um dos Jogadores (Jogador ``X''). O Agente do Jogo intercepta a indicação de jogada deste motor e encaminha para o Agente de Jogo do outro jogador (Jogador ``O''). Este AR do Jogador ``O'' atualiza o tabuleiro com a jogada do Jogador ``X'' (``atualiza'' do ``Game Agent''). Para evitar que um jogador jogue na vez do outro, por exemplo, que o Jogador ``X'' jogue no turno do Jogador ``O'', verifica-se o Tipo do Jogador da vez é o mesmo do que tenta a jogada ("verifica permissão"), tentativa que ocorre através de interação do usuário com a GUI. Na Figura~\ref{fig:tictactoe} as ligações unidirecionais em amarelo indicam as alterações realizadas no processo de transformação. A inicialização do jogo foi modificada para incluir o AR do jogo. É apresentado o Código 1 descrevendo esta etapa com as operações de alto nível definidas na Tabela~\ref{tab:api}.
+Na versão \textit{SmartAndroid} é inserido um AR do jogo para interação remota (Agente do Jogo), o qual esta associado ao Motor de Jogo do dispositivo de um dos Jogadores (Jogador ``X''). O Agente do Jogo intercepta a indicação de jogada deste motor e encaminha para o Agente de Jogo do outro jogador (Jogador ``O''). Este AR do Jogador ``O'' atualiza o tabuleiro com a jogada do Jogador ``X'' (``atualiza'' do Agente do Jogo). Para evitar que um jogador jogue na vez do outro, por exemplo, que o Jogador ``X'' jogue no turno do Jogador ``O'', verifica-se o Tipo do Jogador da vez é o mesmo do que tenta a jogada ("verifica permissão"), tentativa que ocorre através de interação do usuário com a GUI. Na Figura~\ref{fig:tictactoe} as ligações unidirecionais em amarelo indicam as alterações realizadas no processo de transformação. A inicialização do jogo foi modificada para incluir o AR do jogo. É apresentado o Código 1 descrevendo esta etapa com as operações de alto nível definidas na Tabela~\ref{tab:api}.
 \begin{lstlisting}[caption=Inicialização do jogo da velha no SmartAndroid]
     List gameList = SDR.search(TYPE, GameAgent); \\Consulta por tipo
     SRR.register(gameAgent); \\Registro do Agente do Jogo (gameAgent)
     if (gameList != null){ \\Caso onde há outro Agente de Jogo
-       if (gameList.size()==1) { \\Caso onde há apenas o Jogador X
-          gameAgent.setPlayer(Player.Name.O);
-       }
+       if (gameList.size=1) gameAgent.setPlayer(Player.Name.O);
        for (iGameAgent : gameList) { \\Subscrição a jogadas 
            iGameAgent.subscribe("indica jogada", gameAgent);
            gameAgent.subscribe("indica jogada", iGameAgent);
        }
-    } else { \\Caso onde não há outro jogador
-       gameAgent.setPlayer(Player.Name.X);
-    }
+    } else gameAgent.setPlayer(Player.Name.X);\\1º jogador
     gameAgent.setGame((Game)this.game); \\Ligação do AR ao jogo
 \end{lstlisting}
 
 %avaliação jogo da velha
-Foi observado que o uso de elementos do suporte como SDR e SRR e do esquema de \textit{publish-subscribe} facilitou o processo de transformação da aplicação. Na etapa de inicialização do jogo (Código 1), o SRR foi utilizado para registrar o AR do jogo (Linha 2) e o SDR foi utilizado para descobri-los (Linha 1) e o esquema de \textit{publish-subscribe} foi utilizado para cada participante (jogador ou observador) se subscrever aos movimentos dos jogadores (Linhas 7-10). Após isso, a aplicação segue seu fluxo de execução padrão com o os procedimentos adicionais destacados em amarelo na Figura~\ref{fig:tictactoe}. Portanto, após a etapa de inicialização nenhuma alteração no nível de comunicação ou contexto foi necessária, todas as alterações posteriores ocorreram para promover a interação com o AR do jogo local ao dispositivo. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
+Foi observado que o uso de elementos do suporte como SDR e SRR e do esquema de \textit{publish-subscribe} facilitou o processo de transformação da aplicação. Na etapa de inicialização do jogo (Código 1), o SRR foi utilizado para registrar o AR do jogo (Linha 2) e o SDR foi utilizado para descobri-los (Linha 1) e o esquema de \textit{publish-subscribe} foi utilizado para cada participante (jogador ou observador) se subscrever aos movimentos dos jogadores (Linhas 5-8). Após isso, a aplicação segue seu fluxo de execução padrão com o os procedimentos adicionais destacados em amarelo na Figura~\ref{fig:tictactoe}. Portanto, após a etapa de inicialização nenhuma alteração no nível de comunicação ou contexto foi necessária, todas as alterações posteriores ocorreram para promover a interação com o AR do jogo local ao dispositivo. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
 
 \subsection{Aplicação de Controle de Iluminação Residencial}
 %descrição da prova de conceito desta implementação
@@ -409,7 +395,7 @@ Este trabalho esta embasado nas dissertações \cite{douglas2012,matheus2012,david
 Com propósito de demonstrar e avaliar o \textit{framework}, foram apresentadas duas implementações de aplicações: o jogo da velha com múltiplos participantes, e a aplicação de controle de iluminação residencial. A primeira visa provar a eficiência de uso do modelo de componentes distribuídos através da transformação de uma aplicação local em uma aplicação ubíqua. A segunda aplicação explora a parte da criação de interpretadores de contexto e a utilização do serviço de localização, para controlar a iluminação da residência provendo conforto e economia de energia. Outras aplicações estão em desenvolvimento para ampliar o escopo de avaliação tais como um sistema de saúde residencial~\cite{carvalho2010sciads} e uma aplicação de visualização de vídeo (e.g., filmes, programas televisivos) que segue para a televisão do cômodo para onde o usuário se moveu.
 
 %falar sobre os desafios do futuro
-A proposta possui potencial para ampliar suas funcionalidades e atender a outros desafios importantes na área de computação ubíqua e computação sensível ao contexto. A segurança atual das interações promovidas pelas aplicações ubíquas estão limitadas as configurações da rede Wi-Fi, pretende-se evoluir para que este requisito seja refinado na camada do \textit{framework}, na qual restrições de acesso a determinados ocupantes e entre diferentes domínios de aplicações são pontos importantes da abordagem futura. Outro ponto está na economia de energia, boa parte dos dispositivo possuem fontes de energias restritas, então atender este requisito visa tanto aumentar seu tempo de vida como reduzir o gasto total do ambiente. Na parte de Computação Sensível ao Contexto, pretende-se identificar as preferências do usuário de forma menos intrusiva através de técnicas de mineração de dados aliadas a aprendizagem de máquina. Além disso, proporcionar ao usuário uma interface compreensível para definição de regras de contexto permitindo um controle facilitado e dinâmico dos serviços do AmbI.
+A proposta possui potencial para ampliar suas funcionalidades e atender a outros desafios importantes na área de computação ubíqua e computação sensível ao contexto. A segurança atual está limitada as configurações da rede Wi-Fi, futuramente pretende-se agregar ao suporte restrições de acesso a determinados ocupantes e entre diferentes domínios de aplicações. A economia de energia em dispositivos pode ser aprimorada reduzindo a sobrecarga de comunicação em quantidade e qualidade. Na parte de Computação Sensível ao Contexto, pretende-se identificar as preferências do usuário de forma menos intrusiva através de técnicas de mineração de dados aliadas a aprendizagem de máquina. E para permitir um controle de serviços maior a nível de usuário, pretende-se proporcioná-lo uma interface compreensível para definição de regras de contexto.
 
 
 %\cite{boulic:91}
