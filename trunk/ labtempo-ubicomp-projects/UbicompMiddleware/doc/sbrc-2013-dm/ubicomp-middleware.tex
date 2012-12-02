@@ -8,6 +8,21 @@
 \usepackage[brazil]{babel}   
 \usepackage[latin1]{inputenc}  
 
+\usepackage{listings}
+\lstset{numbers=left,
+stepnumber=1,
+firstnumber=1,
+numberstyle=\tiny,
+extendedchars=true,
+breaklines=true,
+frame=tb,
+basicstyle=\footnotesize,
+stringstyle=\ttfamily,
+showstringspaces=false
+}
+\renewcommand{\lstlistingname}{Código}
+\renewcommand{\lstlistlistingname}{Lista de Listagens}
+
      
 \sloppy
 
@@ -238,7 +253,7 @@ O Repositório de Recursos, como apresentado na Figura~\ref{fig:repositorio}, pos
 \end{figure}
 
 %apresentar a API (estilo olympus)
-A Tabela~\ref{tab:api} contém um resumo sobre as operações suportadas pelo SGAR através dos serviços (SDR, SRR SLR) e da estrutura básica do AR que tornam transparente as dificuldades básicas de manipular componentes distribuídos. Além das operações básicas ilustradas na Figura~\ref{fig:suporte} de registro (``Register'') e remoção no SRR (``Unregister''), busca no SDR (``Search'') e localização no SLR, são apresentadas as funções ``SearchByProximity'' no SLR, e ``Subscribe'' e ``Publish'', estas as quais são comuns a todo AR. As operações básicas do AR são possibilitadas pelo mecanismo de comunicação por eventos descrito na Seção~\ref{subsec-comunicacao}. A operação ``Subscribe'' é responsável por adicionar entradas a lista de interessados, como no exemplo ilustrado na Figura~\ref{fig:agente} em que celular (AR referenciado) tem interesse no VC de canal da TV. A operação ``Publish'' é executada quando há mudança em no valor de algum VC do AR, a operação envia o valor para os interessados associados. A operação ``SearchByProximity'' retorna, através de distancia euclidiana entre pontos, quais ARs estão mais próximos da coordenada passada no seu argumento. Esta função pode ser utilizada quando se quer mandar uma mensagem para o dispositivo visual mais próximo de uma pessoa. O uso das Operações ``Publish'' e ``Subscribe'' é explorado pelos Interpretadores de Contexto apresentados na Seção~\ref{subsubsec-ic}.
+A Tabela~\ref{tab:api} contém um resumo sobre as operações suportadas pelo SGAR através dos serviços (SDR, SRR SLR) e da estrutura básica do AR que tornam transparente as dificuldades básicas de manipular componentes distribuídos. Além das operações básicas ilustradas na Figura~\ref{fig:suporte} de registro (``register'') e remoção no SRR (``unregister''), busca no SDR (``search'') e localização no SLR, são apresentadas as funções ``searchByProximity'' no SLR, e ``subscribe'' e ``publish'', estas as quais são comuns a todo AR. As operações básicas do AR são possibilitadas pelo mecanismo de comunicação por eventos descrito na Seção~\ref{subsec-comunicacao}. A operação ``subscribe'' é responsável por adicionar entradas a lista de interessados, como no exemplo ilustrado na Figura~\ref{fig:agente} em que celular (AR referenciado) tem interesse no VC de canal da TV. A operação ``publish'' é executada quando há mudança em no valor de algum VC do AR, a operação envia o valor para os interessados associados. A operação ``searchByProximity'' retorna, através de distancia euclidiana entre pontos, quais ARs estão mais próximos da coordenada passada no seu argumento. Esta função pode ser utilizada quando se quer mandar uma mensagem para o dispositivo visual mais próximo de uma pessoa. O uso das Operações ``publish'' e ``subscribe'' é explorado pelos Interpretadores de Contexto apresentados na Seção~\ref{subsubsec-ic}.
 
 %((((((((((((((((((((((((((((tabela 1))))))))))))))))))))))))))))))
 \begin{table} % aqui começa o ambiente tabela
@@ -248,12 +263,12 @@ A Tabela~\ref{tab:api} contém um resumo sobre as operações suportadas pelo SGAR 
 \hline % este comando coloca uma linha na tabela
 Serviço & Operação & Argumentos & Descrição\\ 
 \hline
-SRR & Register & Dados do AR & Adiciona os dados do AR no Diretório de Recursos e Indexa ao espaço correspondente no Mapa  \\ \hline
-SRR & Unregister & Nome ou Referência de AR & Remove os dados do AR do Repositório de Recursos  \\ \hline
-SDR & Search & Atributo e Consulta & Busca ARs no Repositório que atendam a Consulta no Atributo especificado. Atributo pode ser tipo, local, nome ou referência   \\ \hline
-SLR & SearchByProximity & Posição & Retorna uma lista de ARs ordenada por proximidade física \\ \hline
-AR & Subscribe & Referência de AR e VC & Adiciona argumentos a lista de interessados do AR corrente \\ \hline
-AR & Publish & VC e Valor & Notifica ARs associados a VC na lista de interessados do AR corrente \\ \hline
+SRR & register & Dados do AR & Adiciona os dados do AR no Diretório de Recursos e Indexa ao espaço correspondente no Mapa  \\ \hline
+SRR & unregister & Nome ou Referência de AR & Remove os dados do AR do Repositório de Recursos  \\ \hline
+SDR & search & Atributo e Consulta & Busca ARs no Repositório que atendam a Consulta no Atributo especificado. Atributo pode ser tipo, local, nome ou referência   \\ \hline
+SLR & searchByProximity & Posição & Retorna uma lista de ARs ordenada por proximidade física \\ \hline
+AR & subscribe & Referência de AR e VC & Adiciona argumentos a lista de interessados do AR corrente \\ \hline
+AR & publish & VC e Valor & Notifica ARs associados a VC na lista de interessados do AR corrente \\ \hline
 \end{tabular}
 \label{tab:api}
 \end{table}
@@ -312,11 +327,8 @@ A interpretação de contexto visa não só a construção de regras de contexto por p
 %  AVALIACAO   %
 %%%%%%%%%%%%%%%%
 \section{Avaliação} \label{sec-av}
-%falar sobre o SmartAndroid
-Para consolidar a proposta do \textit{framework} foi desenvolvido um projeto para a plataforma \textit{Android}~\cite{saha2008android} denominado \textit{SmartAndroid}. Este projeto se beneficia da acessibilidade da tecnologia e de sua portabilidade a diversos tipos de dispositivos embarcados. Isto possibilita que o \textit{framework} seja mais abrangente e possibilite o desenvolvimento sistemas de aplicações ubíquas mais elaborados ao longo do tempo. 
-
 %falar sobre o que foi desenvolvido para avaliar a qualidade do framework (jogo da velha e aplicação de economia de luz)
-A qualidade do \textit{framework} foi avaliada em duas fases. Primeiro foi avaliado o fator de transparência de comunicação na construção de aplicações ubíquas. Esta avaliação ocorre através do processo de transformação de uma aplicação estritamente local \textit{Android} em uma aplicação ubíqua através do \textit{SmartAndroid}. Depois é avaliada a transparência no desenvolvimento de aplicações sensíveis ao contexto e manipulação das informações de contexto promovida pelo modelo de regras.
+A qualidade do \textit{framework} foi avaliada em duas fases. Primeiro foi avaliado o fator de transparência de comunicação na construção de aplicações ubíquas. Esta avaliação ocorre através do processo de transformação de uma aplicação estritamente local \textit{Android} em uma aplicação ubíqua através do \textit{SmartAndroid}. Depois é avaliada a transparência no desenvolvimento de aplicações sensíveis ao contexto e manipulação das informações de contexto promovida pelo Modelo de Contexto.
 
 \subsection{Prova de Eficiência Conceitual}
 
@@ -330,12 +342,33 @@ A qualidade do \textit{framework} foi avaliada em duas fases. Primeiro foi avali
 %descrição da prova de conceito jogo da velha (figura tictactoe)
 Para a primeira avaliação utilizou-se a aplicação do jogo da velha como base. Nesta aplicação em sua versão \textit{Android}, os jogadores interagem através de uma mesma tela de dispositivo (\textit{tablet} ou \textit{smartphone}). Na sua versão desenvolvida com o SmartAndroid os jogadores interagem sobre um mesmo tabuleiro em dispositivos diferentes. A Figura~\ref{fig:tictactoe} ilustra o modelo de aplicação das duas versões. A versão original possui o componente da GUI (GUI do Jogo da Velha), Motor do Jogo, a estrutura do Tabuleiro e a identidade dos Jogadores (Jogador) que pode ser do tipo ``X'' ou ``O'' (Tipo <X,O>). O Motor do Jogo atualiza o Tabuleiro, motor o qual atualiza periodicamente a GUI mostrando o novo estado da estrutura. O tipo do Jogador é verificado para indicar qual simbolo da jogada é marcado no tabuleiro (``X'' ou ``O''). 
 
+%\begin{lrbox}{\mylisting}
+%\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt}  
+%\end{lrbox}
+
+%\usebox{\mylisting}% Print box mylisting
+
 %descrição do processo de transformação
-Na versão \textit{SmartAndroid} é inserido um AR do jogo para interação remota (Agente do Jogo), o qual esta associado ao Motor de Jogo do dispositivo de um dos Jogadores (Jogador ``X''). O Agente do Jogo intercepta a indicação de jogada deste motor e encaminha para o Agente de Jogo do outro jogador (Jogador ``O''). Este AR do Jogador ``O'' atualiza o tabuleiro com a jogada do Jogador ``X'' (``atualiza'' do ``Game Agent''). Para evitar que um jogador jogue na vez do outro, por exemplo, que o Jogador ``X'' jogue no turno do Jogador ``O'', verifica-se o Tipo do Jogador da vez é o mesmo do que tenta a jogada ("verifica permissão"), tentativa que ocorre através de interação do usuário com a GUI. Na Figura~\ref{fig:tictactoe} as ligações unidirecionais em amarelo indicam as alterações realizadas no processo de transformação. A parte de inicialização do jogo foi modificada para registrar o AR do jogo e este registrar interesse em outros ARs que já registraram participação no mesmo jogo. Este registro ocorre para o recebimento da notificação de novos movimentos. Através do SDR é verificada a existência deste tipo de AR. Caso não haja 
-nenhum então o AR passa a representar o Jogador ``X'', caso haja um apenas então o AR representa o Jogador ``O'', caso haja mais de um, o AR é apenas observador do jogo.
+Na versão \textit{SmartAndroid} é inserido um AR do jogo para interação remota (Agente do Jogo), o qual esta associado ao Motor de Jogo do dispositivo de um dos Jogadores (Jogador ``X''). O Agente do Jogo intercepta a indicação de jogada deste motor e encaminha para o Agente de Jogo do outro jogador (Jogador ``O''). Este AR do Jogador ``O'' atualiza o tabuleiro com a jogada do Jogador ``X'' (``atualiza'' do ``Game Agent''). Para evitar que um jogador jogue na vez do outro, por exemplo, que o Jogador ``X'' jogue no turno do Jogador ``O'', verifica-se o Tipo do Jogador da vez é o mesmo do que tenta a jogada ("verifica permissão"), tentativa que ocorre através de interação do usuário com a GUI. Na Figura~\ref{fig:tictactoe} as ligações unidirecionais em amarelo indicam as alterações realizadas no processo de transformação. A inicialização do jogo foi modificada para incluir o AR do jogo. É apresentado o Código 1 descrevendo esta etapa com as operações de alto nível definidas na Tabela~\ref{tab:api}.
+\begin{lstlisting}[caption=Inicialização do jogo da velha no SmartAndroid]
+    List gameList = SDR.search(TYPE, GameAgent); \\Consulta por tipo
+    SRR.register(gameAgent); \\Registro do Agente do Jogo (gameAgent)
+    if (gameList != null){ \\Caso onde há outro Agente de Jogo
+       if (gameList.size()==1) { \\Caso onde há apenas o Jogador X
+          gameAgent.setPlayer(Player.Name.O);
+       }
+       for (iGameAgent : gameList) { \\Subscrição a jogadas 
+           iGameAgent.subscribe("indica jogada", gameAgent);
+           gameAgent.subscribe("indica jogada", iGameAgent);
+       }
+    } else { \\Caso onde não há outro jogador
+       gameAgent.setPlayer(Player.Name.X);
+    }
+    gameAgent.setGame((Game)this.game); \\Ligação do AR ao jogo
+\end{lstlisting}
 
 %avaliação jogo da velha
-Foi observado que o uso de elementos do suporte como SDR e SRR e do esquema de \textit{publish-subscribe} facilitou o processo de transformação da aplicação. Na etapa de inicialização do jogo, o SRR foi utilizado para registrar o AR do jogo e o SDR foi utilizado para descobri-los e o esquema de \textit{publish-subscribe} foi utilizada para cada jogador registrar interesse nos movimentos do respectivo adversário. Após isso, a aplicação segue seu fluxo de execução padrão com o os procedimentos adicionais destacados em amarelo na Figura~\ref{fig:tictactoe}. Portanto, após a etapa de inicialização nenhuma alteração no nível de comunicação ou contexto foi necessária, todas as alterações posteriores ocorreram para promover a interação com o AR do jogo local ao dispositivo. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
+Foi observado que o uso de elementos do suporte como SDR e SRR e do esquema de \textit{publish-subscribe} facilitou o processo de transformação da aplicação. Na etapa de inicialização do jogo (Código 1), o SRR foi utilizado para registrar o AR do jogo (Linha 2) e o SDR foi utilizado para descobri-los (Linha 1) e o esquema de \textit{publish-subscribe} foi utilizado para cada participante (jogador ou observador) se subscrever aos movimentos dos jogadores (Linhas 7-10). Após isso, a aplicação segue seu fluxo de execução padrão com o os procedimentos adicionais destacados em amarelo na Figura~\ref{fig:tictactoe}. Portanto, após a etapa de inicialização nenhuma alteração no nível de comunicação ou contexto foi necessária, todas as alterações posteriores ocorreram para promover a interação com o AR do jogo local ao dispositivo. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
 
 \subsection{Aplicação de Controle de Iluminação Residencial}
 %descrição da prova de conceito desta implementação
