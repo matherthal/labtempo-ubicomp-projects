@@ -238,11 +238,13 @@ O Repositório de Recursos, como apresentado na Figura~\ref{fig:repositorio}, pos
 \end{figure}
 
 %apresentar a API (estilo olympus)
+A Tabela~\ref{tab:api} contém um resumo sobre as operações suportadas pelo SGAR através dos serviços (SDR, SRR SLR) e da estrutura básica do AR que tornam transparente as dificuldades básicas de manipular componentes distribuídos. Além das operações básicas ilustradas na Figura~\ref{fig:suporte} de registro (``Register'') e remoção no SRR (``Unregister''), busca no SDR (``Search'') e localização no SLR, são apresentadas as funções ``SearchByProximity'' no SLR, e ``Subscribe'' e ``Publish'', estas as quais são comuns a todo AR. As operações básicas do AR são possibilitadas pelo mecanismo de comunicação por eventos descrito na Seção~\ref{subsec-comunicacao}. A operação ``Subscribe'' é responsável por adicionar entradas a lista de interessados, como no exemplo ilustrado na Figura~\ref{fig:agente} em que celular (AR referenciado) tem interesse no VC de canal da TV. A operação ``Publish'' é executada quando há mudança em no valor de algum VC do AR, a operação envia o valor para os interessados associados. A operação ``SearchByProximity'' retorna, através de distancia euclidiana entre pontos, quais ARs estão mais próximos da coordenada passada no seu argumento. Esta função pode ser utilizada quando se quer mandar uma mensagem para o dispositivo visual mais próximo de uma pessoa. O uso das Operações ``Publish'' e ``Subscribe'' é explorado pelos Interpretadores de Contexto apresentados na Seção~\ref{subsubsec-ic}.
+
 %((((((((((((((((((((((((((((tabela 1))))))))))))))))))))))))))))))
 \begin{table} % aqui começa o ambiente tabela
 \centering
 \caption{Operações do SGAR} % igual ao ambiente figura
-\begin{tabular}{|c|c|p{2cm}|p{6.7cm}|} 
+\begin{tabular}{|c|c|p{2.2cm}|p{6.5cm}|} 
 \hline % este comando coloca uma linha na tabela
 Serviço & Operação & Argumentos & Descrição\\ 
 \hline
@@ -253,17 +255,8 @@ SLR & SearchByProximity & Posição & Retorna uma lista de ARs ordenada por proxim
 AR & Subscribe & Referência de AR e VC & Adiciona argumentos a lista de interessados do AR corrente \\ \hline
 AR & Publish & VC e Valor & Notifica ARs associados a VC na lista de interessados do AR corrente \\ \hline
 \end{tabular}
-\label{tab:queda}
+\label{tab:api}
 \end{table}
-
-%34 - descrever o serviço de registro
-O SRR é responsável por adicionar, remover e inclusive atualizar informações sobre os ARs no Repositório de Recursos. Através deste serviço, as aplicações podem adicionar novos tipos no Diretório de Recursos e espaços no Mapa. E em cada AR pode ser atualizada a informação sobre localização neste Mapa.  
-
-%35 - descrever o serviço de descoberta e exemplos
-O SDR é responsável por prover acesso as instancias de ARs registradas. O SDR possui três tipos de descobertas: por referência, por nome e por tipo. As consultas por referências e nome podem ou não retornar uma instância única, estes dois tipos de buscas podem ser utilizados quando uma aplicação deseja saber se um AR específico está registrado. As consultas por tipo retornam todos os ARs contidos no subdiretório correspondente. Por exemplo, na Figura~\ref{fig:repositorio} o tipo ``Audiovisual'' contém três ARs, os quais são ``tvDaSala'', ``iPadQuarto'' e ``tabSala''. Logo, uma consulta neste caso retornaria uma lista contendo as referências para cada um dos três ARs.
-
-%36 - descrever o serviço de localização e exemplos
-O SLR, além de prover acesso as instâncias de ARs físicas, permite obter os ARs mais próximos a um ponto específico do AmbI. A consulta por localização verifica os ARs indexados a um local especificado do Mapa. No exemplo da Figura~\ref{fig:repositorio}, uma consulta por ARs da sala retornaria a ``tvDaSala'' e o ``tabSala''. A consulta por proximidade leva em conta a subdivisão de espaços do ambiente. Então quando for consultado qual o AR mais próximo a ``tvDaSala'', mesmo que o ``iPadQuarto'' esteja mais próximo fisicamente, ``tabSala'' será o retornado como mais próximo. Isto ocorre porque os ARs do mesmo cômodo são verificados primeiro, depois são verificados ARs de cômodos vizinhos e assim por diante. Em exemplos de aplicações de notificação de mensagens esta lógica é favorecida, já que uma aplicação de lembrete de remédios vai querer notificar o paciente através do dispositivo visual mais proximamente visível, ou seja, de preferência no mesmo cômodo sem possíveis paredes atrapalhando. 
 
 \subsection{Modelo de Contexto} \label{subsec-contexto}
 %falar que existem duas abordagens, e explica a abordagem centralizada
