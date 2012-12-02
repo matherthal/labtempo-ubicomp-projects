@@ -64,20 +64,20 @@ Com os recentes avanços da computação móvel e nas tecnologias de comunicação sem
 %%%%%%%%%%%%%%
 \section{Introdução}
 %1 - (motivação: jogar pra cima ubicomp introduzindo a inteligência ambiental como aplicação funamental)
-A Computação Ubíqua, como proposta por Weiser na década de 90~\cite{weiser1991computer}, descrevia uma mudança no paradigma de interação entre o usuário e os sistemas computacionais. Weiser previu o surgimento do que chamou de "computação calma", onde a interação entre os usuários e os computadores ocorre de forma natural, sem ações explicitas. Uma aplicação ubíqua identifica as necessidades do usuário obtendo informação de contexto através de sensores, e provê serviços através de atuadores. Este tipo de sistema de aplicações é associado a um espaço denominado ambiente inteligente (AmbI)~\cite{augusto2007ambient}. 
+A Computação Ubíqua, como proposta por Weiser na década de 90~\cite{weiser1991computer}, descrevia uma mudança no paradigma de interação entre o usuário e os sistemas computacionais. Weiser previu o surgimento do que chamou de "computação calma", onde a interação entre os usuários e os computadores ocorre de forma natural, sem ações explicitas. Uma aplicação ubíqua identifica estas necessidades naturais obtendo informação de contexto através de sensores, e as atendem provendo serviços através de atuadores. Este tipo de sistema de aplicações é associado a um espaço denominado ambiente inteligente (AmbI)~\cite{augusto2007ambient}. 
    
 %2 - (as dificuldades, ?mas desenvolver é caro, difícil?, etc.)
 A construção e manipulação de aplicações ubíquas representam um grande desafio para desenvolvedores com pouco conhecimento técnico e recursos escassos. Alguns problemas estão mais em evidência. Na construção e teste de aplicações surge a necessidade de um contingente de recursos como dispositivos embarcados e espaço físico. Também há uma dificuldade de estabelecer um protocolo comum de comunicação entre os componentes do sistema distribuído. E por fim, a interatividade das aplicações ubíquas é dificultada dependendo da quantidade e variedade de informações de contexto disponível no ambiente. Estes são alguns dos desafios que motivam a proposta de um \textit{framework} com o objetivo de facilitar a aplicação dos conceitos de computação ubíqua em ambientes inteligentes. %TODO: (matheus) Está meio confuso o meio deste parágrafo, depois a gente dá uma olhada
 
 %3 - (o q os outros tem feito, falar rapidamente)
-Muitos trabalhos tem por objetivo definir, no estado da arte, um arcabouço de técnicas para construção e gerenciamento de aplicações ubíquas~\cite{helal2005gator, cardoso2006, ranganathan2005olympus}. Em~\cite{augusto2007ambient} são apontados desafios na aquisição de conhecimentos do ambiente. Em~\cite{helal2005gator} é proposto um \textit{middleware} entre a camada física, a qual compreende os sensores e atuadores, e a camada de aplicação, na qual se encontram o ambiente de desenvolvimento e as aplicações ubíquas. Em~\cite{cardoso2006} são propostos serviços para gerenciar componentes representativos do ambiente no nível de \textit{middleware}. Uma variedade de dispositivos e propriedades é encontrada no AmbI. Como exemplo há a casa inteligente, onde televisores, termômetros, smartphones, etc. podem ser encontrados inseridos em cômodos com suas especificidades, as quais compõem as propriedades deste ambiente. Preocupado em organizar estes componentes, o trabalho em \cite{ranganathan2005olympus} propõe uma estrutura de representação da camada física em hierarquia de tipos através de ontologia. Esta estruturação permite ampliar o escopo de operações de suporte de um sistema ubíquo.
+Muitos trabalhos tem por objetivo definir, no estado da arte, um arcabouço de técnicas para construção e gerenciamento de aplicações ubíquas~\cite{helal2005gator, cardoso2006, ranganathan2005olympus}. Em~\cite{augusto2007ambient} são apontados desafios na aquisição de conhecimentos do ambiente. Em~\cite{helal2005gator} é proposto um \textit{middleware} entre a camada física, a qual compreende os sensores e atuadores, e a camada de aplicação, na qual se encontram o ambiente de desenvolvimento e as aplicações ubíquas. Em~\cite{cardoso2006} são propostos serviços para gerenciar componentes representativos do ambiente no nível de \textit{middleware}. Uma variedade de dispositivos e propriedades é encontrada no AmbI. Como exemplo há a casa inteligente, onde televisores, termômetros, smartphones, etc. podem ser encontrados inseridos em cômodos com suas especificidades. O trabalho em \cite{ranganathan2005olympus} se preocupa em organizar estes componentes de forma a facilitar suas manipulações. Esta estruturação permite ampliar o escopo de operações de suporte de um sistema ubíquo.
 
 %4 - (?Este trabalho... vamos propor um protótipo ...?, nosso trabalho tem q ganhar. ?Tem que caber o smartandroid inteiro? - ARs)
-Neste trabalho é proposto um \textit{framework} de desenvolvimento de aplicações ubíquas em AmbI. O objetivo é dar suporte a programação, teste e execução de aplicações permitindo lidar de forma consistente com sistemas de grande complexidade. Este \textit{framework} destaca-se por cobrir grande parte dos desafios destacados na computação ubíqua~\cite{araujo2003}, como o tratamento da heterogeneidade de dispositivos, o tratamento de informações de contexto e a descoberta de serviços. A heterogeneidade é tratada através da definição de um Modelo de Componentes Distribuídos, no qual o componente básico tem uma estrutura uniforme definida como um Agente de Recurso (AR). Segundo~\cite{cardoso2006}, AR é a entidade de coleta de informações de contexto. Neste trabalho, esta definição é ampliada para qualquer módulo que interage com elementos deste modelo de componentes. Para o tratamento de informações de contexto é proposto o Modelo de Contexto que consiste de um conjunto de interpretadores de contexto. Além disso, no \textit{framework} é proposta a aplicação de Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas (IPGAP) (Trabalho submetido ao SBRC 2013) que permite a visualização e o teste de aplicações ubíquas, as quais mesclam componentes reais e virtuais. %TODO: (matheus) nós vamos citar a comutação ubíqua com letras maiúsculas ou minúsculas? Temos q decidir de pronto.
+Neste trabalho é proposto um \textit{framework} de desenvolvimento de aplicações ubíquas em AmbI. O objetivo é dar suporte a programação, teste e execução de aplicações permitindo lidar de forma consistente com sistemas de grande complexidade. Este \textit{framework} destaca-se por cobrir grande parte dos desafios destacados na computação ubíqua~\cite{araujo2003}, como o tratamento da heterogeneidade de dispositivos, o tratamento de informações de contexto e a descoberta de serviços. A heterogeneidade é tratada através da definição de um Modelo de Componentes Distribuídos, no qual o componente básico tem uma estrutura uniforme definida como um Agente de Recurso (AR). Segundo~\cite{cardoso2006}, AR é a entidade de coleta de informações de contexto. Neste trabalho, esta definição é ampliada para qualquer módulo que interage com elementos deste modelo de componentes. Para o tratamento de informações de contexto é proposto o Modelo de Contexto. Além disso, no \textit{framework} é proposta a aplicação de Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas (IPGAP) (Trabalho submetido ao SBRC 2013) que permite a visualização e o teste de aplicações ubíquas, as quais mesclam componentes reais e virtuais. %TODO: (matheus) nós vamos citar a comutação ubíqua com letras maiúsculas ou minúsculas? Temos q decidir de pronto.
 %TODO: (matheus) Douglas, nós não vamos citar o david e a ipgap dessa maneira aí. Nós temos que falar que essa parte tb foi submetida para o SBRC 2013
 
 %5 - falar do smartandroid usado na avaliação(mostrar uma prova de conceito: 1 (exatamente) aplicação, seja a de saúde, ou outra)
-Os conceitos do \textit{framework} foi efetivado sobre a plataforma Android através do projeto SmartAndroid (www.tempo.uff.br/smartandroid). Neste projeto foi possível avaliar a qualidade de suporte do \textit{framework}. Esta avaliação ocorreu durante o processo de transformação de uma aplicação com funcionamento estritamente local em uma aplicação ubíqua. Com isso foi possível provar conceitualmente que o \textit{framework} facilita o processo de construção de aplicações ubíquas. Outra avaliação foi realizada para testar a eficiência do Modelo de Contexto, foi então construída uma aplicação que explora os mecanismos de comunicação utilizados no modelo de componentes distribuídos e utiliza as informações básicas de um AR, como localização e identificação de tipo.
+Os conceitos do \textit{framework} foi efetivado sobre a plataforma Android através do projeto SmartAndroid (www.tempo.uff.br/smartandroid). Neste projeto foi possível avaliar a qualidade de suporte do \textit{framework}. Esta avaliação ocorreu durante o processo de transformação de uma aplicação com funcionamento estritamente local em uma aplicação ubíqua. Com isso foi possível provar conceitualmente que o \textit{framework} facilita o processo de construção de aplicações ubíquas. Outra avaliação foi realizada para testar a eficiência do Modelo de Contexto, foi então construída uma aplicação que explora os mecanismos de comunicação utilizados no Modelo de Componentes Distribuídos.
 
 %6 - (resumo das seções, falar das próximas seções)
 O restante deste artigo é organizado da seguinte forma: a Seção 2 apresenta os conceitos básicos utilizados ao longo do texto. A Seção 3 apresenta a arquitetura geral do \textit{framework} incluindo o Modelo de Componentes Distribuídos e o Modelo de Contexto. Na Seção 4 é apresentada uma prova de conceito demonstrando a eficiência do \textit{framework} em construir aplicações ubíquas e demonstrada uma aplicação que explora, através da implantação em uma \textit{smarthome}, as principais características do AmbI. Após a avaliação, a Seção 5 apresenta uma comparação com trabalhos relacionados. E para finalizar, a Seção 6 apresenta as conclusões e trabalhos futuros.
@@ -93,13 +93,10 @@ O restante deste artigo é organizado da seguinte forma: a Seção 2 apresenta os c
 Os \textit{frameworks} para aplicações ubíquas costumam utilizar como base os conceitos de Inteligencia Ambiental~\cite{augusto2007ambient}, de Computação Sensível ao Contexto~\cite{Dey2001} e de Prototipagem de Aplicações Ubíquas~\cite{weis2007prototyping}. A Inteligencia Ambiental define o espaço onde estas aplicações funcionam. Os comportamentos de sistemas ubíquos são definidos a partir de técnicas aplicadas na Computação Sensível ao Contexto. E a prototipagem é utilizada para manipular e testar o funcionamento do conjunto de aplicações no ambiente.
   
 %8 - (ambientes inteligentes)
-A Computação Ubíqua se inclui dentre as inúmeras áreas abrangidas pela Inteligência Ambiental. Sistemas com enfoque nesta área geralmente possuem uma arquitetura em camadas como base. Na camada mais profunda encontra-se o espaço com seus ocupantes, em uma camada acima estão os sensores captando suas interações e atuadores promovendo ações com estes indivíduos. Uma camada intermediária (\textit{middleware}) é definida entre as tomadas de decisões e as interações com o ambiente. As decisões podem ser tomadas por um ocupante ou através de mecanismos de inteligencia artificial. Além do \textit{middleware} como suporte a serviços, nosso \textit{framework} inclui um modelo de componentes, conceitos e mecanismos de comunicação, e um modelo e mecanismos de contexto. 
-
-%9 - smarthome como um tipo de ambiente inteligente
-Um AmbI é o meio onde se agrega inteligencia computacional. Há diversos exemplos na literatura que utilizam especificações deste tipo de ambiente, dentre eles o termo ``smarthome'' (casa inteligente) se mostra como um dos mais populares. Há diversas propostas no estado da arte explorando este tipo de espaço~\cite{helal2005gator,augusto2007ambient,ranganathan2005olympus}. Estes trabalhos costumam explorar a heterogeneidade de dispositivos e as rotinas de seus ocupantes tendo a casa inteligente como cenário. Apesar do \textit{framework} proposto neste trabalho abranger qualquer tipo de AmbI, boa parte dos exemplos de aplicações focam um ambiente residencial típico de modo a facilitar sua apresentação.
+A Computação Ubíqua se inclui dentre as inúmeras áreas abrangidas pela Inteligência Ambiental. Sistemas com enfoque nesta área geralmente possuem uma arquitetura em camadas como base. Na camada mais profunda encontra-se o espaço com seus ocupantes, em uma camada acima estão os sensores captando suas interações e atuadores promovendo ações com estes indivíduos. Uma camada intermediária (\textit{middleware}) é definida entre as tomadas de decisões e as interações com o ambiente. As decisões podem ser tomadas por um ocupante ou através de mecanismos de inteligencia artificial. Há diversos exemplos na literatura que utilizam especificações deste tipo de ambiente, dentre eles o termo ``smart home'' (casa inteligente) se mostra como um dos mais populares~\cite{helal2005gator,augusto2007ambient,ranganathan2005olympus}. Além do \textit{middleware} como suporte a serviços, nosso \textit{framework} inclui um modelo de componentes, conceitos e mecanismos de comunicação, e um modelo e mecanismos de contexto. 
  
 %10 - (modelo de componentes distrbuídos(agente de recurso como definição de componente básico))]
-Para que as aplicações ubíquas possam ser integradas a elementos de baixo nível do AmbI é necessário que este espaço seja representado no nível de \textit{middleware}. Este trabalho define um modelo de componentes arquiteturais distribuídos \cite{brown1998dcom} para representar de forma geral sistemas construídos pelo nosso \textit{framework}. Utilizando-se dos benefícios deste modelos são apresentados os conceitos da aplicação de prototipagem para teste do AmbI (Seção~\ref{subsec-ipgap}), e o Modelo de Contexto (Seção~\ref{subsec-aware}). Na Seção~\ref{subsec-comunicacao} são apresentados os mecanismos de comunicação utilizados como suporte na interação entre os componentes do modelo distribuído. 
+Para que as aplicações ubíquas possam ser integradas a elementos de baixo nível do AmbI é necessário que este espaço seja representado no nível de \textit{middleware}. Este trabalho define o Modelo de Componentes Arquiteturais Distribuídos \cite{brown1998dcom} para representar de forma geral sistemas construídos pelo nosso \textit{framework}. Outros conceitos são apresentados, como a prototipagem de aplicações (Seção~\ref{subsec-ipgap}), o Modelo de Contexto (Seção~\ref{subsec-aware}) e os mecanismos de comunicação (Seção~\ref{subsec-comunicacao}) que permite o funcionamento distribuído no \textit{framework}. 
 
 \subsection{Prototipagem de Aplicações Pervasivas} \label{subsec-ipgap}
 %11 - falar sobre trabalho do david e da importancia de testar apicaçoes ubíquas
@@ -110,13 +107,10 @@ No contexto do \textit{framework}, a prototipagem de aplicações pervasivas é fun
   \includegraphics[width=.8\textwidth]{imgs/ipgap/ipgap.PNG}
   \caption{Interface de Prototipagem}
   \label{fig:ipgap}
-\end{figure}
-
-%12 - detalhar elementos da IPGAP
-Boa parte das capacidades da IPGAP são proporcionadas pelas seguintes funcionalidades: mapeamento do ambiente, instalação de novas aplicações ubíquas e ligação com aplicações já existentes. Através destas funcionalidades é possível ter um ambiente preenchido de recursos simulados (como televisor virtual, geladeira virtual, etc.) e fazê-los executar junto a recursos reais que podem ser representados em sua GUI. A GUI da \mbox{IPGAP} foi elaborada apropriadamente para o universo dos  \textit{tablets} e \textit{smartphones}, nela podendo ser visualizados os recursos reais e virtuais localizados no mapa, como ilustrado na Figura~\ref{fig:ipgap}.     
+\end{figure}    
 
 %13 - demonstrar uso em nossa proposta com exemplo (vide figura)
-Na Figura~\ref{fig:ipgap} é ilustrado um \textit{tablet} executando o aplicativo da IPGAP e \textit{smartphones} simulando recursos como TV, lampada e termômetro. Através da IPGAP é possível visualizar e instanciar cada um desses elementos e representá-los no mapa. Repare que na figura há outros recursos além dos representados pelos \textit{smartphones}, estes são recursos criados na própria IPGAP. Com isso o desenvolvedor de aplicações não fica limitado pela disponibilidade de recursos físicos podendo simular os elementos indisponíveis.
+Na Figura~\ref{fig:ipgap} é ilustrado um \textit{tablet} executando o aplicativo da IPGAP e \textit{smartphones} simulando recursos como TV, lampada e termômetro. A IPGAP faz o mapeamento do ambiente e permite visualizar e instanciar cada um desses elementos e representá-los na sua GUI. Na figura há outros recursos além dos representados pelos \textit{smartphones}, estes são recursos criados na própria IPGAP. Assim, o desenvolvedor de aplicações não fica limitado pela disponibilidade de recursos físicos podendo simular os elementos indisponíveis.
 
 %14 - (descrever sua utilização na proposta)
 O \textit{framework} proposto permite ao desenvolvedor criar aplicações nas dimensões e quantidade que desejar para um ambiente real. A IPGAP permite verificar a viabilidade do funcionamento das aplicações desenvolvidas em ambiente próximo ao real. As restrições deste AmbI real são semelhantes as que ocorrem no AmbI simulado na IPGAP. Isto permite avaliar o desempenho antes da implantação efetiva das aplicações.
@@ -135,11 +129,8 @@ Segundo~\cite{Dey2001} três entidades de contexto foram identificadas como de ma
 %17 - elementos de contexto
 Após a identificação das entidades, são introduzidas quatro categorias de contexto essenciais: identidade, localização, estado e tempo. ``Identidade'' corresponde à identificação única de uma entidade. ``Localização'' não só diz respeito à posição de uma pessoa e sua inserção em uma área ou subárea, mas diz também respeito à proximidade de uma pessoa em relação à outra, ou à uma coisa. ``Estado'' identifica características intrínsecas da entidade (e.g., temperatura de uma sala, sinal vital de uma pessoa). ``Tempo'' é uma informação de contexto quando ajuda a caracterizar a situação, geralmente usado com outras informações de contexto, indicando um instante ou período durante o qual alguma informação contextual é conhecida ou relevante.
 
-%18 - descrever sobre importancia para ambientes inteligentes (áreas relacionadas e aplicações)
-Uma meta da aquisição de contexto é determinar o que o usuário está tentando realizar, por exemplo, se uma pessoa sai de casa e deixa a torneira aberta, pode ser que este a tenha esquecido. A aquisição do contexto de forma automatizada contribui para a construção de aplicações para ambientes inteligentes que, de outra maneira, seriam inviáveis, por exigir a entrada de dados ou comandos diretamente por parte dos usuários.
-
-%19 - descrever importancia em nossa proposta   
-O \textit{framework} proposto neste trabalho oferece uma maneira de se representar os recursos espalhados pelo ambiente e os recursos no nível simulado de software (vide Seção~\ref{sec-framework}), tornando homogênea a comunicação entre os componentes, de tal maneira que é simples se declarar e consultar as informações de contexto. Através de serviços padronizados é possível se encontrar as entidades e obter seu contexto, onde esta pesquisa pode ser feita tanto utilizando a identificação da entidade, como o seu tipo ou localização física. A sensibilidade ao contexto é caracterizada pela reação do sistema aos eventos de mudança do contexto, portanto, o \textit{framework} introduz o Interpretador de Contexto (vide Seção~\ref{subsubsec-ic}).
+%18 - descrever sobre importancia em nossa proposta
+Uma meta da aquisição de contexto é determinar o que o usuário está tentando realizar, por exemplo, se uma pessoa sai de casa e deixa a torneira aberta, pode ser que este a tenha esquecido. A aquisição do contexto de forma automatizada contribui para a construção de aplicações para ambientes inteligentes que, de outra maneira, seriam inviáveis, por exigir a entrada de dados ou comandos diretamente por parte dos usuários. O \textit{framework} proposto neste trabalho oferece uma maneira simples de declarar e consultar as informações de contexto (vide Seção~\ref{subsubsec-sgar}). A sensibilidade ao contexto é caracterizada pela reação do sistema aos eventos de mudança do contexto, portanto, o \textit{framework} introduz o Interpretador de Contexto (vide Seção~\ref{subsubsec-ic}).
 %TODO: terminar de escrever este paragrafo!
 
 %deslocar para cá a seção de comunicação
@@ -157,16 +148,13 @@ O \textit{framework} proposto neste trabalho oferece uma maneira de se represent
 %A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
 
 %37 - contextualizaçao da comunicaçao no modelo de componentes distribuídos descriçao do mecanismo p/s
-Os modelos de Componentes Distribuídos e de Contexto necessitam do suporte de mecanismos de comunicação para efetivar as interações entre os elementos do AmbI. Foram desenvolvidos dois mecanismos: a invocação remota de procedimentos (\textit{Remote Procedure Call} - RPC) e a publicação de eventos por interesse através do paradigma \textit{publish-subscribe}~\cite{pubsub2012wiki}. 
-
-%38 - descrição breve do mecanismo RPC para o SmartAndroid
-O mecanismo de RPC é utilizado para estabelecer a comunicação síncrona direta entre os componentes do AmbI. Este mecanismo possibilita que uma entidade controle e obtenha o estado remotamente de outra. A entidade invocadora utiliza um \textit{proxy} da entidade invocada, nele está contida a sua interface de chamadas de procedimentos públicos. A chamada e o retorno do procedimento são enviados através de mensagens serializadas na notação JSON (JavaScript Object Notation)~\cite{json2012}. Este mecanismo é utilizado pela IPGAP para controlar remotamente os componentes do AmbI.
+Os modelos de Componentes Distribuídos e de Contexto necessitam do suporte de mecanismos de comunicação para efetivar as interações entre os elementos do AmbI. Foram desenvolvidos dois mecanismos: a invocação remota de procedimentos (\textit{Remote Procedure Call} - RPC) e a publicação de eventos por interesse através do paradigma \textit{publish-subscribe}~\cite{pubsub2012wiki}. O mecanismo de RPC é utilizado para estabelecer a comunicação síncrona direta entre os componentes do AmbI. Uma entidade invocadora utiliza um \textit{proxy} da entidade invocada, nele está contida a sua interface de chamadas de procedimentos públicos. A chamada e o retorno do procedimento são enviados através de mensagens serializadas. Este mecanismo é utilizado pela IPGAP para controlar remotamente os componentes do AmbI.
 
 %37 - do mecanismo p/s 
-O paradigma de \textit{publish-subscribe} corresponde à uma comunicação assíncrona que envolve, por parte da entidade interessada, o registro de interesse em eventos da entidade alvo. A Figura~\ref{fig:pubsub} ilustra os passos de subscrição e publicação de eventos no contexto de AmbI. Em um primeiro momento os Componentes A e B se subscrevem ao Evento 1 do Componente C (Passo 1) e esta subscrição é armazenada no campo de Interessados. Em algum momento posterior o Componente D ativa o evento subscrito (Passo 2). Há a interceptação desta ativação (Passo 3) e os Componentes A e B, com interesse neste evento (Passo 4), são notificadas sobre a sua ocorrência (Passo 5). Este esquema é utilizado no Modelo de Contexto para aquisição de mudança de estado (vide Seção~\ref{subsec-contexto}).
+O paradigma de \textit{publish-subscribe} é utilizado no Modelo de Contexto para aquisição de mudança de estado (vide Seção~\ref{subsec-contexto}). Este esquema corresponde à uma comunicação assíncrona que envolve, por parte da entidade interessada, a subscrição em eventos da entidade alvo. A Figura~\ref{fig:pubsub} ilustra as etapas necessárias no esquema de componentes. Inicialmente, os Componentes A e B se subscrevem ao Evento 1 do Componente C (Passo 1) e esta subscrição é armazenada no campo de Interessados. Posteriormente, o Componente D ativa o evento subscrito (Passo 2). Ocorre a interceptação (Passo 3) e os Componentes A e B interessados neste evento (Passo 4) são notificadas (Passo 5). 
 
-%39 - A abordagem adotada no SmartAndroid difere daquelas onde 
-Enquanto outras abordagens se restringem a comunicação baseada em eventos por ser mais econômica, o \textit{framework} se beneficia do mecanismo de comunicação direta. O uso de diferentes mecanismos amplia o escopo de desenvolvimento de aplicações ubíquas. Como suporte, a comunicação no \textit{framework} necessita de uma infraestrutura básica de rede Wi-Fi, o que garante o mínimo de segurança contra acesso de agentes externos a rede do ambiente e agrega benefícios de mecanismos de criptografia como a Proteção de Acesso a Wi-Fi (Wi-Fi Protected Access - WPA). 
+%39 - Infra necessária
+Como suporte, a comunicação no \textit{framework} necessita de uma infraestrutura básica de rede Wi-Fi, o que garante o mínimo de segurança contra acesso de agentes externos a rede do ambiente e agrega benefícios de mecanismos de criptografia como a Proteção de Acesso a Wi-Fi (Wi-Fi Protected Access - WPA). 
 
 %%%%%%%%%%%%%%%%
 %  FRAMEWORK   %
@@ -177,11 +165,7 @@ Enquanto outras abordagens se restringem a comunicação baseada em eventos por se
 O \textit{framework} provê facilidades e padrões de programação a aplicações sensíveis ao contexto focadas em AmbI (incluindo \textit{smarthomes}). Dentre as facilidades está a capacidade de tornar transparente as partes da aplicação que envolvem a comunicação, a aquisição de contexto e a localização de recursos no ambiente. Como abstração aos recursos, são utilizados componentes chamados Agentes de Recursos (AR). O AR é a unidade básica de modularização do ambiente distribuído proposto pelo \textit{framework}, assim sendo, o mesmo pode também ser utilizado na modelagem das aplicações. Se uma aplicação necessita de uma entidade distribuída, pode representá-la através de um AR, por exemplo: sensores de temperatura da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
 
 %falar sobre smartandroid
-Para consolidar a proposta do \textit{framework} foi implementado o projeto para a plataforma \textit{Android}~\cite{saha2008android} denominado \textit{SmartAndroid}. Este projeto se beneficia da acessibilidade da tecnologia e de sua portabilidade a diversos tipos de dispositivos embarcados. Isto possibilita que o \textit{framework} seja mais abrangente e possibilite o desenvolvimento sistemas de aplicações ubíquas mais elaborados ao longo do tempo. 
-
-%23 - introduzindo o Modelo de Componentes Distribuídos e o Modelo de Contexto
-
-A arquitetura do \textit{framework} é definida a partir do Modelo de Componentes Distribuídos (Seção~\ref{subsec-mcd}) e do Modelo de Contexto (Seção~\ref{subsec-contexto}). O primeiro apresenta a estrutura do AR e o Suporte ao Gerenciamento de Agentes de Recursos (SGAR). E o segundo apresenta os elementos e Interpretadores de Contexto.
+Para consolidar a proposta do \textit{framework} foi implementado o projeto para a plataforma \textit{Android}~\cite{saha2008android} denominado \textit{SmartAndroid}. Este projeto se beneficia da acessibilidade da tecnologia e de sua portabilidade a diversos tipos de dispositivos embarcados. Isto possibilita que o \textit{framework} seja mais abrangente e possibilite o desenvolvimento sistemas de aplicações ubíquas mais elaborados ao longo do tempo. A arquitetura do \textit{framework} é definida a partir do Modelo de Componentes Distribuídos (Seção~\ref{subsec-mcd}) e do Modelo de Contexto (Seção~\ref{subsec-contexto}).
 
 %Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recursos (SGAR) e encontra-se centralizado no ambiente distribuído. Como apresentado na Figura~\ref{fig:suporte}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
 
@@ -204,7 +188,7 @@ Como visto anteriormente, sistemas para AmbI são geralmente estruturados nas cam
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[height=.4\textwidth]{imgs/suporte/instanciaAR.PNG}
+  \includegraphics[height=.3\textwidth]{imgs/suporte/instanciaAR.PNG}
   \caption{Instância do Agente de Recurso}
   \label{fig:agente}
 \end{figure}
@@ -218,7 +202,7 @@ Na Figura~\ref{fig:arquitetura} são apresentados componentes de uma \textit{smar
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[width=.7\textwidth]{imgs/framework/arquiteturaGeral.PNG}
+  \includegraphics[height= .3\textwidth]{imgs/framework/arquiteturaGeral.PNG}
   \caption{Arquitetura do \textit{Framework}}
   \label{fig:arquitetura}
 \end{figure}
@@ -233,45 +217,47 @@ Na Figura~\ref{fig:arquitetura} são apresentados componentes de uma \textit{smar
 \subsubsection{Suporte ao Gerenciamento de Recursos} \label{subsubsec-sgar}
 
 %31 - falar sobre uso geral do SGAR (figura Suporte)
-O SGAR é o responsável por gerenciar o conjunto de ARs no AmbI. O controle de registro e descoberta de ARs segue a ideia geral sobre serviços que manipulam recursos apresentada em \cite{cardoso2006}. Neste trabalho, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A Figura~\ref{fig:suporte} ilustra as principais operações de cada serviço de suporte. O SRR é utilizado para registrar ou remover ARs no ambiente, o SDR verifica suas existências ("Busca") e o SLR verifica suas posições físicas ("Localiza"). Estas operações manipulam dados representativos dos respectivos ARs no Repositório de Recursos.  
+O SGAR é o responsável por gerenciar o conjunto de ARs no AmbI. O controle de registro e descoberta de ARs segue a ideia geral sobre serviços que manipulam recursos apresentada em \cite{cardoso2006}. Neste trabalho, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A Tabela~\ref{tab:api} destaca as principais operações de cada serviço de suporte. O SRR é utilizado para registrar (\textit{register}) ou remover (\textit{unregister}) ARs no ambiente, o SDR verifica suas existências (\textit{search}) e o SLR verifica suas posições físicas para indicar os recursos mais próximos (\textit{searchByProximity}). Estas operações manipulam dados representativos dos respectivos ARs no Repositório de Recursos.  As operações ``\textit{subscribe}'' e ``\textit{publish}'' são comuns a todo AR e são possibilitadas pelo mecanismo de comunicação por eventos descrito na Seção~\ref{subsec-comunicacao}. Os componentes (A, B, C, D) na Figura~\ref{fig:pubsub} correspondem aos ARs do AmbI. O uso das Operações ``publish'' e ``subscribe'' é explorado pelos Interpretadores de Contexto apresentados na Seção~\ref{subsubsec-ic}.
 
-\begin{figure}[ht]
-  \centering
-  \includegraphics[width=.7\textwidth]{imgs/suporte/suporte.PNG}
-  \caption{Serviços de Suporte}
-  \label{fig:suporte}
-\end{figure}
+%((((((((((((((((((((((((((((tabela 1))))))))))))))))))))))))))))))
+\begin{table} % aqui começa o ambiente tabela
+\centering
+\caption{Operações do SGAR} % igual ao ambiente figura
+\begin{tabular}{|c|c|p{2.6cm}|p{6.1cm}|} 
+\hline % este comando coloca uma linha na tabela
+Serviço & Operação & Argumentos & Descrição\\ 
+\hline
+SRR & \textit{register} & Dados do AR & Insere dados do AR no Repositório  \\ \hline
+SRR & \textit{unregister} & Dados do AR & Remove AR do Repositório  \\ \hline
+SDR & \textit{search} & Consulta & Busca ARs por tipo, local ou nome   \\ \hline
+SLR & \textit{searchByProximity} & Posição & Retorna ARs mais próximos \\ \hline
+AR & \textit{subscribe} & AR e VC & Adiciona interesse do AR no VC \\ \hline
+AR & \textit{publish} & VC e Valor & Notifica ARs interessados no VC \\ \hline
+\end{tabular}
+\label{tab:api}
+\end{table}
+
+%\begin{figure}[ht]
+%  \centering
+%  \includegraphics[width=.7\textwidth]{imgs/suporte/suporte.PNG}
+%  \caption{Serviços de Suporte}
+%  \label{fig:suporte}
+%\end{figure}
 
 %32 - descrever estrutura de repositorio 
 O Repositório de Recursos, como apresentado na Figura~\ref{fig:repositorio}, possui o Diretório de Recursos e o Mapa, o qual contém representado o conjunto de espaços físicos do AmbI. O Diretório contém os dados dos ARs armazenados conforme o tipo de cada um, no caso da figura há o tipo TV com a "tvDaSala" e o tipo \textit{tablet} com o "iPadQuarto" e o "tabSala". Os dados consistem do nome, tipo, localização e a referência de acesso. A referência de acesso permite a interação de ARs através do RPC (Seção~\ref{subsec-comunicacao}). Cada espaço do Mapa possui uma área e um nome. No caso de uma \textit{smart home} os cômodos da casa representam estes espaços. Cada entrada do Mapa referencia um conjunto de AR contidos no respectivo espaço.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[height=.6\textwidth]{imgs/suporte/repositorio.png}
+  \includegraphics[height=.3\textwidth]{imgs/suporte/repositorio.png}
   \caption{Repositório de Recursos}
   \label{fig:repositorio}
 \end{figure}
 
 %apresentar a API (estilo olympus)
-A Tabela~\ref{tab:api} contém um resumo sobre as operações suportadas pelo SGAR através dos serviços (SDR, SRR SLR) e da estrutura básica do AR que tornam transparente as dificuldades básicas de manipular componentes distribuídos. Além das operações básicas ilustradas na Figura~\ref{fig:suporte} de registro (``register'') e remoção no SRR (``unregister''), busca no SDR (``search'') e localização no SLR, são apresentadas as funções ``searchByProximity'' no SLR, e ``subscribe'' e ``publish'', estas as quais são comuns a todo AR. As operações básicas do AR são possibilitadas pelo mecanismo de comunicação por eventos descrito na Seção~\ref{subsec-comunicacao}. A operação ``subscribe'' é responsável por adicionar entradas a lista de interessados, como no exemplo ilustrado na Figura~\ref{fig:agente} em que celular (AR referenciado) tem interesse no VC de canal da TV. A operação ``publish'' é executada quando há mudança em no valor de algum VC do AR, a operação envia o valor para os interessados associados. A operação ``searchByProximity'' retorna, através de distancia euclidiana entre pontos, quais ARs estão mais próximos da coordenada passada no seu argumento. Esta função pode ser utilizada quando se quer mandar uma mensagem para o dispositivo visual mais próximo de uma pessoa. O uso das Operações ``publish'' e ``subscribe'' é explorado pelos Interpretadores de Contexto apresentados na Seção~\ref{subsubsec-ic}.
+A Tabela~\ref{tab:api} contém um resumo sobre as operações suportadas pelo SGAR através dos serviços (SDR, SRR SLR) e da estrutura básica do AR que tornam transparente as dificuldades básicas de manipular componentes distribuídos. Além das operações básicas ilustradas na Figura~\ref{fig:suporte} de registro (``register'') e remoção no SRR (``unregister''), busca no SDR (``search'') e localização no SLR, são apresentadas as funções ``searchByProximity'' no SLR, 
 
-%((((((((((((((((((((((((((((tabela 1))))))))))))))))))))))))))))))
-\begin{table} % aqui começa o ambiente tabela
-\centering
-\caption{Operações do SGAR} % igual ao ambiente figura
-\begin{tabular}{|c|c|p{2.2cm}|p{6.5cm}|} 
-\hline % este comando coloca uma linha na tabela
-Serviço & Operação & Argumentos & Descrição\\ 
-\hline
-SRR & register & Dados do AR & Adiciona os dados do AR no Diretório de Recursos e Indexa ao espaço correspondente no Mapa  \\ \hline
-SRR & unregister & Nome ou Referência de AR & Remove os dados do AR do Repositório de Recursos  \\ \hline
-SDR & search & Atributo e Consulta & Busca ARs no Repositório que atendam a Consulta no Atributo especificado. Atributo pode ser tipo, local, nome ou referência   \\ \hline
-SLR & searchByProximity & Posição & Retorna uma lista de ARs ordenada por proximidade física \\ \hline
-AR & subscribe & Referência de AR e VC & Adiciona argumentos a lista de interessados do AR corrente \\ \hline
-AR & publish & VC e Valor & Notifica ARs associados a VC na lista de interessados do AR corrente \\ \hline
-\end{tabular}
-\label{tab:api}
-\end{table}
+
 
 \subsection{Modelo de Contexto} \label{subsec-contexto}
 %falar que existem duas abordagens, e explica a abordagem centralizada
@@ -399,10 +385,8 @@ Em \cite{helal2005gator} é proposta uma arquitetura de camadas semelhante ao já 
 
 Em \cite{ranganathan2005olympus} é proposto um conjunto de operações de alto nível para ambientes inteligentes (espaços ativos). As operações básicas são semelhantes as funções de um sistema operacional, só que ao invés de manipular recursos, entidades do ambiente são manipuladas. Em nosso \textit{framework} há as funções apresentadas na Tabela~\ref{tab:api}. Outras funções como parar, iniciar, suspender, reiniciar são definidas por cada AR e aplicação ubíqua do sistema, permitindo uma distribuição do controle de serviços do ambiente.
 
-Boa parte dos \textit{frameworks} propostos evitam levantar pontos sobre a sobrecarga de comunicação decorrente em sistemas ubíquos. O artigo \cite{villanueva2009framework} é uma proposta com abordagem distribuída para a parte de suporte (SGAR), onde cada componente possui algo semelhante replicado e que utiliza comunicação \textit{multicast} para realizar os serviços. O custo de espaço desta abordagem é muito alto devido a ocorrência de replicação de dados sobre o ambiente, e acaba ocasionando sobrecarga no consumo de energia devido a comunicação excessiva característica do padrão \textit{multicast}.
-
 %\cite{santi2011jaca}
-O JaCa-Android~\cite{santi2011jaca} utiliza o esquema de captura de mudança de estado em recursos através de escuta de eventos, o qual é semelhante ao \textit{publish-subscribe}, mas limitado a um mesmo dispositivo. Esta é uma plataforma baseada em agentes para lidar com concorrência, eventos assíncronos, gerenciamento de recursos e sensibilidade ao contexto. Estas características possibilitam a construção de aplicações de manipulação de eventos. Para seu desenvolvimento são utilizadas as ferramentas de programação orientada a agentes. Além de não ser voltado a sistemas distribuídos, esta proposta tem sua abordagem limitada pela a plataforma \textit{Android} por utilizar mecanismos específicos da tecnologia para a captura de eventos. 
+Boa parte dos \textit{frameworks} propostos evitam levantar pontos sobre a sobrecarga de comunicação decorrente em sistemas ubíquos. O artigo \cite{villanueva2009framework} é uma proposta com abordagem distribuída para a parte de suporte (SGAR), onde cada componente possui o suporte replicado e que utiliza comunicação \textit{multicast} para realizar os serviços. O custo de espaço desta abordagem é muito alto devido a ocorrência de replicação de dados sobre o ambiente, e acaba ocasionando sobrecarga no consumo de energia devido ao excesso de comunicação. O JaCa-Android~\cite{santi2011jaca} utiliza o esquema de captura de mudança de estado em recursos através de escuta de eventos, semelhante ao \textit{publish-subscribe}, mas limitado a um mesmo dispositivo. Além de não ser voltado a sistemas distribuídos, esta proposta tem sua abordagem limitada pela a plataforma \textit{Android} por utilizar mecanismos específicos da tecnologia para a captura de eventos. 
 
 O \textit{framework} busca como diferencial que novas aplicações ubíquas possam ser concebidos  de forma dinâmica e adaptativa. A proposta permite ao desenvolvedor de aplicações um aparato ferramental para montar um AmbI personalizado. O desenvolvedor adquire como benefício a separação de interesses, que reduz a carga de codificação de requisitos essenciais de um sistema (e.g. segurança, manutenção). Ainda possui um suporte para construção de regras sobre contextos do ambiente, permitindo prover em alto nível serviços aos usuários do sistema inteligente. 
 %essencialmente focamos em sistemas distribuídos, <não vamos falar dos sistemas 
