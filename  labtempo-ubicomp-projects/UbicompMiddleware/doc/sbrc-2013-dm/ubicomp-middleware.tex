@@ -232,15 +232,10 @@ O Repositório de Recursos, como apresentado na Figura~\ref{fig:repositorio}, pos
   \label{fig:repositorio}
 \end{figure}
 
-%apresentar a API (estilo olympus)
-A Tabela~\ref{tab:api} contém um resumo sobre as operações suportadas pelo SGAR através dos serviços (SDR, SRR SLR) e da estrutura básica do AR que tornam transparente as dificuldades básicas de manipular componentes distribuídos. Além das operações básicas ilustradas na Figura~\ref{fig:suporte} de registro (``register'') e remoção no SRR (``unregister''), busca no SDR (``search'') e localização no SLR, são apresentadas as funções ``searchByProximity'' no SLR, 
-
 \subsection{Modelo de Contexto} \label{subsec-contexto}
 % O modelo de contexto proposto por este trabalho é caracterizado pela manutenção do contexto pelas próprias 
 
 O \mbox{\textit{framework}} utiliza uma abordagem distribuída em seu Modelo de Contexto, onde a informação de contexto é mantida e disponibilizada pelos ARs. A informação pode estar em qualquer lugar da AmbI, contudo, é provido um nível de abstração tal que a subscrição ou consulta à qualquer informação de contexto é feita de maneira padronizada. O processo de aquisição do contexto envolve a descoberta do AR de interesse através dos serviços da SGAR, com a posterior subscrição do mesmo, como apresentado na Seção~\ref{subsec-comunicacao}.
-
-Embora este trabalho desobrigue a utilização de um serviço de gerenciamento de contexto centralizado, ele também não o inviabiliza. A abordagem adotada é flexível de tal maneira que, caso seja necessário, pode ser criado uma unidade centralizadora para gerenciar as informações de contexto, segundo uma arquitetura de memória compartilhada do tipo \textit{blackboard} (ou quadro-negro)~\cite{winograd2001architectures}.
 
 %falar que existem duas abordagens, e explica a abordagem centralizada
 % Uma infraestrutura para construção de aplicações sensíveis ao contexto (ou aplicações ubíquas) pode ter uma abordagem centralizada ou distribuída. Em abordagens centralizadas faz-se necessário a utilização de um serviço de gerenciamento de contexto, responsável por manter a informação contextual e oferecer interfaces para subscrições e consultas. Abordagens como esta correspondem à uma arquitetura do tipo \textit{blackboard} (ou quadro-negro), onde uma entidade envia uma mensagem para uma memória compartilhada entre todas as entidades, e também pode se subscrever para receber mensagens que respeitam algum padrão especificado~\cite{winograd2001architectures}. Todas as comunicações ocorrem através de um servidor centralizado e as mensagens são redirecionadas para os interessados.
@@ -316,20 +311,17 @@ Para a primeira avaliação utilizou-se a aplicação do jogo da velha como base. Em
 %\usebox{\mylisting}% Print box mylisting
 
 %descrição do processo de transformação e avaliação jogo da velha
-O Código 1 apresenta a etapa de inicialização do jogo na versão \textit{SmartAndroid}. Nesta etapa é inserido um AR do jogo (``gameAgent'') que é associado ao Motor (``game'') (Linha 10) de um dos Jogadores (Jogador ``X'' (identificado no caso da Linha 9)). Como ilustrado na Figura~\ref{fig:tictactoe}, o AR do Jogo intercepta a indicação de jogada deste Motor e encaminha para outro AR de Jogo de outros participantes como o do Jogador ``O'' (identificado no caso da Linha 4). Este AR atualiza o tabuleiro com a jogada vinda por RPC do Jogador ``X'' (``atualiza'' do Agente do Jogo). Para evitar que um jogador jogue na vez do outro, por exemplo, que o Jogador ``X'' jogue no turno do Jogador ``O'', é verificado se o Tipo do Jogador da vez é o mesmo do que tenta a jogada ("permissão"). Na Figura~\ref{fig:tictactoe} as ligações unidirecionais em amarelo indicam as alterações realizadas no processo de transformação. A inicialização do jogo foi modificada para incluir o AR do jogo, esta etapa é descrita no Código 1 
-com as operações de alto nível definidas na Tabela~\ref{tab:api}. Após isto, nenhuma alteração no nível de comunicação ou contexto foi necessária. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
+Na versão  SmartAndroid é inserido um AR do jogo que é associado ao Motor de um dos Jogadores (Jogador ``X''). O AR do Jogo intercepta a indicação de jogada deste Motor e encaminha para ARs de outros participantes (um deles o do Jogador ``O''). Este AR atualiza o tabuleiro com a jogada vinda por RPC do Jogador ``X'' (``atualiza'' do AR do Jogo). Para evitar que um jogador jogue na vez do outro, por exemplo, que o Jogador ``X'' jogue no turno do Jogador ``O'', é verificado se o Tipo do Jogador da vez é o mesmo do que tenta a jogada ("permissão"). Na Figura~\ref{fig:tictactoe} as ligações unidirecionais em amarelo indicam as alterações realizadas no processo de transformação. Usando as operações definidas na Tabela~\ref{tab:api}, o Código 1 apresenta a descoberta dos outros ARs na linha 1, o registro do AR local na linha 2, e a subscrição de interesses nas linhas 5 e 6.  Após isto, nenhuma alteração no nível de comunicação ou contexto foi necessária. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
 
 \begin{lstlisting}[caption=Inicialização do jogo da velha no SmartAndroid]
     List gameList = SDR.search(TYPE, GameAgent); \\Consulta por tipo
     SRR.register(gameAgent); \\Registro do Agente do Jogo (gameAgent)
-    if (gameList != null){ \\Caso onde há outro Agente de Jogo
-       if (gameList.size=1) gameAgent.setPlayer(Player.Name.O);
-       for (iGameAgent : gameList) { \\Subscrição a jogadas 
+    if (gameList.size>0) { \\Caso haja outros jogadores...
+       for (iGameAgent : gameList) { \\Subscrição entre ARs 
            iGameAgent.subscribe("indica jogada", gameAgent);
            gameAgent.subscribe("indica jogada", iGameAgent);
        }
-    } else gameAgent.setPlayer(Player.Name.X);\\1º jogador
-    gameAgent.setGame((Game)this.game); \\Ligação do AR ao jogo
+    }...
 \end{lstlisting}
 
  
