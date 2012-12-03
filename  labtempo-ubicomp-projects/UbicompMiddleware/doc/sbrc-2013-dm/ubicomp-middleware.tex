@@ -73,8 +73,7 @@ A construção e manipulação de aplicações ubíquas representam um grande desafio p
 Muitos trabalhos tem por objetivo definir, no estado da arte, um arcabouço de técnicas para construção e gerenciamento de aplicações ubíquas~\cite{helal2005gator, cardoso2006, ranganathan2005olympus}. Em~\cite{augusto2007ambient} são apontados desafios na aquisição de conhecimentos do ambiente. Em~\cite{helal2005gator} é proposto um \textit{middleware} entre a camada física, a qual compreende os sensores e atuadores, e a camada de aplicação, na qual se encontram o ambiente de desenvolvimento e as aplicações ubíquas. Em~\cite{cardoso2006} são propostos serviços para gerenciar componentes representativos do ambiente no nível de \textit{middleware}. Uma variedade de dispositivos e propriedades é encontrada no AmbI. Como exemplo há a casa inteligente, onde televisores, termômetros, smartphones, etc. podem ser encontrados inseridos em cômodos com suas especificidades. O trabalho em \cite{ranganathan2005olympus} se preocupa em organizar estes componentes de forma a facilitar suas manipulações. Esta estruturação permite ampliar o escopo de operações de suporte de um sistema ubíquo.
 
 %4 - (?Este trabalho... vamos propor um protótipo ...?, nosso trabalho tem q ganhar. ?Tem que caber o smartandroid inteiro? - ARs)
-Neste trabalho é proposto um \textit{framework} de desenvolvimento de aplicações ubíquas em AmbI. O objetivo é dar suporte a programação, teste e execução de aplicações permitindo lidar de forma consistente com sistemas de grande complexidade. Este \textit{framework} destaca-se por cobrir grande parte dos desafios destacados na computação ubíqua~\cite{araujo2003}, como o tratamento da heterogeneidade de dispositivos, o tratamento de informações de contexto e a descoberta de serviços. A heterogeneidade é tratada através da definição de um Modelo de Componentes Distribuídos, no qual o componente básico tem uma estrutura uniforme definida como um Agente de Recurso (AR). Segundo~\cite{cardoso2006}, AR é a entidade de coleta de informações de contexto. Neste trabalho, esta definição é ampliada para qualquer módulo que interage com elementos deste modelo de componentes. Para o tratamento de informações de contexto é proposto o Modelo de Contexto. Além disso, no \textit{framework} é proposta a aplicação de Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas (IPGAP) (Trabalho submetido ao SBRC 2013) que permite a visualização e o teste de aplicações ubíquas, as quais mesclam componentes reais e virtuais. %TODO: (matheus) nós vamos citar a comutação ubíqua com letras maiúsculas ou minúsculas? Temos q decidir de pronto.
-%TODO: (matheus) Douglas, nós não vamos citar o david e a ipgap dessa maneira aí. Nós temos que falar que essa parte tb foi submetida para o SBRC 2013
+Neste trabalho é proposto um \textit{framework} de desenvolvimento de aplicações ubíquas em AmbI. O objetivo é dar suporte a programação, teste e execução de aplicações permitindo lidar de forma consistente com sistemas de grande complexidade. Este \textit{framework} destaca-se por cobrir grande parte dos desafios destacados na computação ubíqua~\cite{araujo2003}, como o tratamento da heterogeneidade de dispositivos, o tratamento de informações de contexto e a descoberta de serviços. A heterogeneidade é tratada através da definição de um Modelo de Componentes Distribuídos, no qual o componente básico tem uma estrutura uniforme definida como um Agente de Recurso (AR). Segundo~\cite{cardoso2006}, AR é a entidade de coleta de informações de contexto. Neste trabalho, esta definição é ampliada para qualquer módulo que interage com elementos deste modelo de componentes. Para o tratamento de informações de contexto é proposto o Modelo de Contexto. Além disso, no \textit{framework} é proposta a aplicação de Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas (IPGAP) (Trabalho submetido ao SBRC 2013) que permite a visualização e o teste de aplicações ubíquas, as quais mesclam componentes reais e virtuais.
 
 %5 - falar do smartandroid usado na avaliação(mostrar uma prova de conceito: 1 (exatamente) aplicação, seja a de saúde, ou outra)
 Os conceitos do \textit{framework} foi efetivado sobre a plataforma Android através do projeto SmartAndroid (www.tempo.uff.br/smartandroid). Neste projeto foi possível avaliar a qualidade de suporte do \textit{framework}. Esta avaliação ocorreu durante o processo de transformação de uma aplicação com funcionamento estritamente local em uma aplicação ubíqua. Com isso foi possível provar conceitualmente que o \textit{framework} facilita o processo de construção de aplicações ubíquas. Outra avaliação foi realizada para testar a eficiência do Modelo de Contexto, foi então construída uma aplicação que explora os mecanismos de comunicação utilizados no Modelo de Componentes Distribuídos.
@@ -196,13 +195,8 @@ Como visto anteriormente, sistemas para AmbI são geralmente estruturados nas cam
 %30 - descrever as portas de interação (VC e operações) do AR 
 A lista de interessados do AR é utilizado pelo Modelo de Contexto (Seção~\ref{subsec-contexto}) para notificar outras instancias sobre sua mudança de estados. Um AR armazena o seu estado por meio de seus atributos declarados e os expõe através da criação de Variáveis de Contexto (VC), como será visto na Seção~\ref{subsubsec:cv}. Geralmente as mudanças nas VCs são provocadas por Operações (OP), como será estudado na mesma seção. Do ponto de vista da arquitetura, as VCs são as portas de saída de informação, e as OPs são as portas de entrada de comando.
 
-
 %26 - descrever um exemplo de modelo de componente distribuído (figura arqGeral)
 Na Figura~\ref{fig:arquitetura}~(b) são apresentados componentes de uma \textit{smart home}. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (como \textit{smartphones} e \textit{tablets}) ou criados através da IPGAP. A figura apresenta como recursos exemplo um televisor, uma cama e um fogão. No \mbox{\textit{middleware}} são apresentados os seus ARs representativos, além do AR de interpretação de contexto para verificar se o fogão foi esquecido ligado por um ocupante da casa. Este interpretador verifica se alguém está presente na cama e por quanto tempo o fogão está ligado, se um tempo limite for ultrapassado uma ação é disparada para que o fogão seja desligado. Os ARs referentes a cama e ao fogão coletam os dados destes recursos físicos e os representam na camada do \mbox{\textit{middleware}}, isto permite que estas informações sejam utilizadas pelos componentes da camada da aplicação. As aplicações utilizam o SGAR (Seção~\ref{subsubsec-sgar}) para criar, consultar e instanciar ARs no \textit{middleware}. 
-
-%Como pode-se ver na figura, as informações de contexto são armazenadas em variáveis e as funcionalidades de que o recurso dispõe são 
-%As variáveis, como representado na Figura~\ref{fig:agente} armazenam o estado do AR, e os métodos do exemplo possibilitam acessar as funcionalidades dos ARs, ou Operações. Através desses recursos, um AR pode expor o acesso à sua informação de contexto através da criação de Variáveis de Contexto
-%Em tempo de programação, pode-se declarar quais são 
 
 \subsubsection{Suporte ao Gerenciamento de Recursos} \label{subsubsec-sgar}
 
@@ -247,8 +241,6 @@ O Repositório de Recursos, como apresentado na Figura~\ref{fig:repositorio}, pos
 %apresentar a API (estilo olympus)
 A Tabela~\ref{tab:api} contém um resumo sobre as operações suportadas pelo SGAR através dos serviços (SDR, SRR SLR) e da estrutura básica do AR que tornam transparente as dificuldades básicas de manipular componentes distribuídos. Além das operações básicas ilustradas na Figura~\ref{fig:suporte} de registro (``register'') e remoção no SRR (``unregister''), busca no SDR (``search'') e localização no SLR, são apresentadas as funções ``searchByProximity'' no SLR, 
 
-
-
 \subsection{Modelo de Contexto} \label{subsec-contexto}
 %falar que existem duas abordagens, e explica a abordagem centralizada
 Uma infraestrutura para construção de aplicações sensíveis ao contexto (ou aplicações ubíquas) pode ter uma abordagem centralizada ou distribuída. Em abordagens centralizadas faz-se necessário a utilização de um serviço de gerenciamento de contexto, responsável por manter a informação contextual e oferecer interfaces para subscrições e consultas. Abordagens como esta correspondem à uma arquitetura do tipo \textit{blackboard} (ou quadro-negro), onde uma entidade envia uma mensagem para uma memória compartilhada entre todas as entidades, e também pode se subscrever para receber mensagens que respeitam algum padrão especificado~\cite{winograd2001architectures}. Todas as comunicações ocorrem através de um servidor centralizado e as mensagens são redirecionadas para os interessados.
@@ -258,10 +250,7 @@ Este trabalho adotou uma abordagem distribuída, onde a informação de contexto nã
 
 \subsubsection{Variáveis de Contexto e Operações} \label{subsubsec:cv}
 %explicar vc
-As informações de contexto respectivas de cada AR são expostas através de Variáveis de Contexto (VC). Se, por exemplo, há um agente para a televisão registrado no sistema, possivelmente ele provê VCs para qual a programação que está sendo exibida, qual a programação agendada, se a própria televisão está ligada, se está gravando alguma programação, enfim, tudo que diz respeito ao estado da televisão e é efetivamente coletado.
-%TODO: repito a palavra ``abordagem'' várias vezes
-
-%As VCs possibilitam que as informações de contexto sejam acessadas sem que haja um componente centralizado armazenando-as e disponibilizando-as, %como são as abordagens que utilizam tuple space (T Space, Google Interactive Space (acho q tb usa), outras) %TODO: Falar disso tudo
+As informações de contexto respectivas de cada AR são expostas através de Variáveis de Contexto (VC). Se, por exemplo, há um agente para a televisão registrado no sistema e ele provê VCs para: qual a programação que está sendo exibida, qual a programação agendada, se a própria televisão está ligada, se está gravando alguma programação, e outras, enfim, tudo o que diz respeito ao estado da televisão e é efetivamente coletado.
 
 %explicar operações
 O papel da Operações (OP) é expor as funcionalidades do AR, possibilitando às aplicações interagir ativamente no ambiente. Por exemplo, uma televisão integrada ao sistema pode oferecer OPs como para desligá-la, mudar de canal, gravar alguma programação, mostrar uma mensagem na tela, perguntar algo ao usuário, gerar um alerta, pausar a programação, etc.
@@ -281,7 +270,7 @@ As questões de segurança, inerentes ao problema, são resolvidas com duas técnica
 
 \subsubsection{Interpretação de Contexto} \label{subsubsec-ic}
 %falar de maneira geral da interpretação de contexto, do IC e do atuador
-A interpretação de contexto tem a função de agregar informações de contexto provenientes de diferentes fontes, considerando também a passagem de tempo, e avaliá-las segundo alguma lógica em específico. O suporte à interpretação de contexto pelo \textit{framework} possibilita uma separação de interesses, onde os desenvolvedores abstraem a implementação de regras de contexto e se mantém suas preocupações com a lógica da aplicação.
+A interpretação de contexto tem a função de agregar informações de contexto provenientes de diferentes fontes, considerando também a passagem de tempo, e avaliá-las segundo alguma lógica em específico. O suporte à interpretação de contexto pelo \textit{framework} possibilita uma separação de interesses, onde os desenvolvedores abstraem a implementação de regras de contexto e se focam na lógica da aplicação.
 
 A intepretação do contexto é desempenhada por entidades chamadas \mbox{Interpretadores} de Contexto (IC), que avaliam essas informações e notificam agentes atuadores interessados. Agentes atuadores são quaisquer ARs que se subscrevem em ICs para desempenhar ações, sejam estas ações no nível de software (e.g., guardar no histórico, imprimir na tela, enviar para um servidor remoto) ou no nível do ambiente, ao se chamar OPs de outros ARs (e.g., mostrar uma mensagem na televisão, disparar o despertador, mudar a temperatura do ar-condicionado). 
 %TODO: não sei se cito também a Figura~\ref{fig:arquitetura}, pq ja vou mostrar o interpretador em alto nivel na Figura~\ref{fig:inpt_cute}
@@ -292,12 +281,13 @@ A intepretação do contexto é desempenhada por entidades chamadas \mbox{Interpret
 Considere a seguinte regra: se uma pessoa (que mora sozinha) ligou o fogão, se deitou na cama, e passaram-se 15min, então dispare o alarme do dispertador e mostre na televisão a mensagem ``O fogão foi esquecido ligado!''. Este exemplo simplista poderia ser implementando no sistema como representado na Figura~\ref{fig:inpt_cute}. O IC recebe notificações da TV e do fogão com valores atualizados das VCs ``ligado'' e ``em uso'', respectivamente, e resolve internamente a temporização monitorada destas VCs. Uma vez que o IC avaliou a regra como verdadeira durante o tempo de 15min (previamente declarado), ele notifica o atuador ``Lembrar usuário''. O atuador, por sua vez, invoca as OPs ``Mostrar mensagem'' da TV e ``Disparar'' do despertador.
 
 %falar sobre a arquitetura do IC e da sua criação
-O IC é também um AR, e estende suas funcionalidades. A arquitetura do IC é composta de um módulo que recebe as notificações e atualiza os valores em cache; uma estrutura de dados em árvore que não só armazena as referências para as VCs e os valores atualizados, mas também a lógica da regra; um módulo que avalia a árvore à cada atualização de valores; e um módulo temporizador, controlado pelo módulo de avaliação.
+O IC é também um AR, e estende suas funcionalidades. A arquitetura do IC é composta de um módulo que recebe as notificações e atualiza os valores em cache; uma estrutura de dados em árvore que não só armazena as referências para as VCs e os valores atualizados, mas também a lógica da regra; um módulo que avalia a árvore a cada atualização de valores; e um módulo que gerencia os temporizadores, controlado pelo módulo de avaliação.
 
 %falar de temporização
 
 %falar da GUI de composição de regras
 A interpretação de contexto visa não só a construção de regras de contexto por parte das aplicações, mas também a definição das preferências dos usuários finais no sistema. Para isto, está sendo desenvolvida uma GUI que possibilite à usuários sem experiência técnica a criar, editar, desabilitar, etc, regras para o seu dia-a-dia. A GUI permitirá que, com poucos toques, um usuário possa selecionar ARs em um mapa da casa, escolher as VCs, comparar~\footnote{Possíveis comparações: $=, \neq, <, >, \leq$ e $\geq$} com valores ou outras VCs, e definir um conjunto de ações a serem desempenhadas no sistema. A definição do conjunto de ações pode ser feita tanto ao se escolher ARs atuadores para entrar em ação (e.g., Atuador Lembrar Usuário), como selecionando ARs no mapa e suas OPs em seguida (e.g., ar-condicionado - mudar temperatura - 20º). %TODO: devo referenciar o mapa que só vou falar mais adiante?
+
 
 %%%%%%%%%%%%%%%%
 %  AVALIACAO   %
@@ -396,19 +386,6 @@ Com propósito de demonstrar e avaliar o \textit{framework}, foram apresentadas d
 
 %falar sobre os desafios do futuro
 A proposta possui potencial para ampliar suas funcionalidades e atender a outros desafios importantes na área de computação ubíqua e computação sensível ao contexto. A segurança atual está limitada as configurações da rede Wi-Fi, futuramente pretende-se agregar ao suporte restrições de acesso a determinados ocupantes e entre diferentes domínios de aplicações. A economia de energia em dispositivos pode ser aprimorada reduzindo a sobrecarga de comunicação em quantidade e qualidade. Na parte de Computação Sensível ao Contexto, pretende-se identificar as preferências do usuário de forma menos intrusiva através de técnicas de mineração de dados aliadas a aprendizagem de máquina. E para permitir um controle de serviços maior a nível de usuário, pretende-se proporcioná-lo uma interface compreensível para definição de regras de contexto.
-
-
-%\cite{boulic:91}
-%\nocite{abowd1999towards}
-%\nocite{Brandle2007}
-%\nocite{Cardoso2006}
-%\nocite{Chen2002}
-%\nocite{chen2010context}
-%\nocite{Dey2001}
-%\nocite{lee2012mobicon}
-%\nocite{liu2003dios++}
-%\nocite{sudha2007ubiquitous}
-%\nocite{wang2005towards}
 
 
 \bibliographystyle{sbc}
