@@ -217,6 +217,7 @@ Serviço & Operação & Argumentos & Descrição\\
 SRR & \textit{register} & Dados do AR & Insere dados do AR no Repositório  \\ \hline
 SRR & \textit{unregister} & Dados do AR & Remove AR do Repositório  \\ \hline
 SDR & \textit{search} & Consulta & Busca ARs por tipo, local ou nome   \\ \hline
+SLR & \textit{getPlaces} & Nenhum & Retorna a lista de espaços do Mapa \\ \hline
 SLR & \textit{searchByProximity} & Posição & Retorna ARs mais próximos \\ \hline
 AR & \textit{subscribe} & AR e VC & Adiciona interesse do AR no VC \\ \hline
 AR & \textit{publish} & VC e Valor & Notifica ARs interessados no VC \\ \hline
@@ -314,7 +315,7 @@ A qualidade do \mbox{\textit{framework}} foi avaliada em duas fases. Primeiro fo
 \end{figure}
 
 %descrição da prova de conceito jogo da velha (figura tictactoe)
-Para a primeira avaliação utilizou-se a aplicação do jogo da velha como base. Em sua versão \textit{Android}, os jogadores interagem através de uma mesma tela de dispositivo (\textit{tablet} ou \textit{smartphone}). Na versão desenvolvida com o SmartAndroid os jogadores interagem sobre um mesmo tabuleiro em dispositivos diferentes. A Figura~\ref{fig:tictactoe} ilustra o modelo de aplicação das duas versões. A versão original possui o componente da GUI (GUI do Jogo), Motor do Jogo (Motor), a estrutura do Tabuleiro e a identidade dos Jogadores que pode ser do tipo ``X'' ou ``O'' (Tipo <X,O>). O Motor  atualiza estado do Tabuleiro e o mostra na GUI. O Tipo do Jogador é verificado para indicar qual simbolo da jogada é marcado no tabuleiro (``X'' ou ``O''). 
+Para a primeira avaliação utilizou-se a aplicação do jogo da velha como base. Em sua versão \textit{Android}, os jogadores interagem através de uma mesma tela de dispositivo (\textit{tablet} ou \textit{smartphone}). Na versão desenvolvida com o SmartAndroid os jogadores interagem sobre um mesmo tabuleiro em dispositivos diferentes. A Figura~\ref{fig:tictactoe} ilustra o modelo de aplicação das duas versões. A versão original possui o componente da GUI (GUI do Jogo), Motor do Jogo (Motor), a estrutura do Tabuleiro e a identidade dos Jogadores que pode ser do tipo ``X'' ou ``O'' (Tipo $<$X,O$>$). O Motor  atualiza estado do Tabuleiro e o mostra na GUI. O Tipo do Jogador é verificado para indicar qual simbolo da jogada é marcado no tabuleiro (``X'' ou ``O''). 
 
 %\begin{lrbox}{\mylisting}
 %\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt}  
@@ -323,7 +324,7 @@ Para a primeira avaliação utilizou-se a aplicação do jogo da velha como base. Em
 %\usebox{\mylisting}% Print box mylisting
 
 %descrição do processo de transformação e avaliação jogo da velha
-Na versão  SmartAndroid é inserido um AR do jogo que é associado ao Motor de um dos Jogadores (Jogador ``X''). O AR do Jogo intercepta a indicação de jogada deste Motor e encaminha para ARs de outros participantes (um deles o do Jogador ``O''). Este AR atualiza o tabuleiro com a jogada vinda por RPC do Jogador ``X'' (``atualiza'' do AR do Jogo). Para evitar que um jogador jogue na vez do outro, por exemplo, que o Jogador ``X'' jogue no turno do Jogador ``O'', é verificado se o Tipo do Jogador da vez é o mesmo do que tenta a jogada ("permissão"). Na Figura~\ref{fig:tictactoe} as ligações unidirecionais em amarelo indicam as alterações realizadas no processo de transformação. Usando as operações definidas na Tabela~\ref{tab:api}, o Código 1 apresenta a descoberta dos outros ARs na linha 1, o registro do AR local na linha 2, e a subscrição de interesses nas linhas 5 e 6.  Após isto, nenhuma alteração no nível de comunicação ou contexto foi necessária. Logo, podemos comprovar que o uso de AR tornou transparente 
+Na versão  SmartAndroid é inserido o AR do jogo que é associado ao Motor de um dos Jogadores (Jogador ``X'') utilizador de um dispositivo. O AR do Jogo intercepta a indicação de jogada deste Motor e encaminha para ARs de outros participantes (um deles o do Jogador ``O''). Este AR atualiza o tabuleiro com a jogada vinda por RPC do Jogador ``X'' (``atualiza'' do AR do Jogo). Para evitar que um jogador jogue na vez do outro, por exemplo, que o Jogador ``X'' jogue no turno do Jogador ``O'', é verificado se o Tipo do Jogador da vez é o mesmo do que tenta a jogada ("permissão"). Na Figura~\ref{fig:tictactoe} as ligações unidirecionais em amarelo indicam as alterações realizadas no processo de transformação. Usando as operações definidas na Tabela~\ref{tab:api}, o Código 1 apresenta a descoberta dos outros ARs na linha 1, o registro do AR local na linha 2, e a subscrição de interesses nas linhas 5 e 6.  Após isto, nenhuma alteração no nível de comunicação ou contexto foi necessária. Logo, podemos comprovar que o uso de AR tornou transparente 
 a programação da aplicação ubíqua.
 
 \begin{lstlisting}[caption=Inicialização do jogo da velha no SmartAndroid]
