@@ -346,23 +346,34 @@ Dentre os protótipos construídos como provas de conceito, foi criado a Aplicação
 
 O Código 2 ilustra a inicialização do SmartLiC, onde são explorados os serviços de registro, localização, descoberta e a instanciação de regras de contexto. Uma vez obtidos os cômodos (ou lugares), a aplicação obtém cada lâmpada e sensor de proximidade deste cômodo. Uma vez com as identificações destes ARs e com o valor de T$_{max}$ definido, cria-se uma expressão para a regra (\mbox{\textit{ruleExpression}}) e define-se um conjunto de ações a serem desempenhadas (\mbox{\textit{actions}}).
 
-\begin{lstlisting}[caption=Inicialização do SmartLiC] 
-    List places = SLR.getPlaces(); \\Obter todos os lugares
-    for (place : places) { \\Para cada lugar...
-        \\Obter lâmpada
-        lampAR = SDR.search(TYPE, Lamp, place);
-        \\Obter sensor de proximidade
-        proxAR = SDR.search(TYPE, Proximity, place); 
-        \\Escrever expressão da regra de contexto
-        ruleExpression = lampAR.on and proxAR.occupied and T > Tmax;
-        \\Escrever conjunto de ações
-        actions = lampAR.turnOff;
-        \\Sistema se encarrega de instanciar IC e atuador
-        newRule(ruleExpression, actions);
-    } ...
-\end{lstlisting} 
+%\begin{lstlisting}[caption=Inicialização do SmartLiC] 
+   % List places = SLR.getPlaces(); \\Obter todos os lugares
+   % for (place : places) { \\Para cada lugar...
+       % \\Obter lâmpada
+       % lampAR = SDR.search(TYPE, Lamp, place);
+       % \\Obter sensor de proximidade
+       % proxAR = SDR.search(TYPE, Proximity, place); 
+       % \\Escrever expressão da regra de contexto
+      %  ruleExpression = lampAR.on and proxAR.occupied and T > Tmax;
+     %   \\Escrever conjunto de ações
+    %    actions = lampAR.turnOff;
+   %     \\Sistema se encarrega de instanciar IC e atuador
+  %      newRule(ruleExpression, actions);
+ %   } ...
+%\end{lstlisting} 
 
-
+\begin{lstlisting}[caption=Etapas de aplicação de regras do SmartLiC]
+	define(rule, Lamp, Proximity);
+	ruleFunction = compile(rule);
+	List places = SLR.getPlaces();
+	subscribeList(places, Lamp, Proximity);
+	\\p/cada cômodo...	
+	while(turnOn){
+		receive(iAR,VC,value);
+		updateStatus(iAR,VC,value);
+		calculate(ruleFunction,place.status);
+	}	
+\end{lstlisting}
 
 %conclusão da avaliação
 A execução do SmartLiC exige um tempo de resposta apurado. Com muitas instancias de lâmpadas este tempo pode aumentar, devido ao esquema de publicação por canais \textit{unicast} relativos a cada uma de suas respectivas ARs. Um problema que pode ser resolvido através de uma disseminação de eventos mais eficiente. Uma proposta estudada é a das Redes Endereçadas Por Interesses (REPI)~\cite{dutra2010repi}, na qual sua utilização permite que o interesse do AR em uma VC seja registrado localmente, as mensagens são identificadas com o interesse e apenas nós da rede que tenham o mesmo as manipulam. 
