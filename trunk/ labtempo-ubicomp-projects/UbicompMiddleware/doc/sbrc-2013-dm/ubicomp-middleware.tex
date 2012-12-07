@@ -318,15 +318,24 @@ Para a primeira avaliação utilizou-se a aplicação do jogo da velha como base. Em
 %descrição do processo de transformação e avaliação jogo da velha
 Na versão  SmartAndroid as principais estruturas do jogo da velha são envolvidos no AR do jogo. O AR do Jogo é responsável por interceptar as indicações de jogadas dos respectivos jogadores representados no dispositivo (``X'' ou ``O'') e encaminhar para o outro jogador. Este outro jogador recebe estas jogadas através de seu AR que as encaminha ao motor de jogo proceder na atualização do tabuleiro com a jogada do adversário. A etapa de inicialização da nova aplicação foi desenvolvida a partir das operações definidas na Tabela~\ref{tab:api}. O Código 1 apresenta a descoberta de ARs de outros jogadores na linha 1, o registro do AR do jogador local na linha 2, e a subscrição de interesses entre ARs de jogo do AmbI nas linhas 5 e 6.  Após isto, nenhuma alteração no nível de comunicação ou contexto foi necessária. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
 
+% \begin{lstlisting}[caption=Inicialização do jogo da velha no SmartAndroid]
+%     List gameList = SDR.search(TYPE, GameAgent); \\Consulta por tipo
+%     SRR.register(gameAgent); \\Registro do Agente do Jogo (gameAgent)
+%     if (gameList.size>0) { \\Caso haja outros jogadores...
+%        for (iGameAgent : gameList) { \\Subscrição entre ARs 
+%            iGameAgent.subscribe("indica jogada", gameAgent);
+%            gameAgent.subscribe("indica jogada", iGameAgent);
+%        }
+%     }...
+% \end{lstlisting} 
+
 \begin{lstlisting}[caption=Inicialização do jogo da velha no SmartAndroid]
-    List gameList = SDR.search(TYPE, GameAgent); \\Consulta por tipo
-    SRR.register(gameAgent); \\Registro do Agente do Jogo (gameAgent)
-    if (gameList.size>0) { \\Caso haja outros jogadores...
-       for (iGameAgent : gameList) { \\Subscrição entre ARs 
-           iGameAgent.subscribe("indica jogada", gameAgent);
-           gameAgent.subscribe("indica jogada", iGameAgent);
-       }
-    }...
+List gameList = SDR.search(TYPE, GameAgent) \\Consulta por tipo
+SRR.register(gameAgent) \\Registro do Agente do Jogo (gameAgent)
+if (gameList.size>0): \\Caso haja outros jogadores...
+    for (iGameAgent : gameList): \\Subscrição entre ARs 
+	iGameAgent.subscribe("indica jogada", gameAgent)
+	gameAgent.subscribe("indica jogada", iGameAgent)
 \end{lstlisting} 
 
 \subsection{Aplicação de Controle de Iluminação Residencial}
