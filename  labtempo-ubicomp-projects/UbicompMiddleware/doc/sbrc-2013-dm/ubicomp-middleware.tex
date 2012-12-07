@@ -395,26 +395,42 @@ O Código 2 ilustra a inicialização do SmartLiC, onde são explorados os serviços 
 % 	}	
 % \end{lstlisting}
 
+% Código como uma rotina
+% Rotina de criação de tratamento das regras de contexto do SmartLiC:
+% \begin{enumerate}
+%  \item Obter cômodos
+%  \item Para cada cômodo:
+%  \begin{enumerate}
+%   \item Obter lâmpada e sensor de proximidade
+%   \item Compor uma regra relacionando as VCs ``está ligada'' da lâmpada e ``está ocupado'' do sensor de proximidade
+%   \item Definir um tempo T$_{max}$ para validação da regra
+%   \item Criar um atuador para desligar a lâmpada do quarto e subscrevê-lo à regra
+%  \end{enumerate}
+% \end{enumerate}
+% 
+% Em cada IC:
+% \begin{enumerate}
+%  \item Recebe eventos da lâmpada e do sensor de proximidade
+%  \item Avalia os eventos juntamente com a passagem de tempo
+%  \item Se a regra foi validada, informar subscritores, senão volta a esperar
+% \end{enumerate}
 
-Rotina de criação de tratamento das regras de contexto do SmartLiC:
-\begin{enumerate}
- \item Obter cômodos
- \item Para cada cômodo:
- \begin{enumerate}
-  \item Obter lâmpada e sensor de proximidade
-  \item Compor uma regra relacionando as VCs ``está ligada'' da lâmpada e ``está ocupado'' do sensor de proximidade
-  \item Definir um tempo T$_{max}$ para validação da regra
-  \item Criar um atuador para desligar a lâmpada do quarto e subscrevê-lo à regra
- \end{enumerate}
-\end{enumerate}
+\begin{lstlisting}[caption=Inicialização do SmartLiC, mathescape] 
+    for each place from SLR.getPlaces(): 
+        lampAR = SDR.search(TYPE, Lamp, place)
+        proxAR = SDR.search(TYPE, Proximity, place)
+        ci = ContextInterpreter(lampAR.on $\land$ proxAR.occupied $\land$ T > T$_{max}$)
+        Actuator(lampAR.turnOff).subscribe(ci)
+\end{lstlisting} 
 
-Em cada IC:
-\begin{enumerate}
- \item Recebe eventos da lâmpada e do sensor de proximidade
- \item Avalia os eventos juntamente com a passagem de tempo
- \item Se a regra foi validada, informar subscritores, senão volta a esperar
-\end{enumerate}
-
+\begin{lstlisting}[caption=Inicialização do SmartLiC, mathescape]
+    ContextInterpreter(rule):
+	subscribeTo(getARs(rule))
+	on event received:
+	     validated = evalute(rule)
+	     if validated:
+		  notifyActuators()
+\end{lstlisting} 
 
 %conclusão da avaliação
 A execução do SmartLiC exige um tempo de resposta apurado. Com muitas instancias de lâmpadas este tempo pode aumentar, devido ao esquema de publicação por canais \textit{unicast} relativos a cada uma de suas respectivas ARs. Um problema que pode ser resolvido através de uma disseminação de eventos mais eficiente. Uma proposta estudada é a das Redes Endereçadas Por Interesses (REPI)~\cite{dutra2010repi}, na qual sua utilização permite que o interesse do AR em uma VC seja registrado localmente, as mensagens são identificadas com o interesse e apenas nós da rede que tenham o mesmo as manipulam. 
