@@ -330,12 +330,12 @@ Na versão  SmartAndroid as principais estruturas do jogo da velha são envolvidos
 % \end{lstlisting} 
 
 \begin{lstlisting}[caption=Inicialização do jogo da velha no SmartAndroid]
-List gameList = SDR.search(TYPE, GameAgent) \\Consulta por tipo
-SRR.register(gameAgent) \\Registro do Agente do Jogo (gameAgent)
-if (gameList.size>0): \\Caso haja outros jogadores...
-    for (iGameAgent : gameList): \\Subscrição entre ARs 
-	iGameAgent.subscribe("indica jogada", gameAgent)
-	gameAgent.subscribe("indica jogada", iGameAgent)
+List ARs = SDR.search(TYPE, ARJogo) \\Consulta por tipo
+SRR.register(arJogo) \\Registro do Agente do Jogo
+if (ARs.size>0): \\Caso haja outros jogadores...
+    for (iAR : ARs): \\Subscrição entre ARs 
+	iAR.subscribe("indica jogada", arJogo)
+	arJogo.subscribe("indica jogada", iAR)
 \end{lstlisting} 
 
 \subsection{Aplicação de Controle de Iluminação Residencial}
