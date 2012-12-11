@@ -213,6 +213,7 @@ O Repositório de Recursos, como apresentado na Figura~\ref{fig:repositorio}, pos
 
 \subsection{Modelo de Contexto} \label{subsec-contexto}
 O Modelo de Contexto foi elaborado com o objetivo de tratar a questão da \textit{variedade de informações de contexto e serviços} presentes no AmbI. Neste modelo, o \mbox{\textit{framework}} utiliza uma abordagem flexível, onde o mecanismo de comunicação por eventos (visto na Seção~\ref{subsec-comunicacao}) possibilita que ARs divulguem mudanças de contexto. A informação pode estar em qualquer lugar do AmbI, contudo, é provido um nível de abstração tal que a subscrição ou consulta à qualquer informação de contexto é feita de maneira padronizada. O processo de aquisição do contexto envolve a descoberta do AR de interesse através dos serviços da SGAR, com a posterior subscrição do mesmo. A abordagem adotada é flexível de tal maneira que, caso seja conveniente, pode ser criada uma unidade centralizadora para gerenciar as informações de contexto, segundo uma arquitetura de memória compartilhada do tipo \mbox{\textit{blackboard}} (ou quadro-negro)~\cite{winograd2001architectures}.
+%TODO: Devo falar do JESS e outros motores de regras? Talvez..
 
 \subsubsection{Variáveis de Contexto e Operações} \label{subsubsec:cv}
 %explicar vc
@@ -240,7 +241,7 @@ As questões de segurança, inerentes ao problema, são resolvidas com duas técnica
 %falar de maneira geral da interpretação de contexto, do IC e do atuador
 A interpretação de contexto tem a função de agregar informações de contexto provenientes de diferentes fontes, considerando também a passagem de tempo, e avaliá-las segundo alguma lógica específica. O suporte à interpretação de contexto pelo \mbox{\textit{framework}} possibilita uma separação de interesses, onde os desenvolvedores abstraem a implementação de regras de contexto e focam na lógica da aplicação.
 
-A interpretação do contexto é desempenhada por entidades chamadas \mbox{Interpretadores} de Contexto (IC), que avaliam essas informações e notificam agentes atuadores interessados. Agentes atuadores são quaisquer ARs que se subscrevem em ICs para desempenhar ações, sejam estas ações no nível de software (e.g., guardar no histórico, enviar para um servidor remoto) ou no nível do ambiente, ao se chamar OPs de outros ARs (e.g., mostrar uma mensagem na televisão, disparar o despertador, mudar a temperatura do ar-condicionado). 
+A interpretação do contexto é desempenhada por entidades chamadas \mbox{Interpretadores} de Contexto (IC), que avaliam essas informações e notificam agentes atuadores interessados. Agentes atuadores são quaisquer ARs que se subscrevem em ICs para desempenhar ações; sejam estas ações no nível de software (e.g., guardar no histórico, enviar para um servidor remoto) ou no nível do ambiente, ao se chamar OPs de outros ARs (e.g., mostrar uma mensagem na televisão, disparar o despertador, mudar a temperatura do ar-condicionado). 
 
 %A interpretação de contexto possibilita que diversas informações de contexto, relacionadas através de uma expressão lógica, sejam manipuladas em uma entidade em separado, provendo separação de interesses. O interessado poderá referenciar apenas uma entidade, ao invés de várias, a fim de se obter a informação interpretada.
 
@@ -248,6 +249,7 @@ A interpretação do contexto é desempenhada por entidades chamadas \mbox{Interpre
 Considere a seguinte regra simples: se uma pessoa (que mora sozinha) ligou o fogão, se deitou na cama, e passaram-se 15 minutos, então dispare o alarme do despertador e mostre na televisão a mensagem ``O fogão foi esquecido ligado!''. Este exemplo poderia ser implementando no sistema como representado na Figura~\ref{fig:inpt_cute}. O IC recebe notificações da TV e do fogão com valores atualizados das VCs ``ligado'' e ``em uso'', respectivamente, e resolve internamente a temporização monitorada destas VCs. Uma vez que o IC tenha avaliado a regra como verdadeira durante o tempo de 15 minutos (previamente declarado), ele notifica o atuador ``Lembrar usuário''. O atuador, por sua vez, invoca as OPs ``Mostrar mensagem'' da TV e ``Disparar'' do despertador.
 
 %falar sobre a arquitetura do IC e da sua criação
+%Durante a criação do IC, este deve receber uma regra de contexto. Diferentes trabalhos (olhar o hydrogen e o cobra)
 O IC pode ser encapsulado em um AR, assim estendendo suas funcionalidades. A arquitetura do IC é composta de um módulo que recebe as notificações e atualiza os valores em \mbox{\textit{cache}}; uma estrutura de dados em árvore que não só armazena as referências para as VCs e os valores atualizados, mas também a lógica da regra; um módulo que avalia a árvore a cada atualização de valores; e um módulo que gerencia os temporizadores, controlado pelo módulo de avaliação.
 
 %falar da GUI de composição de regras
@@ -339,16 +341,19 @@ O Código 2 ilustra a inicialização do \mbox{SmartLiC}. A aplicação utiliza o SLR
 %    Actuator(lampAR.turnOff).subscribe(ci)
 %\end{lstlisting} 
 
+% \pagebreak
+
 \begin{lstlisting}[caption=Inicialização do SmartLiC, mathescape] 
-List comodos = SLR.getPlaces();
-for each comodo from comodos: 
-    lampAR = SDR.search(TYPE, Lampada, comodo)
-    proxAR = SDR.search(TYPE, Proximidade, comodo)
-	status = (comodo, lampAR, proxAR);
-	statusList.add(status);
-rule = Lampada.ligada $\land$ $\lnot$(Proximidade.ocupado) $\land$ T > T$_{max}$;		
-IC = InterpretadorDeContexto(statusList, regra);
-%Actuator(Lamp.turnOff).subscribe(ci)
+for each place from SLR.getPlaces(): 
+    lampAR = SDR.search(TYPE, Lamp, place)
+    proxAR = SDR.search(TYPE, Proximity, place)
+    config = (place, lampAR, proxAR)
+    configList.add(config)
+rule = Lamp.on $\land$ $\lnot$(Proximity.occupied) $\land$ T > T$_{max}$
+ci = ContextInterpreter(configList, rule)
+
+for each config from configList(): 
+    Actuator(lamp.turnOff).subscribe(ci.config)
 \end{lstlisting}
 
 Como representado no Código 3, o IC é responsável por avaliar a regra de contexto. Durante a sua criação este recebe a expressão da regra, que contém: a identificação dos ARs, suas respectivas VCs, a relação lógica entre estas VCs, e a ligação com temporizadores. Primeiramente o IC obtém os ARs (com suas VCs) da expressão e subscreve em todos. Ao IC receber um evento, o mesmo reavalia a regra armazenada em sua representação interna (``\mbox{\textit{evaluate}}''). A avaliação considera os temporizadores associados à regra, de tal maneira que a regra continue válida durante todo o tempo de espera, e esta espera deve ser cancelada caso o IC receba um novo evento que venha a invalidar a regra. Uma vez completamente validada, o IC notifica seus atuadores.
@@ -357,20 +362,19 @@ Como representado no Código 3, o IC é responsável por avaliar a regra de context
 %ContextInterpreter(rule):
 %    subscribeTo(getARs(rule))
 %    on event received:
-%	  validated = evalute(rule)
+%	  validated = evaluate(rule)
 %	  if validated:
 %	      notifyActuators()
 %\end{lstlisting} 
 
 \begin{lstlisting}[caption=Interpretador de Contexto, mathescape]
-InterpretadorDeContexto(statusList, regra):
-    subscribeTo(statusList, regra.VCs);\\Subscreve nas VCs dos ARs de cada cômodo
-    on event received (AR, VC, valor):\\Novo valor de um VC de um AR
-	  updateStatus(AR.local, VC, valor);\\Atualiza status do cômodo do AR  
-	  status = getStatus(AR.local);	  
-	  validated = evalute(rule, status.lampada.isOn(), status.proximidade.isOccupied());
+ContextInterpreter(configList, rule):
+    subscribeTo(configList, rule.getVCs()) 
+    on event received (ar, vc, value): 
+	  updateConfig(ar, cv, value)
+	  validated = evaluate(rule, config)
 	  if validated:
-	      notifyActuators()
+	      notifyActuator(config)
 \end{lstlisting} 
 
 %conclusão da avaliação
