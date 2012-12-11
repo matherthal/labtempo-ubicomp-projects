@@ -331,21 +331,44 @@ Dentre os protótipos construídos como prova de conceito, foi criada a Aplicação 
 
 O Código 2 ilustra a inicialização do \mbox{SmartLiC}. A aplicação utiliza o SLR para localizar os cômodos, e obtém a lâmpada e o sensor de proximidade de cada um utilizando a busca do SDR. Com a referência para os ARs (``lampAR'' e ``proxAR'') e o valor T$_{max}$ para temporização, cria-se um IC (``\mbox{\textit{ContextInterpreter}}'') definindo a regra: \emph{lâmpada ligada E o cômodo desocupado POR T$_{max}$ unidades de tempo}. Em reação a esta regra, cria-se um atuador para desligar a lâmpada. A ligação entre um IC e o agente atuador é realizada através do mecanismo padrão de subscrição entre ARs.
 
+%\begin{lstlisting}[caption=Inicialização do SmartLiC, mathescape] 
+%for each place from SLR.getPlaces(): 
+%    lampAR = SDR.search(TYPE, Lamp, place)
+%    proxAR = SDR.search(TYPE, Proximity, place)
+%    ci = ContextInterpreter(lampAR.on $\land$ $\lnot$(proxAR.occupied) $\land$ T > T$_{max}$)
+%    Actuator(lampAR.turnOff).subscribe(ci)
+%\end{lstlisting} 
+
 \begin{lstlisting}[caption=Inicialização do SmartLiC, mathescape] 
-for each place from SLR.getPlaces(): 
-    lampAR = SDR.search(TYPE, Lamp, place)
-    proxAR = SDR.search(TYPE, Proximity, place)
-    ci = ContextInterpreter(lampAR.on $\land$ $\lnot$(proxAR.occupied) $\land$ T > T$_{max}$)
-    Actuator(lampAR.turnOff).subscribe(ci)
-\end{lstlisting} 
+List comodos = SLR.getPlaces();
+for each comodo from comodos: 
+    lampAR = SDR.search(TYPE, Lampada, comodo)
+    proxAR = SDR.search(TYPE, Proximidade, comodo)
+	status = (comodo, lampAR, proxAR);
+	statusList.add(status);
+rule = Lampada.ligada $\land$ $\lnot$(Proximidade.ocupado) $\land$ T > T$_{max}$;		
+IC = InterpretadorDeContexto(statusList, regra);
+%Actuator(Lamp.turnOff).subscribe(ci)
+\end{lstlisting}
 
 Como representado no Código 3, o IC é responsável por avaliar a regra de contexto. Durante a sua criação este recebe a expressão da regra, que contém: a identificação dos ARs, suas respectivas VCs, a relação lógica entre estas VCs, e a ligação com temporizadores. Primeiramente o IC obtém os ARs (com suas VCs) da expressão e subscreve em todos. Ao IC receber um evento, o mesmo reavalia a regra armazenada em sua representação interna (``\mbox{\textit{evaluate}}''). A avaliação considera os temporizadores associados à regra, de tal maneira que a regra continue válida durante todo o tempo de espera, e esta espera deve ser cancelada caso o IC receba um novo evento que venha a invalidar a regra. Uma vez completamente validada, o IC notifica seus atuadores.
 
+%\begin{lstlisting}[caption=Interpretador de Contexto, mathescape]
+%ContextInterpreter(rule):
+%    subscribeTo(getARs(rule))
+%    on event received:
+%	  validated = evalute(rule)
+%	  if validated:
+%	      notifyActuators()
+%\end{lstlisting} 
+
 \begin{lstlisting}[caption=Interpretador de Contexto, mathescape]
-ContextInterpreter(rule):
-    subscribeTo(getARs(rule))
-    on event received:
-	  validated = evalute(rule)
+InterpretadorDeContexto(statusList, regra):
+    subscribeTo(statusList, regra.VCs);\\Subscreve nas VCs dos ARs de cada cômodo
+    on event received (AR, VC, valor):\\Novo valor de um VC de um AR
+	  updateStatus(AR.local, VC, valor);\\Atualiza status do cômodo do AR  
+	  status = getStatus(AR.local);	  
+	  validated = evalute(rule, status.lampada.isOn(), status.proximidade.isOccupied());
 	  if validated:
 	      notifyActuators()
 \end{lstlisting} 
