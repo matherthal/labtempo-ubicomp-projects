@@ -316,25 +316,25 @@ Na versão SmartAndroid as principais estruturas do jogo da velha são encapsulada
 %     }...
 % \end{lstlisting} 
 
-\begin{lstlisting}[caption=Inicialização do jogo da velha no SmartAndroid]
-List ARs = SDR.search(TYPE, ARJogo) \\Consulta por tipo
-SRR.register(arJogo) \\Registro do Agente do Jogo
-if (ARs.size>0): \\Caso haja outros jogadores...
-    for (iAR : ARs): \\Subscrição entre ARs 
+\begin{lstlisting}[caption=Inicialização do jogo da velha no SmartAndroid, mathescape]
+List ARs = SDR.search(TYPE, ARJogo) $\textit{//Consulta por tipo}$
+SRR.register(arJogo) $\textit{//Registro do Agente do Jogo}$
+if (ARs.size>0): $\textit{//Caso haja outros jogadores...}$
+    for each iAR in ARs: $\textit{//Subscrição entre ARs}$
 	iAR.subscribe("indica jogada", arJogo)
 	arJogo.subscribe("indica jogada", iAR)
 \end{lstlisting} 
 
 \subsection{Aplicação de Controle de Iluminação Residencial} \label{subsec-smartlic}
 %descrição da prova de conceito desta implementação
-Dentre os protótipos construídos como prova de conceito, foi criada a Aplicação de Controle de Iluminação Residencial (\textit{\mbox{Smart} \mbox{Light} \mbox{Controller}} -- \mbox{SmartLiC}) com o intuito de promover economia no consumo de energia elétrica reduzindo gastos com iluminação. Através de sensores de presença, identifica-se a presença/ausência de pessoas no cômodo, conforme a pessoa sai de um cômodo e passam-se T$_{max}$ minutos sem que ela volte, então a luz daquele cômodo é desligada. 
+Dentre os protótipos construídos como prova de conceito, foi criada a Aplicação de Controle de Iluminação Residencial (\textit{\mbox{Smart} \mbox{Light} \mbox{Controller}} -- \mbox{SmartLiC}) com o intuito de promover economia no consumo de energia elétrica reduzindo gastos com iluminação. Através de sensores de presença, identifica-se a presença/ausência de pessoas no cômodo, conforme a pessoa sai de um cômodo e passam-se T$_{max}$ unidades de tempo sem que ela volte, então a luz daquele cômodo é desligada. 
 %Em adição, foi especificado também que, se é noite e uma pessoa entrou em um cômodo, então a lâmpada daquele cômodo deve ser ligada -- a possibilidade de bloquear esta função evita ocasionais desconfortos. 
 
 % O Código 2 ilustra a inicialização do \mbox{SmartLiC}. A aplicação utiliza o SLR para localizar os cômodos, e obtém a lâmpada e o sensor de presença de cada um utilizando a busca do SDR. Com a referência para os ARs (``lampAR'' e ``presAR'') e o valor T$_{max}$ para temporização, cria-se um IC (``\mbox{\textit{ContextInterpreter}}'') definindo a regra: \emph{lâmpada ligada E o cômodo desocupado POR T$_{max}$ unidades de tempo}. Em reação a esta regra, cria-se um atuador para desligar a lâmpada. A ligação entre um IC e o agente atuador é realizada através do mecanismo padrão de subscrição entre ARs.
 
 A Figura~\ref{fig:inpt_cute} representa um caso simples de utilização de interpretadores, onde este contém uma regra apenas e as atuações ocorrem em separado, desempenhadas pelos agentes atuadores. A fim de se prover maior flexibilidade para os desenvolvedores, o \textit{framework} possibilita também que a interpretação de contexto seja desenvolvida no nível da aplicação, contudo, aproveitando o mecanismo de comunicação por eventos e a compilação da regra. Note que esta abordagem possibilita a utilização de um motor de regras (e.g., Jess, Drools), se for conveniente. 
 
-O Código 2 ilustra uma possível implementação da interpretação de contexto pela aplicação \mbox{SmartLiC}. Na etapa de inicialização, a aplicação utiliza o SLR para localizar os cômodos, e obter a lâmpada e o sensor de presença de cada um, utilizando a busca do SDR. Com a referência para os ARs (``lampAR'' e ``presAR'') e as ações a serem desempenhadas (desligar a lâmpada referenciada -- ``lampAR.turnOff''). Para evitar a repetição do código da regra, as referências são guardadas em separado da função da regra, na lista de configurações (``configList''). A regra é criada em ``rule'' como: \emph{lâmpada ligada E o cômodo desocupado POR T$_{max}$ unidades de tempo}, desempenhando uma relação lógica entre as diferentes VCs e a temporização da regra. Em seguida, subscreve-se às VCs dos ARs de interesse, começando o processamento da regra.
+O Código 2 ilustra uma possível implementação da interpretação de contexto pela aplicação \mbox{SmartLiC}. Na etapa de inicialização, a aplicação utiliza o SLR para localizar os cômodos, e obter a lâmpada e o sensor de presença de cada um, utilizando a busca do SDR. Com a referência para os ARs (``lampAR'' e ``presAR'') e as ações a serem desempenhadas (desligar a lâmpada referenciada -- ``lampAR.turnOff''). Para evitar a repetição do código da regra, as referências são guardadas em separado da função da regra, na lista de configurações (``configList''). A regra é criada em ``rule'' como: \mbox{\emph{lâmpada ligada E o cômodo desocupado POR T$_{max}$ unidades de tempo}}, desempenhando uma relação lógica entre as diferentes VCs e a temporização da regra. Em seguida, subscreve-se às VCs dos ARs de interesse, começando o processamento da regra.
 
 Na etapa de avaliação, também descrita no Código 2, é definido um bloco de comando para o tratamento das notificações recebidas dos ARs de interesse (lâmpadas e sensores de presença subscritos). Uma vez recebida uma atualização de uma VC de um dos ARS (``ar\_ref''), é obtida a configuração referida, e seu valor em mantido \textit{cache} é atualizado. Segue-se a avaliação da regra (\textit{``evaluate}''), utilizando a configuração obtida, e considerando os temporizadores. A etapa de avaliação é bloqueante no caso da existência de temporizadores associados. A reação, em caso de validade da regra é desempenhada pela invocação das ações (OPs) registradas na configuração.
 
@@ -358,20 +358,20 @@ Na etapa de avaliação, também descrita no Código 2, é definido um bloco de coman
 % \end{lstlisting}
 
 \begin{lstlisting}[caption=Interpretação de Contexto no SmartLiC, mathescape] 
-$\textit{\\Inicialização}$
-placeList = SLR.getPlaces() $\textit{\\Obtém cômodos}$
-for each place from placeList: $\textit{\\Seleciona um cômodo da lista}$
-    lampAR = SDR.search(Lamp, place) $\textit{\\Obtém lâmpada do cômodo}$
-    presAR = SDR.search(Presence, place) $\textit{\\Obtém sensor de presença do cômodo}$
-    configList.add(lampAR, presAR, lampAR.turnOff) $\textit{\\Guarda configuração}$
-rule = Lamp.on $\land$ $\lnot$(Presence.occupied) $\land$ T > T$_{max}$  $\textit{\\Função de regra}$
-subscribeTo(configList.getARs()) $\textit{\\Subscreve às lâmpadas e sensores de presença}$
+$\textit{//Inicialização}$
+placeList = SLR.getPlaces() $\textit{//Obtém cômodos}$
+for each place from placeList: $\textit{//Seleciona um cômodo da lista}$
+    lampAR = SDR.search(Lamp, place) $\textit{//Obtém lâmpada do cômodo}$
+    presAR = SDR.search(Presence, place) $\textit{//Obtém sensor de presença do cômodo}$
+    configList.add(lampAR, presAR, lampAR.turnOff) $\textit{//Guarda configuração}$
+rule = Lamp.on $\land$ $\lnot$(Presence.occupied) $\land$ T > T$_{max}$ $\textit{//Função de regra}$
+subscribeTo(configList) $\textit{//Subscreve às lâmpadas e sensores de presença}$
 
-$\textit{\\Avaliação da regra de contexto}$
-on event received (ar_ref, vc, value): $\textit{\\Quando chega uma notificação}$
-    config = configList(ar_ref, vc) $\textit{\\Obtém configuração}$
-    if (evaluate(rule, config)) then: $\textit{\\Avalia regra com configuração}$
-	invoke(config.getActions()) $\textit{\\Invoca ações}$
+$\textit{//Avaliação da regra de contexto}$
+on event received (ar_ref, vc, value): $\textit{//Quando chega uma notificação}$
+    config = configList(ar_ref, vc) $\textit{//Seleciona a configuração do AR}$
+    if (evaluate(rule, config)) then: $\textit{//Avalia regra com configuração}$
+	invoke(config.getActions()) $\textit{//Invoca ações}$
 \end{lstlisting}
 
 % Como representado no Código 3, o IC é responsável por avaliar a regra de contexto. Durante a sua criação este recebe a expressão da regra, que contém: a identificação dos ARs, suas respectivas VCs, a relação lógica entre estas VCs, e a ligação com temporizadores. Primeiramente o IC obtém os ARs (com suas VCs) da expressão e subscreve em todos. Ao IC receber um evento, o mesmo reavalia a regra armazenada em sua representação interna (``\mbox{\textit{evaluate}}''). A avaliação considera os temporizadores associados à regra, de tal maneira que a regra continue válida durante todo o tempo de espera, e esta espera deve ser cancelada caso o IC receba um novo evento que venha a invalidar a regra. Uma vez completamente validada, o IC notifica seus atuadores.
