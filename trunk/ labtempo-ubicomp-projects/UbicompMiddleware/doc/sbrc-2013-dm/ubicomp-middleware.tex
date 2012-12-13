@@ -161,7 +161,7 @@ O conceito de AR foi definido para padronizar os componentes de interação do amb
 \end{figure}
 
 %30 - descrever as portas de interação (VC e operações) do AR 
-A lista de interessados de um AR é uma estrutura de suporte ao mecanismo de comunicação por eventos apresentado na Seção~\ref{subsec-comunicacao}. O Modelo de Contexto (ver Seção~\ref{subsec-contexto}) se beneficia deste mecanismo, dado que as mudanças no contexto do AR são publicadas como eventos para outros ARs.
+A lista de interessados de um AR é uma estrutura de suporte ao mecanismo de comunicação por eventos apresentado na Seção~\ref{subsec-comunicacao}. O Modelo de Contexto (ver Seção~\ref{subsec-contexto}) se beneficia deste mecanismo, dado que as mudanças no contexto de uma instância de AR são publicadas como eventos para outras.
 
 % Na definição deste modelo é visto que um AR armazena o seu estado por meio de seus atributos declarados e os expõe através da criação de Variáveis de Contexto (VC); as mudanças nas VCs podem ser provocadas por Operações (OP). Do ponto de vista do mecanismo de comunicação utilizado, as VCs são as portas de saída que geram os eventos de informação, e as OPs são as portas de entrada de comandos que ativam estes eventos.
 
@@ -204,7 +204,7 @@ O SGAR é o responsável por gerenciar o conjunto de ARs no AmbI. O controle de re
 %\end{figure}
 
 %32 - descrever estrutura de repositorio 
-O Repositório de Recursos, como apresentado na Figura~\ref{fig:repositorio}, possui o Diretório de Recursos e o Mapa, o qual contém representado o conjunto de espaços físicos do AmbI. O Diretório contém os nomes das instâncias de AR existentes no ambiente, armazenados conforme seus respectivos tipos. No caso da figura há o tipo TV com a ``tvFamília'' e o tipo \mbox{\textit{tablet}} com o ``iPad'' e o ``Galaxy''. Os dados consistem do nome, tipo, localização e a referência de acesso. A referência de acesso permite a interação de instâncias de ARs através do RPC (Seção~\ref{subsec-comunicacao}). Cada espaço do Mapa possui uma área e um nome. No caso de uma \mbox{\textit{smart home}} os cômodos da casa representam estes espaços. Cada entrada do Mapa referencia o conjunto de ARs contidos no respectivo espaço. ARs representado dispositivos com mobilidade têm suas referências atualizadas dinamicamente.
+O Repositório de Recursos, como apresentado na Figura~\ref{fig:repositorio}, possui o Diretório de Recursos e o Mapa, o qual contém representado o conjunto de espaços físicos do AmbI. O Diretório contém os nomes das instâncias de AR existentes no ambiente, armazenados conforme seus respectivos tipos. No caso da figura há o tipo TV com a ``tvFamília'' e o tipo \mbox{\textit{tablet}} com o ``iPad'' e o ``Galaxy''. Os dados consistem do nome, tipo, localização e a referência de acesso. A referência de acesso permite a interação de instâncias de ARs através do RPC (ver Seção~\ref{subsec-comunicacao}). Cada espaço do Mapa possui uma área e um nome. No caso de uma \mbox{\textit{smart home}} os cômodos da casa representam estes espaços. Cada entrada do Mapa referencia o conjunto de ARs contidos no respectivo espaço. ARs representado dispositivos com mobilidade têm suas referências atualizadas dinamicamente.
 
 \begin{figure}[ht]
   \centering
