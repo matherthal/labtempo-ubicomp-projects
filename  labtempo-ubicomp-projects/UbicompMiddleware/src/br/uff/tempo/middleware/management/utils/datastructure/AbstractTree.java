@@ -14,14 +14,26 @@ import java.util.NoSuchElementException;
 //   http://www.pads.uwaterloo.ca/Bruno.Preiss/books/opus5/programs/pgm09_12.txt
 //
 public abstract class AbstractTree extends AbstractContainer implements Tree {
+	
 	public void breadthFirstTraversal(Visitor visitor) {
+		bft(visitor, true);
+	}
+
+	public void breadthFirstTraversal_NodeVisiting(Visitor visitor) {
+		bft(visitor, false);
+	}
+	
+	private void bft(Visitor visitor, boolean visitKey) {
 		Queue queue = new QueueAsLinkedList();
 		if (!isEmpty())
 			queue.enqueue(this);
 		while (!queue.isEmpty() && !visitor.isDone()) {
 			Tree head = (Tree) queue.dequeue();
 			try {
-				visitor.visit(head.getKey());
+				if (visitKey)
+					visitor.visit(head.getKey());
+				else
+					visitor.visit(head);
 				for (int i = 0; i < head.getDegree(); ++i) {
 					Tree child = head.getSubtree(i);
 					if (!child.isEmpty())
@@ -30,9 +42,9 @@ public abstract class AbstractTree extends AbstractContainer implements Tree {
 			} catch (InvalidOperationException e) {
 				e.printStackTrace();
 			}
-		}
+		}		
 	}
-
+	
 	public void depthFirstTraversal(PrePostVisitor visitor) {
 		if (visitor.isDone())
 			return;
