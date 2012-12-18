@@ -82,6 +82,8 @@ public class Predicate extends Formula {
 			else
 				this.valid = false;
 		}
+		// Make the node's key be the value of valid, 
+		// thus the visiting is able to easily get the node's value
 		this.key = valid ? "1" : "0";
 		return isValid();
 	}
@@ -127,6 +129,7 @@ public class Predicate extends Formula {
 	 */
 	public void setValid(boolean valid) {
 		this.valid = valid;
+		this.key = valid;
 	}
 
 	/**
