@@ -2,12 +2,16 @@ package br.uff.tempo.middleware.management;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import net.sourceforge.jeval.EvaluationException;
+import net.sourceforge.jeval.Evaluator;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -18,6 +22,7 @@ import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.utils.datastructure.PrePostVisitor;
+import br.uff.tempo.middleware.management.utils.datastructure.Visitor;
 
 public class RuleInterpreter extends ResourceAgent {
 
@@ -43,6 +48,7 @@ public class RuleInterpreter extends ResourceAgent {
 	private Formula pNode;
 	private int i_debug = 0;
 	private String formulaStr = "";
+	private Evaluator evaluator = new Evaluator();
 
 	public RuleInterpreter(String name, String rans) {
 		super(name, "br.uff.tempo.middleware.management.RuleInterpreter", rans);
@@ -61,11 +67,18 @@ public class RuleInterpreter extends ResourceAgent {
 //		formula.attachFormula(new Predicate(new Operand(3), Operator.Equal, new Operand(3), 0));
 		//FIXME : test visitor
 //		formula.breadthFirstTraversal(new ExprComposerVisitor());
-		ExprComposerVisitor v = new ExprComposerVisitor();
-		formula.depthFirstTraversal(v);
-		Log.i(TAG, "EXPRESSION: " + v.getExpression());
+//		ExprComposerVisitor v = new ExprComposerVisitor();
+//		formula.depthFirstTraversal(v);
+//		Log.i(TAG, "EXPRESSION: " + v.getExpression());
 	}
 
+//	private void updateFormula(Formula formula) {
+//		if (formula instanceof Predicate)
+//			((Predicate) formula).evaluate();
+//		else if (formula instanceof Formula)
+//			formula.getSubtree(i)
+//	}
+	
 	private void parseExpression(String expr) throws Exception {
 		JSONObject intp = new JSONObject(expr).getJSONObject("interpreter");
 
@@ -312,6 +325,14 @@ public class RuleInterpreter extends ResourceAgent {
 		// timerStop();
 		return valid;
 	}
+	
+	public boolean evaluate() throws EvaluationException {
+		ExprComposerVisitor v = new ExprComposerVisitor();
+		formula.depthFirstTraversal(v);
+		Log.i(TAG, "EXPRESSION: " + v.getExpression());
+		// If the evaluator.evaluate return "0.0" then it is false, if it returns "1.0" then it's true 
+		return evaluator.evaluate(v.getExpression()).equals("1.0") ? true : false;
+	}
 
 	private void notifyActionPerformers() {
 		notifyStakeholders(RULE_TRIGGERED, true);
@@ -321,54 +342,69 @@ public class RuleInterpreter extends ResourceAgent {
 	public void notificationHandler(String rai, String method, Object value) {
 		Log.i(TAG, "Notification received");
 
-		for (Predicate cn : cNSet) {
-			// If the change comes from the correct agent AND the context
-			// variable (method) is the same AND the value is different,
-			// then evaluate
-			Operand op = cn.getOp1();
-			if (op.getRai().equals(rai) && op.getCv().equals(method)) {
-				boolean prevValid = cn.isValid();
+		//TODO: LOCK THIS CALL
+		UpdateFormulaVisitor v = new UpdateFormulaVisitor(rai, method, value);
+		formula.breadthFirstTraversal_NodeVisiting(v);
 
-				op.setValue(value);
-				// The expression only will be evaluated if the current
-				// validation of the rule and the context variable are false.
-				// Otherwise it will be assumed that the expression didn't came
-				// from a change. This avoids the problem of overflow the system
-				// with messages while the rule keeps with valid value as true
-				// Log.i("EVALUATE CN ", cn.getRai());
-				// if (cn.evaluate()) {
-				// Log.i("EVALUATE CN ", "TRUE");
-				// If the node contains a timer and it's validation has
-				// changed from false to true, reset timer
-				// if (cn.getTimeout() > 0 && !prevValid) {
-				// Log.i("RuleInterpreter", "Timer reset!");
-				// timerReset();
-				// }
-
-				valid = evaluateExpr();
-
-				if (valid) {
-					if (timeout <= 0) {
-						notifyActionPerformers();
-					} else {
-						if (!prevValid) {
-							// It means that the rule wasn't correct,
-							// but now it's
-							Log.i("RuleInterpreter", "Timer start!");
-							timerReset();
-						}
-						// If the rule correctness didn't change
-						// do nothing
-					}
-				} else {
-					// If the evaluation of the context variable returns
-					// false, the timer (if it exists) must be stopped
-					// if (cn.getTimeout() > 0)
-					timerStop();
-				}
-
+		//Evaluate and notify
+		if (v.hasChanged())
+			try {
+				if (evaluate())
+					notifyActionPerformers();
+			} catch (EvaluationException e) {
+				Log.e("Error in evaluation", e.toString());
+				e.printStackTrace();
 			}
-		}
+		
+		
+//		for (Predicate cn : cNSet) {
+//			// If the change comes from the correct agent AND the context
+//			// variable (method) is the same AND the value is different,
+//			// then evaluate
+//			Operand op = cn.getOp1();
+//			if (op.getRai().equals(rai) && op.getCv().equals(method)) {
+//				boolean prevValid = cn.isValid();
+//
+//				op.setValue(value);
+//				// The expression only will be evaluated if the current
+//				// validation of the rule and the context variable are false.
+//				// Otherwise it will be assumed that the expression didn't came
+//				// from a change. This avoids the problem of overflow the system
+//				// with messages while the rule keeps with valid value as true
+//				// Log.i("EVALUATE CN ", cn.getRai());
+//				// if (cn.evaluate()) {
+//				// Log.i("EVALUATE CN ", "TRUE");
+//				// If the node contains a timer and it's validation has
+//				// changed from false to true, reset timer
+//				// if (cn.getTimeout() > 0 && !prevValid) {
+//				// Log.i("RuleInterpreter", "Timer reset!");
+//				// timerReset();
+//				// }
+//
+//				valid = evaluateExpr();
+//
+//				if (valid) {
+//					if (timeout <= 0) {
+//						notifyActionPerformers();
+//					} else {
+//						if (!prevValid) {
+//							// It means that the rule wasn't correct,
+//							// but now it's
+//							Log.i("RuleInterpreter", "Timer start!");
+//							timerReset();
+//						}
+//						// If the rule correctness didn't change
+//						// do nothing
+//					}
+//				} else {
+//					// If the evaluation of the context variable returns
+//					// false, the timer (if it exists) must be stopped
+//					// if (cn.getTimeout() > 0)
+//					timerStop();
+//				}
+//
+//			}
+//		}
 	}
 
 	private void timerReset() {
@@ -402,24 +438,7 @@ public class RuleInterpreter extends ResourceAgent {
 	}
 
 	/**
-	 * A visitor that composes de logical expression.
-	 **/
-//	private static class ExprComposerVisitor extends AbstractVisitor {
-//		private final static String TAG = "ExprComposerVisitor";
-//		private String expression = ""; 
-//		
-//		public void visit(Object object) {
-//			Log.i(TAG, object.toString());
-//			expression.concat(object.toString());
-//		}
-//		
-//		public void finish() {
-//			Log.i(TAG, "Finish");
-//		}
-//	}
-
-	/**
-	 * A visitor that composes de logical expression.
+	 * A visitor that composes de logical expression out of the tree
 	 **/
 	public static class ExprComposerVisitor implements PrePostVisitor {
 		private final static String TAG = "ExprComposerVisitor";
@@ -427,7 +446,7 @@ public class RuleInterpreter extends ResourceAgent {
 
 		@Override
 		public void preVisit(Object object) {
-			Log.i(TAG, "visit: " + object.toString());
+//			Log.i(TAG, "visit: " + object.toString());
 			//expression = expression + "( " + object.toString();
 			String s = object.toString();
 			if (s.equals("f")) s = "(";
@@ -436,7 +455,7 @@ public class RuleInterpreter extends ResourceAgent {
 
 		@Override
 		public void inVisit(Object object) {
-			Log.i(TAG, "inVisit: " +object.toString());
+//			Log.i(TAG, "inVisit: " +object.toString());
 			// this.expression.concat(object.toString());
 		}
 
@@ -453,6 +472,56 @@ public class RuleInterpreter extends ResourceAgent {
 		
 		public String getExpression() {
 			return expression;
+		}
+	}
+
+	/**
+	 * 
+	 **/
+	public static class UpdateFormulaVisitor implements Visitor {
+		private final static String TAG = "UpdateFormulaVisitor";
+		private String rai;
+		private String method;
+		private Object value;
+		private Boolean changed = null;
+		
+		public UpdateFormulaVisitor(String rai, String method, Object value) {
+			super();
+			this.rai = rai;
+			this.method = method;
+			this.value = value;
+		}
+		
+		@Override
+		public void visit(Object object) {
+			// Visit Predicates only
+			if (!(object instanceof Predicate))
+				return;
+			Predicate pred = (Predicate) object;
+			// Update first Operand
+			updateOperand(pred.getOp1());
+			// Update second Operand
+			updateOperand(pred.getOp2());
+		}
+		
+		public boolean hasChanged() {
+			return changed;
+		}
+		
+		private void updateOperand(Operand op) {
+			if (op.getRai().equals(rai) && op.getCv().equals(method)) {
+				if (op.getVal().equals(value))
+					changed = false;
+				else {
+					op.setValue(value);
+					changed = true;
+				}
+			}
+		}
+
+		@Override
+		public boolean isDone() {
+			return false;
 		}
 	}
 }
