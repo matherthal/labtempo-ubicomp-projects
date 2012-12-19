@@ -22,7 +22,7 @@ import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.utils.ResourceAgentIdentifier;
 
 public class SmartAndroid {
-	
+	//Cabeça de nóis tudo
 	private static String defaultMyIp = "127.0.0.1";
 	private static String myIp = defaultMyIp;
 	private static int myLocalPrefix = 0;
