@@ -10,22 +10,40 @@ import android.util.Log;
 public class ResourceDirectory {
 	private static final String TAG = ResourceDirectory.class.getSimpleName();
 	
+	public static final String GENERAL_DOMAIN = "general";
 	Type directory;
+	
+	Type currentDomain;
+	
+	Map<String, Type> domainList;
 	
 	Map<String,String> pathList;//Map type easy the create type process
 	
 	private static ResourceDirectory instance;
 	
 	private ResourceDirectory() {
+		domainList = new HashMap<String, Type>();
 		pathList = new HashMap<String,String>();
 		directory = new Type("//");
 		pathList.put(directory.getName(),directory.getName());
+		domainList.put(GENERAL_DOMAIN, directory);
+		currentDomain = directory;
 	}
 	
+
 	public static synchronized ResourceDirectory getInstance() {
 		if (instance == null)
 			return instance = new ResourceDirectory();
 		return instance;
+	}
+	
+	public void setDomain(String domain) {
+		currentDomain = domainList.get(domain);
+	}
+
+	public void createDomain(String domain)
+	{
+		domainList.put(domain, new Type("//"));
 	}
 	
 	/**
@@ -34,9 +52,9 @@ public class ResourceDirectory {
 	 */
 	public void create(ResourceData resource) {
 		ArrayList<String> list = new ArrayList<String>();
-		list.add(directory.getName());
+		list.add(currentDomain.getName());
 		list.addAll(extractType(resource.getType()));		
-		Type typeBase = directory;
+		Type typeBase = currentDomain;
 		int i = 0;
 		if (list != null){
 			if (typeBase == null){
@@ -107,7 +125,7 @@ public class ResourceDirectory {
 	
 	private List<ResourceData> getByRai(String query) {
 		Log.d(TAG, "getByRai");
-		return raiTreeSearch(query, directory);
+		return raiTreeSearch(query, currentDomain);
 	}
 
 	private List<ResourceData> raiTreeSearch(String rai, Type type) {
@@ -159,19 +177,19 @@ public class ResourceDirectory {
 	private List<ResourceData> searchByType(String query) {
 		Log.d(TAG, "searchByType");
 		if (query.equals("")){
-			return getResources(directory);
+			return getResources(currentDomain);
 		} 
 		String path = pathList.get(query);
 		if (path != null && path != "//"){
 			String[] list = path.split("/");
-			Type typeTemp = directory;
+			Type typeTemp = currentDomain;
 			for (String strPath : list) {
 				Type typeSubTemp = this.search(strPath,typeTemp.getSubTypeList());
 				typeTemp = typeSubTemp;
 			}
 			return typeTemp.resources;
 		}
-		return typeTreeSearch(query, directory);	
+		return typeTreeSearch(query, currentDomain);	
 	}
 
 	private List<ResourceData> typeTreeSearch(String query, Type type) {
@@ -202,7 +220,7 @@ public class ResourceDirectory {
 
 	private List<ResourceData> searchByName(String query) {
 		Log.d(TAG, "searchByName");
-		return nameTreeSearch(query,directory);
+		return nameTreeSearch(query,currentDomain);
 	}
 
 	private List<ResourceData> nameTreeSearch(String query, Type type) {
