@@ -34,11 +34,13 @@ public class ResourceSecurity extends ResourceAgent implements IResourceSecurity
 	public void copy(ResourceData resource, String domain){
 		resDirectory.setDomain(domain);
 		resDirectory.create(resource);
+		resDirectory.setDomain(ResourceDirectory.GENERAL_DOMAIN);
 	}
 	
 	public void delete(ResourceData resource, String domain){
 		resDirectory.setDomain(domain);
 		resDirectory.delete(resource);
+		resDirectory.setDomain(ResourceDirectory.GENERAL_DOMAIN);
 	}
 	
 	public void move(ResourceData resource, String sourceDomain, String newDomain){
