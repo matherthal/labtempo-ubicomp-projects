@@ -101,7 +101,7 @@ public class SmartAndroid {
 						}
 					});
 				} catch (Exception e) {
-					e.printStackTrace();
+					throw new SmartAndroidRuntimeException("Exception informing ResourceDiscovery prefix. Impossible to initialize communication in others devices.", e);
 				}
 			}
 		} else {
