@@ -12,6 +12,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -140,15 +141,15 @@ public class LogViewerActivity extends ListActivity {
 			try {
 				logprocess = Runtime.getRuntime().exec(LOGCAT_CMD);
 			} catch (IOException e) {
-				e.printStackTrace();
-
+				Log.e("SmartAndroid", String.format("Exception in LogReaderTask doInBackground: %s", e));
+				
 				isRunning = false;
 			}
 
 			try {
 				reader = new BufferedReader(new InputStreamReader(logprocess.getInputStream()), BUFFER_SIZE);
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
+				Log.e("SmartAndroid", String.format("Exception in LogReaderTask doInBackground: %s", e));
 
 				isRunning = false;
 			}
@@ -162,7 +163,7 @@ public class LogViewerActivity extends ListActivity {
 					publishProgress(line);
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				Log.e("SmartAndroid", String.format("Exception in LogReaderTask doInBackground: %s", e));
 
 				isRunning = false;
 			}
