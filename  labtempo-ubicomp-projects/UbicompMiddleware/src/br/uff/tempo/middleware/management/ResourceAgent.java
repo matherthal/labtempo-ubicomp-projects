@@ -15,6 +15,7 @@ import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.comm.common.InterestAPI;
 import br.uff.tempo.middleware.comm.interest.api.InterestAPIImpl;
 import br.uff.tempo.middleware.comm.interest.api.JSONRPCCallback;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
@@ -281,7 +282,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 				ia.registerInterest(this.rans);
 				ia.registerInterest(this.rans, "jsonrpc", new JSONRPCCallback());
 			} catch (Exception e) {
-				e.printStackTrace();
+				throw new SmartAndroidRuntimeException("Exception in registerDefaultInterests", e);
 			}			
 		}
 	}
