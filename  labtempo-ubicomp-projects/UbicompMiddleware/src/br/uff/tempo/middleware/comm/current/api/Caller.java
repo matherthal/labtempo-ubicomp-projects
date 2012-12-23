@@ -50,11 +50,9 @@ public class Caller implements Serializable {
 			
 			return result;
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-			Log.e("Caller", "IllegalArgumentException: " + e.getMessage());
+			Log.e("SmartAndroid", String.format("Exception in Caller sendMessage: %s", e));
 		} catch (Exception e) {
-			e.printStackTrace();
-			Log.e("Caller", "Exception: " + e.getMessage());
+			Log.e("SmartAndroid", String.format("Exception in Caller sendMessage: %s", e));
 		}
 		return "error";
 	}
