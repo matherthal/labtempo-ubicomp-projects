@@ -43,12 +43,9 @@ public class Operand<rai, cv, params> {
 	}
 
 	public Object getVal() {
-		// If the operand has only a constant value
-		if (this.rai == null)
-			return this.value;
-
-		// If the operand has not yet updated its value, do it before the answer
-		if (this.value == null) {
+		// If the operand is not constant and has not yet updated its value,
+		// do it before the answer
+		if (!this.cte && this.value == null) {
 			Stub s = new Stub(rai);
 			this.value = s.makeCall(cv, params, Object.class);
 		}
@@ -108,12 +105,13 @@ public class Operand<rai, cv, params> {
 	}
 
 	/**
-	 * @param value the value to set
+	 * @param value
+	 *            the value to set
 	 */
 	public void setValue(Object value) {
 		this.value = value;
 	}
-	
+
 	public boolean isConstant() {
 		return cte;
 	}
