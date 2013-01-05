@@ -16,6 +16,7 @@ public class Operand<rai, cv, params> {
 	private List<Tuple<String, Object>> params = null;
 	// valueCache is the cache of value retrieved from the cv_op1 access
 	private Object value = null;
+	private boolean cte = false;
 
 	public Operand(String rai, String cv, Object[] params) {
 		this.rai = rai;
@@ -29,6 +30,7 @@ public class Operand<rai, cv, params> {
 				i++;
 			}
 		}
+		this.cte = false;
 	}
 
 	public Operand(Object constVal) {
@@ -37,6 +39,7 @@ public class Operand<rai, cv, params> {
 		this.rai = null;
 		this.cv = null;
 		this.params = null;
+		this.cte = true;
 	}
 
 	public Object getVal() {
@@ -109,5 +112,9 @@ public class Operand<rai, cv, params> {
 	 */
 	public void setValue(Object value) {
 		this.value = value;
+	}
+	
+	public boolean isConstant() {
+		return cte;
 	}
 }
