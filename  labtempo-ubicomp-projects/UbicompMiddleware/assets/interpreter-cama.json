@@ -1,0 +1,14 @@
+{
+"interpreter": {
+	"name": "Stove pre warming",
+	"priority": 3,
+	"formula": [
+		{"predicate": [
+			{"context_elem": {
+				"rai": "cama",
+				"elem": "occupied"
+			}}
+		]}
+	]
+}
+}
