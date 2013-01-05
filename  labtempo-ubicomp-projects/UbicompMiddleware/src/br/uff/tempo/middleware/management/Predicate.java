@@ -60,27 +60,32 @@ public class Predicate extends Formula {
 
 	public boolean evaluate() {
 		Object v1 = this.op1.getVal();
-		Object v2 = this.op2.getVal();
+		// If there are only one value, then it must be a boolean one
+		if (this.op2 == null) {
+			this.valid = (Boolean) v1;
+		} else {
+			Object v2 = this.op2.getVal();
 
-		// Parse value to attribute's type. Ex., if it is boolean, so we parse
-		// the value to boolean before compare
-		if (operator.equals(Operator.Equal)) // Operator ==
-			this.valid = v1.equals(v2);
-		else if (operator.equals(Operator.Different)) // Operator !=
-			this.valid = !v1.equals(v2);
-		else {
-			double d_v2 = Double.parseDouble(v2.toString());
-			double d_v1 = Double.parseDouble(v1.toString());
-			if (operator.equals(Operator.GreaterThan))
-				this.valid = d_v1 > d_v2;
-			else if (operator.equals(Operator.GreaterThanOrEqual))
-				this.valid = d_v1 >= d_v2;
-			else if (operator.equals(Operator.LessThan))
-				this.valid = d_v1 < d_v2;
-			else if (operator.equals(Operator.LessThanOrEqual))
-				this.valid = d_v1 <= d_v2;
-			else
-				this.valid = false;
+			// Parse value to attribute's type. Ex., if it is boolean, so we parse
+			// the value to boolean before compare
+			if (operator.equals(Operator.Equal)) // Operator ==
+				this.valid = v1.equals(v2);
+			else if (operator.equals(Operator.Different)) // Operator !=
+				this.valid = !v1.equals(v2);
+			else {
+				double d_v2 = Double.parseDouble(v2.toString());
+				double d_v1 = Double.parseDouble(v1.toString());
+				if (operator.equals(Operator.GreaterThan))
+					this.valid = d_v1 > d_v2;
+				else if (operator.equals(Operator.GreaterThanOrEqual))
+					this.valid = d_v1 >= d_v2;
+				else if (operator.equals(Operator.LessThan))
+					this.valid = d_v1 < d_v2;
+				else if (operator.equals(Operator.LessThanOrEqual))
+					this.valid = d_v1 <= d_v2;
+				else
+					this.valid = false;
+			}
 		}
 		// Make the node's key be the value of valid, 
 		// thus the visiting is able to easily get the node's value
