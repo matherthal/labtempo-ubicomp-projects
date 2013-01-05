@@ -26,7 +26,9 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceAgent.ResourceBinder;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.RuleInterpreter;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.utils.datastructure.AbstractVisitor;
 import br.uff.tempo.middleware.resources.Bed;
@@ -35,8 +37,10 @@ import br.uff.tempo.middleware.resources.Generic;
 import br.uff.tempo.middleware.resources.Rule;
 import br.uff.tempo.middleware.resources.Stove;
 import br.uff.tempo.middleware.resources.Television;
+import br.uff.tempo.middleware.resources.interfaces.IBed;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 import br.uff.tempo.middleware.resources.interfaces.ITelevision;
+import br.uff.tempo.middleware.resources.stubs.BedStub;
 import br.uff.tempo.middleware.resources.stubs.StoveStub;
 import br.uff.tempo.middleware.resources.stubs.TelevisionStub;
 
@@ -55,11 +59,24 @@ public class RuleActivity extends Activity {
 
 		if (savedInstanceState == null) {
 			Toast.makeText(this, "Regra Inicializada", Toast.LENGTH_SHORT).show();
+			
+			//Teste subscrição
+			discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
+			String raiB = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Bed.class)).get(0).getRai();
+			IResourceAgent ra = new ResourceAgentStub(raiB);
+			new Generic("SubscTest", "SubscTest", ra, "occupied") {
+				private static final String TAG = "SubscTest";
+				
+				@Override
+				public void notificationHandler(String rai, String method, Object value) {
+					Log.i(this.TAG, "SUBSCRIÇÃO FUNCIONOU!!!");
+				}
+			};
 
 			RuleInterpreter ri = new RuleInterpreter("RegraFogaoEsquecido", "RegraFogaoEsquecido");
 			BufferedReader in = null;
 			try {
-				in = new BufferedReader(new InputStreamReader(this.getAssets().open("interpreter.json")));
+				in = new BufferedReader(new InputStreamReader(this.getAssets().open("interpreter-cama.json")));
 
 				String line;
 				StringBuilder buffer = new StringBuilder();
@@ -67,6 +84,7 @@ public class RuleActivity extends Activity {
 					buffer.append(line).append('\n');
 
 				ri.setExpression(buffer.toString());
+				ri.identify();
 			} catch (IOException e) {
 				e.printStackTrace();
 			} catch (Exception e) {
@@ -78,6 +96,35 @@ public class RuleActivity extends Activity {
 					e.printStackTrace();
 				}
 			}
+			
+			new Generic("Stove Urgency Action", "Stove Urgency Action", (IResourceAgent) ri, RuleInterpreter.RULE_TRIGGERED) {
+				private static final long serialVersionUID = 1L;
+				private static final String TAG = "Action Stove";
+				private int counter = 0;
+
+////				String tvRai = discovery.search("Television").get(0);
+//				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Television.class)).get(0).getRai();
+////				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Television.class)).get(0).getName();
+//				private ITelevision tv = new TelevisionStub(tvRai);
+
+				@Override
+				public void notificationHandler(String rai, String method, Object value) {
+					Log.i(TAG, "Mostrou mensagem na televisão: Temp fogão > 50");
+					Log.i(TAG, "CHANGE: " + rai + " " + method + " " + value);
+//					Message msg = mHandler.obtainMessage();
+//					msg.obj = counter++;
+//					mHandler.sendMessage(msg);
+//					mHandler.post(mUpdateResults);
+//
+//					RuleActivity.this.runOnUiThread(new Runnable() {
+//
+//						@Override
+//						public void run() {
+//							tv.showMessage("Temp fogao > 50");
+//						}
+//					});
+				}
+			};
 			
 			// FIXME
 			if (1 != 2)
@@ -142,34 +189,34 @@ public class RuleActivity extends Activity {
 			// // FIXME: DEBUG
 			// test.context = this;
 
-			new Generic("Stove Urgency Action", "Stove Urgency Action", rule,
-					RuleInterpreter.RULE_TRIGGERED) {
-				private static final long serialVersionUID = 1L;
-
-				private int counter = 0;
-
-//				String tvRai = discovery.search("Television").get(0);
-				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Television.class)).get(0).getRai();
-//				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Television.class)).get(0).getName();
-				private ITelevision tv = new TelevisionStub(tvRai);
-
-				@Override
-				public void notificationHandler(String rai, String method, Object value) {
-					Log.i(TAG, "CHANGE: " + rai + " " + method + " " + value);
-					Message msg = mHandler.obtainMessage();
-					msg.obj = counter++;
-					mHandler.sendMessage(msg);
-					mHandler.post(mUpdateResults);
-
-					RuleActivity.this.runOnUiThread(new Runnable() {
-
-						@Override
-						public void run() {
-							tv.showMessage("Alert!");
-						}
-					});
-				}
-			};
+//			new Generic("Stove Urgency Action", "Stove Urgency Action", rule,
+//					RuleInterpreter.RULE_TRIGGERED) {
+//				private static final long serialVersionUID = 1L;
+//
+//				private int counter = 0;
+//
+////				String tvRai = discovery.search("Television").get(0);
+//				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Television.class)).get(0).getRai();
+////				String tvRai = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Television.class)).get(0).getName();
+//				private ITelevision tv = new TelevisionStub(tvRai);
+//
+//				@Override
+//				public void notificationHandler(String rai, String method, Object value) {
+//					Log.i(TAG, "CHANGE: " + rai + " " + method + " " + value);
+//					Message msg = mHandler.obtainMessage();
+//					msg.obj = counter++;
+//					mHandler.sendMessage(msg);
+//					mHandler.post(mUpdateResults);
+//
+//					RuleActivity.this.runOnUiThread(new Runnable() {
+//
+//						@Override
+//						public void run() {
+//							tv.showMessage("Alert!");
+//						}
+//					});
+//				}
+//			};
 
 			// FIXME: DEBUG
 			// Change Stove state
