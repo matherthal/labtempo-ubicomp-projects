@@ -23,6 +23,7 @@ import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.utils.datastructure.PrePostVisitor;
 import br.uff.tempo.middleware.management.utils.datastructure.Visitor;
+import br.uff.tempo.middleware.resources.stubs.LampStub;
 
 public class RuleInterpreter extends ResourceAgent {
 
@@ -123,6 +124,7 @@ public class RuleInterpreter extends ResourceAgent {
 						Log.i(TAG, "PREDICATE: " + val.toString());
 						formulaStr += "p ";
 						Predicate p = getPredicate((JSONArray) val);
+						subscribePredicate(p);
 						subtree.attachFormula(p);
 						pNode = p;
 					} else if (key.equals("timer")) {
@@ -232,6 +234,14 @@ public class RuleInterpreter extends ResourceAgent {
 			return new Predicate(op1, op, op2, 0);
 		else
 			throw new Exception("Wrong parameters in Interpreterr's Predicate: " + jsonPredicate);
+	}
+	
+	private void subscribePredicate(Predicate p) {
+//		new ResourceAgentStub(p.getOp1().getRai()).registerStakeholder(p.getOp1().getCv(), this.getRANS());
+		IResourceAgent ra = new ResourceAgentStub(p.getOp1().getRai());
+		ra.registerStakeholder(p.getOp1().getCv(), this.getRANS());
+		if (p.getOp2() != null)
+			new ResourceAgentStub(p.getOp2().getRai()).registerStakeholder(p.getOp2().getCv(), this.getRANS());
 	}
 
 	private Operator getOperator(String op) throws Exception {
@@ -509,14 +519,15 @@ public class RuleInterpreter extends ResourceAgent {
 		}
 		
 		private void updateOperand(Operand op) {
-			if (op.getRai().equals(rai) && op.getCv().equals(method)) {
-				if (op.getVal().equals(value))
-					changed = false;
-				else {
-					op.setValue(value);
-					changed = true;
+			if (op != null)
+				if (op.getRai().equals(rai) && op.getCv().equals(method)) {
+					if (op.getVal().equals(value))
+						changed = false;
+					else {
+						op.setValue(value);
+						changed = true;
+					}
 				}
-			}
 		}
 
 		@Override
