@@ -241,7 +241,8 @@ public class RuleInterpreter extends ResourceAgent {
 		IResourceAgent ra = new ResourceAgentStub(p.getOp1().getRai());
 		ra.registerStakeholder(p.getOp1().getCv(), this.getRANS());
 		if (p.getOp2() != null)
-			new ResourceAgentStub(p.getOp2().getRai()).registerStakeholder(p.getOp2().getCv(), this.getRANS());
+			if (!p.getOp2().isConstant())
+				new ResourceAgentStub(p.getOp2().getRai()).registerStakeholder(p.getOp2().getCv(), this.getRANS());
 	}
 
 	private Operator getOperator(String op) throws Exception {
@@ -512,6 +513,8 @@ public class RuleInterpreter extends ResourceAgent {
 			updateOperand(pred.getOp1());
 			// Update second Operand
 			updateOperand(pred.getOp2());
+			// Update valid from the predicate
+			pred.evaluate();
 		}
 		
 		public boolean hasChanged() {
