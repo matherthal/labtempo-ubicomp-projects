@@ -39,7 +39,7 @@ public class Predicate extends Formula {
 		this.operator = operator;
 		this.setTimeout(timeout);
 		count = 1;
-		//evaluate();
+		evaluate();
 	}
 
 	/**
