@@ -31,6 +31,8 @@ public class Operand<rai, cv, params> {
 			}
 		}
 		this.cte = false;
+		
+		this.update();
 	}
 
 	public Operand(Object constVal) {
@@ -43,15 +45,18 @@ public class Operand<rai, cv, params> {
 	}
 
 	public Object getVal() {
+		return this.value;
+	}
+
+	public void update() {
 		// If the operand is not constant and has not yet updated its value,
 		// do it before the answer
 		if (!this.cte && this.value == null) {
 			Stub s = new Stub(rai);
 			this.value = s.makeCall(cv, params, Object.class);
 		}
-		return this.value;
 	}
-
+	
 	/**
 	 * @return the rai
 	 */
