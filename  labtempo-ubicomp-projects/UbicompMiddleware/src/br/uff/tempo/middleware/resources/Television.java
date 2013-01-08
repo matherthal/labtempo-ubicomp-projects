@@ -26,7 +26,6 @@ public class Television extends ResourceAgent implements ITelevision {
 	@Override
 	public void showMessage(String text) {
 		this.message = text;
-		
 		notifyStakeholders("showMessage", text);
 	}
 	
@@ -38,65 +37,59 @@ public class Television extends ResourceAgent implements ITelevision {
 	// begin - tv attribute
 	@Override
 	public int getChannel() {
-
 		return channel;
 	}
 
 	@Override
 	public void setChannel(int channel) {
-
 		this.channel = channel;
-		notifyStakeholders("channel", channel);
+		notifyStakeholders("getChannel", channel);
 	}
 
 	@Override
 	public boolean isOn() {
-
 		return on;
 	}
 
 	@Override
 	public void setOn(boolean on) {
-
 		this.on = on;
 		notifyStakeholders("isOn", on);
 	}
 
 	@Override
 	public int getVolume() {
-
 		return volume;
 	}
 
 	@Override
 	public void setVolume(int volume) {
-
 		this.volume = volume;
-		notifyStakeholders("volume", volume);
+		notifyStakeholders("getVolume", volume);
 	}
 
 	@Override
 	public void incChannel() {
-
 		this.channel++;
+		notifyStakeholders("getChannel", channel);
 	}
 
 	@Override
 	public void decChannel() {
-
 		this.channel--;
+		notifyStakeholders("getChannel", channel);
 	}
 
 	@Override
 	public void incVolume(int inc) {
-
 		this.volume++;
+		notifyStakeholders("getVolume", volume);
 	}
 
 	@Override
 	public void decVolume(int dec) {
-
 		this.volume--;
+		notifyStakeholders("getVolume", volume);
 	}
 	// end - tv attribute
 }

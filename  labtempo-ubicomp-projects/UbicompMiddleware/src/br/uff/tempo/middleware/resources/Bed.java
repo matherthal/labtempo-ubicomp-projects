@@ -8,7 +8,7 @@ public class Bed extends ResourceAgent implements IBed {
 	private static final long serialVersionUID = 1L;
 	
 	private Integer numUsers = 0;
-	private boolean hasSomeone;
+	private boolean hasSomeone = false;
 
 	public Bed(String name, String rans) {
 		super(name, "br.uff.tempo.middleware.resources.Bed", rans);
@@ -26,14 +26,12 @@ public class Bed extends ResourceAgent implements IBed {
 	@Override
 	public void lieDown() {
 		this.hasSomeone = true;
-		
 		notifyStakeholders("occupied", true);
 	}
 
 	@Override
 	public void getOut() {
 		this.hasSomeone = true;
-		
 		notifyStakeholders("occupied", false);
 	}
 }
