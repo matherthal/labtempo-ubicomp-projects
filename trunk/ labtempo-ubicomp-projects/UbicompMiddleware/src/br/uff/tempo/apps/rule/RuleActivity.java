@@ -76,7 +76,7 @@ public class RuleActivity extends Activity {
 			RuleInterpreter ri = new RuleInterpreter("RegraFogaoEsquecido", "RegraFogaoEsquecido");
 			BufferedReader in = null;
 			try {
-				in = new BufferedReader(new InputStreamReader(this.getAssets().open("interpreter-cama.json")));
+				in = new BufferedReader(new InputStreamReader(this.getAssets().open("interpreter.json")));
 
 				String line;
 				StringBuilder buffer = new StringBuilder();
