@@ -14,6 +14,7 @@ public class Operand<rai, cv, params> {
 	private String rai = null;
 	private String cv = null;
 	private List<Tuple<String, Object>> params = null;
+	private String paramsStr = "";
 	// valueCache is the cache of value retrieved from the cv_op1 access
 	private Object value = null;
 	private boolean cte = false;
@@ -23,12 +24,12 @@ public class Operand<rai, cv, params> {
 		this.cv = cv;
 		this.params = new ArrayList<Tuple<String, Object>>();
 
-		if (params != null) {
-			int i = 0;
+		if (params != null && params.length != 0) {
 			for (Object o : params) {
 				this.params.add(new Tuple<String, Object>(o.toString(), o.getClass()));
-				i++;
+				paramsStr += ", " + o.getClass().toString() + " " + o.toString();
 			}
+			paramsStr = paramsStr.equals("") ? "" : paramsStr.substring(2, paramsStr.length() - 1);
 		}
 		this.cte = false;
 		
@@ -119,5 +120,10 @@ public class Operand<rai, cv, params> {
 
 	public boolean isConstant() {
 		return cte;
+	}
+	
+	@Override
+	public String toString() {
+		return "Operand " + rai + "." + cv + "(" + paramsStr + ")";
 	}
 }
