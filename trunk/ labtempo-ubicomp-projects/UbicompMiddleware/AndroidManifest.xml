@@ -68,6 +68,13 @@
         <service
             android:name=".middleware.resources.Rule"
             android:enabled="true" />
+        
+        <activity
+            android:name=".apps.rule.Test_SimpleRule_BedOccupied"
+            android:label="@string/rule_creation" />
+        <activity
+            android:name=".apps.rule.Test_Rule_UseOfConectorAnd"
+            android:label="@string/rule_creation" />
         <!-- End Rule -->
 
         <service

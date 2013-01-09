@@ -1,12 +1,5 @@
 package br.uff.tempo.middleware.management;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import br.uff.tempo.middleware.comm.current.api.Tuple;
-import br.uff.tempo.middleware.management.stubs.Stub;
-import br.uff.tempo.middleware.management.utils.datastructure.GeneralTree;
-
 public class Predicate extends Formula {
 	// First operand information
 	private Operand op1 = null;
@@ -55,7 +48,7 @@ public class Predicate extends Formula {
 		this.op1 = op;
 		this.setTimeout(timeout);
 		count = 1;
-		//evaluate();
+		evaluate();
 	}
 
 	public boolean evaluate() {
