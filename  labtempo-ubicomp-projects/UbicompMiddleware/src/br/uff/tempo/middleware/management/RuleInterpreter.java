@@ -124,65 +124,74 @@ public class RuleInterpreter extends ResourceAgent {
 		}
 	}
 
-	private Formula buildTree(JSONArray jsonSubtree) throws Exception {
+	private Formula buildTree(Object jsonSubtree) throws Exception {
 		Formula subtree = new Formula();
-		Object o;
-		for (int i = 0; i < jsonSubtree.length(); i++) {
-			o = jsonSubtree.get(i);
-			if (o.getClass().equals(JSONObject.class)) {
-				// Context, timer clause, not clause and connectives are objects
-				// in JSON
-				JSONObject jobj = (JSONObject) o;
-				Iterator it = jobj.keys();
-				String key = "";
-				Object val = "";
-				while (it.hasNext()) {
-					key = it.next().toString();
-					val = jobj.get(key);
-					if (key.equals("predicate")) {
-						Log.i(TAG, "PREDICATE: " + val.toString());
-						// formulaStr += "p ";
-						Predicate p = getPredicate((JSONArray) val);
-						subscribePredicate(p);
-						subtree.attachFormula(p);
-						pNode = p;
-					} else if (key.equals("timer")) {
-						Log.i(TAG, "TIMER: " + val.toString());
-						// formulaStr = formulaStr.substring(0,
-						// formulaStr.length()-2) + "* ";
-						subtree.setTimeout(getTimerInSec(val.toString()));
-					} else if (key.equals("connective")) {
-						Log.i(TAG, "CONNECTIVE: " + val.toString());
-						if (val.toString().equals("and")) {
-							// formulaStr += "&& ";
-							subtree.setAndClause();
-						} else if (val.toString().equals("or")) {
-							// formulaStr += "|| ";
-							pNode = (Formula) pNode.getFather();
-						}
-					} else if (key.equals("not")) {
-						Log.i(TAG, "NOT CLAUSE: " + val.toString());
-						// formulaStr += "!";
-						Formula f = buildTree((JSONArray) val);
-						f.setNotClause(true);
-						subtree.attachFormula(f);
-						pNode = f;
-					} else if (key.equals("formula")) {
-						Log.i(TAG, "FORMULA: " + val.toString());
-						// formulaStr += "(";
-						subtree.attachFormula(buildTree((JSONArray) val));
-						// formulaStr += ") ";
-						pNode = subtree;
-					} else {
-						Log.e(TAG, "UNKNOWN: " + jobj.get(key).toString());
-						throw new Exception("Unknown object in JSON file: " + o.toString());
-					}
-				}
-			} else {
-				throw new Exception("Unknown object in JSON file: " + o.toString());
-			}
+		if (jsonSubtree.getClass().equals(JSONObject.class))
+			parseJSONObject((JSONObject) jsonSubtree, subtree);
+		else if (jsonSubtree.getClass().equals(JSONArray.class)) {
+			JSONArray array = (JSONArray) jsonSubtree;
+			for (int i = 0; i < array.length(); i++)
+				parseJSONObject((JSONObject) array.get(i), subtree);
+		} else {
+			Log.e(TAG, "Unknown object in JSON file: " + jsonSubtree.toString());
+			throw new Exception("Unknown object in JSON file: " + jsonSubtree.toString());
 		}
 		return subtree;
+	}
+
+	private void parseJSONObject(JSONObject jobj, Formula subtree) throws Exception {
+		// Context, timer clause, not clause and connectives are objects
+		// in JSON
+		Iterator it = jobj.keys();
+		String key = "";
+		Object val = "";
+		while (it.hasNext()) {
+			key = it.next().toString();
+			val = jobj.get(key);
+			if (key.equals("predicate")) {
+				Log.i(TAG, "PREDICATE: " + val.toString());
+				// formulaStr += "p ";
+				Predicate p = getPredicate((JSONArray) val);
+				subscribePredicate(p);
+				subtree.attachFormula(p);
+				pNode = p;
+			} else if (key.equals("timer")) {
+				Log.i(TAG, "TIMER: " + val.toString());
+				// formulaStr = formulaStr.substring(0,
+				// formulaStr.length()-2) + "* ";
+				subtree.setTimeout(getTimerInSec(val.toString()));
+			} else if (key.equals("connective")) {
+				Log.i(TAG, "CONNECTIVE: " + val.toString());
+				if (val.toString().equals("and")) {
+					// formulaStr += "&& ";
+					subtree.setAndClause();
+				} else if (val.toString().equals("or")) {
+					// formulaStr += "|| ";
+					// pNode = (Formula) pNode.getFather();
+					subtree.setOrClause();
+				}
+			} else if (key.equals("not")) {
+				Log.i(TAG, "NOT CLAUSE: " + val.toString());
+				// formulaStr += "!";
+				// Formula f = buildTree((JSONArray) val);
+				// f.setNotClause(true);
+				// subtree.attachFormula(f);
+				// pNode = f;
+				pNode = new NotNode();
+				subtree.attachFormula(pNode);
+				pNode.attachFormula(buildTree(val));
+				pNode = subtree;
+			} else if (key.equals("formula")) {
+				Log.i(TAG, "FORMULA: " + val.toString());
+				// formulaStr += "(";
+				subtree.attachFormula(buildTree((JSONArray) val));
+				// formulaStr += ") ";
+				pNode = subtree;
+			} else {
+				Log.e(TAG, "UNKNOWN: " + jobj.get(key).toString());
+				throw new Exception("Unknown object in JSON file: " + jobj.toString());
+			}
+		}
 	}
 
 	private Predicate getPredicate(JSONArray jsonPredicate) throws Exception {
@@ -256,7 +265,9 @@ public class RuleInterpreter extends ResourceAgent {
 	}
 
 	private void subscribePredicate(Predicate p) {
-		// new ResourceAgentStub(p.getOp1().getRai()).registerStakeholder(p.getOp1().getCv(), this.getRANS());
+		// new
+		// ResourceAgentStub(p.getOp1().getRai()).registerStakeholder(p.getOp1().getCv(),
+		// this.getRANS());
 		IResourceAgent ra = new ResourceAgentStub(p.getOp1().getRai());
 		ra.registerStakeholder(p.getOp1().getCv(), this.getRANS());
 		if (p.getOp2() != null)
@@ -550,15 +561,14 @@ public class RuleInterpreter extends ResourceAgent {
 
 		private void updateOperand(Operand op) {
 			try {
-				if (op != null && !op.isConstant())
-					if (op.getRai().equals(rai) && op.getCv().equals(method)) {
+				if (op != null)
+					if (!op.isConstant() && op.getRai().equals(rai) && op.getCv().equals(method))
 						if (value.equals(op.getVal()))
 							changed = false;
 						else {
 							op.setValue(value);
 							changed = true;
 						}
-					}
 			} catch (Exception e) {
 				Log.e(TAG, "Error in updating operand: " + op.toString() + " Error: " + e);
 			}
