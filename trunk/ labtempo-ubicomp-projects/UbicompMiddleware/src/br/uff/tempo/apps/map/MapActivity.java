@@ -323,6 +323,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			Debug.e(e);
 		}
 		
+		// Side bar to compose Context Rules
 		this.mBar = new RuleComposeBar(this.mCamera, getVertexBufferObjectManager());
 		this.mCamera.setHUD(this.mBar);
 
@@ -365,9 +366,9 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 		// Attach the map layers to the scene (the order is important)
 
-		// background layer (floor)
+		// Background layer (floor)
 		this.mScene.attachChild(this.mapFloorLayer);
-		// wall layer
+		// Wall layer
 		this.mScene.attachChild(this.mapWallLayer);
 
 		// Set the maximum and minimum bounds from Camera
@@ -391,13 +392,6 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		Log.i(TAG, "Create Scene");
 
 		return this.mScene;
-	}
-
-	@Override
-	public synchronized void onPauseGame() {
-		super.onPauseGame();
-
-		Log.i(TAG, "Pause Game");
 	}
 
 	@Override
@@ -828,9 +822,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			houseMap.addPlace(place);
 		}
 
-		if (rl != null) {
-			rl.insertMap(houseMap);
-		}
+		rl.insertMap(houseMap);
 		
 		state.setMapInfo(houseMap);
 	}
