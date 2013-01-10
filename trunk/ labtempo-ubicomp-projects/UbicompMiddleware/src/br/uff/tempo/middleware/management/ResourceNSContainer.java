@@ -47,7 +47,10 @@ public class ResourceNSContainer {
 		
 		if (raNS == null) {
 			raNS = findRANS(rans);
-			container.put(rans, raNS);
+			
+			if (raNS != null) {
+				container.put(rans, raNS);
+			}
 		}
 		return raNS;
 	}
