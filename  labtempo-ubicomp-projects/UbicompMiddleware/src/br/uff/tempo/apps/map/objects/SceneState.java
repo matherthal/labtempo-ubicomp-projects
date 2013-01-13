@@ -58,6 +58,6 @@ public class SceneState implements Serializable {
 	}
 	
 	public void setData(List<RegistryData> data) {
-		this.data = this.data;
+		this.data = (LinkedList<RegistryData>)data;
 	}
 }
