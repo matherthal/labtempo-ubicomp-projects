@@ -1,0 +1,20 @@
+{
+"interpreter": {
+	"name": "Detecta Sala Vazia",
+	"priority": 3,
+	"formula": [
+		{"formula": [
+			{"not":
+				{"predicate": [
+					{"context_elem": {
+						"rai": "_PRESENCE_",
+						"elem": "getPresence"
+					}}
+				]}
+			},
+
+			{"timer": 10}
+		]}
+	]
+}
+}
