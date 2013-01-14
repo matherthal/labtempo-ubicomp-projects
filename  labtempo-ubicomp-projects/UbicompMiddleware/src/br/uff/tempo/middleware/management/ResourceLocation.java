@@ -23,9 +23,13 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	private Space currentSpace;
 
 	private static ResourceLocation instance;
-
+	
+	//<Place name, Area>
 	HashMap<String, Place> map;
+	//<RANS, position>
 	HashMap<String, Position> resources;
+	
+	//<Place name, <RANS, position>>
 	HashMap<String, HashMap<String, Position>> baseIndexer;
 
 	private ResourceLocation() {
@@ -183,35 +187,34 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	}
 
 	public void registerInPlace(String url, Position position) {
-
 		Place place = getLocal(position);
-		HashMap<String, Position> rAMap = baseIndexer.get(place.getName());
-
-		rAMap.put(url, position);
-		resources.put(url, position);
+		
+		registerResource(url,place,position);
 	}
 
-	public void registerInPlaceRelative(String url, Place place,
-			Position position) {
-
-		HashMap<String, Position> rAMap = baseIndexer.get(place.getName());
+	public void registerInPlaceRelative(String url, Place place, Position position) {
 		float x = place.getLower().getX() + position.getX();
 		float y = place.getLower().getY() + position.getY();
 
 		Position rPos = new Position(x, y);
-		rAMap.put(url, rPos);
-		resources.put(url, rPos);
+		
+		registerResource(url, place, rPos);
 	}
 
 	public void registerInPlaceMiddlePos(String url, Place place) {
 		float x = Float.valueOf((place.getLower().getX() + place.getUpper().getX() / 2));
 		float y = Float.valueOf((place.getLower().getY() + place.getUpper().getY() / 2));
 		Position position = new Position(x, y);
+		
+		registerResource(url, place, position);
+	}
+	
+	private void registerResource (String url, Place place, Position position) {
+		//get place entry to register new RA
 		HashMap<String, Position> rAMap = baseIndexer.get(place.getName());
 		rAMap.put(url, position);
 		resources.put(url, position);
 	}
-
 
 	public ArrayList<String> queryByLocal(Position position) {
 		List<Tuple<String, Position>> raList = new ArrayList<Tuple<String, Position>>();
@@ -224,6 +227,13 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 
 		Sorter<Position> sorter = new Sorter<Position>(raList, position);
 		return sorter.sort();
+	}
+	
+	public void updateLocation(ResourceData resource){
+		ResourceDirectory.getInstance().update(resource);
+		registerResource(resource.getRai(), resource.getPlace(), resource.getPosition());
+		//Can be used by IPGAP to update MAP interface
+		notifyStakeholders("updateLocation", resource.getPosition());
 	}
 	
 	@Override
