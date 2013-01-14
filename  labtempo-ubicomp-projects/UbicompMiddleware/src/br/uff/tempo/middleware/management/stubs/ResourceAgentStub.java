@@ -156,4 +156,12 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		makeCall("removeStakeholder", params, void.class);	
 	}
 
+	@Override
+	public void updateLocation(Position position) {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+		params.add(new Tuple<String, Object>(Position.class.getName(), position));
+		
+		makeCall("updateLocation", params, void.class);	
+	}
+
 }

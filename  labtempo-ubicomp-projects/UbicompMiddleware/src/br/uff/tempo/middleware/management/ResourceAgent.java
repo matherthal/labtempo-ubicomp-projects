@@ -17,8 +17,10 @@ import br.uff.tempo.middleware.comm.interest.api.InterestAPIImpl;
 import br.uff.tempo.middleware.comm.interest.api.JSONRPCCallback;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
+import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
@@ -38,6 +40,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	private ArrayList<Stakeholder> stakeholders;
 	
 	private IResourceRegister rrs;
+	private IResourceLocation rls;
 	
 	private Position position;
 
@@ -164,9 +167,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			int prefix = SmartAndroid.getLocalPrefix();
 			
 			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, null);
-			
+			rls = new ResourceLocationStub(IResourceLocation.rans);
 			if (position != null) {
-				resourceData.setPlace(ResourceLocation.getInstance().getLocal(position));
+				resourceData.setPlace(rls.getLocal(position));
 				registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
 			} else {
 				registered = rrs.register(this.rans, ip, prefix, resourceData);
@@ -201,8 +204,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			
 			String ip = SmartAndroid.getLocalIpAddress();
 			int prefix = SmartAndroid.getLocalPrefix();
-			
-			Place place = ResourceLocation.getInstance().getLocal(position);
+			rls = new ResourceLocationStub(IResourceLocation.rans);
+			Place place = rls.getLocal(position);
 			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
 			
 			registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
@@ -223,8 +226,8 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			
 			String ip = SmartAndroid.getLocalIpAddress();
 			int prefix = SmartAndroid.getLocalPrefix();
-			
-			Place place = ResourceLocation.getInstance().getPlace(placeName);
+			rls = new ResourceLocationStub(IResourceLocation.rans);
+			Place place = rls.getPlace(placeName);
 			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
 			
 			registered = rrs.registerInPlace(this.rans, ip, prefix, placeName, this.position, resourceData);
@@ -285,5 +288,11 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 				throw new SmartAndroidRuntimeException("Exception in registerDefaultInterests", e);
 			}			
 		}
+	}
+	@Override
+	public void updateLocation(Position position) {
+		rls = new ResourceLocationStub(IResourceLocation.rans);
+		rls.updateLocation(new ResourceData(this.rans, this.name, this.type, position, rls.getLocal(position)));
+		notifyStakeholders("updateLocation", position);
 	}
 }

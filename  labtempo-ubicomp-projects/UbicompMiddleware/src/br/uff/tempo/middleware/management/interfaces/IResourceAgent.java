@@ -82,4 +82,6 @@ public interface IResourceAgent extends Serializable {
 
 	public void notifyStakeholders(String method, Object value);
 	
+	public void updateLocation(Position position);
+	
 }
