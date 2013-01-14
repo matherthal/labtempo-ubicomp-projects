@@ -1,0 +1,27 @@
+{
+"interpreter": {
+	"name": "Detecta Sala Cheia",
+	"priority": 3,
+	"formula": [
+		{"formula": [
+			{"predicate": [
+				{"context_elem": {
+					"rai": "_PRESENCE_",
+					"elem": "getPresence"
+				}}
+			]},
+
+			{"connective": "and"},
+			
+			{"not": 
+				{"predicate": [
+					{"context_elem": {
+						"rai": "_DAYLIGHT_",
+						"elem": "isDay"
+					}}
+				]}
+			}
+		]}
+	]
+}
+}
