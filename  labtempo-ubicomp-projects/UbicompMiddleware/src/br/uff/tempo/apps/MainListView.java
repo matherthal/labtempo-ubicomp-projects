@@ -1,6 +1,5 @@
 package br.uff.tempo.apps;
 
-
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,6 +18,7 @@ import br.uff.tempo.apps.onOffCounter.copyToTestCommAPI.CounterApp2;
 import br.uff.tempo.apps.onoffsample.OnOffView;
 import br.uff.tempo.apps.reminder.ReminderActivity;
 import br.uff.tempo.apps.rule.RuleActivity;
+import br.uff.tempo.apps.rule.Test_Rule_UseOfConectorAnd;
 import br.uff.tempo.apps.simulators.bed.BedView;
 import br.uff.tempo.apps.simulators.lamp.LampView;
 import br.uff.tempo.apps.simulators.stove.StoveView;
@@ -33,7 +33,7 @@ public class MainListView extends ListActivity {
 	// @Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		SmartAndroid.newInstance();
 
 		// Print devices list
@@ -55,7 +55,8 @@ public class MainListView extends ListActivity {
 
 				// Calling appropriate activity
 				if (item.equals("Regra")) {
-					Intent intent = new Intent(MainListView.this, RuleActivity.class);
+					// Intent intent = new Intent(MainListView.this, RuleActivity.class);
+					Intent intent = new Intent(MainListView.this, Test_Rule_UseOfConectorAnd.class);
 					startActivity(intent);
 				} else if (item.equals("Fogao")) {
 					Intent intent = new Intent(MainListView.this, StoveView.class);
