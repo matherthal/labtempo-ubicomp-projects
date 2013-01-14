@@ -25,5 +25,9 @@ public interface Tree extends Container {
 
 	void depthFirstTraversal(PrePostVisitor visitor);
 
+	void depthFirstTraversal_NodeVisiting(PrePostVisitor visitor);
+
 	void breadthFirstTraversal(Visitor visitor);
+
+	void breadthFirstTraversal_NodeVisiting(Visitor visitor);
 }

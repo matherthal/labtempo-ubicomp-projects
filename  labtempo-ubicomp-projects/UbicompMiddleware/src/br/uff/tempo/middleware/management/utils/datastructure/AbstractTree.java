@@ -14,7 +14,7 @@ import java.util.NoSuchElementException;
 //   http://www.pads.uwaterloo.ca/Bruno.Preiss/books/opus5/programs/pgm09_12.txt
 //
 public abstract class AbstractTree extends AbstractContainer implements Tree {
-	
+
 	public void breadthFirstTraversal(Visitor visitor) {
 		bft(visitor, true);
 	}
@@ -22,7 +22,7 @@ public abstract class AbstractTree extends AbstractContainer implements Tree {
 	public void breadthFirstTraversal_NodeVisiting(Visitor visitor) {
 		bft(visitor, false);
 	}
-	
+
 	private void bft(Visitor visitor, boolean visitKey) {
 		Queue queue = new QueueAsLinkedList();
 		if (!isEmpty())
@@ -42,18 +42,35 @@ public abstract class AbstractTree extends AbstractContainer implements Tree {
 			} catch (InvalidOperationException e) {
 				e.printStackTrace();
 			}
-		}		
+		}
 	}
-	
+
 	public void depthFirstTraversal(PrePostVisitor visitor) {
+		dft(visitor, true);
+	}
+
+	public void depthFirstTraversal_NodeVisiting(PrePostVisitor visitor) {
+		dft(visitor, false);
+	}
+
+	public void dft(PrePostVisitor visitor, boolean visitKey) {
 		if (visitor.isDone())
 			return;
 		if (!isEmpty()) {
 			try {
-				visitor.preVisit(getKey());
+				if (visitKey)
+					visitor.preVisit(getKey());
+				else
+					visitor.preVisit(this);
 				for (int i = 0; i < getDegree(); ++i)
-					getSubtree(i).depthFirstTraversal(visitor);
-				visitor.postVisit(getKey());
+					if (visitKey)
+						getSubtree(i).depthFirstTraversal(visitor);
+					else
+						getSubtree(i).depthFirstTraversal_NodeVisiting(visitor);
+				if (visitKey)
+					visitor.postVisit(getKey());
+				else
+					visitor.postVisit(this);
 			} catch (InvalidOperationException e) {
 				e.printStackTrace();
 			}
