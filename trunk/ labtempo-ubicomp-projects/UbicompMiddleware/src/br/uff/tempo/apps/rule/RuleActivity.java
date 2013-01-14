@@ -169,11 +169,11 @@ public class RuleActivity extends Activity {
 
 			RuleInterpreter rule = new RuleInterpreter("RegradoFogao", "RegradoFogao");
 			try {
-				rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, 50.0f);
-				rule.setCondition(raiBed, "occupied", null, Operator.Equal, true);
-				int time = 10;
-				Log.i(TAG, "Timeout " + time + "seg");
-				rule.setTimeout(time);
+//				rule.setCondition(raiStove, "getOvenTemperature", null, Operator.GreaterThan, 50.0f);
+//				rule.setCondition(raiBed, "occupied", null, Operator.Equal, true);
+//				int time = 10;
+//				Log.i(TAG, "Timeout " + time + "seg");
+//				rule.setTimeout(time);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
