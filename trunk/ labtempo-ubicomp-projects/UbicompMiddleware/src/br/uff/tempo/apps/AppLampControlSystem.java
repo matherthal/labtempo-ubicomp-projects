@@ -1,5 +1,9 @@
 package br.uff.tempo.apps;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -54,7 +58,7 @@ public class AppLampControlSystem extends Activity {
 			// et.setText(et.getText() + "\n" + strMsg);
 		}
 	};
-	
+
 	// private Set<Lamp> lampSet = new HashSet<Lamp>();
 	// private Set<PresenceSensor> psSet = new HashSet<PresenceSensor>();
 	// private Set<Generic> actionSet = new HashSet<Generic>();
@@ -87,7 +91,19 @@ public class AppLampControlSystem extends Activity {
 
 		// For each place, create a Lamp and a Presence Sensor
 		Set<String> places = location.getPlacesNames();
-		if (places != null)
+		if (places != null) {
+			BufferedReader in = null;
+			String roomFullRule;
+			String roomEmptyRule;
+			try {
+				roomFullRule = readFile(this.getAssets().open("interpreter_smartlic_roomfull.json"));
+				roomEmptyRule = readFile(this.getAssets().open("interpreter_smartlic_roomempty.json"));
+			} catch (IOException e1) {
+				Log.e(TAG, "File with rules could not be found or opened");
+				e1.printStackTrace();
+				return;
+			}
+						
 			for (String place : places) {
 				// Create a lamp for this place
 				String lampName = "Lâmpada " + place;
@@ -122,17 +138,15 @@ public class AppLampControlSystem extends Activity {
 				// 10 seconds has passed
 				RuleInterpreter riRoomEmpty = new RuleInterpreter("Detecta Sala Vazia por 10seg - " + place, "Detecta Sala Vazia por 10seg - " + place);
 				try {
-					riRoomFull.setCondition(ps.getRANS(), PresenceSensor.CV_GETPRESENCE, null, Operator.Equal, true);
-					riRoomFull.setCondition(dl.getRANS(), DayLightSensor.CV_ISDAY, null, Operator.Equal, false);
-
-					riRoomEmpty.setCondition(ps.getRANS(), PresenceSensor.CV_GETPRESENCE, null, Operator.Equal, false);
-					riRoomEmpty.setTimeout(10);
+					riRoomFull.setExpression(roomFullRule.replace("_PRESENCE_", ps.getRANS()).replace("_DAYLIGHT_", dl.getRANS()));
+					riRoomEmpty.setExpression(roomEmptyRule.replace("_PRESENCE_", ps.getRANS()));
+					
+					riRoomFull.identify();
+					riRoomEmpty.identify();
 				} catch (Exception e) {
 					e.printStackTrace();
 					Log.e(TAG, "Error in setting condition to the rule");
 				}
-				riRoomFull.identify();
-				riRoomEmpty.identify();
 
 				// Rules' RAIs to be used by the action
 				final String roomFullRAI = riRoomFull.getRANS();
@@ -140,18 +154,18 @@ public class AppLampControlSystem extends Activity {
 
 				// Create action to subscribe to the rule interpreter
 				Generic action = new Generic("Iluminador de caminho " + place, "Iluminador de caminho " + place) {
-					
+
 					private static final long serialVersionUID = 1L;
-					
+
 					private ILamp lamp;
 
 					@Override
 					public void notificationHandler(String rai, String method, Object value) {
 						Log.d(TAG, "CHANGE: " + rai + " " + method + " " + value);
-						
+
 						// Get lamp to turn on or off
 						lamp = new LampStub(discovery.searchForAttribute(ResourceData.RAI, lRAI).get(0).getRai());
-						//Verify if lamp is blocked
+						// Verify if lamp is blocked
 						String lName = lamp.getName();
 						Tuple tp = lampDictionary.get(lName);
 						if ((Boolean) tp.value) {
@@ -178,8 +192,36 @@ public class AppLampControlSystem extends Activity {
 				riRoomFull.registerStakeholder(RuleInterpreter.RULE_TRIGGERED, action.getRANS());
 				riRoomEmpty.registerStakeholder(RuleInterpreter.RULE_TRIGGERED, action.getRANS());
 			}
+		}
 	}
 
+	private String readFile(InputStream stream) {
+		String fileStr = "";
+		BufferedReader in = null;
+		try {
+			in = new BufferedReader(new InputStreamReader(stream));
+
+			String line;
+			StringBuilder buffer = new StringBuilder();
+			while ((line = in.readLine()) != null)
+				buffer.append(line).append('\n');
+
+			fileStr = buffer.toString();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (in != null)
+					in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		return fileStr;
+	}
+	
 	private void populateSpinnerPresence() {
 		Spinner s = (Spinner) findViewById(R.id.spinnerPresenceSensors);
 		String[] array_spinner = new String[psDictionary.size()];
