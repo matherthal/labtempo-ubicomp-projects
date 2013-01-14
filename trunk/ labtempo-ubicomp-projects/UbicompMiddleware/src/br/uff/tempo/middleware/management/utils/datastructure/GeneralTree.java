@@ -32,6 +32,10 @@ public class GeneralTree extends AbstractTree {
 		return key;
 	}
 
+	public void setKey(Object key) {
+		this.key = key;
+	}
+
 	public Tree getSubtree(int i) {
 		if (i < 0 || i >= degree)
 			throw new IndexOutOfBoundsException();
@@ -89,5 +93,10 @@ public class GeneralTree extends AbstractTree {
 	protected int compareTo(Comparable arg) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+	
+	@Override
+	public String toString() {
+		return key.toString();
 	}
 }
