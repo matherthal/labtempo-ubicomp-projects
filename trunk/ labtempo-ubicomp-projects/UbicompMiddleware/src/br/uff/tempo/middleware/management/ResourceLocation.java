@@ -232,8 +232,13 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	public void updateLocation(ResourceData resource){
 		ResourceDirectory.getInstance().update(resource);
 		registerResource(resource.getRai(), resource.getPlace(), resource.getPosition());
-		//Can be used by IPGAP to update MAP interface
+		
+		//It can be used by IPGAP to update MAP interface
 		notifyStakeholders("updateLocation", resource.getPosition());
+		
+		//It can be used by tracking applications
+		notifyStakeholders("updateLocation:"+resource.getType(), resource.getPosition());
+		notifyStakeholders("updateLocation:"+resource.getRai(), resource.getPosition());
 	}
 	
 	@Override
