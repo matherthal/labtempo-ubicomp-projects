@@ -9,6 +9,7 @@ import java.util.Set;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
@@ -161,5 +162,12 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
 
 		return (ArrayList<String>) makeCall("queryByLocal", params, new TypeToken<ArrayList<String>>() {}.getType());
+	}
+	
+	public void updateLocation(ResourceData resource) {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+		params.add(new Tuple<String, Object>(ResourceData.class.getName(), resource));
+
+		makeCall("updateLocation", params, void.class);
 	}
 }

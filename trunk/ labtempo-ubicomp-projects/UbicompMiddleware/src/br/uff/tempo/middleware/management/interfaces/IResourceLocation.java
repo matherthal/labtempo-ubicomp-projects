@@ -7,6 +7,7 @@ import java.util.Set;
 
 import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
 
@@ -45,4 +46,6 @@ public interface IResourceLocation {
 	void registerInPlaceMiddlePos(String url, Place place);
 	
 	ArrayList<String> queryByLocal(Position position);
+	
+	public void updateLocation(ResourceData resource);
 }
