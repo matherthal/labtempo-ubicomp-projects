@@ -4,6 +4,7 @@ import br.uff.tempo.middleware.management.utils.datastructure.GeneralTree;
 
 public class Formula extends GeneralTree {
 	private long timeout = 0;
+	private boolean timerexp = false;
 
 	public Formula() {
 		super("f");
@@ -22,7 +23,6 @@ public class Formula extends GeneralTree {
 
 	/**
 	 * @param timeout
-	 *            the timeout to set
 	 */
 	public void setTimeout(long timeout) {
 		this.timeout = timeout;
@@ -38,6 +38,20 @@ public class Formula extends GeneralTree {
 	
 	public void setOrClause() {
 		this.attachSubtree(new OrNode());
+	}
+	
+	public void timerExpired(boolean b) {
+		this.timerexp = b;
+	}
+	
+	public boolean hasTimer() {
+		return timeout > 0;
+	}
+	
+	public boolean hasTimerExpired() {
+		// If there is no timer OR if there are a timer and it does have expired, then return true
+		// Otherwise return false
+		return timeout == 0 || (timeout != 0 && timerexp) ? true : false;				
 	}
 	
 //	@Override
