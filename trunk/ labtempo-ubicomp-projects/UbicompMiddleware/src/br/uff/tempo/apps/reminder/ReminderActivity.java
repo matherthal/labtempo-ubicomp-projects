@@ -14,9 +14,10 @@ public class ReminderActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.reminder);
-		
-		
-		
+	
+	}
+	
+	public void onSubmitPrescriptionClick() {
 		
 	}
 
