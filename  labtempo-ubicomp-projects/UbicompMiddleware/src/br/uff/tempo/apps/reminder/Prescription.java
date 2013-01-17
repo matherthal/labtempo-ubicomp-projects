@@ -1,103 +1,79 @@
 package br.uff.tempo.apps.reminder;
 
-import java.util.Date;
+import java.util.Calendar;
+import java.util.Random;
 
 public class Prescription {
 	
-	public final static int  HOUR = 0;
-	public final static int DAY = 1;
-	public final static int WEEK = 2;
-	
+	private int id; //Prescription ID
+	private Calendar startTime;
+	private Calendar endTime;
+	private int period; //Period time in hours
+	String displayName; //Name that will be displayed
 	String description;
-	Date beginTime;
-	int frequency;
-	int frequencyFlag;
 	
-	public Prescription(String description, Date beginTime, int frequency, int frequencyFlag) {
+	//Constructors
+	
+	public Prescription(String displayName, Calendar endTime, int period) {
+		this(displayName, Calendar.getInstance(), endTime, period);
+	}
+	
+	public Prescription(String displayName, Calendar startTime, Calendar endTime, int period) {
+		this(displayName, startTime, endTime, period, "");
+	}
+	
+	public Prescription(String displayName, Calendar endTime, int period, String description) {
+		this(displayName, Calendar.getInstance(), endTime, period, description);
+	}
+	
+	public Prescription(String displayName, Calendar startTime, Calendar endTime, int period, String description) {
+		
+		this.displayName = displayName;
+		this.startTime = startTime;
+		this.endTime = endTime;
+		this.period = period;
 		this.description = description;
-		this.beginTime = beginTime;
-		this.frequency = frequency;
-		this.frequencyFlag = frequencyFlag;
-	}
-
-	public Date getBeginTime() {
-		return beginTime;
-	}
-
-	public void setNextTime() {
-		int total = beginTime.getHours()+frequency;
-		int offset = 0;
-		int month = beginTime.getMonth();
-		switch (frequencyFlag){
-			case HOUR:
-				if (total>=24){
-					int subTotal = beginTime.getDay()+1;
-					offset = verifyMonthBoundaries(subTotal, month);
-					beginTime.setDate(subTotal-offset);
-					offset = 24;
-				}
-				beginTime.setHours(total-offset);
-				break;
-			case DAY:
-				total = beginTime.getDay()+frequency;
-				offset = verifyMonthBoundaries(total,month);
-				beginTime.setDate(total-offset);
-				break;
-			case WEEK:
-				total = beginTime.getDay()+ 7*frequency;
-				offset = verifyMonthBoundaries(total,month);
-				beginTime.setDate(total - offset);
-				break;
-		}
 		
-		
-	}
-
-	public int verifyMonthBoundaries(int total, int month){
-		int offset = 0;
-		int monthAux = 0;
-		if (month<12) {
-			monthAux = month;
-		}
-		if (total>28){
-			boolean feb = beginTime.getMonth()==2;
-			boolean bissextile = beginTime.getYear()%4 == 0;
-			if (feb){
-				if (!bissextile){				
-					beginTime.setMonth(monthAux+1);
-					offset = 28;
-				} else if (total > 29){
-					beginTime.setMonth(monthAux+1);
-					offset = 29;
-				}	
-			} else if (total > 30){
-				boolean oddMonth = month%2 == 1;
-				boolean monthIndexMinor = month<8;
-				boolean monthSize31 = (oddMonth && monthIndexMinor) || (!oddMonth && !monthIndexMinor);
-				if (monthSize31 && total>31){
-					beginTime.setMonth(monthAux+1);
-					offset = 31;
-				} else if (!monthSize31){
-					beginTime.setMonth(monthAux+1);
-					offset = 30;
-				}
-			}
-		}
-		return offset;			
+		//Generate a random ID
+		id = (new Random()).nextInt(1000000) + this.displayName.hashCode();
 	}
 	
+	//General Methods
+	
+	//Getters
+	public long getStartInTimeMillis() {
+		return startTime.getTimeInMillis();
+	}
+	
+	public long getEndInTimeMillis() {
+		return endTime.getTimeInMillis();
+	}
+	
+	public long getPeriodInMillis() {
+		return period * 3600000;
+	}
+
+	public Calendar getStartTime() {
+		return startTime;
+	}
+	
+	public Calendar getEndTime() {
+		return endTime;
+	}
+
+	public int getPeriod() {
+		return period;
+	}
+
+	public String getDisplayName() {
+		return displayName;
+	}
+
 	public String getDescription() {
 		return description;
 	}
 
-	public int getFrequency() {
-		return frequency;
+	public int getId() {
+		return id;
 	}
-
-	public int getFrequencyFlag() {
-		return frequencyFlag;
-	}
-	
-	
-
 }
