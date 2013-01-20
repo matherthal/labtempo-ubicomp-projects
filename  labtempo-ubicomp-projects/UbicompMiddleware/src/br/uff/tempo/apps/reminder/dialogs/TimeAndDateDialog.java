@@ -45,6 +45,8 @@ public class TimeAndDateDialog extends Dialog implements OnClickListener {
 		
 		time = (TimePicker) this.findViewById(R.id.timePicker);
 		date = (DatePicker) this.findViewById(R.id.datePicker);
+		
+		this.setCanceledOnTouchOutside(true);
 	}
 
 	public Calendar getCalendar() {

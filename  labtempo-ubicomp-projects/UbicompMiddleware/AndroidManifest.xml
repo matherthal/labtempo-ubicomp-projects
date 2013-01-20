@@ -23,9 +23,8 @@
         android:label="@string/app_name" >
         <activity
             android:name=".apps.MainListView"
-            android:label="SmartAndroid"
-            android:configChanges="orientation" >
-            
+            android:configChanges="orientation"
+            android:label="SmartAndroid" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -48,6 +47,11 @@
         <activity android:name=".apps.reminder.ReminderActivity" />
         <activity android:name=".apps.map.settings.MapSettings" />
 
+        <!-- AlarmApp -->
+        <receiver android:name=".apps.reminder.ReminderReceiver"></receiver>
+        <!-- End AlarmApp -->
+
+
         <!-- Rule -->
         <activity
             android:name=".apps.rule.RuleActivity"
@@ -68,7 +72,7 @@
         <service
             android:name=".middleware.resources.Rule"
             android:enabled="true" />
-        
+
         <activity
             android:name=".apps.rule.Test_SimpleRule_BedOccupied"
             android:label="@string/rule_creation" />
@@ -111,22 +115,27 @@
         </activity>
         <!-- End tictactoe app -->
 
-		<!-- Begin SmartAndroid Debugger -->
-		<activity 
-		    android:name="br.uff.tempo.middleware.LogViewerActivity"
-            android:label="@string/debugger_name">
+
+        <!-- Begin SmartAndroid Debugger -->
+        <activity
+            android:name="br.uff.tempo.middleware.LogViewerActivity"
+            android:label="@string/debugger_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-		<!-- End SmartAndroid Debugger -->
-		            
+            <!-- End SmartAndroid Debugger -->
+
         </activity>
-        
-        <!-- <activity
+
+        <!--
+             <activity
             android:name=".middleware.management.utils.NotifyDemo"
-            android:label="NotifyDemo" /> -->
-        
+            android:label="NotifyDemo" />
+        -->
+
+
         <!-- App Lamp Controller -->
         <activity
             android:name=".apps.AppLampController"

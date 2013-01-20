@@ -1,16 +1,20 @@
 package br.uff.tempo.apps.reminder;
 
+import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Random;
 
-public class Prescription {
+public class Prescription implements Serializable {
+	
+	private static final long serialVersionUID = 7314780947341327975L;
 	
 	private int id; //Prescription ID
 	private Calendar startTime;
 	private Calendar endTime;
 	private int period; //Period time in hours
-	String displayName; //Name that will be displayed
-	String description;
+	private String displayName; //Name that will be displayed
+	private String description;
 	
 	//Constructors
 	
@@ -39,6 +43,21 @@ public class Prescription {
 	}
 	
 	//General Methods
+	public static String calendarToString(Calendar cal) {
+
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy HH:mm");
+		return sdf.format(cal.getTime());
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		
+		if (obj == null || !(obj instanceof Prescription)) {
+			return false;
+		}
+		
+		return this.id == ((Prescription)obj).getId();
+	}
 	
 	//Getters
 	public long getStartInTimeMillis() {
@@ -50,7 +69,7 @@ public class Prescription {
 	}
 	
 	public long getPeriodInMillis() {
-		return period * 3600000;
+		return period * 1000;//3600000;
 	}
 
 	public Calendar getStartTime() {

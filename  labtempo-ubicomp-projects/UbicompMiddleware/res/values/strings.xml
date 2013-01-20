@@ -54,9 +54,10 @@
     </string-array>
     
     <string-array name="freq_array">
-        <item name="item_dias">Dias</item>
-        <item name="item_horas">Horas</item>
-        <item name="item_semanas">Semanas</item>
+        <item name="item_horas">Hours</item>
+        <item name="item_dias">Days</item>
+        <item name="item_semanas">Weeks</item>
+        <item name="item_semanas">Months</item>
     </string-array>
 
     <!-- RuleActivity -->
