@@ -16,9 +16,7 @@ public class ExprComposerVisitor implements PrePostVisitor {
 			// If formula is invalid regarding to timer and evaluation, the
 			// subexpression must be marked (with an 'i') to be invalidated
 			// afterwards
-			if (((Formula) object).getKey().equals("i"))
-				s = "i";
-			else if (!(object instanceof Predicate))
+			if (s.equals("f"))
 				s = "(";
 		}
 		expression = expression + s;
@@ -30,23 +28,23 @@ public class ExprComposerVisitor implements PrePostVisitor {
 
 	@Override
 	public void postVisit(Object object) {
-		if (object instanceof Formula) {
-			Formula f = (Formula) object;
-			if (f.getKey().equals("i")) {
-				// Count backwards to find the starter 'i' in expression
-				int i = expression.length() - 1;
-				while (expression.charAt(i) != 'i' && i >= 0)
-					--i;
-				// Replace all chars between the two 'i's by a invalid:
-				// subexpression "(0)"
-				expression = expression.substring(0, i) + "(0)";
-			} else if (!(object instanceof Predicate))
-				expression = expression + ")";
-			// if (!f.hasTimerExpired()) {
-			// if (expression.charAt(expression.length() - 1) != '(')
-			// expression = expression + "&&0";
-			// }
+		String s = object.toString();
+		// if (s.equals("f") || s.equals("!"))
+		if (s.equals("f"))
+			expression = expression + ")";
+		else if (s.equals("i")) {
+			// Count backwards to find the starter 'i' in expression
+			int i = expression.length() - 1;
+			while (expression.charAt(i) != 'i' && i >= 0)
+				--i;
+			// Replace all chars between the two 'i's by a invalid:
+			// subexpression "(0)"
+			expression = expression.substring(0, i) + "(0)";
 		}
+		// if (!f.hasTimerExpired()) {
+		// if (expression.charAt(expression.length() - 1) != '(')
+		// expression = expression + "&&0";
+		// }
 	}
 
 	@Override
