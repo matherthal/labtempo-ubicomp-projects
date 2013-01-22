@@ -35,27 +35,33 @@ public class UpdateFormulaVisitor implements Visitor {
 	@Override
 	public void visit(Object object) {
 		try {
-			// If it is a Formula but not a Predicate
-			if (object instanceof Formula && !(object instanceof Predicate)) {
-				Formula f = (Formula) object;
-				if (!f.hasTimer()) {
-					f.setKey('f');
-				} else {
-					boolean valid = evaluate(f);
-					if (!valid)
-						// If it's invalid, stop any possible running timer
-						timerStop(f);
-					// Only if it were invalid and become valid
-
-					if (!f.hasTimerExpired()) {
-						// f does have a timer and it has not expired yet
-						// If the evaluation turns out to return "invalid", then
-						// the timer must be stoped,
-						// which means that this subexpression will be
-						// automatically taken by invalid
-						// boolean valid = evaluate(f);
+			// If it is a Formula but not a Predicate, or other type of node
+			// if (object instanceof Formula && !(object instanceof Predicate))
+			// {
+			if (object instanceof Formula) {
+				String key = ((Formula) object).getKey().toString();
+				if (key.equals("f") || key.equals("i")) {
+					Formula f = (Formula) object;
+					if (!f.hasTimer()) {
+						f.setKey('f');
+					} else {
+						boolean valid = evaluate(f);
 						if (!valid)
-							f.setKey('i');
+							// If it's invalid, stop any possible running timer
+							timerStop(f);
+						// Only if it were invalid and become valid
+
+						if (!f.hasTimerExpired()) {
+							// f does have a timer and it has not expired yet
+							// If the evaluation turns out to return "invalid",
+							// then
+							// the timer must be stoped,
+							// which means that this subexpression will be
+							// automatically taken by invalid
+							// boolean valid = evaluate(f);
+							if (!valid)
+								f.setKey('i');
+						}
 					}
 				}
 			}
