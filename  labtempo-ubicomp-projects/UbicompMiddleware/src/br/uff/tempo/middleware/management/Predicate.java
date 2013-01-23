@@ -13,9 +13,8 @@ public class Predicate extends Formula {
 	// constVal is the value to compare the the change of the context variable
 	// The constant value can be the first or second operand
 	// private Object constVal;
-
-//	private long timeout = 0;
-	private boolean valid = false;
+	
+	protected boolean valid = false;
 
 	/**
 	 * Constructor
@@ -25,12 +24,13 @@ public class Predicate extends Formula {
 	 * @param operator
 	 * @throws Exception
 	 */
-	public Predicate(Operand op1, Operator operator, Operand op2, long timeout) throws Exception {
+	public Predicate(Operand op1, Operator operator, Operand op2, long timeout, RuleInterpreter stakeholder) throws Exception {
 		super("0");
 		this.op1 = op1;
 		this.op2 = op2;
 		this.operator = operator;
 		this.setTimeout(timeout);
+		this.setTimerStakeholder(stakeholder);
 		count = 1;
 		evaluate();
 	}
@@ -43,10 +43,11 @@ public class Predicate extends Formula {
 	 * @param operator
 	 * @throws Exception
 	 */
-	public Predicate(Operand op, long timeout) throws Exception {
+	public Predicate(Operand op, long timeout, RuleInterpreter stakeholder) throws Exception {
 		super();
 		this.op1 = op;
 		this.setTimeout(timeout);
+		this.setTimerStakeholder(stakeholder);
 		count = 1;
 		evaluate();
 	}
@@ -127,7 +128,7 @@ public class Predicate extends Formula {
 	 */
 	public void setValid(boolean valid) {
 		this.valid = valid;
-		this.key = valid;
+		this.key = valid ? "1" : "0";
 	}
 
 	/**
@@ -137,91 +138,9 @@ public class Predicate extends Formula {
 		return valid;
 	}
 
-	/**
-	 * @return the valueCache
-	 */
-	// public Object getValueCache() {
-	// return value_op1;
-	// }
-
-	/**
-	 * @param valueCache
-	 *            the valueCache to set
-	 */
-	// public void setValueCache(Object valueCache) {
-	// this.value_op1 = valueCache;
-	// // if (!test())
-	// // timerReset();
-	// }
-
-	/**
-	 * Update value stored in valueCache, result from context variable query or
-	 * notification
-	 */
-	// public void updateValueCache() {
-	// Stub s = new Stub(rai_op1);
-	// setValueCache(s.makeCall(cv_op1, params_op1));
-	// }
-
-	// /**
-	// * @return the value
-	// */
-	// public Object getConstValue() {
-	// return constVal;
-	// }
-	//
-	// /**
-	// * @param value
-	// * the value to set
-	// */
-	// public void setConstValue(Object value) {
-	// this.constVal = value;
-	// }
-
-	// /**
-	// * @return the rai
-	// */
-	// public String getRai() {
-	// return rai_op1;
-	// }
-	//
-	// /**
-	// * @return the method
-	// */
-	// public String getCV() {
-	// return cv_op1;
-	// }
-	//
-	// /**
-	// * @return the value
-	// */
-	// public void setCV(String cv, Object[] params) {
-	// if (op == 1) {
-	// this.cv_op1 = cv;
-	// }
-	//
-	// }
-
-	/**
-	 * Constructor
-	 * 
-	 * @param ra
-	 * @param cv
-	 * @param operator
-	 * @param constVal
-	 *            It creates a condition
-	 * @throws Exception
-	 */
-	// public ComparisonNode(Operand op, Operator operator, Object value, long
-	// timeout) throws Exception {
-	// super(0);
-	// this.rai_op1 = rai;
-	// this.setCV(cv, params);
-	//
-	// this.rai_op2 = null;
-	// this.setCV(null, null);
-	// this.op1 = op;
-	// this.operator = operator;
-	// this.constVal = value;
-	// }
+	@Override
+	public void timerExpired(boolean b) {
+		this.timerexp = b;
+		this.valid = b;
+	}
 }

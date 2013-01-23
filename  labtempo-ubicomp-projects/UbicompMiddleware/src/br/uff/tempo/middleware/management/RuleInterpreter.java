@@ -139,8 +139,11 @@ public class RuleInterpreter extends ResourceAgent {
 				Log.i(TAG, "TIMER: " + val.toString());
 				subtree.setTimeout(getTimerInSec(val.toString()));
 				subtree.timerExpired(false);
-				// new Timer();
-				// new TimeoutTask(subtree);
+				// pNode = new Formula();
+				// subtree.attachFormula(pNode);
+				// pNode.attachFormula(new TimerNode());
+				// pNode.setAndClause();
+				// pNode.attachFormula(buildTree(val));
 			} else if (key.equals("connective")) {
 				Log.i(TAG, "CONNECTIVE: " + val.toString());
 				if (val.toString().equals("and")) {
@@ -226,11 +229,11 @@ public class RuleInterpreter extends ResourceAgent {
 		// If the second operand has not been given, then probably the first one
 		// is boolean and can be evaluated alone
 		if (op2 == null)
-			return new Predicate(op1, 0);
+			return new Predicate(op1, timer, this);
 		// If there are 2 operands, then it's mandatory having an operator
 		// between them
 		else if (op != null)
-			return new Predicate(op1, op, op2, 0);
+			return new Predicate(op1, op, op2, timer, this);
 		else
 			throw new Exception("Wrong parameters in Interpreterr's Predicate: " + jsonPredicate);
 	}
