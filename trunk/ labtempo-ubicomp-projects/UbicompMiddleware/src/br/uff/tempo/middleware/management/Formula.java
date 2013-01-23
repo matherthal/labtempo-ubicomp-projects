@@ -3,8 +3,9 @@ package br.uff.tempo.middleware.management;
 import br.uff.tempo.middleware.management.utils.datastructure.GeneralTree;
 
 public class Formula extends GeneralTree {
-	private long timeout = 0;
-	private boolean timerexp = false;
+	protected long timeout = 0;
+	protected boolean timerexp = false;
+	protected RuleInterpreter timerStakeholder = null;
 
 	public Formula() {
 		super("f");
@@ -22,10 +23,24 @@ public class Formula extends GeneralTree {
 	}
 
 	/**
+	 * @return the timerStakeholder
+	 */
+	public RuleInterpreter getTimerStakeholder() {
+		return timerStakeholder;
+	}
+
+	/**
 	 * @param timeout
 	 */
 	public void setTimeout(long timeout) {
 		this.timeout = timeout;
+	}
+
+	/**
+	 * @param timerStakeholder
+	 */
+	public void setTimerStakeholder(RuleInterpreter ri) {
+		this.timerStakeholder = ri;
 	}
 
 	public void attachFormula(Formula f) {

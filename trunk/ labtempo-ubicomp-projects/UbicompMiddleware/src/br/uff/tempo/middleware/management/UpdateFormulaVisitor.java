@@ -46,16 +46,16 @@ public class UpdateFormulaVisitor implements Visitor {
 						f.setKey('f');
 					} else {
 						boolean valid = evaluate(f);
-						if (!valid)
+						if (!valid) {
 							// If it's invalid, stop any possible running timer
 							timerStop(f);
+						}
 						// Only if it were invalid and become valid
-
 						if (!f.hasTimerExpired()) {
 							// f does have a timer and it has not expired yet
 							// If the evaluation turns out to return "invalid",
 							// then
-							// the timer must be stoped,
+							// the timer must be stopped,
 							// which means that this subexpression will be
 							// automatically taken by invalid
 							// boolean valid = evaluate(f);
@@ -95,8 +95,8 @@ public class UpdateFormulaVisitor implements Visitor {
 	protected void timerStart(Formula f) {
 		if (!timers.containsKey(f)) {
 			long t = f.getTimeout() * 1000;
-			timers.put(f, new Tuple<Timer, TimeoutTask>(new Timer(), new TimeoutTask(f)));
-			Tuple<Timer, TimeoutTask> tp = (Tuple<Timer, TimeoutTask>) timers.get(f);
+			Tuple<Timer, TimeoutTask> tp = new Tuple<Timer, TimeoutTask>(new Timer(), new TimeoutTask(f));
+			timers.put(f, tp);
 			((Timer) tp.value).schedule((TimeoutTask) tp.value2, t);
 		}
 		// TODO: how to know if it's already running to let it?...
@@ -105,19 +105,23 @@ public class UpdateFormulaVisitor implements Visitor {
 	protected void timerReset(Formula f) {
 		timerStop(f);
 		Log.i("TIME", new Date().toGMTString());
-
 		long t = f.getTimeout() * 1000;
 		Tuple<Timer, TimeoutTask> tp = (Tuple<Timer, TimeoutTask>) timers.get(f);
+		if (tp == null) {
+			tp = new Tuple<Timer, TimeoutTask>(new Timer(), new TimeoutTask(f));
+			timers.put(f, tp);
+		}
 		((Timer) tp.value).schedule((TimeoutTask) tp.value2, t);
 	}
 
 	protected void timerStop(Formula f) {
 		Tuple<Timer, TimeoutTask> tp = (Tuple<Timer, TimeoutTask>) timers.get(f);
-		if (tp.value2 != null) {
-			Log.i("Timer", "Stop");
-			((TimeoutTask) tp.value2).cancel();
-			tp.value2 = null;
-		}
+		if (tp != null)
+			if (tp.value2 != null) {
+				Log.i("Timer", "Stop");
+				((TimeoutTask) tp.value2).cancel();
+				tp.value2 = null;
+			}
 	}
 
 	protected class TimeoutTask extends TimerTask {
@@ -131,6 +135,7 @@ public class UpdateFormulaVisitor implements Visitor {
 			Log.i("TimeoutTask", "Timeout went off!");
 			Log.i("TIME", new Date().toGMTString());
 			f.timerExpired(true);
+			f.getTimerStakeholder().notificationHandler("", "", null);
 			// if (evaluateExpr())
 			// notifyActionPerformers();
 		}

@@ -26,14 +26,14 @@ public class UpdatePredicatesVisitor extends UpdateFormulaVisitor {
 					if (!valid)
 						// If it's invalid, stop any possible running timer
 						timerStop(pred);
-					else if (!pred.hasTimerExpired())
+					else if (!preUp) {
+						// If value changed from false to true, start timer
+						pred.setValid(false);
+						timerReset(pred);
+					} else if (!pred.hasTimerExpired())
 						// If timer has not expired, predicate must be
 						// invalidated
 						pred.setValid(false);
-					else if (!preUp)
-						// Only if it were invalid and become valid and
-						// timer has not expired yet, must the timer start
-						timerReset(pred);
 				}
 			} 
 		} catch (Exception e) {
