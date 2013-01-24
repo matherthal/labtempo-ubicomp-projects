@@ -79,7 +79,7 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		if (position == null){
 			rL.registerInPlaceMiddlePos(rans, rL.getPlace(placeName));
 		} else {
-			rL.registerInPlaceRelative(rans, rL.getPlace(placeName), position);
+			rL.registerInPlace(rans, position);
 		}
 		return true;
 	}

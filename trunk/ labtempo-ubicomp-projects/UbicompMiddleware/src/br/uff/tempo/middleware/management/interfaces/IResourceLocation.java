@@ -33,6 +33,8 @@ public interface IResourceLocation {
 
 	Place getLocal(Position position);
 	
+	String getLocalReference(Position position);
+	
 	Space getMap();
 
 	void insertMap(Space newSpace);
