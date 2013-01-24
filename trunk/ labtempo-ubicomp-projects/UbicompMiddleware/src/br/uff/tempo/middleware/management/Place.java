@@ -1,6 +1,8 @@
 package br.uff.tempo.middleware.management;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import br.uff.tempo.middleware.management.utils.Position;
 
@@ -10,6 +12,8 @@ public class Place implements Serializable {
 
 	private String name;
 
+	Map<String, ResourceData> raDir;
+	
 	Position lower;// left lower vertex
 	Position upper;// right upper vertex
 
@@ -20,6 +24,15 @@ public class Place implements Serializable {
 		this.lower = lower;
 		this.upper = upper;
 		this.name = name;
+		raDir = new HashMap<String, ResourceData>();
+	}
+	
+	public void enter(ResourceData ra) {
+		raDir.put(ra.getRai(), ra);
+	}
+	
+	public void exit(ResourceData ra) {
+		raDir.remove(ra.getRai());
 	}
 	
 	public String getName() {
