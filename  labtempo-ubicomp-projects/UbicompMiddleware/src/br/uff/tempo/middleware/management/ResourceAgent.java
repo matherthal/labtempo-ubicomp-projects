@@ -16,9 +16,11 @@ import br.uff.tempo.middleware.comm.common.InterestAPI;
 import br.uff.tempo.middleware.comm.interest.api.InterestAPIImpl;
 import br.uff.tempo.middleware.comm.interest.api.JSONRPCCallback;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
+import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
+import br.uff.tempo.middleware.management.stubs.PlaceStub;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
@@ -156,32 +158,137 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	public boolean isRegistered() {
 		return registered;
 	}
-
+	
 	@Override
 	public boolean identify() {
-
+		return commonIdentify(null,null);
+	}
+	
+	
+//	@Override
+//	public boolean identify() {
+//
+//		if (!registered) {
+//			rrs = new ResourceRegisterStub(IResourceRegister.rans);
+//
+//			String ip = SmartAndroid.getLocalIpAddress();
+//			int prefix = SmartAndroid.getLocalPrefix();
+//			
+//			
+//			rls = new ResourceLocationStub(IResourceLocation.rans);
+//			
+//			if (position != null) {
+//				Place place = rls.getLocal(position);
+//				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
+//				registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
+//			} else {
+//				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, null);
+//				registered = rrs.register(this.rans, ip, prefix, resourceData);
+//			}
+//			
+//			// adding local reference of this instance
+//			ResourceContainer.getInstance().add(this);
+//			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
+//		}
+//		
+//		return registered;
+//	}
+	
+	public boolean commonIdentify(String placeName, Position position){
 		if (!registered) {
 			rrs = new ResourceRegisterStub(IResourceRegister.rans);
-
+			rls = new ResourceLocationStub(IResourceLocation.rans);
+			
 			String ip = SmartAndroid.getLocalIpAddress();
 			int prefix = SmartAndroid.getLocalPrefix();
 			
-			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, null);
-			rls = new ResourceLocationStub(IResourceLocation.rans);
-			if (position != null) {
-				resourceData.setPlace(rls.getLocal(position));
+			if (placeName != null) {
+				Place place = rls.getPlace(placeName);
+				float x;
+				float y;
+				if (position != null) {
+					x = place.lower.getX()+position.getX();
+					y = place.lower.getY()+position.getY();
+				} else {
+					x = (place.lower.getX()+place.upper.getX())/2;
+					y = (place.lower.getY()+place.upper.getY())/2;
+				}
+				this.position = new Position(x,y);
+				
+				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
+				registered = rrs.registerInPlace(this.rans, ip, prefix, placeName, this.position, resourceData);
+			} else if(position != null) {
+				Place place = rls.getLocal(position);
+				this.position = position;
+				
+				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
 				registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
 			} else {
+				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, null);
 				registered = rrs.register(this.rans, ip, prefix, resourceData);
 			}
-			
-			// adding local reference of this instance
 			ResourceContainer.getInstance().add(this);
 			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
 		}
-		
 		return registered;
 	}
+	
+	
+	public boolean identifyPosition(Position position) {
+		return commonIdentify(null, position);
+	}
+	
+//	public boolean identifyPosition(Position position) {
+//
+//		if (!registered) {
+//			rrs = new ResourceRegisterStub(IResourceRegister.rans);
+//			this.position = position;
+//			
+//			String ip = SmartAndroid.getLocalIpAddress();
+//			int prefix = SmartAndroid.getLocalPrefix();
+//			rls = new ResourceLocationStub(IResourceLocation.rans);
+//			Place place = rls.getLocal(position);
+//			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
+//			
+//			registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
+//			
+//			// adding local reference of this instance
+//			ResourceContainer.getInstance().add(this);
+//			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
+//		}
+//		
+//		return registered;
+//	}
+	
+	public boolean identifyInPlace(String placeName, Position position) {
+		return commonIdentify(placeName,position);
+	}	
+	
+//	public boolean identifyInPlace(String placeName, Position position) {
+//
+//		if (!registered) {
+//			rrs = new ResourceRegisterStub(IResourceRegister.rans);
+//			
+//			
+//			String ip = SmartAndroid.getLocalIpAddress();
+//			int prefix = SmartAndroid.getLocalPrefix();
+//			rls = new ResourceLocationStub(IResourceLocation.rans);
+//			Place place = rls.getPlace(placeName);
+//			this.position = new Position(place.lower.getX()+position.getX(), place.lower.getY()+position.getY());
+//			
+//			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
+//			
+//			
+//			
+//			registered = rrs.registerInPlace(this.rans, ip, prefix, placeName, this.position, resourceData);
+//			
+//			// adding local reference of this instance
+//			ResourceContainer.getInstance().add(this);
+//			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
+//		}
+//
+//		return registered;
+//	}
 	
 	public boolean unregister() {
 		
@@ -196,49 +303,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		return true;
 	}
 
-	public boolean identifyPosition(Position position) {
-
-		if (!registered) {
-			rrs = new ResourceRegisterStub(IResourceRegister.rans);
-			this.position = position;
-			
-			String ip = SmartAndroid.getLocalIpAddress();
-			int prefix = SmartAndroid.getLocalPrefix();
-			rls = new ResourceLocationStub(IResourceLocation.rans);
-			Place place = rls.getLocal(position);
-			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
-			
-			registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
-			
-			// adding local reference of this instance
-			ResourceContainer.getInstance().add(this);
-			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
-		}
-		
-		return registered;
-	}
 	
-	public boolean identifyInPlace(String placeName, Position position) {
-
-		if (!registered) {
-			rrs = new ResourceRegisterStub(IResourceRegister.rans);
-			this.position = position;
-			
-			String ip = SmartAndroid.getLocalIpAddress();
-			int prefix = SmartAndroid.getLocalPrefix();
-			rls = new ResourceLocationStub(IResourceLocation.rans);
-			Place place = rls.getPlace(placeName);
-			ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
-			
-			registered = rrs.registerInPlace(this.rans, ip, prefix, placeName, this.position, resourceData);
-			
-			// adding local reference of this instance
-			ResourceContainer.getInstance().add(this);
-			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
-		}
-
-		return registered;
-	}
 	
 	public Position getPosition() {
 		return position;
@@ -292,7 +357,14 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	@Override
 	public void updateLocation(Position position) {
 		rls = new ResourceLocationStub(IResourceLocation.rans);
-		rls.updateLocation(new ResourceData(this.rans, this.name, this.type, position, rls.getLocal(position)));
+		IPlace place = new PlaceStub(rls.getLocalReference(this.position));
+		IPlace newPlace = new PlaceStub(rls.getLocalReference(position));
+		ResourceData raData = new ResourceData(this.rans, this.name, this.type, position, rls.getLocal(position)); 
+		if (!place.equals(newPlace)) {
+			place.exit(raData);
+			newPlace.enter(raData);
+		}
+		rls.updateLocation(raData);
 		notifyStakeholders("updateLocation", position);
 	}
 }

@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.utils.Position;
 
-public class Place implements Serializable {
+public class Place implements IPlace,Serializable {
 	
 	private static final long serialVersionUID = 1L;
 

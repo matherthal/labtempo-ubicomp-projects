@@ -245,4 +245,10 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	public void notificationHandler(String rai, String method, Object value) {
 		// TODO Auto-generated method stub
 	}
+
+	@Override
+	public String getLocalReference(Position position) {
+		Place place = getLocal(position);
+		return place.getName();
+	}
 }
