@@ -101,6 +101,11 @@ public class Person extends ResourceAgent implements IPerson {
 	public Position getPosition(int i) {
 		return recentPositions.get(objects.size() - (i + 1));
 	}
+	
+	//Just to keep compatibility
+	public Position getPosition() {
+		return getCurrentPosition();
+	}
 
 	public Position getCurrentPosition() {
 		return recentPositions.getLast();

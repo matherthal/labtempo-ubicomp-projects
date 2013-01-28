@@ -12,22 +12,30 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
-import br.uff.tempo.apps.simulators.AbstractPanel;
+import android.view.View;
+import android.view.WindowManager;
 import br.uff.tempo.middleware.management.Place;
-import br.uff.tempo.middleware.management.ResourceData;
-import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Space;
 
-public class TrackingPanel extends AbstractPanel {
+public class TrackingPanel extends View {//AbstractPanel {
 
 	private static final int RADIUS = 10;
 	private final String TAG = "Panel-TrackingView";
+	
+	private int screenCenterX;
+	private int screenCenterY;
+	
+	private int screenWidth;
+	private int screenHeight;
+	
+	private float scale;
 
 	private IResourceLocation rLocation;
 	private IResourceDiscovery rds;
@@ -52,9 +60,22 @@ public class TrackingPanel extends AbstractPanel {
 		init();
 	}
 
-	@Override
-	public final void initialization() {
+	public final void init() {
 
+		WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+		DisplayMetrics metrics = new DisplayMetrics();
+		wm.getDefaultDisplay().getMetrics(metrics);
+
+		//get the screen length
+		screenWidth = metrics.widthPixels;
+		screenHeight = metrics.heightPixels;
+		
+		//get the screen center coordinates
+		screenCenterX = screenWidth / 2;
+		screenCenterY = screenHeight / 2;
+		
+		scale = getResources().getDisplayMetrics().density;
+		
 		paint = new Paint();
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setColor(Color.WHITE);
@@ -88,7 +109,6 @@ public class TrackingPanel extends AbstractPanel {
 
 		factor = factorW < factorH ? factorW : factorH;
 
-		int i = 0;
 		for (Place place : homeMap.getAllPlaces()) {
 
 			int left = Space.metersToPixel(place.getLower().getX(), factor);
@@ -99,8 +119,6 @@ public class TrackingPanel extends AbstractPanel {
 					homeMap.invertYcoordinate(place.getLower().getY()), factor);
 
 			rooms.put(place.getName(), new Rect(left, top, right, bottom));
-
-			i++;
 		}
 
 		for (Avatar usr : users) {
@@ -127,13 +145,7 @@ public class TrackingPanel extends AbstractPanel {
 	}
 
 	@Override
-	public void onUpdate(String method, Object value) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void touch(MotionEvent event) {
+	public boolean onTouchEvent(MotionEvent event) {
 		// get the touch coordinates
 		int x = (int) event.getX();
 		int y = (int) event.getY();
@@ -191,12 +203,13 @@ public class TrackingPanel extends AbstractPanel {
 
 			caught = false;
 		}
-
 		invalidate();
+		
+		return true;
 	}
 
 	@Override
-	public void drawCanvas(Canvas canvas) {
+	public void onDraw(Canvas canvas) {
 
 		for (Rect rect : rooms.values()) {
 
@@ -208,9 +221,28 @@ public class TrackingPanel extends AbstractPanel {
 					circ.getRadius(), circ.getPaint());
 		}
 	}
+	
+	public float getDensity() {
+		return scale;
+	}
+	
+	public int dpTopixel(float dp) {
+		return (int) (dp * scale + 0.5f);
+	}
 
-	@Override
-	public void setAgent(IResourceAgent agent) {
-		// TODO Auto-generated method stub
+	public int getScreenCenterX() {
+		return screenCenterX;
+	}
+
+	public int getScreenCenterY() {
+		return screenCenterY;
+	}
+	
+	public int getScreenWidth() {
+		return screenWidth;
+	}
+	
+	public int getScreenHeight() {
+		return screenHeight;
 	}
 }

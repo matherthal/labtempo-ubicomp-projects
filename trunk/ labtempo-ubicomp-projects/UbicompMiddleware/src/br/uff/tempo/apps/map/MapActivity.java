@@ -131,7 +131,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 	public static final int LOG = EXTERNAL + 1;
 	public static final int SETTINGS = LOG + 1;
 	public static final int ERASE = SETTINGS + 1;
-	public static final int RULE = ERASE  + 1;
+	public static final int RULE = ERASE + 1;
 
 	// constants to QuickAction (it's not been used yet)
 	public static final int ID_UNREG = 1;
@@ -322,9 +322,10 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		} catch (TextureAtlasBuilderException e) {
 			Debug.e(e);
 		}
-		
+
 		// Side bar to compose Context Rules
-		this.mBar = new RuleComposeBar(this.mCamera, getVertexBufferObjectManager());
+		this.mBar = new RuleComposeBar(this.mCamera,
+				getVertexBufferObjectManager());
 		this.mCamera.setHUD(this.mBar);
 
 		Log.i(TAG, "Create Resources");
@@ -427,7 +428,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			// Create an Interface Manager instance and register it
 			mAppManager = InterfaceApplicationManager.getInstance();
 
-			state = null; //(SceneState) PersistHelper.loadFromFile("state", prefs);
+			state = (SceneState) PersistHelper.loadFromFile("state", prefs);
 
 			// There is no state saved
 			if (state == null) {
@@ -437,7 +438,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 				pushMap();
 
 				// There is a previous state saved. Restoring it
-				
+
 			} else {
 
 				houseMap = state.getMapInfo();
@@ -504,7 +505,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 				if (regData.isFake()) {
 
-					realAg = new Stove(regData.getResourceName(), regData.getResourceName());
+					realAg = new Stove(regData.getResourceName(),
+							regData.getResourceName());
 					realAg.identify();
 					proxyAg = new StoveStub(realAg.getRANS());
 
@@ -527,7 +529,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 				if (regData.isFake()) {
 
-					realAg = new Lamp(regData.getResourceName(), regData.getResourceName());
+					realAg = new Lamp(regData.getResourceName(),
+							regData.getResourceName());
 					realAg.identify();
 					proxyAg = new LampStub(realAg.getRANS());
 
@@ -550,7 +553,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 				if (regData.isFake()) {
 
-					realAg = new Television(regData.getResourceName(), regData.getResourceName());
+					realAg = new Television(regData.getResourceName(),
+							regData.getResourceName());
 					realAg.identify();
 					proxyAg = new TelevisionStub(realAg.getRANS());
 
@@ -573,7 +577,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 				if (regData.isFake()) {
 
-					realAg = new Bed(regData.getResourceName(), regData.getResourceName());
+					realAg = new Bed(regData.getResourceName(),
+							regData.getResourceName());
 					realAg.identify();
 					proxyAg = new BedStub(realAg.getRANS());
 
@@ -595,7 +600,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 				if (regData.isFake()) {
 
-					realAg = new Person(regData.getResourceName(), regData.getResourceName());
+					realAg = new Person(regData.getResourceName(),
+							regData.getResourceName());
 					realAg.identify();
 					proxyAg = new PersonStub(realAg.getRANS());
 
@@ -611,7 +617,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 			// Starts a middleware operation, listing all registered resources
 			// ("//")
-			MiddlewareOperation m = new MiddlewareOperation(this, "//", IResourceDiscovery.rans);
+			MiddlewareOperation m = new MiddlewareOperation(this, "//",
+					IResourceDiscovery.rans);
 			m.execute(null);
 
 			// An external resource... we must exit this method, not only
@@ -640,11 +647,11 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			editor.commit();
 
 			return;
-			
+
 		case RULE:
-			
+
 			this.mBar.show();
-			
+
 			return;
 
 		default:
@@ -823,7 +830,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		}
 
 		rl.insertMap(houseMap);
-		
+
 		state.setMapInfo(houseMap);
 	}
 
@@ -860,7 +867,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		// Option to load a different map file
 		menu.add("Load Map").setIcon(R.drawable.map);
 		// Option to create a logical expression (called context rule)
-		menu.add(Menu.NONE, RULE, Menu.NONE, "Create rule").setIcon(R.drawable.thunder);
+		menu.add(Menu.NONE, RULE, Menu.NONE, "Create rule").setIcon(
+				R.drawable.thunder);
 
 		menu.add(Menu.NONE, LOG, Menu.NONE, "View Log").setIcon(
 				R.drawable.log_icon);
@@ -938,13 +946,16 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		// Toast.makeText(this, resourceRAI, Toast.LENGTH_LONG).show();
 		if (resourceData.getType().equals(ResourceAgent.type(Stove.class))) {
 			regData.setIconType(STOVE);
-		} else if (resourceData.getType().equals(ResourceAgent.type(Lamp.class))) {
+		} else if (resourceData.getType()
+				.equals(ResourceAgent.type(Lamp.class))) {
 			regData.setIconType(LAMP);
 		} else if (resourceData.getType().equals(ResourceAgent.type(Bed.class))) {
 			regData.setIconType(BED);
-		} else if (resourceData.getType().equals(ResourceAgent.type(Television.class))) {
+		} else if (resourceData.getType().equals(
+				ResourceAgent.type(Television.class))) {
 			regData.setIconType(TV);
-		} else if (resourceData.getType().equals(ResourceAgent.type(Person.class))) {
+		} else if (resourceData.getType().equals(
+				ResourceAgent.type(Person.class))) {
 			regData.setIconType(PERSON);
 		}
 
