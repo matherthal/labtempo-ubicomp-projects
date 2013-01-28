@@ -1,5 +1,6 @@
 package br.uff.tempo.apps.map.dialogs;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -76,6 +77,11 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<ResourceDa
 
 		// call a method from the activity (callback)
 		IListGetter lg = (IListGetter) act;
+		
+		if (result == null) {
+			result = new ArrayList<ResourceData>();
+		}
+			
 		lg.onGetList(result);
 	}
 

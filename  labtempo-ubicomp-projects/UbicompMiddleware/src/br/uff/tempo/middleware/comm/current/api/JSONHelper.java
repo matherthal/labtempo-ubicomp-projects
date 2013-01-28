@@ -8,6 +8,8 @@ import java.util.UUID;
 
 import org.json.JSONException;
 
+import android.util.Log;
+
 import com.google.gson.Gson;
 
 public class JSONHelper {
@@ -40,6 +42,8 @@ public class JSONHelper {
 		if (void.class.equals(returnType)) {
 			return null;
 		}
+		
+		Log.d("SmartAndroid", "JSON String: " + jsonRPCString);
 		
 		JSONRPC jsonRpc = (new Gson()).fromJson(jsonRPCString, JSONRPC.class);
 		

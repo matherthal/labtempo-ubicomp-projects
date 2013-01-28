@@ -1,7 +1,6 @@
 package br.uff.tempo.apps.reminder;
 
 import java.security.InvalidParameterException;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
@@ -10,20 +9,26 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import br.uff.tempo.R;
+import br.uff.tempo.apps.map.dialogs.ChooseResource;
+import br.uff.tempo.apps.map.dialogs.IChooser;
+import br.uff.tempo.apps.map.dialogs.IListGetter;
+import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.apps.reminder.dialogs.ITimeAndDateReceiver;
 import br.uff.tempo.apps.reminder.dialogs.TimeAndDateDialog;
+import br.uff.tempo.middleware.management.Person;
+import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
-import br.uff.tempo.middleware.management.ResourceDiscovery;
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.resources.Television;
+import br.uff.tempo.middleware.resources.stubs.LampStub;
 
-public class ReminderActivity extends Activity implements ITimeAndDateReceiver {
+public class ReminderActivity extends Activity implements ITimeAndDateReceiver,
+		IListGetter, IChooser {
 
 	public static final int DAYS_TO_HOURS = 24;
 	public static final int WEEKS_TO_HOURS = 168;
@@ -37,6 +42,8 @@ public class ReminderActivity extends Activity implements ITimeAndDateReceiver {
 	private Spinner spnPeriodicity;
 	private TextView txtStartPrescription;
 	private TextView txtEndPrescription;
+
+	private ChooseResource dialog;
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -52,6 +59,8 @@ public class ReminderActivity extends Activity implements ITimeAndDateReceiver {
 
 		start = Calendar.getInstance();
 		end = Calendar.getInstance();
+		
+		dialog = new ChooseResource(this);
 
 		// init text views with current date
 		setLabels();
@@ -85,8 +94,6 @@ public class ReminderActivity extends Activity implements ITimeAndDateReceiver {
 
 		// Using Android AlarmManager, to schedule the prescription to
 		// appropriate time
-
-		// TODO search about 'PendingIntent'
 		Intent i = new Intent(this, ReminderReceiver.class);
 		i.putExtra("prescription", p);
 
@@ -95,7 +102,7 @@ public class ReminderActivity extends Activity implements ITimeAndDateReceiver {
 
 		AlarmManager am = (AlarmManager) getSystemService(ALARM_SERVICE);
 
-		//Set the Android alarm according the Prescription parameters
+		// Set the Android alarm according the Prescription parameters
 		if (p.getPeriod() != 0) {
 			am.setRepeating(AlarmManager.RTC_WAKEUP, p.getStartInTimeMillis(),
 					p.getPeriodInMillis(), pi);
@@ -146,6 +153,13 @@ public class ReminderActivity extends Activity implements ITimeAndDateReceiver {
 		new TimeAndDateDialog(this, this, TimeAndDateDialog.END).show();
 	}
 
+	public void onChoosePatientClick(View v) {
+
+		MiddlewareOperation mo = new MiddlewareOperation(this,
+				ResourceAgent.type(Person.class));
+		mo.execute(null);
+	}
+
 	// Called when user sets date and time in the dialog
 	@Override
 	public void onTimeAndDateChoosed(TimeAndDateDialog dialog) {
@@ -159,15 +173,13 @@ public class ReminderActivity extends Activity implements ITimeAndDateReceiver {
 		setLabels();
 	}
 
-	// TODO Move this method to an appropriated place
-	public void search() {
+	@Override
+	public void onRegisteredResourceChoosed(ResourceData resourceData) {
 
-		IResourceDiscovery discovery = new ResourceDiscoveryStub(
-				IResourceDiscovery.rans);
+	}
 
-		List<ResourceData> lista = discovery.searchForAttribute(
-				ResourceData.TYPE, Television.class.getCanonicalName());
-
-		ResourceDiscovery dis;
+	@Override
+	public void onGetList(List<ResourceData> result) {
+		dialog.showDialog(result);
 	}
 }

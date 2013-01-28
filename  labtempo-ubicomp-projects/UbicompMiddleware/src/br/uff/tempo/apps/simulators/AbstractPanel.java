@@ -4,7 +4,6 @@ import java.util.Random;
 
 import android.content.Context;
 import android.graphics.Canvas;
-import android.os.DropBoxManager;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;

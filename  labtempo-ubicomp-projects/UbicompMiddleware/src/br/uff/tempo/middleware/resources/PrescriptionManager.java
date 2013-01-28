@@ -9,13 +9,13 @@ import br.uff.tempo.middleware.resources.interfaces.IPrescriptionManager;
 
 public class PrescriptionManager extends ResourceAgent implements IPrescriptionManager {
 	
+	private static final long serialVersionUID = 8001461243364286356L;
+	
 	public static final String PRESCRIPTION_NEW = "prescriptionNew";
 	public static final String PRESCRIPTION_REMOVED = "PrescriptionRemoved";
 	public static final String PRESCRIPTION_FIRED = "removedPrescription";
 
 	private List<Prescription> prescriptions;
-	
-	private static final long serialVersionUID = 8001461243364286356L;
 	
 	public PrescriptionManager(String name, String rans) {
 		super(name, PrescriptionManager.class.getCanonicalName(), rans);

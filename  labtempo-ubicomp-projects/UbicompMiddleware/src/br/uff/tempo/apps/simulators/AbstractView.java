@@ -5,12 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.view.Window;
-import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IDialogFinishHandler;
 import br.uff.tempo.apps.map.dialogs.ResourceConfig;
 import br.uff.tempo.apps.map.objects.RegistryData;
-import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public abstract class AbstractView extends FragmentActivity implements
@@ -28,7 +25,6 @@ public abstract class AbstractView extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
 
 		// Get the intent that called this activity
 		Intent intent = getIntent();
@@ -38,24 +34,16 @@ public abstract class AbstractView extends FragmentActivity implements
 		// if there is data to read from intent
 		// (probably the agent) use it
 		if (fromExternal != null) {
-			agent = (IResourceAgent) fromExternal.getSerializable("agent");
-			this.fromMap = true;
-
-		// else, creates a new one
-		} else {
-
-			// Asks for the user about the Resource Informations
-			// such as Name and Position
-			callDialog();
-		}
-	}
-	
-	@Override
-	protected void onResume() {
-		super.onResume();
 		
-		if (fromMap) {
-			getPanel().setupInterest();
+			if (fromMap) {
+				
+				AbstractPanel panel = getPanel();
+				if (panel != null) {
+					panel.setupInterest();
+				} else {
+					Log.e("SmartAndroid", "AbstractView: Panel is null");
+				}
+			}
 		}
 	}
 
