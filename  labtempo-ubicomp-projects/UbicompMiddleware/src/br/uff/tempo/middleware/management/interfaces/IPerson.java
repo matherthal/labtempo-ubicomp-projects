@@ -11,12 +11,12 @@ public interface IPerson extends IResourceAgent {
 
 	public boolean removeSensor(SmartObject sensor);
 
-	public Position getPosition(int i);
-	
 	public Position getPosition();
+	
+	public Position getPosition(int i);
 
 	public Position getCurrentPosition();
-
+	
 	public void addPosition(Position position);
 	
 	public boolean removePosition(Position position);

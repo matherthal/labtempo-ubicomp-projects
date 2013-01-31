@@ -49,6 +49,7 @@ public class PersonStub extends ResourceAgentStub implements IPerson {
 		return (Position) makeCall("getPosition", params, Position.class);
 	}
 	
+	@Override
 	public Position getPosition() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
