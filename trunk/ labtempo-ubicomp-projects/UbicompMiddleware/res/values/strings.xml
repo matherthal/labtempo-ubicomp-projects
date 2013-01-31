@@ -28,6 +28,7 @@
     <!-- From Layout -->
 
     <string-array name="devices_array">
+        <item name="item_rule">Simuladores</item>
         <item name="item_rule">Regra</item>
         <item name="item_tv">Televisao</item>
         <item name="item_Cel">Celular</item>
@@ -52,7 +53,6 @@
         <item name="item_smartandroid_debugger">Simulador de Tracking</item>
         <item name="item_reminder">Plano de Cuidados</item>
     </string-array>
-    
     <string-array name="freq_array">
         <item name="item_horas">Hours</item>
         <item name="item_dias">Days</item>
@@ -126,17 +126,36 @@
     <string name="type_player_x_title">Player X</string>
     <!-- End tictactoe app -->
 
+    <string name="menu_settings">Settings</string>
+    
+    <!-- Simulator Chooser -->
+    <string name="add_simulator">New Agent</string>
+    <string name="choose_simulator">Existing Agent</string>
+
+    <!-- Custom Color Buttons Style -->
+    <style name="ButtonText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
 
     <!-- App Lamp Controller -->
-    <string name="menu_settings">Settings</string>
     <string name="title_activity_app_lamp_controller">AppLampController</string>
     <string name="app_lamp_controller">Controlador de Lâmpada</string>
     <!-- End App Lamp Controller -->
     <string name="title_activity_app_lamp_control_system">AppLampControlSystem</string>
-    
+
     <!-- Begin Debugger app -->
     <string name="debugger_name">SmartAndroid Debugger</string>
-	<!-- End Debugger app -->
+    <!-- End Debugger app -->
     <string name="dias">Dias</string>
     <string name="horas">Horas</string>
     <string name="semanas">Semanas</string>
@@ -152,5 +171,7 @@
     <string name="map_prefs_title_categoryMap">Application Settings</string>
     <string name="map_prefs_title_resStakeholders">Setup Stakeholders</string>
     <string name="map_prefs_summary_resStakeholders">Add or Remove Stakeholders from an Agent Interest</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_simul_creator">Simulators Creator</string>
 
 </resources>

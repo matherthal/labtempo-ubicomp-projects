@@ -31,6 +31,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".apps.simulators.creator.SimulCreatorActivity"
+            android:label="@string/title_activity_simul_creator" >
+        </activity>
         <activity android:name=".apps.simulators.stove.StoveView" />
         <activity android:name=".apps.simulators.bed.BedView" />
         <activity android:name=".apps.simulators.tv.TvView" />
@@ -48,7 +52,8 @@
         <activity android:name=".apps.map.settings.MapSettings" />
 
         <!-- AlarmApp -->
-        <receiver android:name=".apps.reminder.ReminderReceiver"></receiver>
+        <receiver android:name=".apps.reminder.ReminderReceiver" >
+        </receiver>
         <!-- End AlarmApp -->
 
 

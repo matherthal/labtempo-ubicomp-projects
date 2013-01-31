@@ -20,6 +20,7 @@ import br.uff.tempo.apps.reminder.ReminderActivity;
 import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.rule.Test_Rule_UseOfConectorAnd;
 import br.uff.tempo.apps.simulators.bed.BedView;
+import br.uff.tempo.apps.simulators.creator.SimulCreatorActivity;
 import br.uff.tempo.apps.simulators.lamp.LampView;
 import br.uff.tempo.apps.simulators.stove.StoveView;
 import br.uff.tempo.apps.simulators.tracking.TrackingView;
@@ -108,6 +109,9 @@ public class MainListView extends ListActivity {
 					startActivity(intent);
 				} else if (item.equals("Plano de Cuidados")) {
 					Intent intent = new Intent(MainListView.this, ReminderActivity.class);
+					startActivity(intent);
+				} else if (item.equals("Simuladores")) {
+					Intent intent = new Intent(MainListView.this, SimulCreatorActivity.class);
 					startActivity(intent);
 				} else {
 					Toast.makeText(MainListView.this, "Não existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();

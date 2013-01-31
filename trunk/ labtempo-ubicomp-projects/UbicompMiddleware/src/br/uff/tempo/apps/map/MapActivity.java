@@ -722,10 +722,10 @@ public class MapActivity extends SimpleBaseGameActivity implements
 				public boolean onAreaTouched(TouchEvent pSceneTouchEvent,
 						float pTouchAreaLocalX, float pTouchAreaLocalY) {
 
-					IPerson ag = (IPerson) intent.getExtras().getSerializable(
-							"agent");
-					String message = ag.getName();
-					this.showMessage(message);
+//					IPerson ag = (IPerson) intent.getExtras().getSerializable(
+//							"agent");
+//					String message = ag.getName();
+					this.showMessage("Yeah!");
 
 					return super.onAreaTouched(pSceneTouchEvent,
 							pTouchAreaLocalX, pTouchAreaLocalY);
