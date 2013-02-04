@@ -88,11 +88,16 @@ public class ChooseResource extends MapDialog implements
 			long id) {
 
 		IChooser chooser = (IChooser) activity;
+		ChoosedData data = new ChoosedData();
 
-		chooser.onRegisteredResourceChoosed(dataFromResouces.get(position));
+		if (dataFromResouces != null) {
+			data.setData(dataFromResouces.get(position));
+		} else {
+			data.setTag(listNames[position]);
+		}
+		
+		chooser.onRegisteredResourceChoosed(data);
 
 		dialog.cancel();
-
 	}
-
 }

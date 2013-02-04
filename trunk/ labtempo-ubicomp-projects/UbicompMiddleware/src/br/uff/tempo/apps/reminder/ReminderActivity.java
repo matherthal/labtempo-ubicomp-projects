@@ -9,13 +9,13 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
+import br.uff.tempo.apps.map.dialogs.ChoosedData;
 import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
@@ -24,8 +24,6 @@ import br.uff.tempo.apps.reminder.dialogs.TimeAndDateDialog;
 import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
-import br.uff.tempo.middleware.resources.Television;
-import br.uff.tempo.middleware.resources.stubs.LampStub;
 
 public class ReminderActivity extends Activity implements ITimeAndDateReceiver,
 		IListGetter, IChooser {
@@ -174,7 +172,7 @@ public class ReminderActivity extends Activity implements ITimeAndDateReceiver,
 	}
 
 	@Override
-	public void onRegisteredResourceChoosed(ResourceData resourceData) {
+	public void onRegisteredResourceChoosed(ChoosedData choosedData) {
 
 	}
 
