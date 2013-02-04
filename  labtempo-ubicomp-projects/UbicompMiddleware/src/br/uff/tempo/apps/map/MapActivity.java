@@ -76,12 +76,12 @@ import br.uff.tempo.apps.map.quickaction.ActionItem;
 import br.uff.tempo.apps.map.quickaction.QuickAction;
 import br.uff.tempo.apps.map.rule.RuleComposeBar;
 import br.uff.tempo.apps.map.settings.MapSettings;
+import br.uff.tempo.apps.simulators.utils.Creator;
 import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
-import br.uff.tempo.middleware.management.interfaces.IPerson;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
@@ -174,6 +174,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 	private TiledTextureRegion mPersonBlondGuy;
 	private TiledTextureRegion mPersonGrayGuy;
 	private TiledTextureRegion mPersonNurse;
+	
+	private Creator resCreator;
 
 	// Shared preferences
 	private SharedPreferences prefs;
@@ -443,6 +445,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 			} else {
 
 				houseMap = state.getMapInfo();
+				pushMap();
 
 				state.setLock(true);
 				for (RegistryData data : state.getData()) {
@@ -804,7 +807,9 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		final int mapHeight = this.mapFloorLayer.getHeight();
 
 		// Create a new Space (a set of places)
-		houseMap = new Space(mapWidth, mapHeight);
+		if (houseMap == null) {
+			houseMap = new Space(mapWidth, mapHeight);
+		}
 
 		for (TMXObject obj : group.getTMXObjects()) {
 
@@ -815,7 +820,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 			// Y coordinate is transformed. System origin is in bottom-left
 			// corner
-			// The original on is in top-left corner
+			// The original one was in top-left corner
 			float y0 = houseMap.invertYcoordinate(houseMap.pixelToMeters(obj
 					.getY() + obj.getHeight()));
 
