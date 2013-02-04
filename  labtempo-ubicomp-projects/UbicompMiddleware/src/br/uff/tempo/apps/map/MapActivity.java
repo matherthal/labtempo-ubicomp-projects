@@ -58,6 +58,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
+import br.uff.tempo.apps.map.dialogs.ChoosedData;
 import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IDialogFinishHandler;
 import br.uff.tempo.apps.map.dialogs.IListGetter;
@@ -937,8 +938,10 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 	// It is called when user select an item from registered resources list
 	@Override
-	public void onRegisteredResourceChoosed(ResourceData resourceData) {
+	public void onRegisteredResourceChoosed(ChoosedData choosedData) {
 
+		ResourceData resourceData = choosedData.getData();
+		
 		regData = new RegistryData(resourceData.getRai());
 		regData.setFake(false);
 

@@ -15,6 +15,7 @@ import android.widget.TextView;
 import android.widget.ToggleButton;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
+import br.uff.tempo.apps.map.dialogs.ChoosedData;
 import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
@@ -149,7 +150,9 @@ public class CounterApp2 extends Activity implements IChooser, IListGetter {
 	}
 	
 	@Override
-	public void onRegisteredResourceChoosed(ResourceData data) {
+	public void onRegisteredResourceChoosed(ChoosedData choosedData) {
+		
+		ResourceData data = choosedData.getData();
 		
 		//instantiate the stub (proxy) from lamp 
 		lamp = new LampStub(data.getRai());

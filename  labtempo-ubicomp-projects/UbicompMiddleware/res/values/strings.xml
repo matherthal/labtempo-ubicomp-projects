@@ -117,6 +117,14 @@
         <item>@string/type_player_human</item>
     </string-array>
 
+    <!-- Resources that already have simulators -->
+    <string-array name="res_simulators">
+        <item>Stove</item>
+        <item>Television</item>
+        <item>Bed</item>
+        <item>Lamp</item>
+    </string-array>
+
     <string name="type_player_o_default">@string/type_player_human</string>
     <string name="type_player_o_key">typePlayerO</string>
     <string name="type_player_o_title">Player O</string>
@@ -127,7 +135,7 @@
     <!-- End tictactoe app -->
 
     <string name="menu_settings">Settings</string>
-    
+
     <!-- Simulator Chooser -->
     <string name="add_simulator">New Agent</string>
     <string name="choose_simulator">Existing Agent</string>
@@ -173,5 +181,7 @@
     <string name="map_prefs_summary_resStakeholders">Add or Remove Stakeholders from an Agent Interest</string>
     <string name="hello_world">Hello world!</string>
     <string name="title_activity_simul_creator">Simulators Creator</string>
+    <string name="strSmartAndroid">SmartAndroid</string>
+    <string name="strResCreatorIntro">You can conect a simulator to either a new Resource Agent or an existing (registered) one </string>
 
 </resources>

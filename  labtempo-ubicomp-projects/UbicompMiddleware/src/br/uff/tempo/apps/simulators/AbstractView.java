@@ -1,24 +1,20 @@
 package br.uff.tempo.apps.simulators;
 
-import android.app.Dialog;
+import java.util.Random;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import br.uff.tempo.apps.map.dialogs.IDialogFinishHandler;
 import br.uff.tempo.apps.map.dialogs.ResourceConfig;
-import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
-public abstract class AbstractView extends FragmentActivity implements
-		IDialogFinishHandler {
+public abstract class AbstractView extends FragmentActivity {
 
 	private IResourceAgent agent;
-	private boolean fromMap = false;
 
 	// Dialog to get resource information
 	private ResourceConfig resConf;
-	
 	private AbstractPanel panel;
 
 	@Override
@@ -35,52 +31,31 @@ public abstract class AbstractView extends FragmentActivity implements
 		// (probably the agent) use it
 		if (fromExternal != null) {
 		
-			if (fromMap) {
-				
-				AbstractPanel panel = getPanel();
-				if (panel != null) {
-					panel.setupInterest();
-				} else {
-					Log.e("SmartAndroid", "AbstractView: Panel is null");
-				}
+			agent = (IResourceAgent) fromExternal.getSerializable("agent");
+			
+			AbstractPanel panel = getPanel();
+			if (panel != null) {
+				panel.setupInterest();
+			} else {
+				Log.e("SmartAndroid", "AbstractView: Panel is null");
 			}
-		}
-	}
-
-	@Override
-	public void onDialogFinished(Dialog dialog) {
-		
-		agent = createNewResourceAgent(resConf.getData());
-
-		if (agent != null) {
-			agent.identify();
-			
-			AbstractPanel p = getPanel();
-			
-			p.setAgent(agent);
-			p.thereIsAnAgent();
-			
-			p.setupInterest();
-			
-			p.invalidate();
-			
 		} else {
-			Log.e("SmartAndroid", "AbstractView: Agent is NULL!");
+			//Just to compatibility
+			agent = createNewResourceAgent();
+			agent.identify();
 		}
 	}
 
-	private final void callDialog() {
-
-		resConf = new ResourceConfig(this);
-		resConf.showDialog();
-	}
-
-	public abstract IResourceAgent createNewResourceAgent(RegistryData data);
+	public abstract IResourceAgent createNewResourceAgent();
 	
 	public abstract AbstractPanel getPanel();
 
 	public IResourceAgent getAgent() {
 		return this.agent;
+	}
+	
+	public int getNextID() {
+		return new Random().nextInt(100);
 	}
 
 	public void setAgent(IResourceAgent agent) {

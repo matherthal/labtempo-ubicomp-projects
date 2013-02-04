@@ -1,5 +1,7 @@
 package br.uff.tempo.apps.simulators.bed;
 
+import java.util.Random;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -22,9 +24,10 @@ public class BedView extends AbstractView {
 	}
 
 	@Override
-	public IResourceAgent createNewResourceAgent(RegistryData data) {
+	public IResourceAgent createNewResourceAgent() {
 		
-		return new Bed(data.getResourceName(), data.getResourceName());
+		String name = "GeneralBed" + getNextID();
+		return new Bed(name, name);
 	}
 
 	public void onRegisterClick(View target) {
@@ -35,5 +38,4 @@ public class BedView extends AbstractView {
 	public AbstractPanel getPanel() {
 		return (AbstractPanel) findViewById(R.id.bedPanel);
 	}
-
 }

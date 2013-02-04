@@ -38,9 +38,10 @@ public class StoveView extends AbstractView {
 	}
 	
 	@Override
-	public IResourceAgent createNewResourceAgent(RegistryData data) {
-		//TODO get the name from a Dialog box
-		return new Stove(data.getResourceName(), data.getResourceName());
+	public IResourceAgent createNewResourceAgent() {
+		
+		String name = "GeneralStove" + getNextID();
+		return new Stove(name, name);
 	}
 
 	@Override

@@ -73,12 +73,10 @@ public class ResourceConfig extends MapDialog {
 				}
 			});
 		}
-
 	}
 
 	// When Cancel button is clicked
 	public void btnCancelClick(View v) {
-
 		dialog.cancel();
 	}
 

@@ -19,8 +19,9 @@ public class LampView extends AbstractView {
 	}
 
 	@Override
-	public IResourceAgent createNewResourceAgent(RegistryData data) {
-		return new Lamp(data.getResourceName(), data.getResourceName());
+	public IResourceAgent createNewResourceAgent() {
+		String name = "GeneralLamp" + getNextID();
+		return new Lamp(name, name);
 	}
 	
 	public AbstractPanel getPanel() {

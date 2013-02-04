@@ -11,6 +11,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
+import br.uff.tempo.apps.map.dialogs.ChoosedData;
 import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
@@ -84,7 +85,9 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 	}
 	
 	@Override
-	public void onRegisteredResourceChoosed(ResourceData resource) {
+	public void onRegisteredResourceChoosed(ChoosedData choosedData) {
+		
+		ResourceData resource = choosedData.getData();
 		
 		// Unregister an Agent
 		if (op == OP_UNREG) {

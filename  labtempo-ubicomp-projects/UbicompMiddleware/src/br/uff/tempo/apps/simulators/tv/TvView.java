@@ -24,8 +24,10 @@ public class TvView extends AbstractView {
 	}
 
 	@Override
-	public IResourceAgent createNewResourceAgent(RegistryData data) {
-		return new Television(data.getResourceName(), data.getResourceName());		
+	public IResourceAgent createNewResourceAgent() {
+		
+		String name = "GeneralTV" + getNextID();
+		return new Television(name, name);		
 	}
 
 	@Override
