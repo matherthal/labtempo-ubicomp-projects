@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
@@ -15,24 +16,23 @@ import br.uff.tempo.middleware.resources.Generic;
 
 public abstract class AbstractPanel extends View {	
 
-	private static int count = 0;
 	private int screenCenterX;
 	private int screenCenterY;
 	
 	private int screenWidth;
 	private int screenHeight;
 	
+	private Generic stakeholder;
+	
 	private Handler handler = new Handler();
 	private float scale;
 	
-	private boolean thereIsAnAgent = true;
-
 	public AbstractPanel(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		init();
 	}
 
-	protected void init() {
+	private void init() {
 
 		WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
 		DisplayMetrics metrics = new DisplayMetrics();
@@ -47,16 +47,6 @@ public abstract class AbstractPanel extends View {
 		screenCenterY = screenHeight / 2;
 		
 		scale = getResources().getDisplayMetrics().density;
-		
-		IResourceAgent res = getAgentFromView();
-		
-		if (res == null) {
-			thereIsNotAnAgent();
-		} else {
-			thereIsAnAgent();
-			setAgent(res);
-		}
-
 		initialization();
 	}
 	
@@ -64,32 +54,28 @@ public abstract class AbstractPanel extends View {
 	protected void onDraw(Canvas canvas) {
 		super.onDraw(canvas);
 	
-		if (thereIsAnAgent) {
+		if (getAgent() != null) {
 			drawCanvas(canvas);
+		} else {
+			Log.wtf("SmartAndroid", "Why is my resource agent NULL?");
 		}
 	}
 	
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
 	
-		if (thereIsAnAgent) {
+		if (getAgent() != null) {
 			touch(event);
+		} else {
+			Log.wtf("SmartAndroid", "Why is my resource agent NULL?");
 		}
 		
 		return super.onTouchEvent(event);
 	}
 	
-	public void thereIsAnAgent() {
-		
-		thereIsAnAgent = true;
-	}
-	
-	public void thereIsNotAnAgent() {
-		thereIsAnAgent = false;
-	}
-	
 	public abstract void initialization();
 	public abstract void setAgent(IResourceAgent agent);
+	public abstract IResourceAgent getAgent();
 	public abstract void touch(MotionEvent event);
 	public abstract void drawCanvas(Canvas canvas);
 	
@@ -110,7 +96,7 @@ public abstract class AbstractPanel extends View {
 		// When the agent change its state, redraw the screen
 		IResourceAgent res = getAgentFromView();
 		
-		new Generic(res.getName() + "Stakeholder" + getNextID(), res.getName() + "Stakeholder" + getNextID(), res, "all") {
+		stakeholder = new Generic(res.getName() + "Stakeholder" + getNextID(), res.getName() + "Stakeholder" + getNextID(), res, "all") {
 			
 			private static final long serialVersionUID = 1L;
 
@@ -125,9 +111,12 @@ public abstract class AbstractPanel extends View {
 						AbstractPanel.this.invalidate();	
 					}
 				});
-				
 			}
 		};
+	}
+	
+	public void releaseResources() {
+		stakeholder.unregister();
 	}
 	
 	public int getNextID() {

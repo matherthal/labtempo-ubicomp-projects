@@ -78,4 +78,9 @@ public class TvPanel extends AbstractPanel {
 	public void setAgent(IResourceAgent agent) {
 		this.agent = (ITelevision) agent;
 	}
+	
+	@Override
+	public IResourceAgent getAgent() {
+		return this.agent;
+	}
 }

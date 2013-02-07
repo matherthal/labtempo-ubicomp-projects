@@ -63,6 +63,11 @@ public class LampPanel extends AbstractPanel {
 	public void setAgent(IResourceAgent agent) {
 		this.agent = (ILamp) agent;
 	}
+	
+	@Override
+	public IResourceAgent getAgent() {
+		return this.agent;
+	}
 
 	@Override
 	public void touch(MotionEvent event) {
@@ -93,6 +98,5 @@ public class LampPanel extends AbstractPanel {
 	@Override
 	public void onUpdate(String method, Object value) {
 		// TODO Auto-generated method stub
-
 	}
 }
