@@ -87,5 +87,10 @@ public class BedPanel extends AbstractPanel {
 	public void setAgent(IResourceAgent agent) {
 		this.agent = (IBed) agent;
 	}
+	
+	@Override
+	public IResourceAgent getAgent() {
+		return this.agent;
+	}
 
 }

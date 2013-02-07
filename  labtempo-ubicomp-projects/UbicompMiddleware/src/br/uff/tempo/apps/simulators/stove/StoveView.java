@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import br.uff.tempo.R;
-import br.uff.tempo.apps.map.objects.RegistryData;
 import br.uff.tempo.apps.simulators.AbstractPanel;
 import br.uff.tempo.apps.simulators.AbstractView;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
@@ -17,11 +16,8 @@ public class StoveView extends AbstractView {
 	
 	private MyPageAdapter mPageAdapter;
 
-	/** Called when the activity is first created. */
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-
-		super.onCreate(savedInstanceState);
+	public void createView(Bundle savedInstanceState) {
 		super.setContentView(R.layout.viewpager_layout);
 
 		// Used to create "pages" in this activity (pages can changed with a
@@ -34,9 +30,8 @@ public class StoveView extends AbstractView {
 
 		ViewPager pager = (ViewPager) super.findViewById(R.id.viewpager);
 		pager.setAdapter(this.mPageAdapter);
-
 	}
-	
+
 	@Override
 	public IResourceAgent createNewResourceAgent() {
 		
@@ -48,5 +43,4 @@ public class StoveView extends AbstractView {
 	public AbstractPanel getPanel() {
 		return (AbstractPanel) findViewById(R.id.stoveBurnersPanel);
 	}
-
 }

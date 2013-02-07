@@ -33,6 +33,7 @@ public abstract class MapDialog implements OnCancelListener, OnClickListener {
 
 	public void showDialog() {
 
+		this.finished = false;
 		dialog.show();
 	}
 	
@@ -49,5 +50,4 @@ public abstract class MapDialog implements OnCancelListener, OnClickListener {
 	public boolean isFinished() {
 		return this.finished;
 	}
-
 }

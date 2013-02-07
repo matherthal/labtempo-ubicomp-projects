@@ -122,8 +122,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 	public static final int STOVE = GPR_RESOURCES + 1;
 	public static final int PERSON = STOVE + 1;
 	public static final int TV = PERSON + 1;
-	public static final int AR_CONDITIONER = TV + 1;
-	public static final int DVD = AR_CONDITIONER + 1;
+	public static final int AIR_CONDITIONER = TV + 1;
+	public static final int DVD = AIR_CONDITIONER + 1;
 	public static final int BED = DVD + 1;
 	public static final int LAMP = BED + 1;
 	public static final int TEMPERATURE = LAMP + 1;
@@ -165,6 +165,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 	private TextureRegion mTVTextureRegion;
 	private TextureRegion mBedTextureRegion;
 	private TextureRegion mLampTextureRegion;
+	private TextureRegion mAirTextureRegion;
 	// People
 	private TiledTextureRegion mPersonBaldMan;
 	private TiledTextureRegion mPersonBlondMan;
@@ -310,6 +311,11 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		this.mLampTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(this.mBuildableTexture, this,
 						"lamp_inactive.png");
+		
+		// All People sprites are 96x128 pixels
+		this.mAirTextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(this.mBuildableTexture, this,
+						"air_cond.png");
 
 		// All People sprites are 96x128 pixels
 		this.mPersonBaldMan = BitmapTextureAtlasTextureRegionFactory
@@ -503,6 +509,29 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 			c = br.uff.tempo.apps.simulators.stove.StoveView.class;
 			tr = this.mStoveTextureRegion;
+
+			// create an agent if it's a simulated resource; a stub otherwise
+			if (proxyAg == null) {
+
+				if (regData.isFake()) {
+
+					realAg = new Stove(regData.getResourceName(),
+							regData.getResourceName());
+					realAg.identify();
+					proxyAg = new StoveStub(realAg.getRANS());
+
+				} else {
+					realAg = null;
+					proxyAg = new StoveStub(regData.getResourceName());
+				}
+			}
+
+			break;
+			
+		case AIR_CONDITIONER:
+
+			c = br.uff.tempo.apps.simulators.stove.StoveView.class;
+			tr = this.mAirTextureRegion;
 
 			// create an agent if it's a simulated resource; a stub otherwise
 			if (proxyAg == null) {
@@ -854,7 +883,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		simulated.add(GPR_RESOURCES, STOVE, Menu.NONE, "Smart Stove");
 		simulated.add(GPR_RESOURCES, LAMP, Menu.NONE, "Smart Lamp");
 		simulated.add(GPR_RESOURCES, BED, Menu.NONE, "Smart Bed");
-		simulated.add(GPR_RESOURCES, AR_CONDITIONER, Menu.NONE,
+		simulated.add(GPR_RESOURCES, AIR_CONDITIONER, Menu.NONE,
 				"Ar-conditioner");
 
 		simulated.add(GPR_RESOURCES, TEMPERATURE, Menu.NONE,

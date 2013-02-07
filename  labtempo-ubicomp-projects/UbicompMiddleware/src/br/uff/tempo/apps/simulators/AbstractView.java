@@ -6,22 +6,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import br.uff.tempo.apps.map.dialogs.ResourceConfig;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 
 public abstract class AbstractView extends FragmentActivity {
 
 	private IResourceAgent agent;
-
-	// Dialog to get resource information
-	private ResourceConfig resConf;
 	private AbstractPanel panel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		
 		super.onCreate(savedInstanceState);
-
+		
+		createView(savedInstanceState);
+		
+		panel = getPanel();
+		
 		// Get the intent that called this activity
 		Intent intent = getIntent();
 		// Get the data that came with the intent
@@ -30,24 +30,25 @@ public abstract class AbstractView extends FragmentActivity {
 		// if there is data to read from intent
 		// (probably the agent) use it
 		if (fromExternal != null) {
-		
 			agent = (IResourceAgent) fromExternal.getSerializable("agent");
-			
-			AbstractPanel panel = getPanel();
-			if (panel != null) {
-				panel.setupInterest();
-			} else {
-				Log.e("SmartAndroid", "AbstractView: Panel is null");
-			}
 		} else {
 			//Just to compatibility
 			agent = createNewResourceAgent();
 			agent.identify();
 		}
+		
+		if (panel != null) {
+			panel.setAgent(agent);
+			panel.setupInterest();
+			panel.invalidate();
+			Log.d("SmartAndroid", "AbstractView: Interests configured");
+		} else {
+			Log.e("SmartAndroid", "AbstractView: Panel is null");
+		}
 	}
 
 	public abstract IResourceAgent createNewResourceAgent();
-	
+	public abstract void createView(Bundle savedInstanceState);	
 	public abstract AbstractPanel getPanel();
 
 	public IResourceAgent getAgent() {
@@ -60,5 +61,14 @@ public abstract class AbstractView extends FragmentActivity {
 
 	public void setAgent(IResourceAgent agent) {
 		this.agent = agent;
+	}
+	
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		
+		if (panel != null) {
+			panel.releaseResources();
+		}
 	}
 }

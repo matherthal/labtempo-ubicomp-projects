@@ -10,8 +10,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.Toast;
 import br.uff.tempo.R;
-import br.uff.tempo.apps.simulators.AbstractPanel;
-import br.uff.tempo.middleware.resources.interfaces.IStove;
 
 public class StoveOvenPanel extends StovePanel {
 
@@ -39,14 +37,11 @@ public class StoveOvenPanel extends StovePanel {
 		// on screen center
 		pointX = getScreenCenterX() - mBitmap.getWidth() / 2;
 		pointY = getScreenCenterY() - mBitmap.getHeight() / 2;
-		
-		thereIsAnAgent();
 	}
 
 	@Override
 	public void onUpdate(String method, Object value) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

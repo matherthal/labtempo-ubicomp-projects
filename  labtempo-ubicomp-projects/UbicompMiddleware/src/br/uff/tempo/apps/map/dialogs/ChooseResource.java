@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -99,5 +100,12 @@ public class ChooseResource extends MapDialog implements
 		chooser.onRegisteredResourceChoosed(data);
 
 		dialog.cancel();
+	}
+	
+	@Override
+	public void onCancel(DialogInterface dialog) {
+		super.onCancel(dialog);
+		dataFromResouces = null;
+		listNames = null;
 	}
 }
