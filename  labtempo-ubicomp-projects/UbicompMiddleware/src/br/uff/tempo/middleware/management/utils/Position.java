@@ -2,8 +2,12 @@ package br.uff.tempo.middleware.management.utils;
 
 import java.io.Serializable;
 
+import android.util.FloatMath;
+
 public class Position implements Serializable {
 
+	private static final long serialVersionUID = -2046096530465014330L;
+	
 	float x;
 	float y;
 
@@ -79,7 +83,7 @@ public class Position implements Serializable {
 		float a = position.x - x;
 		float b = position.y - y;
 		
-		return roundTo2((float) Math.sqrt(a * a + b * b));
+		return roundTo2(FloatMath.sqrt(a * a + b * b));
 	}
 	
 	//proposital don't override toString
