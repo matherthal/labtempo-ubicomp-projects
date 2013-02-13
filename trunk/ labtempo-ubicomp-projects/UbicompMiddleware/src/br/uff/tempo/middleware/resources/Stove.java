@@ -33,8 +33,6 @@ public class Stove extends ResourceAgent implements IStove {
 	private float ovenTemp = 0.0f;
 	private boolean ovenOn = false;
 
-	private boolean stoveOn = false;
-
 	// Stove Burners
 	private List<Float> burners;
 

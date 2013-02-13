@@ -16,6 +16,10 @@ public class Lamp extends ResourceAgent implements ILamp {
 	public Lamp(String name, String rans) {
 		super(name, "br.uff.tempo.middleware.resources.Lamp", rans);
 	}
+	
+	public Lamp(String name, String rans, Position position) {
+		super(name, "br.uff.tempo.middleware.resources.Lamp", rans, position);
+	}
 
 	@Override
 	@ContextVariable(name = "Lampada ligada")

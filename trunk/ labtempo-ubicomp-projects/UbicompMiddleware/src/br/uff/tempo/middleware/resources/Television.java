@@ -1,13 +1,13 @@
 package br.uff.tempo.middleware.resources;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.ITelevision;
 
 public class Television extends ResourceAgent implements ITelevision {
 	
 	private static final long serialVersionUID = 1L;
 
-	private int maxChannels = 10;
 	private int channel;
 	private int volume;
 	private boolean on;
@@ -16,6 +16,10 @@ public class Television extends ResourceAgent implements ITelevision {
 
 	public Television(String name, String rans) {
 		super(name, "br.uff.tempo.middleware.resources.Television", rans);
+	}
+	
+	public Television(String name, String rans, Position position) {
+		super(name, "br.uff.tempo.middleware.resources.Television", rans, position);
 	}
 
 	@Override
