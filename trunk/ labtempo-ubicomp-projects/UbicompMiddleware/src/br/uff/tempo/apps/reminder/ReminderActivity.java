@@ -15,7 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
-import br.uff.tempo.apps.map.dialogs.ChoosedData;
+import br.uff.tempo.apps.map.dialogs.ChosenData;
 import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
@@ -172,7 +172,7 @@ public class ReminderActivity extends Activity implements ITimeAndDateReceiver,
 	}
 
 	@Override
-	public void onRegisteredResourceChoosed(ChoosedData choosedData) {
+	public void onResourceChosen(ChosenData choosedData) {
 
 	}
 
