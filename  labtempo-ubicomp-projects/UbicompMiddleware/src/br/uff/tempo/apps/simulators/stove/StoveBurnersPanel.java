@@ -9,8 +9,6 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
 import br.uff.tempo.R;
-import br.uff.tempo.apps.simulators.AbstractPanel;
-import br.uff.tempo.middleware.resources.interfaces.IStove;
 
 public class StoveBurnersPanel extends StovePanel {
 
@@ -55,10 +53,7 @@ public class StoveBurnersPanel extends StovePanel {
 	}
 
 	@Override
-	public void onUpdate(String method, Object value) {
-		// TODO Auto-generated method stub
-
-	}
+	public void onUpdate(String method, Object value) {}
 
 	@Override
 	public void touch(MotionEvent event) {
