@@ -58,7 +58,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
-import br.uff.tempo.apps.map.dialogs.ChoosedData;
+import br.uff.tempo.apps.map.dialogs.ChosenData;
 import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IDialogFinishHandler;
 import br.uff.tempo.apps.map.dialogs.IListGetter;
@@ -461,7 +461,6 @@ public class MapActivity extends SimpleBaseGameActivity implements
 				state.setLock(false);
 			}
 		}
-
 		Log.i(TAG, "Resume Game");
 	}
 
@@ -471,11 +470,9 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 	// Called when a new resource agent is created
 	private void callConfigDialog() {
-
 		// It is a configuration dialog to
 		// get a name, location and
 		// others configurations
-
 		this.resConfigured = false;
 		resConf.showDialog();
 	}
@@ -650,7 +647,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 			// Starts a middleware operation, listing all registered resources
 			// ("//")
-			MiddlewareOperation m = new MiddlewareOperation(this, "//",
+			MiddlewareOperation m = new MiddlewareOperation(this, this, "//",
 					IResourceDiscovery.rans);
 			m.execute(null);
 
@@ -972,7 +969,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 	// It is called when user select an item from registered resources list
 	@Override
-	public void onRegisteredResourceChoosed(ChoosedData choosedData) {
+	public void onResourceChosen(ChosenData choosedData) {
 
 		ResourceData resourceData = choosedData.getData();
 		
