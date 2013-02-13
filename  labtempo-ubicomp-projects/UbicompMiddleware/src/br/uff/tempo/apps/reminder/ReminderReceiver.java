@@ -3,17 +3,15 @@ package br.uff.tempo.apps.reminder;
 import java.io.Serializable;
 import java.util.List;
 
-import br.uff.tempo.middleware.management.ResourceData;
-import br.uff.tempo.middleware.management.ResourceDiscovery;
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.resources.Television;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+import br.uff.tempo.middleware.management.ResourceData;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.resources.Television;
 
 public class ReminderReceiver extends BroadcastReceiver {
 	
