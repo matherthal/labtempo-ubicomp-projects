@@ -33,8 +33,6 @@ public class Generic extends ResourceAgent implements IGeneric {
 		}
 		
 	}
-
 	@Override
-	public void notificationHandler(String rai, String method, Object value) {
-	}
+	public void notificationHandler(String rai, String method, Object value) {}
 }
