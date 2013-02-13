@@ -1,15 +1,17 @@
 package br.uff.tempo.apps.simulators.utils;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import br.uff.tempo.apps.map.dialogs.ChoosedData;
+import br.uff.tempo.apps.map.dialogs.ChosenData;
 import br.uff.tempo.apps.simulators.bed.BedView;
 import br.uff.tempo.apps.simulators.lamp.LampView;
 import br.uff.tempo.apps.simulators.stove.StoveView;
 import br.uff.tempo.apps.simulators.tv.TvView;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
+import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.stubs.PersonStub;
+import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.Bed;
 import br.uff.tempo.middleware.resources.Lamp;
 import br.uff.tempo.middleware.resources.Stove;
@@ -20,58 +22,97 @@ import br.uff.tempo.middleware.resources.stubs.StoveStub;
 import br.uff.tempo.middleware.resources.stubs.TelevisionStub;
 
 public class ResourceChoice {
-
-	public static final String SIMULATOR = "simulator";
+	
 	public static final String AGENT = "agent";
+	public static final String SIMULATOR = "simulator";
 
-	public static Map<String, Object> choiceResource(ResourceData resourceData) {
+	public static ResourceWrapper choiceResource(ResourceData resourceData) {
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		ResourceWrapper wrapper = new ResourceWrapper();
 
 		if (resourceData.getType().equals(ResourceAgent.type(Stove.class))) {
-			map.put(SIMULATOR, StoveView.class);
-			map.put(AGENT, new StoveStub(resourceData.getName()));
-		} else if (resourceData.getType()
-				.equals(ResourceAgent.type(Lamp.class))) {
-			map.put(SIMULATOR, LampView.class);
-			map.put(AGENT, new LampStub(resourceData.getName()));
+			
+			wrapper.setSimulator(StoveView.class);
+			wrapper.setStub(new StoveStub(resourceData.getName()));
+			
+		} else if (resourceData.getType().equals(ResourceAgent.type(Lamp.class))) {
+			
+			wrapper.setSimulator(LampView.class);
+			wrapper.setStub(new LampStub(resourceData.getName()));
+			
 		} else if (resourceData.getType().equals(ResourceAgent.type(Bed.class))) {
-			map.put(SIMULATOR, BedView.class);
-			map.put(AGENT, new BedStub(resourceData.getName()));
-		} else if (resourceData.getType().equals(
-				ResourceAgent.type(Television.class))) {
-			map.put(SIMULATOR, TvView.class);
-			map.put(AGENT, new TelevisionStub(resourceData.getName()));
+			
+			wrapper.setSimulator(BedView.class);
+			wrapper.setStub(new BedStub(resourceData.getName()));
+			
+		} else if (resourceData.getType().equals(ResourceAgent.type(Television.class))) {
+			
+			wrapper.setSimulator(TvView.class);
+			wrapper.setStub(new TelevisionStub(resourceData.getName()));
+			
+		} else if (resourceData.getType().equals(ResourceAgent.type(Person.class))) {
+			
+			wrapper.setStub(new PersonStub(resourceData.getName()));
+			//PS: Thre is no simulator class to the person
+			
+		} else {
+			
+			throw new SmartAndroidRuntimeException(resourceData.getType()
+					+ " cannot be found!");
 		}
+		
+		wrapper.setId(resourceData.getType());
 
-		return map;
+		return wrapper;
 	}
 
-	public static Map<String, Object> choiceNewResource(ChoosedData choosedData) {
+	public static ResourceWrapper choiceNewResource(ChosenData chosenData, Position position) {
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		ResourceWrapper wrapper = new ResourceWrapper();
 
-		if (choosedData.getTag().equals(ResourceAgent.type(Stove.class))) {
-			String name = choosedData.getName();
-			map.put(SIMULATOR, StoveView.class);
-			map.put(AGENT, new Stove(name, name));
+		if (chosenData.getTag().equals(ResourceAgent.type(Stove.class))) {
 			
-		} else if (choosedData.getTag()	.equals(ResourceAgent.type(Lamp.class))) {
-			String name = choosedData.getName();
-			map.put(SIMULATOR, LampView.class);
-			map.put(AGENT, new Lamp(name, name));
+			String name = chosenData.getName();
+			wrapper.setSimulator(StoveView.class);
+			IResourceAgent agent = new Stove(name, name, position);
+			agent.identify();
+			wrapper.setAgent(agent);
+			wrapper.setStub(new StoveStub(name));
+
+		} else if (chosenData.getTag().equals(ResourceAgent.type(Lamp.class))) {
 			
-		} else if (choosedData.getTag().equals(ResourceAgent.type(Bed.class))) {
-			String name = choosedData.getName();
-			map.put(SIMULATOR, BedView.class);
-			map.put(AGENT, new Bed(name, name));
+			String name = chosenData.getName();
+			wrapper.setSimulator(LampView.class);
+			IResourceAgent agent = new Lamp(name, name, position);
+			agent.identify();
+			wrapper.setAgent(agent);
+			wrapper.setStub(new LampStub(name));
+
+		} else if (chosenData.getTag().equals(ResourceAgent.type(Bed.class))) {
 			
-		} else if (choosedData.getTag().equals(	ResourceAgent.type(Television.class))) {
-			String name = choosedData.getName();
-			map.put(SIMULATOR, TvView.class);
-			map.put(AGENT, new Television(name, name));
+			String name = chosenData.getName();
+			wrapper.setSimulator(BedView.class);
+			IResourceAgent agent = new Bed(name, name, position);
+			agent.identify();
+			wrapper.setAgent(agent);
+			wrapper.setStub(new BedStub(name));
+
+		} else if (chosenData.getTag().equals(ResourceAgent.type(Television.class))) {
+			
+			String name = chosenData.getName();
+			wrapper.setSimulator(TvView.class);
+			IResourceAgent agent = new Television(name, name, position);
+			agent.identify();
+			wrapper.setAgent(agent);
+			wrapper.setStub(new TelevisionStub(name));
+			
+		} else {
+			throw new SmartAndroidRuntimeException(chosenData.getTag()
+					+ " cannot be found!");
 		}
+		
+		wrapper.setId(chosenData.getTag());
 
-		return map;
+		return wrapper;
 	}
 }
