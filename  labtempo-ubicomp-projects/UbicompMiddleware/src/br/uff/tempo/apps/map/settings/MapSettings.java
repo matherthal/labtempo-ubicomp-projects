@@ -11,7 +11,7 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import br.uff.tempo.R;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
-import br.uff.tempo.apps.map.dialogs.ChoosedData;
+import br.uff.tempo.apps.map.dialogs.ChosenData;
 import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
@@ -39,12 +39,13 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 	private Map<String, String> stakeholderNames;
 	
 	@Override
+	@SuppressWarnings("all")
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		addPreferencesFromResource(R.xml.map_prefs);
 		
 		// Get the references to all registered resources
-		new MiddlewareOperation(this, "//", IResourceDiscovery.rans).execute(null);
+		new MiddlewareOperation(this, this, "//", IResourceDiscovery.rans).execute(null);
 		
 		chooseResourceDialog = new ChooseResource(this);
 		stakeholderDialog = new ChooseResource(this);
@@ -85,7 +86,8 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 	}
 	
 	@Override
-	public void onRegisteredResourceChoosed(ChoosedData choosedData) {
+	@SuppressWarnings("all")
+	public void onResourceChosen(ChosenData choosedData) {
 		
 		ResourceData resource = choosedData.getData();
 		
@@ -93,8 +95,7 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 		if (op == OP_UNREG) {
 			
 			new ResourceAgentStub(resource.getRai()).unregister();
-			
-			new MiddlewareOperation(this, "//", IResourceDiscovery.rans).execute(null);
+			new MiddlewareOperation(this, this, "//", IResourceDiscovery.rans).execute(null);
 			
 		// Setup the stakeholders from an Agent
 		} else if (op == OP_SETUP){
