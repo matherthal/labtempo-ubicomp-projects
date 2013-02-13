@@ -2,11 +2,11 @@ package br.uff.tempo.apps.map.dialogs;
 
 import br.uff.tempo.middleware.management.ResourceData;
 
-public class ChoosedData {
+public class ChosenData {
 
-	private String tag;
 	private String name;
 	private ResourceData data;
+	private String tag;
 	
 	public String getTag() {
 		return tag;
