@@ -23,7 +23,7 @@ public class SceneState implements Serializable {
 		return isLocked;
 	}
 
-	public void setLock(boolean lock) {
+	public synchronized void setLock(boolean lock) {
 		this.isLocked = lock;
 	}
 
