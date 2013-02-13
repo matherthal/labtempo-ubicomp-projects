@@ -8,9 +8,6 @@ import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.color.Color;
-
-import android.content.Intent;
 
 //implementing long press by hands!
 public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite implements INotificationBoxReceiver {
@@ -19,7 +16,6 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 	private static final int LONGPRESS_THRESHOLD = 500;
 
 	private boolean mLongPressed;
-	private Intent intent;
 	private Timer mLongPressTimer;
 
 	private NotificationBox nbox;
@@ -36,7 +32,6 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 		this.attachChild(nbox);
 	}
 	
-	
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -45,17 +40,6 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 	public void showMessage(String message) {
 	
 		nbox.show(message);
-	}
-
-	@Override
-	public void setNotificationBoxColor(Color color) {
-		nbox.setColor(color);
-	}
-	
-	@Override
-	public void setNotificationBoxVisible(boolean visible) {
-
-		nbox.setVisible(visible);
 	}
 
 	@Override
@@ -111,12 +95,6 @@ public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite 
 			mLongPressTimer.cancel();
 		}
 		mLongPressed = false;
-	}
-
-	public void setAction(Intent i) {
-		this.intent = i;
-
-		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 	}
 
 	// ===========================================================

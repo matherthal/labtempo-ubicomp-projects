@@ -9,7 +9,6 @@ import org.andengine.opengl.font.FontManager;
 import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.util.color.Color;
 
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
@@ -93,7 +92,6 @@ public class AnimatedResourceObject extends AnimatedSprite implements
 					public void onPathStarted(final PathModifier pPathModifier,
 							final IEntity pEntity) {
 						// TODO Auto-generated method stub
-
 					}
 
 					@Override
@@ -102,7 +100,6 @@ public class AnimatedResourceObject extends AnimatedSprite implements
 							final IEntity pEntity) {
 						
 						((AnimatedSprite)pEntity).stopAnimation(1);
-
 					}
 				}));
 	}
@@ -110,16 +107,6 @@ public class AnimatedResourceObject extends AnimatedSprite implements
 	@Override
 	public void showMessage(String message) {
 		nbox.show(message);
-	}
-
-	@Override
-	public void setNotificationBoxColor(Color color) {
-		nbox.setColor(color);
-	}
-
-	@Override
-	public void setNotificationBoxVisible(boolean visible) {
-		nbox.setVisible(visible);
 	}
 
 	public void setSpace(Space space) {
