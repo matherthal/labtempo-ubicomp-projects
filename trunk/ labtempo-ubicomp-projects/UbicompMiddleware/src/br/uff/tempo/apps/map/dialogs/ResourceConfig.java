@@ -11,14 +11,16 @@ import br.uff.tempo.middleware.e.SmartAndroidException;
 
 public class ResourceConfig extends MapDialog {
 
+	private IDialogFinishHandler handler;
 	private String name = "";
 	private float posX;
 	private float posY;
 
-	public ResourceConfig(final Activity act) {
+	public ResourceConfig(final Activity act, final IDialogFinishHandler handler) {
 
 		super(act, R.layout.resource_config, R.string.title_config_res);
 
+		this.handler = handler;
 		// Register
 		act.runOnUiThread(new Runnable() {
 
@@ -32,7 +34,10 @@ public class ResourceConfig extends MapDialog {
 				cancel.setOnClickListener(ResourceConfig.this);
 			}
 		});
-
+	}
+	
+	public ResourceConfig(final Activity act) {
+		this(act, (IDialogFinishHandler) act);
 	}
 
 	// When OK button is clicked
@@ -59,7 +64,6 @@ public class ResourceConfig extends MapDialog {
 			}
 
 			dialog.cancel();
-			IDialogFinishHandler handler = (IDialogFinishHandler) activity;
 			handler.onDialogFinished(this.dialog);
 
 		} catch (SmartAndroidException e) {

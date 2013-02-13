@@ -16,26 +16,28 @@ import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
  * GUI doesn't crash.
  * 
  * @author dbarreto
- * 
  */
 public class MiddlewareOperation extends AsyncTask<String, Void, List<ResourceData>> {
 
 	private ResourceDiscoveryStub rd;
 	private ProgressDialog progress;
+	private IListGetter listGetter;
 	private Activity act;
 	private String query;
 
+	public MiddlewareOperation(Activity act, IListGetter listGetter, String query) {
+		this(act, listGetter, query, IResourceDiscovery.rans);
+	}
+	
 	public MiddlewareOperation(Activity act, String query) {
-		this(act, query, IResourceDiscovery.rans);
+		this(act, (IListGetter) act, IResourceDiscovery.rans);
 	}
 
-	public MiddlewareOperation(Activity act, String query, String address) {
-		
+	public MiddlewareOperation(Activity act, IListGetter listGetter, String query, String address) {
 		rd = new ResourceDiscoveryStub(address);
-
+		this.listGetter = listGetter;
 		this.act = act;
 		this.query = query;
-
 	}
 
 	@Override
@@ -69,20 +71,14 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<ResourceDa
 	// Executed when search finishes
 	@Override
 	protected void onPostExecute(List<ResourceData> result) {
-
 		super.onPostExecute(result);
 
 		// Finish the progress dialog
 		progress.dismiss();
 
-		// call a method from the activity (callback)
-		IListGetter lg = (IListGetter) act;
-		
 		if (result == null) {
 			result = new ArrayList<ResourceData>();
 		}
-			
-		lg.onGetList(result);
+		listGetter.onGetList(result);
 	}
-
 }
