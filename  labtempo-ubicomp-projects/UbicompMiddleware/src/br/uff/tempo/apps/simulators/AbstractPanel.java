@@ -69,7 +69,6 @@ public abstract class AbstractPanel extends View {
 		} else {
 			Log.wtf("SmartAndroid", "Why is my resource agent NULL?");
 		}
-		
 		return super.onTouchEvent(event);
 	}
 	
@@ -87,7 +86,6 @@ public abstract class AbstractPanel extends View {
 	public abstract void onUpdate(String method, Object value);
 	
 	public IResourceAgent getAgentFromView() {
-		
 		return ((AbstractView) getContext()).getAgent();
 	}
 	
@@ -95,7 +93,6 @@ public abstract class AbstractPanel extends View {
 		
 		// When the agent change its state, redraw the screen
 		IResourceAgent res = getAgentFromView();
-		
 		stakeholder = new Generic(res.getName() + "Stakeholder" + getNextID(), res.getName() + "Stakeholder" + getNextID(), res, "all") {
 			
 			private static final long serialVersionUID = 1L;
@@ -116,7 +113,11 @@ public abstract class AbstractPanel extends View {
 	}
 	
 	public void releaseResources() {
+		String name = stakeholder.getName();
+		getAgent().removeStakeholder("all", stakeholder.getRANS());
+		Log.v("SmartAndroid", "[" + name + "] was unregistered as stakeholder from [" + getAgent().getName() + "]");
 		stakeholder.unregister();
+		Log.v("SmartAndroid", "Generic stakeholder [" + name + "] unregistered");
 	}
 	
 	public int getNextID() {
