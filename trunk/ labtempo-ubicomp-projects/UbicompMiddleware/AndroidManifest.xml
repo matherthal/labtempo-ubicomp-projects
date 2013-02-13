@@ -40,7 +40,7 @@
         <activity android:name=".apps.simulators.tv.TvView" />
         <activity android:name=".apps.simulators.lamp.LampView" />
         <activity android:name=".apps.simulators.tracking.TrackingView" />
-        <activity android:name=".apps.map.MapActivity" />
+        <activity android:name=".apps.map.SmartMapActivity" />
         <activity android:name=".apps.baseview.BaseView" />
         <activity android:name=".apps.lamp.LampView" />
         <activity android:name=".apps.baselocationview.BaseLocationView" />

@@ -12,12 +12,11 @@ import br.uff.tempo.R;
 import br.uff.tempo.apps.baselocationview.BaseLocationView;
 import br.uff.tempo.apps.baseview.BaseView;
 import br.uff.tempo.apps.counter.CounterView;
-import br.uff.tempo.apps.map.MapActivity;
+import br.uff.tempo.apps.map.SmartMapActivity;
 import br.uff.tempo.apps.onOffCounter.CounterApp;
 import br.uff.tempo.apps.onOffCounter.copyToTestCommAPI.CounterApp2;
 import br.uff.tempo.apps.onoffsample.OnOffView;
 import br.uff.tempo.apps.reminder.ReminderActivity;
-import br.uff.tempo.apps.rule.RuleActivity;
 import br.uff.tempo.apps.rule.Test_Rule_UseOfConectorAnd;
 import br.uff.tempo.apps.simulators.bed.BedView;
 import br.uff.tempo.apps.simulators.creator.SimulCreatorActivity;
@@ -75,7 +74,7 @@ public class MainListView extends ListActivity {
 					Intent intent = new Intent(MainListView.this, BaseLocationView.class);
 					startActivity(intent);
 				} else if (item.equals("Mapa da casa")) {
-					Intent intent = new Intent(MainListView.this, MapActivity.class);
+					Intent intent = new Intent(MainListView.this, SmartMapActivity.class);
 					startActivity(intent);
 				} else if (item.equals("Jogo da velha")) {
 					Intent intent = new Intent(MainListView.this, TicTacToe.class);
