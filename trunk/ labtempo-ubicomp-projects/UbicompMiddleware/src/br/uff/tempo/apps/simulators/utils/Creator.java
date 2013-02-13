@@ -1,7 +1,6 @@
 package br.uff.tempo.apps.simulators.utils;
 
 import java.util.List;
-import java.util.Map;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -9,108 +8,202 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import br.uff.tempo.apps.map.dialogs.ChooseResource;
-import br.uff.tempo.apps.map.dialogs.ChoosedData;
+import br.uff.tempo.apps.map.dialogs.ChosenData;
 import br.uff.tempo.apps.map.dialogs.IChooser;
 import br.uff.tempo.apps.map.dialogs.IDialogFinishHandler;
 import br.uff.tempo.apps.map.dialogs.IListGetter;
 import br.uff.tempo.apps.map.dialogs.MiddlewareOperation;
 import br.uff.tempo.apps.map.dialogs.ResourceConfig;
 import br.uff.tempo.apps.map.objects.RegistryData;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
+import br.uff.tempo.middleware.management.utils.Position;
 
+/**
+ * Helper class to create a new Agent or connect to an existing one, and use it
+ * in the appropriated simulator UI. This simulator will control that agent
+ * 
+ * @author dbarreto
+ */
 public class Creator implements IChooser, IListGetter, IDialogFinishHandler {
 
-	public static final int CREATE = 0;
-	public static final int CONECT = 1;
+	public static final boolean NOT_AUTOMATICALLY_OPEN = false;
+	public static final boolean AUTOMATICALLY_OPEN = true;
 
-	private Activity       activity;
-	private ChooseResource registeredDialog;
+	private static final int CREATE = 0;
+	private static final int CONECT = 1;
+
+	private Activity activity;
+	private ChooseResource chooseResDialog;
 	private ResourceConfig configDialog;
-	private RegistryData   regData;
-	private String[]       simulators;
-	private ChoosedData    current;
+	private ICreationFinisher creationFinisher;
+	private RegistryData regData;
+	private String[] simulators;
+	private ChosenData current;
+	private boolean canOpen;
 
 	private int op = -1;
 
-	public Creator(Activity activity) {
+	/**
+	 * Create a new 'Creator' instance
+	 * 
+	 * @param activity
+	 *            The activity that will nestle all dialogs that will be created
+	 * @param creationFinisher
+	 *            Interface that will handle what happen when the resource
+	 *            creation is done
+	 */
+	public Creator(Activity activity, ICreationFinisher creationFinisher) {
 		this.activity = activity;
-		registeredDialog = new ChooseResource(activity);
-		configDialog = new ResourceConfig(activity);
+		this.creationFinisher = creationFinisher;
+
+		chooseResDialog = new ChooseResource(activity, this);
+		configDialog = new ResourceConfig(activity, this);
 		simulators = Finders.getSimulatorsList(activity);
 	}
 
-	public void chooseResource() {
-		op = CONECT;
-		MiddlewareOperation m = new MiddlewareOperation(activity, "");
-		m.execute(null);
+	/**
+	 * Create a new 'Creator' instance The interface ICreationFinisher will be
+	 * null
+	 * 
+	 * @param activity
+	 *            The activity that will nestle all dialogs that will be created
+	 */
+	public Creator(Activity activity) {
+		this(activity, null);
 	}
 
-	public void createResource() {
+	@SuppressWarnings("all")
+	/**
+	 * Choose a resource included in the Registered resource list
+	 * provided by ResourceDiscovery and call its simulator UI.
+	 * This simulator will control the resource chosen.
+	 * 
+	 * @param canOpen Say if the simulator UI will be opened automatically
+	 */
+	public void chooseResource(boolean canOpen) {
+		this.canOpen = canOpen;
+		op = CONECT;
+		new MiddlewareOperation(activity, this, "").execute(null);
+	}
+
+	/**
+	 * Choose a resource included in the Registered resource list provided by
+	 * ResourceDiscovery and call its simulator UI. This simulator will control
+	 * the resource chosen. By default the simulator is called automatically
+	 */
+	public void chooseResource() {
+		chooseResource(AUTOMATICALLY_OPEN);
+	}
+
+	/**
+	 * Create a new resource agent and call its simulator UI. This simulator
+	 * will control the resource created.
+	 * 
+	 * @param canOpen
+	 *            Say if the simulator UI will be opened automatically
+	 */
+	public void createResource(boolean canOpen) {
+		this.canOpen = canOpen;
 		op = CREATE;
-		registeredDialog.showDialog(simulators);
+		chooseResDialog.showDialog(simulators);
+	}
+
+	/**
+	 * Create a new resource agent and call its simulator UI. This simulator
+	 * will control the resource created. By default the simulator is called
+	 * automatically
+	 */
+	public void createResource() {
+		createResource(AUTOMATICALLY_OPEN);
 	}
 
 	@Override
 	public void onGetList(List<ResourceData> result) {
-		registeredDialog.showDialog(result);
+		chooseResDialog.showDialog(result);
 	}
 
 	@Override
-	public void onRegisteredResourceChoosed(ChoosedData choosedData) {
+	public void onResourceChosen(ChosenData chosenData) {
 
 		if (op == CREATE) {
-			create(choosedData);
+			create(chosenData);
 		} else if (op == CONECT) {
-			conect(choosedData.getData());
+			conect(chosenData.getData());
 		} else {
-			Log.e("SmartAndroid", "Creator: Strange error... Operation invalid");
+			Log.wtf("SmartAndroid",
+					"Creator: Strange error... Operation invalid [" + op + "]");
 		}
 	}
-	
-	@Override
-	public void onDialogFinished(Dialog dialog) {
-		regData = configDialog.getData();
-		current.setName(regData.getResourceName());
-	
-		Map<String, Object> map = ResourceChoice.choiceNewResource(current);
-		Class c = (Class) map.get(ResourceChoice.SIMULATOR);
-		IResourceAgent ag = (IResourceAgent) map.get(ResourceChoice.AGENT);
-		ag.identify();
-		
-		callSimulator(ag, c);
-	}
 
-	private void create(ChoosedData choosedData) {
-		current = choosedData;
+	private void create(ChosenData chosenData) {
+		current = chosenData;
 		configDialog.showDialog();
 	}
 
 	private void conect(ResourceData resourceData) {
-		
-		Map<String, Object> map = ResourceChoice.choiceResource(resourceData);
-		Class c = (Class) map.get(ResourceChoice.SIMULATOR);
-		IResourceAgent ag = (IResourceAgent) map.get(ResourceChoice.AGENT);
-
-		callSimulator(ag, c);
+		prepareCall(ResourceChoice.choiceResource(resourceData));
 	}
-	
-	private void callSimulator(IResourceAgent ag, Class simulatorActivity) {
+
+	@Override
+	// Called when the information about the resource just created was filled
+	// (e.g. name, position) and ResourceConfig dialog was finished
+	public void onDialogFinished(Dialog dialog) {
+
+		regData = configDialog.getData();
+		current.setName(regData.getResourceName());
+
+		Position position = new Position(regData.getPositionX(), regData.getPositionY());
+		prepareCall(ResourceChoice.choiceNewResource(current, position));
+	}
+
+	@SuppressWarnings("rawtypes")
+	private void prepareCall(ResourceWrapper wrapper) {
+		Class simulator = wrapper.getSimulator();
 		
-		if (simulatorActivity != null) {
+		//The stub to the agent
+		IResourceAgent stub = wrapper.getStub();
+		
+		callSimulator(stub, simulator);
+		finishCreation(wrapper);
+	}
 
-			// Starts the appropriated simulator activity
-			Intent call = new Intent(activity, simulatorActivity);
+	/**
+	 * Call the Simulator activity passing the agent
+	 * @param agent The agent that will be controlled
+	 * @param simulatorActivity The activity that will be called, and will control the agent
+	 */
+	@SuppressWarnings("rawtypes")
+	public void callSimulator(IResourceAgent agent, Class simulatorActivity) {
 
-			Bundle bundle = new Bundle();
-			bundle.putSerializable(ResourceChoice.AGENT, ag);
+		if (canOpen) {
+			if (simulatorActivity != null) {
 
-			call.putExtras(bundle);
-			activity.startActivity(call);
+				// Starts the appropriated simulator activity
+				Intent call = new Intent(activity, simulatorActivity);
 
+				Bundle bundle = new Bundle();
+				bundle.putSerializable(ResourceChoice.AGENT, agent);
+
+				call.putExtras(bundle);
+				activity.startActivity(call);
+
+			} else {
+				throw new SmartAndroidRuntimeException(
+						"Can't start the simulator for " + agent.getName());
+			}
+		}
+		canOpen = true;
+	}
+
+	private void finishCreation(ResourceWrapper wrapper) {
+
+		if (this.creationFinisher != null) {
+			this.creationFinisher.onResourceCreationFinished(wrapper);
 		} else {
-			Log.e("SmartAndroid", "Can't start the simulator for "
-					+ ag.getName());
+			Log.w("SmartAndroid",
+					"Creator: Cannot call onResourceCreationFinished. Interface doesn't provide by the user");
 		}
 	}
 }
