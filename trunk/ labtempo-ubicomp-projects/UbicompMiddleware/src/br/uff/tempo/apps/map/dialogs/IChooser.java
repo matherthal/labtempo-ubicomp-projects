@@ -1,8 +1,14 @@
 package br.uff.tempo.apps.map.dialogs;
 
-import br.uff.tempo.middleware.management.ResourceData;
-
+/**
+ * Interface IChooser used to handle the operation of choosing an item in the dialog
+ * @author dbarreto
+ */
 public interface IChooser {
 
-	void onRegisteredResourceChoosed(ChoosedData resourceData);
+	/**
+	 * Handle what happen when an item is selected from a Dialog
+	 * @param chosenData
+	 */
+	void onResourceChosen(ChosenData chosenData);
 }
