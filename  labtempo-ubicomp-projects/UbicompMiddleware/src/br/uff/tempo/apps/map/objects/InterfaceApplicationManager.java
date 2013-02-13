@@ -22,10 +22,6 @@ public class InterfaceApplicationManager extends ResourceAgent {
 	private static final long serialVersionUID = 1L;
 
 	// ===========================================================
-	// Constants
-	// ===========================================================
-
-	// ===========================================================
 	// Fields
 	// ===========================================================
 	
@@ -40,7 +36,6 @@ public class InterfaceApplicationManager extends ResourceAgent {
 
 	private InterfaceApplicationManager() {
 		super("InterfaceManager", "br.uff.tempo.apps.map.objects.InterfaceApplicationManager", "InterfaceManager" + SmartAndroid.DEVICE_ID);
-		
 		sceneObjects = new HashMap<String, INotificationBoxReceiver>();
 	}
 
@@ -54,22 +49,18 @@ public class InterfaceApplicationManager extends ResourceAgent {
 			obj = new InterfaceApplicationManager();
 			obj.identify();
 		}
-
 		return obj;
 	}
 	
 	public void addResource(String rai, INotificationBoxReceiver obj) {
-		
 		sceneObjects.put(rai, obj);
 	}
 	
 	public INotificationBoxReceiver getResource(String rai) {
-		
 		return sceneObjects.get(rai);
 	}
 	
 	public Collection<INotificationBoxReceiver> getAllResources() {
-		
 		return sceneObjects.values();
 	}
 
@@ -77,7 +68,7 @@ public class InterfaceApplicationManager extends ResourceAgent {
 	// Inherited Methods
 	// ===========================================================
 
-	// Called when a resource change the value of a context variable
+	// Called when any resource change the value of a context variable
 	@Override
 	public void notificationHandler(String raiFromEvent, String method, Object value) {
 		
@@ -85,32 +76,18 @@ public class InterfaceApplicationManager extends ResourceAgent {
 				+ raiFromEvent + ". Context variable modified: "
 				+ method + " current value: " + value);
 		
-		// Verify which resource in the scene has caused the notification
-		// For each resource in the map...
-		for (Map.Entry<String, INotificationBoxReceiver> entry : sceneObjects.entrySet()) {
+		INotificationBoxReceiver receiver = sceneObjects.get(raiFromEvent);
+		
+		if (receiver != null) {
 			
-			// Get the RAI (key of the map)
-			String keyRAI = entry.getKey();
+			// Create a pop up message showing the context variable changed and its current value
+			receiver.showMessage(method + " = " + value.toString());
 			
-			if (raiFromEvent.equals(keyRAI)) {
+			if (method.equals(Person.CV_POSITION)) {
 				
-				// Get the resource object associated to that RAI
-				INotificationBoxReceiver obj = entry.getValue();
-				
-				// Create a pop up message showing the context variable changed and its current value
-				obj.showMessage(method + " = " + value.toString());
-				
-				if (method.equals(Person.CV_POSITION) && obj instanceof AnimatedResourceObject) {
-					
-					AnimatedResourceObject anim = (AnimatedResourceObject) obj;
-					
-					anim.updatePosition((Position) value);
-				}
-				
-				break;
+				SmartAnimatedSprite anim = (SmartAnimatedSprite) ((ResourceIcon) receiver).getResourceSprite();
+				anim.updatePosition((Position) value);
 			}
 		}
-		
-		
 	}
 }
