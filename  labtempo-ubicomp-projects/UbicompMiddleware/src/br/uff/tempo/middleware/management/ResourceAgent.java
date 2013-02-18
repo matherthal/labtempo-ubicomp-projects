@@ -26,7 +26,9 @@ import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.stubs.ResourceRegisterStub;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
-
+/**
+ * This class represents the basis modular of any component with services and context in a SmartAndroid system
+ */
 public abstract class ResourceAgent extends Service implements IResourceAgent, Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -53,10 +55,23 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	@SuppressWarnings("unused")
 	private ResourceAgent(String anything) {}
 
+	/**
+	 * ResourceAgent constructor for instance with undefined positioning
+	 * @param name unique that identifies an instance
+	 * @param type semantic hierarchical definition of the class that represent this instance 
+	 * @param rans unique that identifies an instance in terms of access reference
+	 */
 	public ResourceAgent(String name, String type, String rans) {
 		this(name, type, rans, null);
 	}
 	
+	/**
+	 * ResourceAgent constructor for instance with positioning
+	 * @param name unique that identifies an instance
+	 * @param type semantic hierarchical definition of the class that represent this instance 
+	 * @param rans unique that identifies an instance in terms of access reference
+	 * @param position phisically reference of a agent
+	 */
 	public ResourceAgent(String name, String type, String rans, Position position) {
 		stakeholders = new ArrayList<Stakeholder>();
 		
@@ -72,11 +87,13 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		this.registerDefaultInterests();
 	}
 
+	
 	@Override
 	public String getName() {
 		return name;
 	}
-
+	
+	
 	@Override
 	public void setName(String name) {
 		this.name = name;
@@ -117,12 +134,22 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		return this.getClass().getName();
 	}
 
+	/**
+	 * Binder entity which permits connection between an activity and a service
+	 */
 	public class ResourceBinder extends Binder {
 		public ResourceAgent getService() {
 			return ResourceAgent.this;
 		}
 	}
 	
+	/**
+	 * Type Hierachy generator for specialized class of this instance
+	 * @param type is specilized class of a instance 
+	 * ex: Stove.class 
+	 * @return is a string in directory path format
+	 * ex: /Simulator/Stove
+	 */
 	public static String type(Class type) {
 		String result = type.getSimpleName()+"";
 		type = type.getSuperclass();
@@ -140,6 +167,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		initResource();
 	}
 
+	/**
+	 * Cause auto register in SmartServer
+	 */
 	private void initResource() {
 		identify();
 	}
@@ -238,7 +268,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 	
 	
-	
+	/**
+	 * Used for register with defined position
+	 */
 	public boolean identifyPosition(Position position) {
 		return commonIdentify(null, position);
 	}
@@ -265,6 +297,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 //		return registered;
 //	}
 	
+	/**
+	 * Used to registr with defined placeName and position
+	 */
 	public boolean identifyInPlace(String placeName, Position position) {
 		return commonIdentify(placeName,position);
 	}	
@@ -294,7 +329,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 //
 //		return registered;
 //	}
-	
+	/**
+	 * Unregister a instance from Repository
+	 */
 	public boolean unregister() {
 		
 		rrs = new ResourceRegisterStub(IResourceRegister.rans);
@@ -309,15 +346,25 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 
 	
-	
+	/**
+	 * Position get method
+	 */
 	public Position getPosition() {
 		return position;
 	}
 	
+	/**
+	 * @return list of Stakholders in this instance
+	 */
 	public List<Stakeholder> getStakeholders() {	
 		return stakeholders; 
 	}
 	
+	/**
+	 * notify Stakeholders about an event related to a execution of a method 
+	 * @param method identification of event source
+	 * @param value interest target value
+	 */
 	public void notifyStakeholders(String method, Object value) {
 		for (Stakeholder stakeholder : stakeholders) {
 			if (stakeholder.getMethod().equals(method) || stakeholder.getMethod().equalsIgnoreCase("all")) {
@@ -328,10 +375,12 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 
 	/**
-	 * Segura notificacao vinda de outra IAR
+	 * Hold a notification of a instance target of interes identified by rai
 	 * 
-	 * @param rA
+	 * @param rai
 	 *            It has new status of instance
+	 * @param method identification of source event
+	 * @param value  changed value notified         
 	 * @throws JSONException
 	 */
 	public abstract void notificationHandler(String rai, String method, Object value);
@@ -341,13 +390,14 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		stakeholders.add(new Stakeholder(method, rai));
 	}
 	
+	@Override
 	public void removeStakeholder(String method, String rai) {
 		Log.i("SmartAndroid", "[" + rai + ", " + method + "] is removed as Stakeholder from " + getName());
 		stakeholders.remove(new Stakeholder(method, rai));
 	}
 	
 	
-
+	
 	protected void registerDefaultInterests() {
 		if (SmartAndroid.interestAPIEnable) {
 			InterestAPI ia = InterestAPIImpl.getInstance();
