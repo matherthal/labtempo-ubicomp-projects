@@ -76,6 +76,7 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		for (ResourceAgentDescription des : repository) {
 			if (des.getRai().equals(url)) {
 				repository.remove(des);
+				directory.delete(directory.read(ResourceData.RAI, url).get(0));
 				return true;
 			}
 		}

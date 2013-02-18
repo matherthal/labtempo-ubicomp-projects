@@ -39,7 +39,7 @@ public interface IResourceLocation {
 
 	void insertMap(Space newSpace);
 
-	void setMap(Map<String, Place> newMap);
+	void setMap(Space houseMap);
 
 	void registerInPlace(String url, Position position);
 

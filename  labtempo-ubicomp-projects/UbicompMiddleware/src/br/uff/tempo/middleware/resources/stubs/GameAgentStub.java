@@ -36,7 +36,10 @@ public class GameAgentStub extends ResourceAgentStub implements IGameAgent {
 
 	@Override
 	public void setPlayer(Player.Name player) {
-	
+		List<Tuple<String, Object>> params  = new ArrayList<Tuple<String, Object>>();
+		params.add(new Tuple<String, Object>(Player.Name.class.getName(), player));
+		
+		makeCall("setPLayer", params, void.class);
 	}
 	
 	@Override

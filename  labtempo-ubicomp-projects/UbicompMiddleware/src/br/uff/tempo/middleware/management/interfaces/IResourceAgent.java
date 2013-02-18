@@ -76,6 +76,10 @@ public interface IResourceAgent extends Serializable {
 
 	public boolean identify();
 	
+	public boolean identifyPosition(Position position);
+	
+	public boolean identifyInPlace(String placeName, Position position);
+	
 	public boolean unregister();
 	
 	public Position getPosition();

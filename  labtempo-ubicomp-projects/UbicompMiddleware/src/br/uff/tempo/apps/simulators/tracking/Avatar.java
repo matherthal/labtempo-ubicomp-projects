@@ -1,11 +1,18 @@
 package br.uff.tempo.apps.simulators.tracking;
 
+import java.util.List;
+
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.Log;
 import br.uff.tempo.middleware.management.Person;
+import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.ResourceData;
+import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
+import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
+import br.uff.tempo.middleware.resources.GameAgent;
 
 class Avatar {
 
@@ -43,7 +50,7 @@ class Avatar {
 		len = radius + DELTA;
 		rect = new Rect(centerX - len, centerY - len, centerX + len, centerY
 				+ len);
-
+		
 		this.person = new Person(this.name, this.name);
 		this.person.identify();
 	}

@@ -827,15 +827,19 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		// get(0))
 		final TMXObjectGroup group = this.tiledMap.getTMXObjectGroups().get(0);
 
-		IResourceLocation rl = new ResourceLocationStub(IResourceLocation.rans);
+
 
 		final int mapWidth = this.mapFloorLayer.getWidth();
 		final int mapHeight = this.mapFloorLayer.getHeight();
 
+		IResourceLocation rls = new ResourceLocationStub(IResourceLocation.rans);
 		// Create a new Space (a set of places)
 		if (houseMap == null) {
+
 			houseMap = new Space(mapWidth, mapHeight);
+
 		}
+		rls.setMap(houseMap);
 
 		for (TMXObject obj : group.getTMXObjects()) {
 
@@ -858,10 +862,10 @@ public class MapActivity extends SimpleBaseGameActivity implements
 					new Position(x1, y1));
 			Log.i("SmartAndroid", "Created a new Place. lower = " + x0 + " "
 					+ y0 + " and Upper = " + x1 + " " + y1);
-			houseMap.addPlace(place);
+			rls.addPlace(place);
 		}
 
-		rl.insertMap(houseMap);
+		//rls.insertMap(houseMap);
 
 		state.setMapInfo(houseMap);
 	}
