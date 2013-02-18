@@ -6,6 +6,8 @@ public class Formula extends GeneralTree {
 	protected long timeout = 0;
 	protected boolean timerexp = false;
 	protected RuleInterpreter timerStakeholder = null;
+	protected boolean eval = false;
+	protected int id = 0;
 
 	public Formula() {
 		super("f");
@@ -15,6 +17,14 @@ public class Formula extends GeneralTree {
 		super(key);
 	}
 
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public int getId() {
+		return this.id;
+	}
+	
 	/**
 	 * @return the timeout
 	 */
@@ -43,34 +53,49 @@ public class Formula extends GeneralTree {
 		this.timerStakeholder = ri;
 	}
 
+	/**
+	 * @param eval
+	 */
+	public void setEval(boolean eval) {
+		this.eval = eval;
+		if (!eval)
+			this.timerexp = false; 
+	}
+
 	public void attachFormula(Formula f) {
 		this.attachSubtree(f);
 	}
-	
+
 	public void setAndClause() {
 		this.attachSubtree(new AndNode());
 	}
-	
+
 	public void setOrClause() {
 		this.attachSubtree(new OrNode());
 	}
-	
+
 	public void timerExpired(boolean b) {
 		this.timerexp = b;
 	}
-	
+
 	public boolean hasTimer() {
 		return timeout > 0;
 	}
-	
+
 	public boolean hasTimerExpired() {
-		// If there is no timer OR if there are a timer and it does have expired, then return true
+		// If there is no timer OR if there are a timer and it does have
+		// expired, then return true
 		// Otherwise return false
-		return timeout == 0 || (timeout != 0 && timerexp) ? true : false;				
+		return timeout == 0 || (timeout != 0 && timerexp) ? true : false;
 	}
-	
-//	@Override
-//	public String toString() {
-//		return "(" + this.getSubtree().toString() + ")";
-//	}
+
+	public boolean getEval() {
+		return eval;
+	}
+
+	@Override
+	public String toString() {
+		// return "(" + this.getSubtree().toString() + ")";
+		return key.toString();
+	}
 }

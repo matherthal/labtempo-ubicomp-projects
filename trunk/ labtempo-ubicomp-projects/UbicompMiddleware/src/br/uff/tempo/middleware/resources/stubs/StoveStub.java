@@ -82,8 +82,16 @@ public class StoveStub extends ResourceAgentStub implements IStove {
 
 	@Override
 	public void turnOffOven() {
-		// TODO Auto-generated method stub
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
+		makeCall("turnOffOven", params, void.class);
+	}
+
+	@Override
+	public void turnOnOven() {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+
+		makeCall("turnOnOven", params, void.class);
 	}
 
 	@Override

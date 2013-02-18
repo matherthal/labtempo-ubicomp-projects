@@ -15,18 +15,18 @@ public class UpdatePredicatesVisitor extends UpdateFormulaVisitor {
 			// Visit Predicates only
 			if (object instanceof Predicate) {
 				Predicate pred = (Predicate) object;
-				boolean preUp = pred.evaluate();
+				boolean preEval = pred.evaluate();
 				// Update first Operand
 				updateOperand(pred.getOp1());
 				// Update second Operand
 				updateOperand(pred.getOp2());
 				// Update valid from the predicate
-				boolean valid = pred.evaluate();
+				boolean eval = pred.evaluate();
 				if (pred.getTimeout() != 0) {
-					if (!valid)
+					if (!eval)
 						// If it's invalid, stop any possible running timer
 						timerStop(pred);
-					else if (!preUp) {
+					else if (!preEval) {
 						// If value changed from false to true, start timer
 						pred.setValid(false);
 						timerReset(pred);

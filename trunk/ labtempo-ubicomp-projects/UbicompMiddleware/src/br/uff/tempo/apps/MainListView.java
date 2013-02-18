@@ -17,7 +17,8 @@ import br.uff.tempo.apps.onOffCounter.CounterApp;
 import br.uff.tempo.apps.onOffCounter.copyToTestCommAPI.CounterApp2;
 import br.uff.tempo.apps.onoffsample.OnOffView;
 import br.uff.tempo.apps.reminder.ReminderActivity;
-import br.uff.tempo.apps.rule.Test_Rule_UseOfConectorAnd;
+import br.uff.tempo.apps.rule.RuleFactory;
+import br.uff.tempo.apps.rule.RuleManager;
 import br.uff.tempo.apps.simulators.bed.BedView;
 import br.uff.tempo.apps.simulators.creator.SimulCreatorActivity;
 import br.uff.tempo.apps.simulators.lamp.LampView;
@@ -55,8 +56,9 @@ public class MainListView extends ListActivity {
 
 				// Calling appropriate activity
 				if (item.equals("Regra")) {
-					// Intent intent = new Intent(MainListView.this, RuleActivity.class);
-					Intent intent = new Intent(MainListView.this, Test_Rule_UseOfConectorAnd.class);
+					Intent intent = new Intent(MainListView.this, RuleFactory.class);
+					startService(intent);
+					intent = new Intent(MainListView.this, RuleManager.class);
 					startActivity(intent);
 				} else if (item.equals("Fogao")) {
 					Intent intent = new Intent(MainListView.this, StoveView.class);

@@ -84,6 +84,7 @@ public class Predicate extends Formula {
 		// Make the node's key be the value of valid, 
 		// thus the visiting is able to easily get the node's value
 		this.key = valid ? "1" : "0";
+		this.eval = valid;
 		return isValid();
 	}
 
