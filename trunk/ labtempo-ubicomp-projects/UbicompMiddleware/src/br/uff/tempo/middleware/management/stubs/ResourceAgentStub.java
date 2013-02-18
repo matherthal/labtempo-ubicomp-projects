@@ -12,9 +12,9 @@ import br.uff.tempo.middleware.management.utils.Stakeholder;
 import com.google.gson.reflect.TypeToken;
 
 public class ResourceAgentStub extends Stub implements IResourceAgent {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private String rans;
 
 	public ResourceAgentStub(String rans) {
@@ -49,10 +49,12 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 
 	@Override
 	public List<Stakeholder> getStakeholders() {
-		
+
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
-		return (List<Stakeholder>) makeCall("getStakeholders", params, new TypeToken<List<Stakeholder>>() {}.getType());		
+		// return (List<Stakeholder>) makeCall("getStakeholders", params, new
+		// TypeToken<List<Stakeholder>>() {}.getType());
+		return (List<Stakeholder>) makeCall("getStakeholders", params, (new ArrayList<Stakeholder>()).getClass());
 	}
 
 	@Override
@@ -72,10 +74,11 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 
 	@Override
 	public String getRANS() {
-//		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-//
-//		return makeCall("getRAI", params).toString();
-		
+		// List<Tuple<String, Object>> params = new ArrayList<Tuple<String,
+		// Object>>();
+		//
+		// return makeCall("getRAI", params).toString();
+
 		return rans;
 	}
 
@@ -103,8 +106,10 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 
 	@Override
 	public ArrayList<ResourceAgent> getInterests() {
-		// TODO Auto-generated method stub
-		return null;
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+
+		return (ArrayList<ResourceAgent>) makeCall("getStakeholders", params,
+				(new ArrayList<ResourceAgent>()).getClass());
 	}
 
 	@Override
@@ -125,22 +130,23 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		// TODO Auto-generated method stub
 		return false;
 	}
-	
+
 	public boolean unregister() {
 		return false;
 	}
-	
+
 	public Position getPosition() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 
 		return (Position) makeCall("getPosition", params, Position.class);
 	}
-	
+
 	@Override
 	public void notifyStakeholders(String method, Object value) {
 		// TODO Auto-generated method stub
 
 	}
+
 	// @Override
 	// public boolean registerStakeholder(String method, ResourceAgent rA) {
 	// // TODO Auto-generated method stub
@@ -153,15 +159,15 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		params.add(new Tuple<String, Object>(String.class.getName(), method));
 		params.add(new Tuple<String, Object>(String.class.getName(), rai));
 
-		makeCall("removeStakeholder", params, void.class);	
+		makeCall("removeStakeholder", params, void.class);
 	}
 
 	@Override
 	public void updateLocation(Position position) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
-		
-		makeCall("updateLocation", params, void.class);	
+
+		makeCall("updateLocation", params, void.class);
 	}
 
 }
