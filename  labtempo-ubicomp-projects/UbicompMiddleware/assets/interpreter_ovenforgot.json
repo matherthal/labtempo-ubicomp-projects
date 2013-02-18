@@ -20,7 +20,9 @@
 					"rai": "_BED_",
 					"elem": "occupied"
 				}}
-			]}
+			]},
+
+			{"timer": 10sec}
 		]}
 	]
 }
