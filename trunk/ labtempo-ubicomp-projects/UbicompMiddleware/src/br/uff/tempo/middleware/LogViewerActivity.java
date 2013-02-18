@@ -21,7 +21,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import br.uff.tempo.R;
 
-/*
+/**
  * Source from: http://code.google.com/p/krvarma-android-samples/source/browse/trunk/LogViewer/src/com/varma/samples/logviewer/ui/LogViewerActivity.java
  */
 public class LogViewerActivity extends ListActivity {
