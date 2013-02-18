@@ -23,7 +23,7 @@ public class UpdateFormulaVisitor implements Visitor {
 	protected Boolean changed = true;
 	protected Formula formTimerExp = null;
 	protected Evaluator evaluator = new Evaluator();
-	protected Map<Object, Tuple<Timer, TimeoutTask>> timers = new HashMap<Object, Tuple<Timer, TimeoutTask>>();
+	protected Map<Integer, Tuple<Timer, TimeoutTask>> timers = new HashMap<Integer, Tuple<Timer, TimeoutTask>>();
 
 	public UpdateFormulaVisitor(String rai, String method, Object value) {
 		super();
@@ -35,9 +35,6 @@ public class UpdateFormulaVisitor implements Visitor {
 	@Override
 	public void visit(Object object) {
 		try {
-			// If it is a Formula but not a Predicate, or other type of node
-			// if (object instanceof Formula && !(object instanceof Predicate))
-			// {
 			if (object instanceof Formula) {
 				String key = ((Formula) object).getKey().toString();
 				if (key.equals("f") || key.equals("i")) {
@@ -45,23 +42,21 @@ public class UpdateFormulaVisitor implements Visitor {
 					if (!f.hasTimer()) {
 						f.setKey('f');
 					} else {
-						boolean valid = evaluate(f);
-						if (!valid) {
+						boolean eval = evaluate(f);
+						boolean preEval = f.getEval();
+						if (!eval) {
 							// If it's invalid, stop any possible running timer
 							timerStop(f);
-						}
-						// Only if it were invalid and become valid
-						if (!f.hasTimerExpired()) {
-							// f does have a timer and it has not expired yet
-							// If the evaluation turns out to return "invalid",
-							// then
-							// the timer must be stopped,
-							// which means that this subexpression will be
-							// automatically taken by invalid
-							// boolean valid = evaluate(f);
-							if (!valid)
+						} else if (!preEval) {
+							// If value changed from false to true, start timer
+							timerReset(f);
+							if (!f.hasTimerExpired()) {
+								// If timer has not expired, predicate must be invalidated
 								f.setKey('i');
+								eval = false;
+							}
 						}
+						f.setEval(eval);
 					}
 				}
 			}
@@ -79,24 +74,20 @@ public class UpdateFormulaVisitor implements Visitor {
 		return false;
 	}
 
-	// public void formTimerExpired(Formula f) {
-	// this.formTimerExp = f;
-	// }
-
 	protected boolean evaluate(Formula f) throws EvaluationException {
 		ExprComposerVisitor v = new ExprComposerVisitor();
 		f.depthFirstTraversal_NodeVisiting(v);
-		Log.i(TAG, "EXPRESSION: " + v.getExpression());
+		// Log.i(TAG, "EXPRESSION: " + v.getExpression());
 		// If the evaluator.evaluate return "0.0" then it is false, if it
 		// returns "1.0" then it's true
 		return evaluator.evaluate(v.getExpression()).equals("1.0") ? true : false;
 	}
 
 	protected void timerStart(Formula f) {
-		if (!timers.containsKey(f)) {
+		if (!timers.containsKey(f.getId())) {
 			long t = f.getTimeout() * 1000;
 			Tuple<Timer, TimeoutTask> tp = new Tuple<Timer, TimeoutTask>(new Timer(), new TimeoutTask(f));
-			timers.put(f, tp);
+			timers.put(f.getId(), tp);
 			((Timer) tp.value).schedule((TimeoutTask) tp.value2, t);
 		}
 		// TODO: how to know if it's already running to let it?...
@@ -106,21 +97,22 @@ public class UpdateFormulaVisitor implements Visitor {
 		timerStop(f);
 		Log.i("TIME", new Date().toGMTString());
 		long t = f.getTimeout() * 1000;
-		Tuple<Timer, TimeoutTask> tp = (Tuple<Timer, TimeoutTask>) timers.get(f);
+		Tuple<Timer, TimeoutTask> tp = (Tuple<Timer, TimeoutTask>) timers.get(f.getId());
 		if (tp == null) {
 			tp = new Tuple<Timer, TimeoutTask>(new Timer(), new TimeoutTask(f));
-			timers.put(f, tp);
+			timers.put(f.getId(), tp);
 		}
 		((Timer) tp.value).schedule((TimeoutTask) tp.value2, t);
 	}
 
 	protected void timerStop(Formula f) {
-		Tuple<Timer, TimeoutTask> tp = (Tuple<Timer, TimeoutTask>) timers.get(f);
+		Tuple<Timer, TimeoutTask> tp = (Tuple<Timer, TimeoutTask>) timers.get(f.getId());
 		if (tp != null)
 			if (tp.value2 != null) {
 				Log.i("Timer", "Stop");
-				((TimeoutTask) tp.value2).cancel();
-				tp.value2 = null;
+				TimeoutTask task = (TimeoutTask) tp.value2;
+				task.cancel();
+				timers.remove(f.getId());
 			}
 	}
 
@@ -135,9 +127,9 @@ public class UpdateFormulaVisitor implements Visitor {
 			Log.i("TimeoutTask", "Timeout went off!");
 			Log.i("TIME", new Date().toGMTString());
 			f.timerExpired(true);
+			f.setEval(true);
+			f.setKey("f");
 			f.getTimerStakeholder().notificationHandler("", "", null);
-			// if (evaluateExpr())
-			// notifyActionPerformers();
 		}
 	}
 }

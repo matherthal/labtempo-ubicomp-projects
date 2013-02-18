@@ -15,21 +15,21 @@ public class Generic extends ResourceAgent implements IGeneric {
 	public Generic(String name, String rans) {
 		super(name, "br.uff.tempo.middleware.resources.Generic", rans);
 		this.name = name;
-		Log.i(TAG, "New Generic class. Name: " + name);
+		Log.d(TAG, "New Generic class. Name: " + name);
 	}
 
 	public Generic(String name, String rans, IResourceAgent ra, String cv) {
 		super(name, "br.uff.tempo.middleware.resources.Generic", rans);
 		this.name = name;
-		Log.i(TAG, "New Generic class. Name: " + name);
+		Log.d(TAG, "New Generic class. Name: " + name);
 
 		if (ra != null) {
 			
 			this.identify();
-			Log.i(TAG, "Generic stakeholder " + name + " identified");
+			Log.d(TAG, "Generic stakeholder " + name + " identified");
 			
 			ra.registerStakeholder(cv, this.getRANS());
-			Log.i(TAG, "Generic stakeholder " + name + " subscribed");
+			Log.d(TAG, "Generic stakeholder " + name + " subscribed");
 		}
 		
 	}

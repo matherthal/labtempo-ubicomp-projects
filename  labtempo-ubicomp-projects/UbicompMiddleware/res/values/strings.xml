@@ -71,6 +71,8 @@
     </string-array>
 
     <!-- RuleActivity -->
+    <string name="rule_manager">Gerenciador de Regras</string>
+    <string name="menu_rule_manager">Regras</string>
     <string name="rule_creation">Criar Regra</string>
     <string name="rule_name">Nome</string>
     <!--

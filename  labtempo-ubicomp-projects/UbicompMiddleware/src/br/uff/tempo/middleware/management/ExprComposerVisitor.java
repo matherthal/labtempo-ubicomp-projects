@@ -12,13 +12,13 @@ public class ExprComposerVisitor implements PrePostVisitor {
 	@Override
 	public void preVisit(Object object) {
 		String s = object.toString();
-		if (object instanceof Formula) {
-			// If formula is invalid regarding to timer and evaluation, the
-			// subexpression must be marked (with an 'i') to be invalidated
-			// afterwards
-			if (s.equals("f"))
-				s = "(";
-		}
+		// If formula is invalid regarding to timer and evaluation, the
+		// subexpression must be marked (with an 'i') to be invalidated
+		// afterwards
+		if (s.equals("f"))
+			s = "(";
+		else if (s.equals("i"))
+			s = "i";
 		expression = expression + s;
 	}
 

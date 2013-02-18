@@ -100,4 +100,10 @@ public interface IStove extends IResourceAgent {
 	 */
 	@Service(name = "Deligar forno")
 	public void turnOffOven();
+
+	/**
+	 * Turns the oven on.
+	 */
+	@Service(name = "Ligar forno")
+	public void turnOnOven();
 }

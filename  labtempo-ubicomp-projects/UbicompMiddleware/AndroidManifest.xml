@@ -31,9 +31,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!-- <activity -->
+        <!-- android:name=".apps.simulators.creator.SimulCreatorActivity" -->
+        <!-- android:label="@string/title_activity_simul_creator" > -->
+        <!-- </activity> -->
         <activity
             android:name=".apps.simulators.creator.SimulCreatorActivity"
-            android:label="@string/title_activity_simul_creator" >
+            android:label="SimulCreatorActivity" >
         </activity>
         <activity android:name=".apps.simulators.stove.StoveView" />
         <activity android:name=".apps.simulators.bed.BedView" />
@@ -58,6 +62,12 @@
 
 
         <!-- Rule -->
+        <activity
+            android:name=".apps.rule.RuleManager"
+            android:label="@string/rule_manager" />
+        <service
+            android:name=".apps.rule.RuleFactory" />
+        
         <activity
             android:name=".apps.rule.RuleActivity"
             android:label="@string/rule_creation" />
@@ -99,17 +109,17 @@
         <receiver android:name=".middleware.resources.AlarmReceiver" >
         </receiver>
         <!-- Begin tictactoe app -->
-        <activity
-            android:name=".apps.tictactoe.TicTacToe"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_tic_name"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--         <activity -->
+<!--             android:name=".apps.tictactoe.TicTacToe" -->
+<!--             android:configChanges="keyboardHidden|orientation" -->
+<!--             android:label="@string/app_tic_name" -->
+<!--             android:screenOrientation="portrait" > -->
+<!--             <intent-filter> -->
+<!--                 <action android:name="android.intent.action.MAIN" /> -->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+<!--                 <category android:name="android.intent.category.LAUNCHER" /> -->
+<!--             </intent-filter> -->
+<!--         </activity> -->
         <activity
             android:name=".apps.tictactoe.Settings"
             android:label="@string/settings_title" />
@@ -122,17 +132,17 @@
 
 
         <!-- Begin SmartAndroid Debugger -->
-        <activity
-            android:name="br.uff.tempo.middleware.LogViewerActivity"
-            android:label="@string/debugger_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+<!--         <activity -->
+<!--             android:name="br.uff.tempo.middleware.LogViewerActivity" -->
+<!--             android:label="@string/debugger_name" > -->
+<!--             <intent-filter> -->
+<!--                 <action android:name="android.intent.action.MAIN" /> -->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <!-- End SmartAndroid Debugger -->
+<!--                 <category android:name="android.intent.category.LAUNCHER" /> -->
+<!--             </intent-filter> -->
+<!--             End SmartAndroid Debugger -->
 
-        </activity>
+<!--         </activity> -->
 
         <!--
              <activity
