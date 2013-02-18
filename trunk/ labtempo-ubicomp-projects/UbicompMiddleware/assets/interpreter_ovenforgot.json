@@ -1,19 +1,17 @@
 {
 "interpreter": {
-	"name": "Detecta Sala Cheia",
+	"name": "OvenForgot",
 	"priority": 3,
 	"formula": [
 		{"formula": [
-			{"not":
-				{"predicate": [
-					{"context_elem": {
-						"rai": "_STOVE_",
-						"elem": "getOvenTemperature"
-					}},
-					{"op": ">"},
-					{"val": 50.0}
-				]}
-			},
+			{"predicate": [
+				{"context_elem": {
+					"rai": "_STOVE_",
+					"elem": "getOvenTemperature"
+				}},
+				{"op": ">"},
+				{"val": 50.0}
+			]},
 
 			{"connective": "and"},
 			
@@ -22,9 +20,7 @@
 					"rai": "_BED_",
 					"elem": "occupied"
 				}}
-			]},
-
-			{"timer": 10}
+			]}
 		]}
 	]
 }
