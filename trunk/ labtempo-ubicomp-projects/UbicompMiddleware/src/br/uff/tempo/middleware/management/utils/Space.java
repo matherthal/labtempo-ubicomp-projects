@@ -32,15 +32,14 @@ public class Space implements Serializable {
 	public Space(float width, float height) {
 		this(width, height, PIXEL_PER_METER);
 	}
-	
 
 	public Space(int pWidth, int pHeight) {
-	
+
 		this(pWidth, pHeight, PIXEL_PER_METER);
 	}
-	
+
 	public Space(int pWidth, int pHeight, int pixelFactor) {
-				
+
 		this(pixelToMeters(pWidth, pixelFactor), pixelToMeters(pHeight, pixelFactor), pixelFactor);
 	}
 
@@ -60,12 +59,12 @@ public class Space implements Serializable {
 
 		float ret = pixel;
 		ret /= pixelFactor;
-		
+
 		return Position.roundTo2(ret);
 	}
 
 	public float pixelToMeters(int pixel) {
-		
+
 		return pixelToMeters(pixel, this.pixelFactor);
 	}
 

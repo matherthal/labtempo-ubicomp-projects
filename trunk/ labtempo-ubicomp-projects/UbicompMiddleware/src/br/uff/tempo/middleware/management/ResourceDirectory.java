@@ -23,9 +23,9 @@ public class ResourceDirectory {
 	
 	private ResourceDirectory() {
 		domainList = new HashMap<String, Type>();
-		pathList = new HashMap<String,String>();
+		pathList = new HashMap<String, String>();
 		directory = new Type("//");
-		pathList.put(directory.getName(),directory.getName());
+		pathList.put(directory.getName(), directory.getName());
 		domainList.put(GENERAL_DOMAIN, directory);
 		currentDomain = directory;
 	}

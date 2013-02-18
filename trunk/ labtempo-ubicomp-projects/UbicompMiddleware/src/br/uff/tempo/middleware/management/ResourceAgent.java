@@ -225,13 +225,18 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 				registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
 			} else {
 				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, null);
-				registered = rrs.register(this.rans, ip, prefix, resourceData);
+				if (this.position == null) {
+					registered = rrs.register(this.rans, ip, prefix, resourceData);
+				} else {
+					registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
+				}					
 			}
 			ResourceContainer.getInstance().add(this);
 			ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.rans, ip, prefix));
 		}
 		return registered;
 	}
+	
 	
 	
 	public boolean identifyPosition(Position position) {

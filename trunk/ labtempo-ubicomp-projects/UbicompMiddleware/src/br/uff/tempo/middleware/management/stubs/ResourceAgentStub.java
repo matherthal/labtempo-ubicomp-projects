@@ -131,6 +131,14 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		return false;
 	}
 
+	public boolean identifyPosition(Position position){
+		return false;
+	}
+	
+	public boolean identifyInPlace(String placeName, Position position) {
+		return false;
+	}
+	
 	public boolean unregister() {
 		return false;
 	}

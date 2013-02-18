@@ -7,7 +7,7 @@ import java.util.Map;
 import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.utils.Position;
 
-public class Place implements IPlace,Serializable {
+public class Place /*extends ResourceAgent*/ implements IPlace,Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
@@ -21,7 +21,8 @@ public class Place implements IPlace,Serializable {
 	public Place(String name, Position lower, Position upper)// It defines a rectangle from
 												// the vertex
 	{
-		//super(name, "br.uff.tempo.middleware.management.Place", 0);
+//		super(name, ResourceAgent.type(Place.class), name+".ra");
+		
 		this.lower = lower;
 		this.upper = upper;
 		this.name = name;
@@ -30,10 +31,14 @@ public class Place implements IPlace,Serializable {
 	
 	public void enter(ResourceData ra) {
 		raDir.put(ra.getRai(), ra);
+//		notifyStakeholders("enter", ra);
+//		notifyStakeholders("enter("+ra.getType()+")", ra);
 	}
 	
 	public void exit(ResourceData ra) {
 		raDir.remove(ra.getRai());
+//		notifyStakeholders("exit", ra);
+//		notifyStakeholders("exit("+ra.getType()+")", ra);
 	}
 	
 	public String getName() {
@@ -98,5 +103,11 @@ public class Place implements IPlace,Serializable {
 	{
 		return (position.compareTo(lower)==1 && position.compareTo(upper)==3); 
 	}
-	
+
+//	@Override
+//	public void notificationHandler(String rai, String method, Object value) {
+//		// TODO Auto-generated method stub
+//		
+//	}
+//	
 }

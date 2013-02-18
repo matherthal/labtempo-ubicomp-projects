@@ -20,13 +20,21 @@ import br.uff.tempo.middleware.management.ResourceRegister;
 import br.uff.tempo.middleware.management.ResourceRepository;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
+
+/**
+ * Source Class where SmartServer is defined in terms of communication address.
+ * The SmartServer is composed of services: Resource Discovery (RDS), Resource Register (RRS) and Resource Localization (RLS);
+ * and a Resource Repository.
+ *
+ */
 public class SmartAndroid {
-	//Cabeça de nóis tudo
+	
 	private static String defaultMyIp = "127.0.0.1";
 	private static String myIp = defaultMyIp;
 	private static int myLocalPrefix = 0;
-	
-	public static String resourceDiscoveryIP = "192.168.0.100";
+
+	public static String resourceDiscoveryIP = getLocalIpAddressForRds();
+
 	public static Integer resourceDiscoveryPREFIX = 0;
 	public static boolean interestAPIEnable = false;
 	
@@ -42,13 +50,16 @@ public class SmartAndroid {
 	
 	private static String myLocalIp;
 	
+	/**
+	 * Following Sigleton Design Patter it is the constructor that initialize the SmartServer
+	 */
 	public synchronized static void newInstance() {
 		if (instance == null) {
 			instance = new SmartAndroid();
 		}
 	}
 
-	public SmartAndroid() {
+	private SmartAndroid() {
 		initializeIpAndPrefixDaemon();
 		initializeMiddlewareResources();
 		initializeCommunicationDaemon();			
@@ -144,6 +155,9 @@ public class SmartAndroid {
 		commDaemon.start();
 	}
 	
+	/**
+	 * Set local ip address in order to verify if itself is as SmartServer
+	 */
 	public static void fillLocalIpAddress() {
 		try {
 			for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
@@ -162,16 +176,29 @@ public class SmartAndroid {
 		myIp = defaultMyIp; //just to keep compatibility
 	}
 	
+	/**
+	 * Set local Prefix in order to verify if itself is as SmartServer
+	 */
 	public static void fillLocalPrefixAddress() {
 		if (interestAPIEnable) {
 			myLocalPrefix = InterestAPIImpl.getInstance().getPrefix();
 		}
 	}
 
+	/**
+	 * Get device local address
+	 * @return device local address
+	 */
 	public static String getLocalIpAddress(){
 		return myIp;
 	}
 	
+	/**
+	 * Utility function for get local ip address to be used as SmartServer Address
+	 * ex: resourceDiscoveryIP = getLocalIpAddressForRds();
+	 * This function differ from getLocalIpAddres, because this function get right address before execution of fillLocalIpAddress
+	 * @return local ip address
+	 */
 	public static String getLocalIpAddressForRds() {
 		if ( myLocalIp == null) {	
 			try {
@@ -181,7 +208,7 @@ public class SmartAndroid {
 						InetAddress inetAddress = enumIpAddr.nextElement();
 						if (!inetAddress.isLoopbackAddress() && !inetAddress.getHostAddress().contains(":")) {
 							myLocalIp = inetAddress.getHostAddress();
-							return  myLocalIp;
+							return myLocalIp;
 						}
 					}
 				}
@@ -192,6 +219,10 @@ public class SmartAndroid {
 		return myLocalIp;
 	}
 	
+	/**
+	 * Get device local prefix
+	 * @return device local prefix
+	 */
 	public static int getLocalPrefix() {
 		return myLocalPrefix;
 	}

@@ -38,7 +38,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		currentSpace = new Space();
 		resources = new HashMap<String, Position>();
 		baseIndexer = new HashMap<String, HashMap<String, Position>>();
-		loadBase();
+		//loadBase();
 	}
 	
 	public static ResourceLocation getInstance() {
@@ -182,8 +182,8 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		Log.i("SmartAndroid", "New map setted. Height = " + newSpace.getHeight() + " Width = " + newSpace.getWidth());
 	}
 	
-	public void setMap(Map<String, Place> newMap) {
-		this.currentSpace.setPlaceMap(newMap);
+	public void setMap(Space newMap) {
+		this.currentSpace = newMap;
 	}
 
 	public void registerInPlace(String url, Position position) {
@@ -252,3 +252,4 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		return place.getName();
 	}
 }
+                                                                                                                                                                                                                                                                                                                                                                 

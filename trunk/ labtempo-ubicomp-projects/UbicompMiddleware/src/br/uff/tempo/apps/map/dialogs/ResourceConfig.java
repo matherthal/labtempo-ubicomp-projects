@@ -45,7 +45,7 @@ public class ResourceConfig extends MapDialog {
 
 		EditText etName = (EditText) dialog.findViewById(R.id.etName);
 		EditText etPosX = (EditText) dialog.findViewById(R.id.etPosX);
-		EditText etPosY = (EditText) dialog.findViewById(R.id.etPosX);
+		EditText etPosY = (EditText) dialog.findViewById(R.id.etPosY);
 
 		this.name = etName.getText().toString();
 		String pX = etPosX.getText().toString();
