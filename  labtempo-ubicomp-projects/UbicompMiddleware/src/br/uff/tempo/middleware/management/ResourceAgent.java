@@ -245,20 +245,20 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 				}
 				this.position = new Position(x,y);
 				
-				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
-				registered = rrs.registerInPlace(this.rans, ip, prefix, placeName, this.position, resourceData);
+				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place, new ResourceAgentNS(this.rans, ip, prefix));
+				registered = rrs.registerInPlace(placeName, this.position, resourceData);
 			} else if(position != null) {
 				Place place = rls.getLocal(position);
 				this.position = position;
 				
-				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place);
-				registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
+				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, place, new ResourceAgentNS(this.rans, ip, prefix));
+				registered = rrs.registerLocation(this.position, resourceData);
 			} else {
-				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, null);
+				ResourceData resourceData = new ResourceData(this.rans, this.name, this.type, this.position, null, new ResourceAgentNS(this.rans, ip, prefix));
 				if (this.position == null) {
-					registered = rrs.register(this.rans, ip, prefix, resourceData);
+					registered = rrs.register(resourceData);
 				} else {
-					registered = rrs.registerLocation(this.rans, ip, prefix, this.position, resourceData);
+					registered = rrs.registerLocation(this.position, resourceData);
 				}					
 			}
 			ResourceContainer.getInstance().add(this);
@@ -397,7 +397,9 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	}
 	
 	
-	
+	/**
+	 * Register callback interest using REPA 
+	 */
 	protected void registerDefaultInterests() {
 		if (SmartAndroid.interestAPIEnable) {
 			InterestAPI ia = InterestAPIImpl.getInstance();
@@ -409,6 +411,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			}			
 		}
 	}
+	
 	@Override
 	public void updateLocation(Position position) {
 		rls = new ResourceLocationStub(IResourceLocation.rans);

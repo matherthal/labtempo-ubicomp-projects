@@ -27,21 +27,11 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 		String ip = SmartAndroid.getLocalIpAddress();
 		int prefix = SmartAndroid.getLocalPrefix();
 		
+		ResourceAgentNS raNS = new ResourceAgentNS(this.getRANS(), ip, prefix);
 		ResourceContainer.getInstance().add(this);
-		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRANS(), ip, prefix));
-		ResourceRepository.getInstance().add(this.getRANS(), ip, prefix);
-		ResourceDirectory.getInstance().create(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null));
-		
+		ResourceNSContainer.getInstance().add(raNS);
+		ResourceRepository.getInstance().add(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null, raNS));		
 		return true;
-	}
-	
-	public ArrayList<String> search(String query) {
-		ResourceRepository rR = ResourceRepository.getInstance();
-		if (query == "")
-			return rR.getList();
-		else
-			return rR.getSubList(query);
-
 	}
 
 	public ArrayList<String> queryByLocal(String query) {
@@ -75,7 +65,7 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 	}
 
 	@Override
-	public List<ResourceData> searchForAttribute(int attribute, String query) {
+	public List<ResourceData> search(int attribute, String query) {
 		return ResourceDirectory.getInstance().read(attribute, query);		
 	}
 }

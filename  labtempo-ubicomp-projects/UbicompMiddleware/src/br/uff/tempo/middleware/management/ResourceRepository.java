@@ -10,7 +10,7 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	
 	private static final long serialVersionUID = 1L;
 	//FIXME swapped by directory
-	private ArrayList<ResourceAgentDescription> repository = new ArrayList<ResourceAgentDescription>();;
+//	private ArrayList<ResourceAgentDescription> repository = new ArrayList<ResourceAgentDescription>();;
 	
 	Map<Integer,ResourceData> resourceTable;
 	ResourceDirectory directory;
@@ -35,52 +35,27 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		int prefix = SmartAndroid.getLocalPrefix();
 		
 		ResourceContainer.getInstance().add(this);
-		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRANS(), ip, prefix));
-		ResourceRepository.getInstance().add(this.getRANS(), ip, prefix);
-		ResourceDirectory.getInstance().create(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null));
-		
+		ResourceAgentNS raNS = new ResourceAgentNS(this.getRANS(), ip, prefix);
+		ResourceNSContainer.getInstance().add(raNS);
+		ResourceRepository.getInstance().add(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null, raNS));
 		return true;
 	}
-
-	public String get(String url) {
-		for (ResourceAgentDescription rad : repository) {
-			if (rad.getRai().contains(url)) {
-				return rad.getRai(); 
-			}
-		}
-		return null;
+	
+	public ResourceData get(String rans) {
+		return directory.read(ResourceData.RANS, rans).get(0);
 	}
 	
 	public ResourceAgentNS getRANS(String rans) {
-		for (ResourceAgentDescription rad : repository) {
-			if (rad.getRaNS().getRans().equals(rans)) {
-				return rad.getRaNS(); 
-			}
-		}
-		return null;
+		return directory.read(ResourceData.RANS, rans).get(0).getResourceAgentNS();
 	}
 
-	public ArrayList<String> getList() {
-		ArrayList<String> list = new ArrayList<String>();
-		for (ResourceAgentDescription ra : repository) {
-			list.add(ra.getRai());
-		}
-		return list;
-	}
-
-	public boolean add(String rans, String ip, int prefix) {
-		return repository.add(new ResourceAgentDescription(new ResourceAgentNS(rans, ip, prefix), rans));
+	public boolean add(ResourceData resourceData) {
+		directory.create(resourceData);
+		return true;
 	}
 	
 	public boolean remove(String url) {
-		for (ResourceAgentDescription des : repository) {
-			if (des.getRai().equals(url)) {
-				repository.remove(des);
-				directory.delete(directory.read(ResourceData.RAI, url).get(0));
-				return true;
-			}
-		}
-		
+		directory.delete(directory.read(ResourceData.RANS, url).get(0));	
 		return false;
 	}
 
@@ -88,17 +63,5 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 	public void notificationHandler(String rai, String method, Object value) {
 	}
 
-	public ArrayList<String> getSubList(String url) {
-		ArrayList<String> result = new ArrayList<String>();
-		for (ResourceAgentDescription rad : repository) {
-			if (rad.getRai().contains(url)) {
-				result.add(rad.getRai()); 
-			}
-		}
-		
-		if (result.isEmpty()) {
-			return null;
-		}
-		return result;
-	}
+	
 }

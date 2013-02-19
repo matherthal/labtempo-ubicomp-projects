@@ -35,7 +35,7 @@ public class TicTacToe extends Activity {
 
   public TicTacToe() {
 		IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-		List<ResourceData> gameList = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(GameAgent.class));
+		List<ResourceData> gameList = discovery.search(ResourceData.TYPE, ResourceAgent.type(GameAgent.class));
 		int id = (int) Math.round(50 * Math.random());
 		gameAgent = new GameAgent("Game"+id, "Game"+id);
 		((GameAgent) gameAgent).identify();
@@ -44,9 +44,9 @@ public class TicTacToe extends Activity {
 				gameAgent.setPlayer(Player.Name.O);
 			}
 			for (ResourceData iGameAgentData : gameList) {
-				IGameAgent iGameAgent = new GameAgentStub(iGameAgentData.getRai());
+				IGameAgent iGameAgent = new GameAgentStub(iGameAgentData.getRans());
 				((GameAgentStub) iGameAgent).registerStakeholder("setMove", ((GameAgent) gameAgent).getRANS());
-				((GameAgent) gameAgent).registerStakeholder("setMove", iGameAgentData.getRai());
+				((GameAgent) gameAgent).registerStakeholder("setMove", iGameAgentData.getRans());
 			}
 		} else
 		{
@@ -114,7 +114,7 @@ public class TicTacToe extends Activity {
 protected void onDestroy() {
 	super.onDestroy();
 	IResourceDiscovery discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-    IResourceRegister register = new ResourceRegisterStub(discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(ResourceRegister.class)).get(0).getRai());
+    IResourceRegister register = new ResourceRegisterStub(discovery.search(ResourceData.TYPE, ResourceAgent.type(ResourceRegister.class)).get(0).getRans());
     register.unregister(((GameAgent) gameAgent).getRANS());
     Log.d("TicTacToe", gameAgent.getPlayer().toString()+" destroyed");
 }

@@ -155,7 +155,7 @@ public class CounterApp2 extends Activity implements IChooser, IListGetter {
 		ResourceData data = choosedData.getData();
 		
 		//instantiate the stub (proxy) from lamp 
-		lamp = new LampStub(data.getRai());
+		lamp = new LampStub(data.getRans());
 		
 		//register my counter agent in "isOn" method in the lamp agent
 		lamp.registerStakeholder("isOn", counterAg.getRANS());

@@ -30,8 +30,8 @@ public class Test_SimpleRule_BedOccupied extends Activity {
 
 			// Subscription Test
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-			String raiB = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Bed.class))
-					.get(0).getRai();
+			String raiB = discovery.search(ResourceData.TYPE, ResourceAgent.type(Bed.class))
+					.get(0).getRans();
 			IResourceAgent ra = new ResourceAgentStub(raiB);
 			new Generic("SubscTest", "SubscTest", ra, "occupied") {
 				private static final String TAG = "SubscTest";

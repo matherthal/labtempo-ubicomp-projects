@@ -26,10 +26,10 @@ public class BaseListener extends Thread {
 
 	public void run() {
 
-		int count = rD.searchForAttribute(ResourceData.TYPE, "//").size();
+		int count = rD.search(ResourceData.TYPE, "//").size();
 		boolean update = true;
 		while (true) {
-			count = rD.searchForAttribute(ResourceData.TYPE, "//").size();
+			count = rD.search(ResourceData.TYPE, "//").size();
 			if (update)
 				updateBaseContent();
 			try {
@@ -39,16 +39,16 @@ public class BaseListener extends Thread {
 				e.printStackTrace();
 			}
 
-			update = count != rD.searchForAttribute(ResourceData.TYPE, "//").size();
+			update = count != rD.search(ResourceData.TYPE, "//").size();
 		}
 	}
 
 	protected void updateBaseContent() {
-		List<ResourceData> rdList = rD.searchForAttribute(ResourceData.TYPE, "//");
+		List<ResourceData> rdList = rD.search(ResourceData.TYPE, "//");
 		String rai = "";
 		if (rdList != null)
 			for (int i = 0; i < rdList.size(); i++)
-				rai += rdList.get(i).getRai() + "\n";
+				rai += rdList.get(i).getRans() + "\n";
 
 		final String text = rai;
 		act.runOnUiThread(new Runnable() {

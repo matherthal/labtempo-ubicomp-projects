@@ -36,10 +36,10 @@ public class RuleManager extends Activity {
 		setContentView(R.layout.rule_manager);
 		
 		discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-		List<ResourceData> rules = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(RuleInterpreter.class));
+		List<ResourceData> rules = discovery.search(ResourceData.TYPE, ResourceAgent.type(RuleInterpreter.class));
 		if (rules.size() != 0)
 			for (ResourceData r : rules)
-				riList.add(new RuleInterpreterStub(r.getRai()));
+				riList.add(new RuleInterpreterStub(r.getRans()));
 		else {
 			Toast.makeText(this, "Nenhuma regra encontrada", Toast.LENGTH_SHORT).show();
 			return;

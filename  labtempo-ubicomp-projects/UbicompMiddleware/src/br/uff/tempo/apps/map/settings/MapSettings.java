@@ -94,20 +94,20 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 		// Unregister an Agent
 		if (op == OP_UNREG) {
 			
-			new ResourceAgentStub(resource.getRai()).unregister();
+			new ResourceAgentStub(resource.getRans()).unregister();
 			new MiddlewareOperation(this, this, "//", IResourceDiscovery.rans).execute(null);
 			
 		// Setup the stakeholders from an Agent
 		} else if (op == OP_SETUP){
 		
-			current = new ResourceAgentStub(resource.getRai());
+			current = new ResourceAgentStub(resource.getRans());
 			stakeholders = current.getStakeholders();
 			List<ResourceData> shData = new ArrayList<ResourceData>();
 			
 			IResourceDiscovery resData = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 			
 			for (Stakeholder s : stakeholders) {
-				ResourceData d = resData.searchForAttribute(ResourceData.RAI, s.getRANS()).get(0);
+				ResourceData d = resData.search(ResourceData.RANS, s.getRANS()).get(0);
 				d.setTag(d.getName() + " wants " + s.getMethod());
 				
 				shData.add(d);
@@ -121,7 +121,7 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 		// A stakeholder was selected
 		} else if (op == OP_STAKEHOLDER) {
 			
-			current.removeStakeholder(stakeholderNames.get(resource.getName()), resource.getRai());
+			current.removeStakeholder(stakeholderNames.get(resource.getName()), resource.getRans());
 			stakeholderNames.clear();
 		}
 	}

@@ -33,10 +33,10 @@ public class AppLampController extends Activity {
 
 		if (savedInstanceState == null) {
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-			List<ResourceData> lamps = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Lamp.class));
+			List<ResourceData> lamps = discovery.search(ResourceData.TYPE, ResourceAgent.type(Lamp.class));
 			ResourceData rdLamp = lamps.get(0);
 			Toast.makeText(this, "Lâmpada encontrada", Toast.LENGTH_SHORT).show();
-			lamp = new LampStub(rdLamp.getRai());
+			lamp = new LampStub(rdLamp.getRans());
 
 			// Subscription
 			lampStakeholder = new Generic("Controlador de Lampada", "Controlador de Lampada", lamp, "isOn") {
