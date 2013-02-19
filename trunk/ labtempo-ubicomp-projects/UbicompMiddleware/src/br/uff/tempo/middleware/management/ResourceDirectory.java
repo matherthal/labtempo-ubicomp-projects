@@ -106,7 +106,7 @@ public class ResourceDirectory {
 	public List<ResourceData> read(int attribute, String query){
 		List<ResourceData> result = new ArrayList<ResourceData>();
 		switch (attribute) {
-			case ResourceData.RAI:
+			case ResourceData.RANS:
 				result = getByRai(query);
 				break;
 			case ResourceData.NAME:
@@ -149,7 +149,7 @@ public class ResourceDirectory {
 
 	private ResourceData getRai(String rai, List<ResourceData> resources) {
 		for (ResourceData resource : resources){
-			if (resource.getRai().equals(rai)){
+			if (resource.getRans().equals(rai)){
 				return resource;
 			}
 		}
@@ -277,7 +277,7 @@ public class ResourceDirectory {
 	 */
 	public void update(ResourceData resource){
 		List<ResourceData> result;
-		if ((result = read(ResourceData.RAI, resource.getRai()))!= null){
+		if ((result = read(ResourceData.RANS, resource.getRans()))!= null){
 			result.set(0, resource);
 		}
 		Log.d(TAG, "Updated");
@@ -289,7 +289,7 @@ public class ResourceDirectory {
 	 */
 	public void delete(ResourceData resource){
 		List<ResourceData> result;
-		if ((result = read(ResourceData.RAI, resource.getRai()))!= null){
+		if ((result = read(ResourceData.RANS, resource.getRans()))!= null){
 			result.set(0,null);
 		}
 		Log.d(TAG, "Deleted");

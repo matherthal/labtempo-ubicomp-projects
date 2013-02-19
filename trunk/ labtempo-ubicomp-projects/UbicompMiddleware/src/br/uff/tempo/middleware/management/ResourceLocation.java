@@ -52,10 +52,10 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		String ip = SmartAndroid.getLocalIpAddress();
 		int prefix = SmartAndroid.getLocalPrefix();
 		
+		ResourceAgentNS raNS = new ResourceAgentNS(this.getRANS(), ip, prefix);
 		ResourceContainer.getInstance().add(this);
-		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRANS(), ip, prefix));
-		ResourceRepository.getInstance().add(this.getRANS(), ip, prefix);
-		ResourceDirectory.getInstance().create(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null));
+		ResourceNSContainer.getInstance().add(raNS);
+		ResourceRepository.getInstance().add(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null, raNS));	
 		
 		return true;
 	}
@@ -209,7 +209,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		registerResource(url, place, position);
 	}
 	
-	private void registerResource (String url, Place place, Position position) {
+	private void registerResource(String url, Place place, Position position) {
 		//get place entry to register new RA
 		HashMap<String, Position> rAMap = baseIndexer.get(place.getName());
 		rAMap.put(url, position);
@@ -231,7 +231,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	
 	public void updateLocation(ResourceData resource){
 		ResourceDirectory.getInstance().update(resource);
-		registerResource(resource.getRai(), resource.getPlace(), resource.getPosition());
+		registerResource(resource.getRans(), resource.getPlace(), resource.getPosition());
 		
 		//It can be used by IPGAP to update MAP interface
 		//notifyStakeholders("updateLocation", resource.getPosition());

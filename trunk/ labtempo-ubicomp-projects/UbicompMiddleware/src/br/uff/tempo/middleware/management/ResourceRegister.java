@@ -27,31 +27,27 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		
 		ResourceContainer.getInstance().add(this);
 		ResourceNSContainer.getInstance().add(new ResourceAgentNS(this.getRANS(), ip, prefix));
-		ResourceRepository.getInstance().add(this.getRANS(), ip, prefix);
-		ResourceDirectory.getInstance().create(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null));
+		ResourceRepository.getInstance().add(new ResourceData(this.getRANS(), this.getName(), this.getType(), null, null, new ResourceAgentNS(this.getRANS(), ip, prefix)));
 		
 		return true;
 	}
 	
 	@Override
-	public boolean register(String rans, String ip, int prefix, ResourceData resourceData) {
-		ResourceRepository.getInstance().add(rans, ip, prefix);
-		ResourceNSContainer.getInstance().add(new ResourceAgentNS(rans, ip, prefix));
-		
-		ResourceDirectory.getInstance().create(resourceData);
-		
+	public boolean register(ResourceData resourceData) {
+		ResourceNSContainer.getInstance().add(resourceData.getResourceAgentNS());
+		ResourceRepository.getInstance().add(resourceData);
+				
 		notifyStakeholders("register", rans);
 		return true;
 	}
 	
 	@Override
-	public boolean registerLocation(String rans, String ip, int prefix, Position position, ResourceData resourceData) {
-		ResourceRepository.getInstance().add(rans, ip, prefix);
-		ResourceNSContainer.getInstance().add(new ResourceAgentNS(rans, ip, prefix));
+	public boolean registerLocation(Position position, ResourceData resourceData) {
+		
+		ResourceNSContainer.getInstance().add(resourceData.getResourceAgentNS());
 		
 		ResourceLocation.getInstance().registerInPlace(rans, position);
-		
-		ResourceDirectory.getInstance().create(resourceData);
+		ResourceRepository.getInstance().add(resourceData);
 		return true;
 	}
 
@@ -68,13 +64,13 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	}
 
 	@Override
-	public boolean registerInPlace(String rans, String ip, int prefix, String placeName, Position position, ResourceData resourceData) {
-		ResourceRepository.getInstance().add(rans, ip, prefix);
-		ResourceNSContainer.getInstance().add(new ResourceAgentNS(rans, ip, prefix));
+	public boolean registerInPlace(String placeName, Position position, ResourceData resourceData) {
+		
+		ResourceNSContainer.getInstance().add(resourceData.getResourceAgentNS());
 		
 		ResourceLocation rL = ResourceLocation.getInstance();
 		
-		//ResourceDirectory.getInstance().create(resourceData);
+		ResourceRepository.getInstance().add(resourceData);
 		
 		if (position == null){
 			rL.registerInPlaceMiddlePos(rans, rL.getPlace(placeName));

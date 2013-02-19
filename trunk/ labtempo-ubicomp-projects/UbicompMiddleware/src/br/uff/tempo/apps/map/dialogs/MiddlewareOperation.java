@@ -63,7 +63,7 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<ResourceDa
 
 		// Get registered resources references from Resource Discovery that
 		// matches the query
-		List<ResourceData> resourceData = rd.searchForAttribute(ResourceData.TYPE, this.query);
+		List<ResourceData> resourceData = rd.search(ResourceData.TYPE, this.query);
 
 		return resourceData;
 	}

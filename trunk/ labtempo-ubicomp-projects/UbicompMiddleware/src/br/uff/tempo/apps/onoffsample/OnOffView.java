@@ -57,7 +57,7 @@ public class OnOffView extends Activity{
 			String xStr = editX.getText().toString();
 			String yStr = editY.getText().toString();
 			
-			List<ResourceData> list = discovery.searchForAttribute(ResourceData.NAME, name);
+			List<ResourceData> list = discovery.search(ResourceData.NAME, name);
 			if (list == null) {
 				agent = getAgent(name,xStr,yStr);
 			} else {
@@ -68,7 +68,7 @@ public class OnOffView extends Activity{
 					agent = getAgent(name+"Observer",xStr,yStr);
 					//IResourceAgent observableAgent = new ResourceAgentStub(rai);
 					//observableAgent.registerStakeholder("ligaDesliga", agent.getRAI());
-					agent.registerStakeholder("ligaDesliga", rData.getRai());
+					agent.registerStakeholder("ligaDesliga", rData.getRans());
 				} else {
 					agent = getAgent(name,xStr,yStr);
 				}

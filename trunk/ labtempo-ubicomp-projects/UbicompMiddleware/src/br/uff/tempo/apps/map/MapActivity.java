@@ -977,7 +977,7 @@ public class MapActivity extends SimpleBaseGameActivity implements
 
 		ResourceData resourceData = choosedData.getData();
 		
-		regData = new RegistryData(resourceData.getRai());
+		regData = new RegistryData(resourceData.getRans());
 		regData.setFake(false);
 
 		// TODO Add middleware support to get the resource types

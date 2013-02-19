@@ -10,10 +10,8 @@ import br.uff.tempo.middleware.management.ResourceData;
 public interface IResourceDiscovery {
 
 	public static final String rans = "resourcediscovery.ra";
-	
-	public ArrayList<String> search(String query);// return URI of resources
 
-	public List<ResourceData> searchForAttribute(int attribute, String query);// return URI of resources
+	public List<ResourceData> search(int attribute, String query);// return URI of resources
 	
 	public String getPath(String id);
 	

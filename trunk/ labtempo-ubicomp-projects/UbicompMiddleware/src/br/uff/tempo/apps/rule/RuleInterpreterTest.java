@@ -22,7 +22,7 @@ public class RuleInterpreterTest extends ResourceAgent {
 		super("Teste regra", "br.uff.tempo.apps.rule.RuleInterpreterTest", "TesteRegra");
 		discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 		//Is "Regra do fogão" a name?
-		IResourceAgent ra = new ResourceAgentStub(discovery.searchForAttribute(ResourceData.NAME, "Regra do Fogao").get(0).getRai());
+		IResourceAgent ra = new ResourceAgentStub(discovery.search(ResourceData.NAME, "Regra do Fogao").get(0).getRans());
 
 		// String cv = "Regra disparada";
 		String cv = "ruleTrigger";

@@ -19,14 +19,6 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 		super(calleeID);
 	}
 
-	public ArrayList<String> search(String query) {
-
-		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(String.class.getName(), query));
-
-		return (ArrayList<String>) makeCall("search", params, ArrayList.class);
-	}
-
 	public ResourceAgent get(String rai) {
 		// TODO Auto-generated method stub
 		return null;
@@ -47,12 +39,12 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 	}
 	
 	@Override
-	public List<ResourceData> searchForAttribute(int attribute, String query) {
+	public List<ResourceData> search(int attribute, String query) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Integer.class.getName(), attribute));
 		params.add(new Tuple<String, Object>(String.class.getName(), query));
 
-		return (List<ResourceData>) makeCall("searchForAttribute", params, new TypeToken<List<ResourceData>>() {}.getType());
+		return (List<ResourceData>) makeCall("search", params, new TypeToken<List<ResourceData>>() {}.getType());
 	}
 
 }

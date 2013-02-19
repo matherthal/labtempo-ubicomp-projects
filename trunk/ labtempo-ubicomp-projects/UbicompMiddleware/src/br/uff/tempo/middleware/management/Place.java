@@ -30,13 +30,13 @@ public class Place /*extends ResourceAgent*/ implements IPlace,Serializable {
 	}
 	
 	public void enter(ResourceData ra) {
-		raDir.put(ra.getRai(), ra);
+		raDir.put(ra.getRans(), ra);
 //		notifyStakeholders("enter", ra);
 //		notifyStakeholders("enter("+ra.getType()+")", ra);
 	}
 	
 	public void exit(ResourceData ra) {
-		raDir.remove(ra.getRai());
+		raDir.remove(ra.getRans());
 //		notifyStakeholders("exit", ra);
 //		notifyStakeholders("exit("+ra.getType()+")", ra);
 	}

@@ -164,7 +164,7 @@ public class AppLampControlSystem extends Activity {
 						Log.d(TAG, "CHANGE: " + rai + " " + method + " " + value);
 
 						// Get lamp to turn on or off
-						lamp = new LampStub(discovery.searchForAttribute(ResourceData.RAI, lRAI).get(0).getRai());
+						lamp = new LampStub(discovery.search(ResourceData.RANS, lRAI).get(0).getRans());
 						// Verify if lamp is blocked
 						String lName = lamp.getName();
 						Tuple tp = lampDictionary.get(lName);
@@ -300,7 +300,7 @@ public class AppLampControlSystem extends Activity {
 	 * Button toggle between day and night
 	 */
 	public void buttonToggleDayNight_Clicked(View view) {
-		String rai = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(DayLightSensor.class)).get(0).getRai();
+		String rai = discovery.search(ResourceData.TYPE, ResourceAgent.type(DayLightSensor.class)).get(0).getRans();
 		IDayLightSensor dl = new DayLightSensorStub(rai);
 		if (dl.isDay())
 			dl.setDay(false);

@@ -44,7 +44,7 @@ public class ReminderReceiver extends BroadcastReceiver {
 
 	public ResourceData search() {
 
-		List<ResourceData> lista = discovery.searchForAttribute(
+		List<ResourceData> lista = discovery.search(
 				ResourceData.TYPE, Television.class.getCanonicalName());
 
 		return lista.get(0);

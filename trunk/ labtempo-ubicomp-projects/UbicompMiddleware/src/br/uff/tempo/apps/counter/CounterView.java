@@ -56,12 +56,12 @@ public class CounterView extends Activity{
 	private void initList()
 	{
 		IResourceDiscovery rD = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-		List<ResourceData> rdList = rD.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(OnOff.class));
+		List<ResourceData> rdList = rD.search(ResourceData.TYPE, ResourceAgent.type(OnOff.class));
 		if (rdList!= null){
 			String[] array_spinner = new String[rdList.size()];
 			int i = 0;
 			for (ResourceData rData : rdList) {
-				array_spinner[i++]=rData.getRai();				
+				array_spinner[i++]=rData.getRans();				
 			}
 			ArrayAdapter adapter = new ArrayAdapter(this,
 			android.R.layout.simple_spinner_item, array_spinner);

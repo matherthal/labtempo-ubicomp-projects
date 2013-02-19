@@ -62,7 +62,7 @@ public class RuleActivity extends Activity {
 			
 			//Teste subscrição
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-			String raiB = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Bed.class)).get(0).getRai();
+			String raiB = discovery.search(ResourceData.TYPE, ResourceAgent.type(Bed.class)).get(0).getRans();
 			IResourceAgent ra = new ResourceAgentStub(raiB);
 			new Generic("SubscTest", "SubscTest", ra, "occupied") {
 				private static final String TAG = "SubscTest";
@@ -135,8 +135,8 @@ public class RuleActivity extends Activity {
 			// ArrayList<String> stoves = discovery.search("Stove");
 			// String raiStove = stoves.get(0);
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-			List<ResourceData> stoves = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Stove.class));
-			String raiStove = stoves.get(0).getRai();
+			List<ResourceData> stoves = discovery.search(ResourceData.TYPE, ResourceAgent.type(Stove.class));
+			String raiStove = stoves.get(0).getRans();
 //			String raiStove = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Stove.class)).get(0).getRai();
 
 			Toast.makeText(RuleActivity.this, "Fogão encontrado", Toast.LENGTH_SHORT).show();
@@ -154,7 +154,7 @@ public class RuleActivity extends Activity {
 			// String raiBed = discovery.search("Bed").get(0);
 			discovery = new ResourceDiscoveryStub(
 					IResourceDiscovery.rans);
-			String raiBed = discovery.searchForAttribute(ResourceData.TYPE, ResourceAgent.type(Bed.class)).get(0).getRai();
+			String raiBed = discovery.search(ResourceData.TYPE, ResourceAgent.type(Bed.class)).get(0).getRans();
 //			String raiBed = discovery.searchForAttribute(ResourceData.TYPE, "br.uff.tempo.middleware.resources.Bed").get(0).getRai();
 
 			Toast.makeText(RuleActivity.this, "Cama encontrada", Toast.LENGTH_SHORT).show();
