@@ -1,44 +1,29 @@
 package br.uff.tempo.apps.rule.actuators;
 
-import java.util.Iterator;
-
 import android.util.Log;
-import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.RuleInterpreter;
 import br.uff.tempo.middleware.management.interfaces.IRuleInterpreter;
 import br.uff.tempo.middleware.management.stubs.RuleInterpreterStub;
-import br.uff.tempo.middleware.management.utils.Stakeholder;
 import br.uff.tempo.middleware.resources.Generic;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
-import br.uff.tempo.middleware.resources.stubs.StoveStub;
+import br.uff.tempo.middleware.resources.interfaces.ITelevision;
 
-public class OvenTurnOffActuator extends Generic {
+public class OvenForgotActuator extends Generic {
 	private static final long serialVersionUID = 1L;
-	private static final String TAG = "OvenTurnOffActuator";
-	private static final String ruleName = "OvenForgot";
+	private static final String TAG = "OvenForgotActuator";
 	private IStove stove = null;
+	private ITelevision tv = null;
 
-	public OvenTurnOffActuator() {
+	public OvenForgotActuator() {
 		super("OvenTurnOffActuator", "OvenTurnOffActuator");
-		this.name = "OvenTurnOffActuator";
-
-		super.identify();
-		IRuleInterpreter ri = new RuleInterpreterStub(ruleName);
-		ri.registerStakeholder(RuleInterpreter.RULE_TRIGGERED, this.getRANS());
-		
-		// Obtain stove to turn off
-		// Iterator<Stakeholder> it = ri.getStakeholders().iterator();
-		// while (it.hasNext()) {
-		// Stakeholder ra = it.next();
-		// if (IStove.class.equals(ra.getClass())) {
-		// stove = new StoveStub(ra.getRANS());
-		// break;
-		// }
-		// }
 	}
 
 	public void setStove(IStove stove) {
 		this.stove = stove;
+	}
+
+	public void setTV(ITelevision tv) {
+		this.tv = tv;
 	}
 	
 	@Override
@@ -48,7 +33,13 @@ public class OvenTurnOffActuator extends Generic {
 			stove.turnOffOven();
 			Log.i(TAG, "Stove turned off");
 		} else {
-			Log.e(TAG, "Stove not found in rule");
+			Log.e(TAG, "Stove not found");
+		}
+		if (tv != null) {
+			tv.showMessage("Forno esquecido ligado!");
+			Log.i(TAG, "Show message on TV");
+		} else {
+			Log.e(TAG, "TV not found");
 		}
 	}
 	
