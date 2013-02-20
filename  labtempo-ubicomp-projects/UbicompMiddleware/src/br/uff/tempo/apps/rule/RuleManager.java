@@ -91,10 +91,9 @@ public class RuleManager extends Activity {
 		// Ids of views in listview_layout
 		int[] to = { R.id.tv_item, R.id.tgl_status };
 		// Instantiating an adapter to store each items
-		// R.layout.listview_layout defines the layout of each item
+		// R.layout.rule_manager_list_item defines the layout of each item
 		SimpleAdapter adapter = new SimpleAdapter(getBaseContext(), aList, R.layout.rule_manager_list_item, from, to);
 		lvRules.setAdapter(adapter);
-
 	}
 
 	/**
