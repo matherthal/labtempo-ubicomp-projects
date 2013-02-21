@@ -23,7 +23,9 @@ public class ResourceContainer implements IResourceContainer {
 		container = new HashMap<String, ResourceAgent>();
 		rAMethods = new HashMap<String, ArrayList<Method>>();
 	}
-
+	/**Singleton instance that only SmartServer components can use
+	 * @return reference to ResourceLocation
+	 */
 	public synchronized static ResourceContainer getInstance() {
 		if (instance == null) {
 			instance = new ResourceContainer();
