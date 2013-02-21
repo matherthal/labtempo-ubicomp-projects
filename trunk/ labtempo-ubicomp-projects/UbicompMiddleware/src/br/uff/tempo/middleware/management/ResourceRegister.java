@@ -4,6 +4,11 @@ import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.utils.Position;
 
+/**
+ * Resource Register Service class.
+ * 
+ * It's the interface to add and remove ResourceData from ResourceRepository instance in a SmartServer
+ */
 public class ResourceRegister extends ResourceAgent implements IResourceRegister {
 	
 	private static final long serialVersionUID = 1L;
@@ -14,6 +19,10 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		super("ResourceRegister", ResourceRegister.class.getName(), IResourceRegister.rans);
 	}
 
+	/**
+	 * Singleton instance that only SmartServer components can use
+	 * @return reference to ResourceRegister
+	 */
 	public static ResourceRegister getInstance() {
 		if (instance == null)
 			instance = new ResourceRegister();
@@ -51,9 +60,14 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 		return true;
 	}
 
-	public boolean unregister(String url) {
-		ResourceRepository.getInstance().remove(url);
-		ResourceNSContainer.getInstance().remove(url);
+	/**
+	 * Remove ResourceData of referred rans
+	 * @param rans
+	 * @return true if it is concluded
+	 */
+	public boolean unregister(String rans) {
+		ResourceRepository.getInstance().remove(rans);
+		ResourceNSContainer.getInstance().remove(rans);
 		return true;
 	}
 

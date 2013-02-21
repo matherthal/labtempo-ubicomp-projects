@@ -6,6 +6,11 @@ import java.util.List;
 import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 
+/**
+ * Resource Discovery Service class.
+ * 
+ * This class is responsible for search ResourceAgent instances from RespourceRepository
+ */
 public class ResourceDiscovery extends ResourceAgent implements IResourceDiscovery {
 	
 	private static final long serialVersionUID = 1L;
@@ -16,6 +21,10 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 		super("ResourceDiscovery", ResourceDiscovery.class.getName(), IResourceDiscovery.rans);
 	}
 	
+	/**
+	 * Singleton instance that only SmartServer components can use
+	 * @return reference to ResourceDiscovery
+	 */
 	public static ResourceDiscovery getInstance() {
 		if (instance == null)
 			instance = new ResourceDiscovery();
@@ -34,29 +43,9 @@ public class ResourceDiscovery extends ResourceAgent implements IResourceDiscove
 		return true;
 	}
 
-	public ArrayList<String> queryByLocal(String query) {
-		
-		return null;
-	}
-
-	private ArrayList<ResourceAgent> queryByProximity(String query) {
-		return null;
-	}
-
 	@Override
 	public void notificationHandler(String rai, String method, Object value) {
 		// TODO Auto-generated method stub
-	}
-
-	public ResourceAgent get(String url) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPath(String id) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override

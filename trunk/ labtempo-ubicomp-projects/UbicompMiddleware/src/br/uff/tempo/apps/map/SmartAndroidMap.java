@@ -112,7 +112,7 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 			houseMap = new Space(mapWidth, mapHeight);
 			
 		}
-		resLocation.insertMap(houseMap);
+		resLocation.setMap(houseMap);
 		for (TMXObject obj : group.getTMXObjects()) {
 
 			String roomName = obj.getName();

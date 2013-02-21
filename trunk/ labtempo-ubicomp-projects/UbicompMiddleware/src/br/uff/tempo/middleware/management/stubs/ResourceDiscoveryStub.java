@@ -19,17 +19,6 @@ public class ResourceDiscoveryStub extends ResourceAgentStub implements IResourc
 		super(calleeID);
 	}
 
-	public ResourceAgent get(String rai) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getPath(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public ResourceAgentNS getRANS(String rans) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();

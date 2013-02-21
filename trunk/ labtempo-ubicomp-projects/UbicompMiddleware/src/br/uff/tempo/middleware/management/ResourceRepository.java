@@ -21,7 +21,11 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		
 		directory = ResourceDirectory.getInstance();
 	}
-
+	
+	/**
+	 * Singleton instance that only SmartServer components can use
+	 * @return reference to ResourceRepository
+	 */
 	public synchronized static ResourceRepository getInstance() {
 		if (instance == null) {
 			instance = new ResourceRepository();
@@ -49,18 +53,29 @@ public class ResourceRepository extends ResourceAgent implements IResourceReposi
 		return directory.read(ResourceData.RANS, rans).get(0).getResourceAgentNS();
 	}
 
+	/**
+	 * Create new resource data
+	 * @param resourceData
+	 * @return true if it was successful 
+	 */
 	public boolean add(ResourceData resourceData) {
 		directory.create(resourceData);
 		return true;
 	}
 	
-	public boolean remove(String url) {
-		directory.delete(directory.read(ResourceData.RANS, url).get(0));	
-		return false;
+	/**
+	 * Remove the resource data from directory
+	 * @param rans
+	 * @return true if it was successful
+	 */
+	public boolean remove(String rans) {
+		directory.delete(directory.read(ResourceData.RANS, rans).get(0));	
+		return true;
 	}
 
 	@Override
 	public void notificationHandler(String rai, String method, Object value) {
+		
 	}
 
 	
