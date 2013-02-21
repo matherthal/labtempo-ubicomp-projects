@@ -44,7 +44,6 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		currentSpace = new Space();
 		resources = new HashMap<String, Position>();
 		baseIndexer = new HashMap<String, HashMap<String, Position>>();
-		//loadBase();
 	}
 	
 	/**
@@ -69,7 +68,6 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		
 		return true;
 	}
-	
 
 	/**
 	 * Add place to map structure
@@ -88,22 +86,12 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	 */
 	public void addPlace(Place place) {	
 		currentSpace.addPlace(place);
-		baseIndexer.put(place.getName(), new HashMap<String, Position>());
 		
 		Log.i("SmartAndroid", "New place added: " + place.getName() + ". Bottom-left corner at = [" + place.getLower().getX() + " , " + place.getLower().getY() + "] and top-right corner at [" + place.getUpper().getX() + " , " + place.getUpper().getY() + "]");
 	}
 
-	// public ArrayList<Place> search(ResourceAgent rA) {
-	// ArrayList<Place> result = new ArrayList<Place>();
-	// Place current = get(rA);
-	// result.add(0, current);// current local is the nearest
-	// ArrayList<Place> localList = (ArrayList<Place>) map.values();
-	// result = getNeighbors(current, localList, result);
-	// return result;
-	// }
-
 	/**
-	 * Search for ARs in terms oof Place
+	 * Search for ARs in terms of Place
 	 * @param query
 	 * @return reference list of ARs
 	 */
@@ -214,6 +202,10 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	 */
 	public void setMap(Space newMap) {
 		this.currentSpace = newMap;
+		
+		for (Place place : currentSpace.getAllPlaces()) {
+			baseIndexer.put(place.getName(), new HashMap<String, Position>());
+		}
 	}
 
 	public void registerInPlace(String url, Position position) {
@@ -281,7 +273,5 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		Place place = getLocal(position);
 		return place.getName();
 	}
-
-
 }
                                                                                                                                                                                                                                                                                                                                                                  

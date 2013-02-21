@@ -110,9 +110,8 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 		// Create a new Space (a set of places)
 		if (houseMap == null) {
 			houseMap = new Space(mapWidth, mapHeight);
-			
 		}
-		resLocation.setMap(houseMap);
+		
 		for (TMXObject obj : group.getTMXObjects()) {
 
 			String roomName = obj.getName();
@@ -132,10 +131,10 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 			Place place = new Place(roomName, new Position(x0, y0), new Position(x1, y1));
 			Log.i("SmartAndroid", "Created a new Place. lower = " + x0 + " "
 					+ y0 + " and Upper = " + x1 + " " + y1);
-			resLocation.addPlace(place);
+			houseMap.addPlace(place);
 		}
 
-		
+		resLocation.setMap(houseMap);
 		//state.setMapInfo(houseMap);
 	}
 	
