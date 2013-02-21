@@ -12,10 +12,6 @@ public interface IResourceDiscovery {
 	public static final String rans = "resourcediscovery.ra";
 
 	public List<ResourceData> search(int attribute, String query);// return URI of resources
-	
-	public String getPath(String id);
-	
-	public ResourceAgent get(String rai);
 
 	// it's here rather than ResourceRegister because at the beginning ResourceDiscovery is known by all, otherwise ResourceRegister should also be known
 	public ResourceAgentNS getRANS(String rans);  

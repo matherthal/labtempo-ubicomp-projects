@@ -16,6 +16,11 @@ import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Sorter;
 import br.uff.tempo.middleware.management.utils.Space;
 
+/**
+ * Class representing Resource Location Service.
+ * 
+ * This class is responsible for index and query from a ambient loaded Map
+ */
 public class ResourceLocation extends ResourceAgent implements IResourceLocation {
 
 	private static final long serialVersionUID = 1L;
@@ -31,7 +36,8 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	
 	//<Place name, <RANS, position>>
 	HashMap<String, HashMap<String, Position>> baseIndexer;
-
+	
+	
 	private ResourceLocation() {
 		super("ResourceLocation", ResourceLocation.class.getName(), IResourceLocation.rans);
 		
@@ -41,6 +47,10 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		//loadBase();
 	}
 	
+	/**
+	 * Singleton instance that only SmartServer components can use
+	 * @return reference to ResourceLocation
+	 */
 	public static ResourceLocation getInstance() {
 		if (instance == null)
 			instance = new ResourceLocation();
@@ -60,25 +70,22 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		return true;
 	}
 	
-	/**
-	 * carrega mapa com lugares baseados na interface do MapaDaCasa areas da
-	 * casa e dos comodos foram estimadas area da casa: 100x50
-	 */
-	public void loadBase() {
-		addPlace("Hall", new Position(0, 0), new Position(50, 25));
-		addPlace("Bathroom", new Position(50, 0), new Position(70, 20));
-		addPlace("Storeroom", new Position(70, 0), new Position(100, 20));
-		addPlace("Corridor", new Position(50, 20), new Position(100, 25));
-		addPlace("Bedroom1", new Position(0, 25), new Position(30, 50));
-		addPlace("Bedroom2", new Position(30, 25), new Position(60, 50));
-		addPlace("Kitchen", new Position(60, 25), new Position(100, 50));
-	}
 
+	/**
+	 * Add place to map structure
+	 * @param name
+	 * @param lower area position 
+	 * @param upper area position
+	 */
 	public void addPlace(String name, Position lower, Position upper) {
 		Place place = new Place(name, lower, upper);
 		addPlace(place);
 	}
 	
+	/**
+	 * Add defined place to map structure
+	 * @param place
+	 */
 	public void addPlace(Place place) {	
 		currentSpace.addPlace(place);
 		baseIndexer.put(place.getName(), new HashMap<String, Position>());
@@ -95,6 +102,11 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	// return result;
 	// }
 
+	/**
+	 * Search for ARs in terms oof Place
+	 * @param query
+	 * @return reference list of ARs
+	 */
 	public ArrayList<String> search(String query) {
 		ArrayList<String> result = new ArrayList<String>();
 		ArrayList<Set<String>> setList = new ArrayList<Set<String>>();
@@ -120,6 +132,10 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		return result;
 	}
 	
+	/**
+	 * Get a set of place references from loaded map
+	 * @return set of place references from loaded map
+	 */
 	public Set<String> getPlacesNames() {
 		return currentSpace.getPlacesNames();
 	}
@@ -129,6 +145,11 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		return baseIndexer.get(place).get(rai);
 	}
 	
+	/**
+	 * Get a Place instance of referred name
+	 * @param name reference of a Place instance
+	 * @return Place instance
+	 */
 	public Place getPlace(String name) {
 		return currentSpace.getPlace(name);
 	}
@@ -137,12 +158,12 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	public Collection<Place> getAllPlaces() {
 		return currentSpace.getAllPlaces();
 	}
-	
-	public Place get(ResourceAgent rA) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
+	/**
+	 * Get a Place instance from indexed position
+	 * @param position
+	 * @return Place instance from indexed position
+	 */
 	public Place getLocal(Position position) {
 
 		for (Place local : currentSpace.getAllPlaces()) {
@@ -153,6 +174,13 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		return null;
 	}
 	
+	/**
+	 * Get a sorted subset of Place instances from localList representing the neighbors from current Place instance
+	 * @param current target of search for neighbors
+	 * @param localList subset of Place instances to search
+	 * @param result auxiliary subset to add sorted Place instances
+	 * @return sorted subset of Place instances from localList representing the neighbors
+	 */
 	private ArrayList<Place> getNeighbors(Place current,
 			ArrayList<Place> localList, ArrayList<Place> result) {
 		ArrayList<Place> neighborList = new ArrayList<Place>();
@@ -172,16 +200,18 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		return result;
 	}
 	
+	/**
+	 * Get acces to Space map instance
+	 * @return Space map instance;
+	 */
 	public Space getMap() {
 		return this.currentSpace;
 	}
-
-	public void insertMap(Space newSpace) {
-		this.currentSpace = newSpace;
-		
-		Log.i("SmartAndroid", "New map setted. Height = " + newSpace.getHeight() + " Width = " + newSpace.getWidth());
-	}
 	
+	/**
+	 * Insert newMap as Space map reference for this ResourceLocation instance
+	 * @param newMap new Space map
+	 */
 	public void setMap(Space newMap) {
 		this.currentSpace = newMap;
 	}
@@ -251,5 +281,7 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		Place place = getLocal(position);
 		return place.getName();
 	}
+
+
 }
                                                                                                                                                                                                                                                                                                                                                                  

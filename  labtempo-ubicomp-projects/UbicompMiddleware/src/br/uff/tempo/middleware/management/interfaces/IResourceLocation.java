@@ -29,15 +29,11 @@ public interface IResourceLocation {
 
 	Collection<Place> getAllPlaces();
 
-	Place get(ResourceAgent rA);
-
 	Place getLocal(Position position);
 	
 	String getLocalReference(Position position);
 	
 	Space getMap();
-
-	void insertMap(Space newSpace);
 
 	void setMap(Space houseMap);
 

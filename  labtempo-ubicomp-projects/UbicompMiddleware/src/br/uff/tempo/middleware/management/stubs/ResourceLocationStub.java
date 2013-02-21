@@ -88,16 +88,6 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 	}
 
 	@Override
-	public Place get(ResourceAgent rA) {
-
-		// Set params
-		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(ResourceAgent.class.getName(), rA));
-
-		return (Place) makeCall("get", params, Place.class);
-	}
-
-	@Override
 	public Place getLocal(Position position) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Position.class.getName(), position));
@@ -112,14 +102,6 @@ public class ResourceLocationStub extends Stub implements IResourceLocation {
 		return (Space) makeCall("getMap", params, Space.class);
 	}
 	
-	@Override
-	public void insertMap(Space newSpace) {
-		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(Space.class.getName(), newSpace));
-
-		makeCall("insertMap", params, void.class);
-	}
-
 	@Override
 	public void setMap(Space newMap) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();

@@ -35,11 +35,11 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 		return (Boolean) makeCall("add", params, Boolean.class);
 	}
 
-	public boolean remove(String url) {
+	public boolean remove(String rans) {
 
 		// Set params
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(String.class.getName(), rans));
 
 		return (Boolean) makeCall("remove", params, Boolean.class);
 
@@ -59,9 +59,9 @@ public class ResourceRepositoryStub extends ResourceAgentStub implements IResour
 	}
 
 	@Override
-	public ResourceData get(String url) {
+	public ResourceData get(String rans) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
-		params.add(new Tuple<String, Object>(String.class.getName(), url));
+		params.add(new Tuple<String, Object>(String.class.getName(), rans));
 
 		return (ResourceData) makeCall("get", params, ResourceData.class);
 	}
