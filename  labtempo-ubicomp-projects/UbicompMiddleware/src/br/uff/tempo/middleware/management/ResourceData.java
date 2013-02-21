@@ -2,6 +2,10 @@ package br.uff.tempo.middleware.management;
 
 import br.uff.tempo.middleware.management.utils.Position;
 
+/**
+ * 
+ *
+ */
 public class ResourceData {
 
 	public static final int RANS = 0;

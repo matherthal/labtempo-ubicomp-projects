@@ -7,6 +7,9 @@ import java.util.Map;
 
 import android.util.Log;
 
+/**
+ * This class represents ResourceRepository database
+ */
 public class ResourceDirectory {
 	private static final String TAG = ResourceDirectory.class.getSimpleName();
 	
@@ -30,17 +33,28 @@ public class ResourceDirectory {
 		currentDomain = directory;
 	}
 	
-
+	/**
+	 * Singleton instance that only SmartServer components can use
+	 * @return reference to ResourceDirectory
+	 */
 	public static synchronized ResourceDirectory getInstance() {
 		if (instance == null)
 			return instance = new ResourceDirectory();
 		return instance;
 	}
 	
+	/**
+	 * Set a another domain as current domain
+	 * @param domain new current domain name
+	 */
 	public void setDomain(String domain) {
 		currentDomain = domainList.get(domain);
 	}
 
+	/**
+	 * Create new domain
+	 * @param domain new domain name
+	 */
 	public void createDomain(String domain)
 	{
 		domainList.put(domain, new Type("//"));
