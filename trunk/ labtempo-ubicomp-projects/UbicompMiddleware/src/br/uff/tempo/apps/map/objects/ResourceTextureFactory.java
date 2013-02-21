@@ -32,7 +32,6 @@ public class ResourceTextureFactory {
 				TextureOptions.DEFAULT);
 
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-
 		setupTextures();
 
 		try {
