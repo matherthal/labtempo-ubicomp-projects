@@ -2,6 +2,8 @@ package br.uff.tempo.apps.map.objects;
 
 import org.andengine.entity.sprite.Sprite;
 
+import br.uff.tempo.apps.map.objects.notification.INotificationBoxReceiver;
+import br.uff.tempo.apps.map.objects.notification.NotificationBox;
 import br.uff.tempo.apps.simulators.utils.ResourceWrapper;
 
 public class ResourceIcon implements INotificationBoxReceiver {

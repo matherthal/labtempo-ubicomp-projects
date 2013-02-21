@@ -1,4 +1,4 @@
-package br.uff.tempo.apps.map.objects;
+package br.uff.tempo.apps.map.objects.sprite;
 
 import java.util.HashMap;
 import java.util.Map;

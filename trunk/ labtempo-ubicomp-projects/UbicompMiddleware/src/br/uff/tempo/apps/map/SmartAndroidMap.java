@@ -39,7 +39,7 @@ import br.uff.tempo.R;
 import br.uff.tempo.apps.map.log.LogActivity;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
 import br.uff.tempo.apps.map.objects.ResourceTextureFactory;
-import br.uff.tempo.apps.map.objects.SceneState;
+import br.uff.tempo.apps.map.objects.persistence.SceneState;
 import br.uff.tempo.apps.map.rule.RuleComposeBar;
 import br.uff.tempo.apps.map.settings.MapSettings;
 import br.uff.tempo.apps.simulators.utils.Creator;

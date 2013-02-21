@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.util.Log;
+import br.uff.tempo.apps.map.objects.notification.INotificationBoxReceiver;
+import br.uff.tempo.apps.map.objects.sprite.SmartAnimatedSprite;
 import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.ResourceAgent;
