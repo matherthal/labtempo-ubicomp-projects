@@ -1,4 +1,4 @@
-package br.uff.tempo.apps.map.objects;
+package br.uff.tempo.apps.map.objects.sprite;
 
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.opengl.texture.region.ITextureRegion;

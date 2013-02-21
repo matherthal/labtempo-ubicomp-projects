@@ -6,7 +6,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import br.uff.tempo.R;
-import br.uff.tempo.apps.map.objects.RegistryData;
+import br.uff.tempo.apps.map.objects.persistence.RegistryData;
 import br.uff.tempo.middleware.e.SmartAndroidException;
 
 public class ResourceConfig extends MapDialog {

@@ -10,6 +10,8 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import br.uff.tempo.apps.map.objects.notification.INotificationBoxReceiver;
+import br.uff.tempo.apps.map.objects.notification.NotificationBox;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
 

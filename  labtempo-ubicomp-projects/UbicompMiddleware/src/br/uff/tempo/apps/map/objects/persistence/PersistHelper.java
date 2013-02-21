@@ -1,4 +1,4 @@
-package br.uff.tempo.apps.map.objects;
+package br.uff.tempo.apps.map.objects.persistence;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

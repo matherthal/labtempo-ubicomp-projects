@@ -9,6 +9,9 @@ import org.andengine.opengl.texture.TextureManager;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import br.uff.tempo.apps.map.objects.notification.INotificationBoxReceiver;
+import br.uff.tempo.apps.map.objects.notification.NotificationBox;
+
 //implementing long press by hands!
 public abstract class ResourceObject extends org.andengine.entity.sprite.Sprite implements INotificationBoxReceiver {
 

@@ -1,4 +1,4 @@
-package br.uff.tempo.apps.map.objects;
+package br.uff.tempo.apps.map.objects.notification;
 
 import java.util.Timer;
 import java.util.TimerTask;

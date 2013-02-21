@@ -5,12 +5,12 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
-import br.uff.tempo.apps.map.objects.ISpriteControler;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
-import br.uff.tempo.apps.map.objects.NotificationBox;
 import br.uff.tempo.apps.map.objects.ResourceIcon;
-import br.uff.tempo.apps.map.objects.SmartSprite;
-import br.uff.tempo.apps.map.objects.SmartSpriteFactory;
+import br.uff.tempo.apps.map.objects.notification.NotificationBox;
+import br.uff.tempo.apps.map.objects.sprite.ISpriteControler;
+import br.uff.tempo.apps.map.objects.sprite.SmartSprite;
+import br.uff.tempo.apps.map.objects.sprite.SmartSpriteFactory;
 import br.uff.tempo.apps.simulators.utils.ResourceWrapper;
 
 public class SmartMapActivity extends SmartAndroidMap implements ISpriteControler {
