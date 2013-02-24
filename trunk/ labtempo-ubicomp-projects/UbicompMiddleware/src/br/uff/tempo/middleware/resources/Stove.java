@@ -4,12 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import android.util.Log;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.IStove;
 
 public class Stove extends ResourceAgent implements IStove {
-
+	private static final String TAG = "Stove";
 	private static final long serialVersionUID = 1L;
 
 	// Constants
@@ -89,12 +90,14 @@ public class Stove extends ResourceAgent implements IStove {
 
 	@Override
 	public void turnOnBurner(int burnerIndex) {
+		Log.i(TAG, this.getName() + " - burner " + burnerIndex + " turned on");
 		burners.set(burnerIndex, 1.0f);
 		notifyStakeholders(BURNER_ON + burnerIndex, true);
 	}
 
 	@Override
 	public void turnOffBurner(int burnerIndex) {
+		Log.i(TAG, this.getName() + " - burner " + burnerIndex + " turned off");
 		burners.set(burnerIndex, 0.0f);
 		notifyStakeholders(BURNER_ON + burnerIndex, false);
 	}
@@ -108,6 +111,8 @@ public class Stove extends ResourceAgent implements IStove {
 	public void setOvenTemperature(float newTemperature) {
 		this.ovenTemp = newTemperature;
 		this.ovenOn = newTemperature > 0f;
+		Log.i(TAG, this.getName() + " - ovenTemp = " + newTemperature);
+		Log.i(TAG, this.getName() + " - ovenOn = " + this.ovenOn);
 		notifyStakeholders(CV_OVEN_ON, this.ovenOn);
 		notifyStakeholders(CV_OVEN_TEMPERATURE, newTemperature);
 	}
@@ -119,6 +124,7 @@ public class Stove extends ResourceAgent implements IStove {
 
 	@Override
 	public void turnOffOven() {
+		Log.i(TAG, this.getName() + " - oven turned off");
 		this.ovenTemp = 0f;
 		this.ovenOn = false;
 		notifyStakeholders(CV_OVEN_ON, false);
@@ -126,6 +132,7 @@ public class Stove extends ResourceAgent implements IStove {
 
 	@Override
 	public void turnOnOven() {
+		Log.i(TAG, this.getName() + " - oven turned on");
 		this.ovenTemp = 100f;
 		this.ovenOn = true;
 		notifyStakeholders(CV_OVEN_ON, true);

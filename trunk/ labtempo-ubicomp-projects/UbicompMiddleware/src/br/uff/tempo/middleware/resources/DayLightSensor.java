@@ -33,7 +33,7 @@ public class DayLightSensor extends ResourceAgent implements IDayLightSensor {
 	@Override
 	@Service(name = "Definir se é dia")
 	public void setDay(boolean d) {
-		Log.i(TAG, "Toggle day light to " + d);
+		Log.i(TAG, this.getName() + " - toggle day light to " + d);
 		day = d;
 		
 		notifyStakeholders(CV_ISDAY, day);
@@ -42,7 +42,7 @@ public class DayLightSensor extends ResourceAgent implements IDayLightSensor {
 	@Override
 	@Service(name = "Definir quantidade de luz")
 	public void setLightAmount(float l) {
-		Log.i(TAG, "Set light amount to " + l);
+		Log.i(TAG, this.getName() + " - set light amount to " + l);
 		light = l;
 		
 		notifyStakeholders(CV_LIGHTAMOUNT, light);

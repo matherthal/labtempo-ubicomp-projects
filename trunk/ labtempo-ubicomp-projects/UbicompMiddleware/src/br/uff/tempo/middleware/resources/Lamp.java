@@ -30,7 +30,7 @@ public class Lamp extends ResourceAgent implements ILamp {
 	@Override
 	@Service(name = "Acender lampada")
 	public void turnOn() {
-		Log.i(TAG, "Turn Lamp on");
+		Log.i(TAG, this.getName() + " - turn Lamp on");
 		isOn = true;
 		
 		notifyStakeholders(CV_ISON, isOn);
@@ -39,7 +39,7 @@ public class Lamp extends ResourceAgent implements ILamp {
 	@Override
 	@Service(name = "Apagar lampada")
 	public void turnOff() {
-		Log.i(TAG, "Turn Lamp off");
+		Log.i(TAG, this.getName() + " - turn Lamp off");
 		isOn = false;
 		
 		notifyStakeholders(CV_ISON, isOn);

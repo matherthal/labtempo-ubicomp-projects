@@ -1,11 +1,12 @@
 package br.uff.tempo.middleware.resources;
 
+import android.util.Log;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.resources.interfaces.ITelevision;
 
 public class Television extends ResourceAgent implements ITelevision {
-	
+	private static final String TAG = "Television";
 	private static final long serialVersionUID = 1L;
 
 	private int channel;
@@ -29,6 +30,7 @@ public class Television extends ResourceAgent implements ITelevision {
 
 	@Override
 	public void showMessage(String text) {
+		Log.i(TAG, this.getName() + " - show message: " + text);
 		this.message = text;
 		notifyStakeholders("showMessage", text);
 	}
@@ -46,6 +48,7 @@ public class Television extends ResourceAgent implements ITelevision {
 
 	@Override
 	public void setChannel(int channel) {
+		Log.i(TAG, this.getName() + " - set channel: " + channel);
 		this.channel = channel;
 		notifyStakeholders("getChannel", channel);
 	}
@@ -57,6 +60,7 @@ public class Television extends ResourceAgent implements ITelevision {
 
 	@Override
 	public void setOn(boolean on) {
+		Log.i(TAG, this.getName() + " - turned on");
 		this.on = on;
 		notifyStakeholders("isOn", on);
 	}
@@ -68,6 +72,7 @@ public class Television extends ResourceAgent implements ITelevision {
 
 	@Override
 	public void setVolume(int volume) {
+		Log.i(TAG, this.getName() + " - set volume: " + volume);
 		this.volume = volume;
 		notifyStakeholders("getVolume", volume);
 	}
@@ -75,24 +80,28 @@ public class Television extends ResourceAgent implements ITelevision {
 	@Override
 	public void incChannel() {
 		this.channel++;
+		Log.i(TAG, this.getName() + " - channel changed to: " + channel);
 		notifyStakeholders("getChannel", channel);
 	}
 
 	@Override
 	public void decChannel() {
 		this.channel--;
+		Log.i(TAG, this.getName() + " - channel changed to: " + channel);
 		notifyStakeholders("getChannel", channel);
 	}
 
 	@Override
 	public void incVolume(int inc) {
 		this.volume++;
+		Log.i(TAG, this.getName() + " - volume changed to: " + volume);
 		notifyStakeholders("getVolume", volume);
 	}
 
 	@Override
 	public void decVolume(int dec) {
 		this.volume--;
+		Log.i(TAG, this.getName() + " - volume changed to: " + volume);
 		notifyStakeholders("getVolume", volume);
 	}
 	// end - tv attribute
