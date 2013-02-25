@@ -31,6 +31,11 @@
 	{"action": {
 		"rai": "_STOVE_",
 		"service": "turnOffOven"
+	}},
+	{"action": {
+		"rai": "_TV_",
+		"service": "showMessage",
+		"params": "Fogao foi esquecido ligado"
 	}}
 ]
 }
