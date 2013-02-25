@@ -120,12 +120,12 @@ public class Actuator extends ResourceAgent implements IActuator {
 
 			if (params != null && params.length != 0)
 				for (Object o : params) 
-					this.params.add(new Tuple<String, Object>(o.toString(), o.getClass()));
+					this.params.add(new Tuple<String, Object>(o.getClass().getName(), o));
 		}
 		
 		public void exec() {
 			Stub s = new Stub(rai);
-			s.makeCall(serv, params, Object.class);
+			s.makeCall(serv, params, void.class);
 		}
 	}
 }
