@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import br.uff.tempo.middleware.management.utils.Type;
+
 import android.util.Log;
 
 /**
@@ -89,8 +91,8 @@ public class ResourceDirectory {
 						if (list.size()>i){//it has more types
 							typeTemp.add(list,resource,i);
 						} else {//end of list
-							if (!contains(typeTemp.resources,resource)){
-								typeTemp.resources.add(resource);
+							if (!contains(typeTemp.getResources(),resource)){
+								typeTemp.getResources().add(resource);
 							}
 						}
 						isInserted = true;
@@ -145,7 +147,7 @@ public class ResourceDirectory {
 	private List<ResourceData> raiTreeSearch(String rai, Type type) {
 		List<ResourceData> result = new ArrayList<ResourceData>();
 		ResourceData resource = null;
-		if ((resource = getRai(rai, type.resources)) != null){
+		if ((resource = getRai(rai, type.getResources())) != null){
 			result.add(resource);
 			return result;
 		} else {
@@ -201,7 +203,7 @@ public class ResourceDirectory {
 				Type typeSubTemp = this.search(strPath,typeTemp.getSubTypeList());
 				typeTemp = typeSubTemp;
 			}
-			return typeTemp.resources;
+			return typeTemp.getResources();
 		}
 		return typeTreeSearch(query, currentDomain);	
 	}
@@ -225,7 +227,7 @@ public class ResourceDirectory {
 
 	private List<ResourceData> getResources(Type type) {
 		List<ResourceData> result = new ArrayList<ResourceData>();
-		result.addAll(type.resources);
+		result.addAll(type.getResources());
 		for (Type current : type.getSubTypeList()){
 			result.addAll(getResources(current));
 		}
@@ -240,7 +242,7 @@ public class ResourceDirectory {
 	private List<ResourceData> nameTreeSearch(String query, Type type) {
 		List<ResourceData> result = new ArrayList<ResourceData>();
 		ResourceData resource = null;
-		if ((resource = get(query, type.resources)) != null){
+		if ((resource = get(query, type.getResources())) != null){
 			result.add(resource);
 			return result;
 		} else {
