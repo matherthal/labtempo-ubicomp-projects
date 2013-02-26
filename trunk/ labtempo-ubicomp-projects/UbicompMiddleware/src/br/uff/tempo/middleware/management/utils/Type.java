@@ -1,13 +1,15 @@
-package br.uff.tempo.middleware.management;
+package br.uff.tempo.middleware.management.utils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import br.uff.tempo.middleware.management.ResourceData;
+
 public class Type {
 	
-	String name;
-	List<Type> subTypes;
-	List<ResourceData> resources;
+	private String name;
+	private List<Type> subTypes;
+	private List<ResourceData> resources;
 
 	public Type(List<String> list, ResourceData resource) {
 		this();
@@ -59,5 +61,15 @@ public class Type {
 	public String getName() {
 		return name;
 	}
+
+	public List<ResourceData> getResources() {
+		return resources;
+	}
+
+	public void setResources(List<ResourceData> resources) {
+		this.resources = resources;
+	}
+	
+	
 
 }
