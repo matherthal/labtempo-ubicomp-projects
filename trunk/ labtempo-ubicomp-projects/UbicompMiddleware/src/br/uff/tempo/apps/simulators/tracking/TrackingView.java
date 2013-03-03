@@ -4,35 +4,38 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import br.uff.tempo.R;
-import br.uff.tempo.apps.simulators.utils.Creator;
+import br.uff.tempo.apps.simulators.tracking.mode.TrackingMode;
 
 public class TrackingView extends Activity {
 	
 	public static final int NEW_PERSON = 0;
 	public static final int TRACK = NEW_PERSON + 1;
-	public static final int MOBILE_RES = TRACK + 1;
-	
-	private static int i = 0;
+	public static final int MANUAL = TRACK + 1;
+	public static final int APPLY = MANUAL + 1;
+	public static final int PLAY = APPLY + 1;
+	public static final int STEP = PLAY + 1;
 	
 	private TrackingPanel panel;
-	private Creator resCreator;
 	
-	/** Called when the activity is first created. */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		setContentView(R.layout.tracking);
-		panel = (TrackingPanel) findViewById(R.id.trackingPanel);
+		//setContentView(R.layout.tracking);
+		//panel = (TrackingPanel) findViewById(R.id.trackingPanel);
+		panel = new TrackingPanel(this);
+		setContentView(panel);
 	}
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		
-		menu.add(Menu.NONE, MOBILE_RES, Menu.NONE, "Control a new Mobile resource");
 		menu.add(Menu.NONE, NEW_PERSON, Menu.NONE, "Add a Person");
-		menu.add(Menu.NONE, TRACK, Menu.NONE, "Define a Track");
+		menu.add(Menu.NONE, MANUAL, Menu.NONE, "Move Manually");
+		menu.add(Menu.NONE, TRACK, Menu.NONE, "Define a Path");
+		menu.add(Menu.NONE, APPLY, Menu.NONE, "Select User...");
+		menu.add(Menu.NONE, PLAY, Menu.NONE, "Play");
+		menu.add(Menu.NONE, STEP, Menu.NONE, "Step");
 		
 		return super.onCreateOptionsMenu(menu);
 	}
@@ -42,20 +45,24 @@ public class TrackingView extends Activity {
 		
 		switch (item.getItemId()) {
 		case NEW_PERSON:
-			
-			panel.addPerson("User" + (++i));
-			
+			panel.addPerson();
 			break;
 			
-		case MOBILE_RES:
-			
+		case MANUAL:
+			panel.setMode(TrackingMode.MANUAL_MOVE);
 			break;
 			
 		case TRACK:
-			
+			panel.setMode(TrackingMode.DEFINE_TRACK);
 			break;
-
-		default:
+		case APPLY:
+			panel.applyPath();
+			break;
+		case PLAY:
+			panel.playPath();
+			break;
+		case STEP:
+			panel.stepPath(0);
 			break;
 		}
 		return super.onMenuItemSelected(featureId, item);

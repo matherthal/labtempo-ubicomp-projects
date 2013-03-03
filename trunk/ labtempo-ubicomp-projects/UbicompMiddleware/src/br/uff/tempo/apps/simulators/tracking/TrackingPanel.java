@@ -1,248 +1,163 @@
 package br.uff.tempo.apps.simulators.tracking;
 
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.Random;
 
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Rect;
 import android.util.AttributeSet;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
-import android.view.View;
-import android.view.WindowManager;
-import br.uff.tempo.middleware.management.Place;
-import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
-import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
-import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
-import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
-import br.uff.tempo.middleware.management.utils.Space;
+import android.widget.Toast;
+import br.uff.tempo.apps.simulators.tracking.mode.TrackingMode;
+import br.uff.tempo.apps.simulators.tracking.surface.AbstractTrackingPanel;
 
-public class TrackingPanel extends View {//AbstractPanel {
-
-	private static final int RADIUS = 10;
-	private final String TAG = "Panel-TrackingView";
+public class TrackingPanel extends AbstractTrackingPanel {
 	
-	private int screenCenterX;
-	private int screenCenterY;
+	private int[] colors = { Color.BLUE, Color.GREEN, Color.CYAN, Color.GRAY, Color.MAGENTA, Color.RED, Color.YELLOW };
+	private String[] names = {"Andre", "David", "Douglas", "Lucas", "Matheus", "Orlando", "Pedro"};
 	
-	private int screenWidth;
-	private int screenHeight;
+	private Random random = new Random();
+	private Avatar selectedAvatar;
+	private Iterator<Point> itPath;
 	
-	private float scale;
-
-	private IResourceLocation rLocation;
-	private IResourceDiscovery rds;
-
-	private Space homeMap;
-	private Map<String, Rect> rooms;
-	private List<Avatar> users;
-
-	private Paint paint;
-
-	private int counter = 0;
-
-	private Avatar currentUser;
-	private boolean caught;
-
-	private int[] colors = { Color.BLUE, Color.GREEN, Color.CYAN, Color.GRAY,
-			Color.MAGENTA, Color.RED, Color.YELLOW };
-	private int factor;
-
-	public TrackingPanel(Context context, AttributeSet attrs) {
-		super(context, attrs);
-		init();
+	public TrackingPanel(Context context) {
+		super(context);
+	}
+	
+	public TrackingPanel(Context context, AttributeSet attr) {
+		super(context, attr);
 	}
 
-	public final void init() {
-
-		WindowManager wm = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-		DisplayMetrics metrics = new DisplayMetrics();
-		wm.getDefaultDisplay().getMetrics(metrics);
-
-		//get the screen length
-		screenWidth = metrics.widthPixels;
-		screenHeight = metrics.heightPixels;
+	public void stepPath(final int index) {
 		
-		//get the screen center coordinates
-		screenCenterX = screenWidth / 2;
-		screenCenterY = screenHeight / 2;
-		
-		scale = getResources().getDisplayMetrics().density;
-		
-		paint = new Paint();
-		paint.setStyle(Paint.Style.STROKE);
-		paint.setColor(Color.WHITE);
-		paint.setStrokeWidth(dpTopixel(10));
-
-		rds = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-		rLocation = new ResourceLocationStub(IResourceLocation.rans);
-
-		setupRooms();
-	}
-
-	private void setupRooms() {
-
-		homeMap = rLocation.getMap();
-
-		rooms = new HashMap<String, Rect>();
-		users = new LinkedList<Avatar>();
-		updateRectangles();
-	}
-
-	public void updateRectangles() {
-
-		float mapWidth = homeMap.getWidth();
-		float mapHeight = homeMap.getHeight();
-
-		float sWidth = getScreenWidth();
-		float sHeight = getScreenHeight();
-
-		int factorW = (int) (sWidth / mapWidth + 0.5f);
-		int factorH = (int) (sHeight / mapHeight + 0.5f);
-
-		factor = factorW < factorH ? factorW : factorH;
-
-		for (Place place : homeMap.getAllPlaces()) {
-
-			int left = Space.metersToPixel(place.getLower().getX(), factor);
-			int top = Space.metersToPixel(
-					homeMap.invertYcoordinate(place.getUpper().getY()), factor);
-			int right = Space.metersToPixel(place.getUpper().getX(), factor);
-			int bottom = Space.metersToPixel(
-					homeMap.invertYcoordinate(place.getLower().getY()), factor);
-
-			rooms.put(place.getName(), new Rect(left, top, right, bottom));
-		}
-
-		for (Avatar usr : users) {
-			usr.setPixalFactor(factor);
+		if (selectedAvatar == null) return;
+			
+		if (itPath.hasNext()) {
+			new Thread() {
+				public void run() {
+					try {
+						sleep(STEP_TIME * index);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+					Point p = itPath.next();
+					Log.d("TrackingPanel", "Changing positions to [" + p.x + ", " + p.y + "]");
+					selectedAvatar.setAndStorePosition(p.x, p.y);
+				}
+			}.start();
+			
+		} else {
+			itPath = getPathPoints().iterator();
 		}
 	}
+	
+	public void playPath() {
+		
+		if (selectedAvatar == null) return;
 
-	public void addPerson(String name) {
+		itPath = getPathPoints().iterator();
+		for (int i = 0; i < getPathPoints().size(); i++){
+			stepPath(i);
+		}
+	}
+	
+	public void applyPath() {
+		//Choose witch User will be controlled
+		Toast.makeText(getContext(), "Select an object in the screen", Toast.LENGTH_SHORT).show();
+		setMode(TrackingMode.SELECT_OBJECT);
+	}
 
+	public void addPerson() {
+
+		int index = random.nextInt(names.length);
+		String name = names[index];
+		
 		Paint p = new Paint();
-		p.setColor(colors[counter]);
+		p.setColor(colors[index]);
 
 		Avatar usr = new Avatar(name, getScreenCenterX(), getScreenCenterY(),
 				dpTopixel(RADIUS), p);
-
-		usr.setPixalFactor(factor);
-		usr.setSpace(homeMap);
-
-		users.add(usr);
-
-		counter = (counter + 1) % colors.length;
-
-		invalidate();
+		usr.storePosition();
+		getUsers().add(usr);
 	}
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
-		// get the touch coordinates
-		int x = (int) event.getX();
-		int y = (int) event.getY();
 
-		if (event.getAction() == MotionEvent.ACTION_DOWN) {
-
-			Log.d("TrackingPanel", "Action DOWN");
-
-			Iterator<Avatar> it = users.iterator();
-
-			while (it.hasNext()) {
-
-				Avatar c = it.next();
-
-				if (c.contains(x, y)) {
-
-					currentUser = c;
-					caught = true;
-
-					Log.d("TrackingPanel", c.getName() + " was caught");
-					break;
-				}
-			}
-		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-
-			Log.d("TrackingPanel", "Action MOVE");
-
-			if (caught) {
-
-				Log.d("TrackingPanel", "Moving " + currentUser.getName()
-						+ " from [" + currentUser.getCenterX() + " "
-						+ currentUser.getCenterY() + "] to [" + x + " " + y
-						+ "]");
-
-				currentUser.setCenter(x, y);
-			}
-
-		} else if (event.getAction() == MotionEvent.ACTION_UP) {
-
-			Log.d("TrackingPanel", "Action UP");
-
-			// for (Map.Entry<String, Rect> entry : rooms.entrySet()) {
-			//
-			// if (entry.getValue().contains(x, y)) {
-			//
-			// Toast.makeText(getContext(), entry.getKey(),
-			// Toast.LENGTH_SHORT).show();
-			// break;
-			// }
-			// }
-
-			if (currentUser != null && caught) {
-				currentUser.storePosition();
-			}
-
-			caught = false;
-		}
-		invalidate();
+		switch (getMode()) {
 		
+			case MANUAL_MOVE:
+				
+				getMovementsHandler().manualMove(event, getUsers());
+				break;
+				
+			case DEFINE_TRACK:
+				
+				Point point = getMovementsHandler().defineTrack(event);
+				if (point != null) {
+					getPathPoints().add(point);
+				}
+				break;
+				
+			case PLAY:
+				
+				break;
+				
+			case SELECT_OBJECT:
+				
+				Avatar a = getMovementsHandler().select(event, getUsers());
+				if (a != null) {
+					selectedAvatar = a;
+				}
+				LinkedList<Point> pathPoints = getPathPoints();
+				
+				if (selectedAvatar != null && pathPoints != null && !pathPoints.isEmpty()) {
+					selectedAvatar.setCenter(pathPoints.getFirst().x, pathPoints.getFirst().y);
+				}
+				break;
+				
+			case STEP:
+				break;
+				
+			default:
+				break;
+		}
 		return true;
 	}
 
 	@Override
 	public void onDraw(Canvas canvas) {
+		
+		canvas.drawColor(Color.BLACK);
 
-		for (Rect rect : rooms.values()) {
-
-			canvas.drawRect(rect, paint);
+		//Draw the rooms
+		for (Rect rect : getRooms().values()) {
+			canvas.drawRect(rect, getPaintRooms());
+		}
+		
+		if (getMode() != TrackingMode.MANUAL_MOVE) {
+			
+			LinkedList<Point> pathPoints = (LinkedList<Point>) getPathPoints().clone();
+			if (pathPoints != null && !pathPoints.isEmpty()) {
+				Point currentPoint = pathPoints.getFirst();
+				for (Point p : pathPoints) {
+					canvas.drawPoint(p.x, p.y, getPaintRooms());
+					canvas.drawLine(currentPoint.x, currentPoint.y, p.x, p.y, getPaintPath());
+					currentPoint = p;
+				}
+			}
 		}
 
-		for (Avatar circ : users) {
-			canvas.drawCircle(circ.getCenterX(), circ.getCenterY(),
+		//Draw the circles (people)
+		for (Avatar circ : getUsers()) {
+			canvas.drawCircle(circ.getCenterX(), circ.getCenterY(),	
 					circ.getRadius(), circ.getPaint());
 		}
-	}
-	
-	public float getDensity() {
-		return scale;
-	}
-	
-	public int dpTopixel(float dp) {
-		return (int) (dp * scale + 0.5f);
-	}
-
-	public int getScreenCenterX() {
-		return screenCenterX;
-	}
-
-	public int getScreenCenterY() {
-		return screenCenterY;
-	}
-	
-	public int getScreenWidth() {
-		return screenWidth;
-	}
-	
-	public int getScreenHeight() {
-		return screenHeight;
 	}
 }
