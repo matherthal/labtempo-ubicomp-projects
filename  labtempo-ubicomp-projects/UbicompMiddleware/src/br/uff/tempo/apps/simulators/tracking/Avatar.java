@@ -7,7 +7,7 @@ import br.uff.tempo.middleware.management.Person;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
 
-class Avatar {
+public class Avatar {
 
 	private int centerX;
 	private int centerY;
@@ -16,8 +16,8 @@ class Avatar {
 	private Rect rect;
 	private Person person;
 
-	private int pixelFactor = 0;
-	private Space houseMap;
+	private static int pixelFactor = 0;
+	private static Space houseMap;
 
 	private final int DELTA = 10;
 	private int len;
@@ -43,7 +43,7 @@ class Avatar {
 		len = radius + DELTA;
 		rect = new Rect(centerX - len, centerY - len, centerX + len, centerY
 				+ len);
-		
+
 		this.person = new Person(this.name, this.name);
 		this.person.identify();
 	}
@@ -59,7 +59,7 @@ class Avatar {
 		float y = houseMap.invertYcoordinate(Space.pixelToMeters(centerY,
 				pixelFactor));
 
-		Log.i("SmartAndroid", "[" + x + ", " + y + "]");
+		Log.i("TrackingPanel", "[" + x + ", " + y + "]");
 
 		this.person.addPosition(new Position(x, y));
 	}
@@ -72,13 +72,18 @@ class Avatar {
 
 		rect.offsetTo(centerX - len, centerY - len);
 	}
-
-	public void setPixalFactor(int factor) {
-		this.pixelFactor = factor;
+	
+	public void setAndStorePosition(int x, int y) {
+		setCenter(x, y);
+		storePosition();
 	}
 
-	public void setSpace(Space space) {
-		this.houseMap = space;
+	public static void setPixelFactor(int factor) {
+		pixelFactor = factor;
+	}
+
+	public static void setSpace(Space space) {
+		houseMap = space;
 	}
 
 	public int getCenterY() {
