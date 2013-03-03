@@ -21,12 +21,10 @@ public class Person extends ResourceAgent implements IPerson {
 	private static final long serialVersionUID = 1L;
 	public static final String CV_POSITION = "position";
 
-	private Timer timer;
-
 	private long period; // milliseconds
 	private int windowSize;
 
-	Position lastPos = new Position(0f,0f);
+	Position lastPos = new Position(0f, 0f);
 
 	List<SmartObject> objects;
 	List<Place> recentLocal;
@@ -42,10 +40,9 @@ public class Person extends ResourceAgent implements IPerson {
 				type, rans, period);
 	}
 
-	public Person(List<SmartObject> sensors,
-			LinkedList<Position> recentPositions, String name, String type,
-			String rans,
-			long period) {
+	public Person(List<SmartObject> sensors, LinkedList<Position> recentPositions, 
+			String name, String type, String rans, long period) {
+		
 		super(name, type, rans);
 		this.objects = sensors;
 		this.recentPositions = recentPositions;
@@ -53,22 +50,6 @@ public class Person extends ResourceAgent implements IPerson {
 		this.period = period;
 
 		this.windowSize = DEFAUT_WINDOW_SIZE;
-
-//		this.timer = new Timer();
-//
-//		timer.schedule(new TimerTask() {
-//
-//			@Override
-//			public void run() {
-//
-//				while (true) {
-//					if (lastPos != null) {
-//						notifyStakeholders(CV_POSITION, lastPos);
-//						lastPos = null;
-//					}
-//				}
-//			}
-//		}, this.period);
 	}
 
 	public void updateRecentLocal() {
@@ -101,8 +82,8 @@ public class Person extends ResourceAgent implements IPerson {
 	public Position getPosition(int i) {
 		return recentPositions.get(objects.size() - (i + 1));
 	}
-	
-	//Just to keep compatibility
+
+	// Just to keep compatibility
 	public Position getPosition() {
 		return getCurrentPosition();
 	}
@@ -123,11 +104,12 @@ public class Person extends ResourceAgent implements IPerson {
 
 		recentPositions.add(position);
 
-		// float point number comparison is error probe. Using an epslon to avoid rounding errors
+		// float point number comparison is error probe. Using an epslon to
+		// avoid rounding errors
 		if (Math.abs(position.getDistance(lastPos) - DEFAULT_THRESHOLD) >= EPSLON) {
 			notifyStakeholders(CV_POSITION, position);
 		}
-		
+
 		lastPos = position;
 	}
 
@@ -137,6 +119,5 @@ public class Person extends ResourceAgent implements IPerson {
 
 	@Override
 	public void notificationHandler(String rai, String method, Object value) {
-		// TODO Auto-generated method stub
 	}
 }
