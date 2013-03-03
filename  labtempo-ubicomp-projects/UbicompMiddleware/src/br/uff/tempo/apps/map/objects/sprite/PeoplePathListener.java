@@ -5,8 +5,16 @@ import org.andengine.entity.modifier.PathModifier;
 import org.andengine.entity.modifier.PathModifier.IPathModifierListener;
 import org.andengine.entity.sprite.AnimatedSprite;
 
+import android.util.Log;
+
 public class PeoplePathListener implements IPathModifierListener {
 
+	private Object lock;
+	
+	public PeoplePathListener(Object lock) {
+		this.lock = lock;
+	}
+	
 	@Override
 	public void onPathWaypointStarted(final PathModifier pPathModifier,
 			final IEntity pEntity, final int pWaypointIndex) {
@@ -44,6 +52,11 @@ public class PeoplePathListener implements IPathModifierListener {
 	public void onPathFinished(final PathModifier pPathModifier,
 			final IEntity pEntity) {
 		((AnimatedSprite) pEntity).stopAnimation(1);
+		
+		synchronized (lock) {
+			Log.d("MAP", "Finishing Animation, notifying the others...");
+			lock.notifyAll();
+		}
 	}
 
 }
