@@ -31,9 +31,6 @@ public interface IResourceAgent extends Serializable {
 		Null, On, OFF, Temperature, Light, Open, Close, Gas, Wet
 	};
 
-	/**
-	 * Serialize Type
-	 */
 	public enum SType {
 		Null, Video, Audio, ShortText, LongText, Alarm, Beep, TurnOnOff
 	}*/
