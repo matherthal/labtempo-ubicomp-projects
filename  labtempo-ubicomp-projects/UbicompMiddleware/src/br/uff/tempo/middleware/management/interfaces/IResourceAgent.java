@@ -27,7 +27,7 @@ public interface IResourceAgent extends Serializable {
 	/**
 	 * Enumerator of Context Variable types 
 	 */
-	public enum CVType {
+	/*public enum CVType {
 		Null, On, OFF, Temperature, Light, Open, Close, Gas, Wet
 	};
 
@@ -35,8 +35,8 @@ public interface IResourceAgent extends Serializable {
 	 * Serialize Type
 	 */
 	public enum SType {
-		Null, Video, Audio, ShortText, LongText, Alarm, Beep, TurnOn, TurnOff
-	}
+		Null, Video, Audio, ShortText, LongText, Alarm, Beep, TurnOnOff
+	}*/
 
 	
 	@Retention(RetentionPolicy.RUNTIME)
@@ -48,10 +48,9 @@ public interface IResourceAgent extends Serializable {
 	 */
 	public @interface ContextVariable {
 		String name();
-
 		String description() default "";
-
-		CVType type() default CVType.Null;
+		String type();
+		//CVType type() default CVType.Null;
 	}
 
 	@Retention(RetentionPolicy.RUNTIME)
@@ -63,11 +62,9 @@ public interface IResourceAgent extends Serializable {
 	 */
 	public @interface Service {
 		String name();
-
 		String description() default "";
-
-		SType type() default SType.Null;
-
+		String type();
+		//SType type() default SType.Null;
 	}
 
 	/**

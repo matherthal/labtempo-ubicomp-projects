@@ -72,18 +72,18 @@ public interface IInterpreter extends IResourceAgent {
 
 	public abstract Method getContextVariable();
 
-	@ContextVariable(name = "Interpretação para inteiro")
+	@ContextVariable(name = "Interpretação para inteiro", type = "Cast")
 	public abstract int interpretToInt();
 
-	@ContextVariable(name = "Interpretação para inteiro longo")
+	@ContextVariable(name = "Interpretação para inteiro longo", type = "Cast")
 	public abstract long interpretToLong();
 
-	@ContextVariable(name = "Interpretação para booleano")
+	@ContextVariable(name = "Interpretação para booleano", type = "Cast")
 	public abstract boolean interpretToBoolean();
 
-	@ContextVariable(name = "Interpretação para texto")
+	@ContextVariable(name = "Interpretação para texto", type = "Cast")
 	public abstract String interpretToString();
 
-	@ContextVariable(name = "Interpretação genérica")
+	@ContextVariable(name = "Interpretação genérica", type = "Cast")
 	public abstract Object interpretToObject();
 }

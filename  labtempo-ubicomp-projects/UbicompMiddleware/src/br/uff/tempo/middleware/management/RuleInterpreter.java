@@ -53,17 +53,17 @@ public class RuleInterpreter extends ResourceAgent implements IRuleInterpreter {
 		discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 	}
 
-	@ContextVariable(name = "Regra disparada")
+	@ContextVariable(name = "Regra disparada", type = "Trigger")
 	public boolean ruleTrigger() {
 		return valid;
 	}
 
-	@Service(name = "Definir expressão")
+	@Service(name = "Definir expressão", type = "SetExpression")
 	public void setExpression(String expr) throws Exception {
 		parseExpression(expr.replace('\t', ' ').replace('\n', ' ').trim());
 	}
 
-	@Service(name = "Definir expressão")
+	@Service(name = "Definir expressão", type = "SetExpression")
 	public void setExpression(InputStream stream) throws Exception {
 		parseExpression(inputStreamToString(stream));
 	}
