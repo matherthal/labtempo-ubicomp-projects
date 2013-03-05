@@ -16,21 +16,21 @@ public class LampStub extends ResourceAgentStub implements ILamp {
 	}
 
 	@Override
-	@ContextVariable(name = "Lampada ligada")
+	@ContextVariable(name = "Lampada ligada", type = "OnOff")
 	public boolean isOn() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		return (Boolean) makeCall("isOn", params, boolean.class);
 	}
 
 	@Override
-	@Service(name = "Acender lampada")
+	@Service(name = "Acender lampada", type = "TurnOnOff")
 	public void turnOn() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		makeCall("turnOn", params, void.class);
 	}
 
 	@Override
-	@Service(name = "Apagar lampada")
+	@Service(name = "Apagar lampada", type = "TurnOnOff")
 	public void turnOff() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		makeCall("turnOff", params, void.class);

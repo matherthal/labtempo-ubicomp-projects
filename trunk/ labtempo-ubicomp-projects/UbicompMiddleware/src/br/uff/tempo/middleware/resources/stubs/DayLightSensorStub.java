@@ -17,21 +17,21 @@ public class DayLightSensorStub extends ResourceAgentStub implements IDayLightSe
 	}
 
 	@Override
-	@ContextVariable(name = "É dia")
+	@ContextVariable(name = "É dia", type = "IsDay")
 	public boolean isDay() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		return (Boolean) makeCall(DayLightSensor.CV_ISDAY, params, Boolean.class);
 	}
 
 	@Override
-	@ContextVariable(name = "Quantidade de luz")
+	@ContextVariable(name = "Quantidade de luz", type = "LightAmout")
 	public float lightAmount() {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		return (Float) makeCall(DayLightSensor.CV_LIGHTAMOUNT, params, float.class);
 	}
 
 	@Override
-	@Service(name = "Definir se é dia")
+	@Service(name = "Definir se é dia", type = "SetIsDay")
 	public void setDay(boolean d) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Boolean.class.getName(), d));
@@ -39,7 +39,7 @@ public class DayLightSensorStub extends ResourceAgentStub implements IDayLightSe
 	}
 
 	@Override
-	@Service(name = "Definir quantidade de luz")
+	@Service(name = "Definir quantidade de luz", type = "SetLightAmout")
 	public void setLightAmount(float l) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(Float.class.getName(), l));
