@@ -7,13 +7,32 @@ import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceAgentNS;
 import br.uff.tempo.middleware.management.ResourceData;
 
+/**
+ * Resource Discovery Service (RDS) interface
+ * 
+ * It enables use of RDS in SmartServer  
+ */
 public interface IResourceDiscovery {
 
+	/**
+	 * Unique system rans of RDS
+	 */
 	public static final String rans = "resourcediscovery.ra";
 
+	/**
+	 * Realize a search for Registered Resource Agent instances
+	 * @param attribute indicates attribute target
+	 * It could be ResourceData.TYPE, ResourceData.PLACE, ResourceData.NAME or ResouceData.RANS  
+	 * @param query value of query
+	 * @return Representative data list of Resource Agents found
+	 */
 	public List<ResourceData> search(int attribute, String query);// return URI of resources
 
-	// it's here rather than ResourceRegister because at the beginning ResourceDiscovery is known by all, otherwise ResourceRegister should also be known
+	/**
+	 * Get ResourceAgentNS object from string reference
+	 * @param rans string reference
+	 * @return RANS object
+	 */
 	public ResourceAgentNS getRANS(String rans);  
 
 }
