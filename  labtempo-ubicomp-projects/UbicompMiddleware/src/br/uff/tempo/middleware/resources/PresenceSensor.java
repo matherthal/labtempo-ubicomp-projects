@@ -16,13 +16,14 @@ public class PresenceSensor extends ResourceAgent implements IPresenceSensor {
 	}
 
 	public static final String CV_GETPRESENCE = "getPresence";
-	@ContextVariable(name = "Presença")
+	
+	@ContextVariable(name = "Presença", type = "presence")
 	public boolean getPresence() {
 		return presence;
 	}
 
 	public static String S_SETPRESENCE = "setPresence";
-	@Service(name = "Detectar Presença")
+	@Service(name = "Detectar Presença", type = "presence")
 	public void setPresence(boolean p) {
 		if (p)
 			Log.i(TAG, "Presence sensor " + this.getName() + " detects somebody");

@@ -29,7 +29,7 @@ public class OnOff extends ResourceAgent implements IOnOff{
 		statusOn = (Boolean) value;		
 	}
 	
-	@ContextVariable(name = "ligaDesliga", description = "", type = CVType.On)
+	@Service(name = "LigaDesliga", description = "", type = "TurnOnOff")
 	public void setStatus(boolean isOn) {
 		statusOn = isOn;
 		

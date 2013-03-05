@@ -62,7 +62,7 @@ public class Stove extends ResourceAgent implements IStove {
 	 * r.nextBoolean(); }
 	 */
 	@Override
-	@ContextVariable(name = "Vazamento de gás", description = "", type = CVType.On)
+	@ContextVariable(name = "Vazamento de gás", description = "", type = "GasLeak")
 	public float getGasLeak() {
 		Random r = new Random();
 		this.gasLeak = r.nextFloat();
@@ -73,6 +73,7 @@ public class Stove extends ResourceAgent implements IStove {
 	// methods
 
 	@Override
+	@ContextVariable(name = "Ligado", description = "", type = "OnOff")
 	public boolean isOn() {
 		boolean ret = true;
 		for (float value : burners) {
