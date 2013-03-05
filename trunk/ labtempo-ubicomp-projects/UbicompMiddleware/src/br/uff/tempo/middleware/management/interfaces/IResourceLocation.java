@@ -9,8 +9,16 @@ import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
 
+/**
+ * Resource Location Service (RLS) interface
+ * 
+ * It enables use of RLS in SmartServer  
+ */
 public interface IResourceLocation {
 	
+	/**
+	 * Unique system rans of RLS
+	 */
 	public static final String rans = "resourcelocation.ra";
 
 	void addPlace(Place place);
@@ -42,6 +50,10 @@ public interface IResourceLocation {
 	void registerInPlaceMiddlePos(String url, Place place);
 	
 	ArrayList<String> queryByLocal(Position position);
-	
+
+	/**
+	 * Update an specified Resource Agent location indexed in Map structure
+	 * @param resource update target
+	 */
 	public void updateLocation(ResourceData resource);
 }

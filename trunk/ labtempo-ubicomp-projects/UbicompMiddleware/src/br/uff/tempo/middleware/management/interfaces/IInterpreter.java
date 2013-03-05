@@ -5,6 +5,11 @@ import java.lang.reflect.Method;
 import br.uff.tempo.middleware.management.Interpreter.ConditionalResult;
 import br.uff.tempo.middleware.management.Operator;
 
+/**
+ * This interface contains Interpreter methods
+ * 
+ * Interpreter contains methods that set and execute context rules
+ */
 public interface IInterpreter extends IResourceAgent {
 	// Operation are the possible comparison clauses used to compare CV to the
 	// constants in ConditionalResultsSet
