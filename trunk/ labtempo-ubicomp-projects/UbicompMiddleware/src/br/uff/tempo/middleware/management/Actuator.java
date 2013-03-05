@@ -39,12 +39,12 @@ public class Actuator extends ResourceAgent implements IActuator {
 		}
 	}
 
-	@Service(name = "Definir expressão")
+	@Service(name = "Definir expressão", type = "SetExpression")
 	public void setExpression(String expr) throws Exception {
 		parseExpression(expr.replace('\t', ' ').replace('\n', ' ').trim());
 	}
 
-	@Service(name = "Definir expressão")
+	@Service(name = "Definir expressão", type = "SetExpression")
 	public void setExpression(InputStream stream) throws Exception {
 		parseExpression(inputStreamToString(stream));
 	}
