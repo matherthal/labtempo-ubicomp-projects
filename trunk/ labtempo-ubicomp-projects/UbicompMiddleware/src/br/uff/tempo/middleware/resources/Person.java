@@ -24,12 +24,12 @@ public class Person extends Aggregator {
 		super(name, "br.uff.tempo.middleware.resources.Person", rans, position);
 	}
 
-	@ContextVariable(name = "Nome")
+	@ContextVariable(name = "Nome", type = "name")
 	public String getName() {
 		return this.firstName;
 	}
 
-	@ContextVariable(name = "Dormindo")
+	@ContextVariable(name = "Dormindo", type = "activity")
 	public boolean getIsSleepting() {
 		return this.isSleeping;
 	}

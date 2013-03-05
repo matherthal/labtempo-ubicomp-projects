@@ -22,13 +22,13 @@ public class Lamp extends ResourceAgent implements ILamp {
 	}
 
 	@Override
-	@ContextVariable(name = "Lampada ligada")
+	@ContextVariable(name = "Lampada ligada", type = "OnOff")
 	public boolean isOn() {
 		return isOn;
 	}
 
 	@Override
-	@Service(name = "Acender lampada")
+	@Service(name = "Acender lampada", type = "TurnOnOff")
 	public void turnOn() {
 		Log.i(TAG, this.getName() + " - turn Lamp on");
 		isOn = true;
@@ -37,7 +37,7 @@ public class Lamp extends ResourceAgent implements ILamp {
 	}
 
 	@Override
-	@Service(name = "Apagar lampada")
+	@Service(name = "Apagar lampada", type = "TurnOnOff")
 	public void turnOff() {
 		Log.i(TAG, this.getName() + " - turn Lamp off");
 		isOn = false;

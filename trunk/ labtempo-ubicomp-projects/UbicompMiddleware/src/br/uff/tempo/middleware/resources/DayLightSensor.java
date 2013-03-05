@@ -19,19 +19,19 @@ public class DayLightSensor extends ResourceAgent implements IDayLightSensor {
 	}
 
 	@Override
-	@ContextVariable(name = "É dia")
+	@ContextVariable(name = "É dia", type = "IsDay")
 	public boolean isDay() {
 		return day;
 	}
 
 	@Override
-	@ContextVariable(name = "Quantidade de luz")
+	@ContextVariable(name = "Quantidade de luz", type = "LightAmout")
 	public float lightAmount() {
 		return light;
 	}
 
 	@Override
-	@Service(name = "Definir se é dia")
+	@Service(name = "Definir se é dia", type = "SetIsDay")
 	public void setDay(boolean d) {
 		Log.i(TAG, this.getName() + " - toggle day light to " + d);
 		day = d;
@@ -40,7 +40,7 @@ public class DayLightSensor extends ResourceAgent implements IDayLightSensor {
 	}
 
 	@Override
-	@Service(name = "Definir quantidade de luz")
+	@Service(name = "Definir quantidade de luz", type = "SetLightAmout")
 	public void setLightAmount(float l) {
 		Log.i(TAG, this.getName() + " - set light amount to " + l);
 		light = l;
