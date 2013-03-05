@@ -20,6 +20,7 @@ public interface IStove extends IResourceAgent {
 	 * @return <code>true</code> if the stove burners or oven or any stove
 	 *         function is on; <code>false</code> otherwise.
 	 */
+	@ContextVariable(name = "Ligado-Desligado", description = "", type = "OnOff")
 	public boolean isOn();
 
 	/**
@@ -28,7 +29,7 @@ public interface IStove extends IResourceAgent {
 	 * @param burnerIndex
 	 *            The index of the stove burner
 	 */
-	@ContextVariable(name = "Temperatura boca", type = CVType.Temperature)
+	@ContextVariable(name = "Temperatura boca", type = "BurnerTemperature")
 	public float getBurnerTemperature(int burnerIndex);
 
 	/**
@@ -38,7 +39,7 @@ public interface IStove extends IResourceAgent {
 	 * @return <code>true</code> if the burner number <code>burnerIndex</code>
 	 *         is on; <code>false</code> otherwise.
 	 */
-	@ContextVariable(name = "Boca Ligada", description = "", type = CVType.On)
+	@ContextVariable(name = "Boca Ligada-Desligada", description = "", type = "BurnerOnOff")
 	public boolean isOnBurner(int burnerIndex);
 
 	/**
@@ -46,14 +47,23 @@ public interface IStove extends IResourceAgent {
 	 * 
 	 * @return The actual oven temperature
 	 */
-	@ContextVariable(name = "Temperatura forno", type = CVType.Temperature)
+	@ContextVariable(name = "Temperatura forno", type = "OvenTemperature")
 	public float getOvenTemperature();
 
 	/**
 	 * Returns the amount of gas leaking
 	 */
-	@ContextVariable(name = "Vazamento de gás", description = "", type = CVType.On)
+	@ContextVariable(name = "Vazamento de gás", description = "", type = "GasLeak")
 	public float getGasLeak();
+
+	/**
+	 * Verify if the oven is on
+	 * 
+	 * @return <code>true</code> if the oven is on; <code>false</code>
+	 *         otherwise.
+	 */
+	@ContextVariable(name = "Forno Ligado-Desligado", description = "", type = "OvenOnOff")
+	public boolean isOvenOn();
 
 	/***********
 	 * SERVICES *
@@ -65,7 +75,7 @@ public interface IStove extends IResourceAgent {
 	 * @param burnerIndex
 	 *            The index of the stove burner.
 	 */
-	@Service(name = "Ligar boca")
+	@Service(name = "Ligar boca", type = "TurnBurnerOnOff")
 	public void turnOnBurner(int burnerIndex);
 
 	/**
@@ -74,16 +84,8 @@ public interface IStove extends IResourceAgent {
 	 * @param burnerIndex
 	 *            The index of the stove burner
 	 */
-	@Service(name = "Desligar boca")
+	@Service(name = "Desligar boca", type = "TurnBurnerOnOff")
 	public void turnOffBurner(int burnerIndex);
-
-	/**
-	 * Verify if the oven is on
-	 * 
-	 * @return <code>true</code> if the oven is on; <code>false</code>
-	 *         otherwise.
-	 */
-	public boolean isOvenOn();
 
 	/**
 	 * Sets the oven temperature to <code>newTemperature</code>. Notice that
@@ -92,18 +94,18 @@ public interface IStove extends IResourceAgent {
 	 * @param newTemperature
 	 *            The new oven temperature.
 	 */
-	@Service(name = "Definir temperatuda do forno")
+	@Service(name = "Definir temperatuda do forno", type = "SetOvenTemperature")
 	public void setOvenTemperature(float newTemperature);
 
 	/**
 	 * Turns the oven off.
 	 */
-	@Service(name = "Deligar forno")
+	@Service(name = "Deligar forno", type = "TurnOvenOnOff")
 	public void turnOffOven();
 
 	/**
 	 * Turns the oven on.
 	 */
-	@Service(name = "Ligar forno")
+	@Service(name = "Ligar forno", type = "TurnOvenOnOff")
 	public void turnOnOven();
 }
