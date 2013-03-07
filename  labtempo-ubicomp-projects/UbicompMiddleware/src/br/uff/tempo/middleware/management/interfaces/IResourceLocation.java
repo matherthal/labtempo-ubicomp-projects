@@ -11,7 +11,7 @@ import br.uff.tempo.middleware.management.utils.Space;
 
 /**
  * Resource Location Service (RLS) interface
- * 
+ * <br /><br />
  * It enables use of RLS in SmartServer  
  */
 public interface IResourceLocation {

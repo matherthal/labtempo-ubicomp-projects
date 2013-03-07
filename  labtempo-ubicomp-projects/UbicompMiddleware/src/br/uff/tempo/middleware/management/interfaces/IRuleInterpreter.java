@@ -2,7 +2,7 @@ package br.uff.tempo.middleware.management.interfaces;
 
 /**
  * Rule interpreter interface
- * 
+ * <br /><br />
  * Rule Interpreter manages context rules
  */
 public interface IRuleInterpreter extends IResourceAgent {

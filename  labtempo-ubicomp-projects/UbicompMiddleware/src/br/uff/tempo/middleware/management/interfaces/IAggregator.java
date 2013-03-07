@@ -3,7 +3,7 @@ package br.uff.tempo.middleware.management.interfaces;
 import br.uff.tempo.middleware.management.Interpreter;
 /**
  * This interface contains Aggregator methods
- * 
+ * <br /><br />
  * Aggregator contains aggregation methods that add Context Variables to Interpreters of context rules
  */
 public interface IAggregator {

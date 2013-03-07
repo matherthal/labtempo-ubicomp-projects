@@ -7,7 +7,7 @@ import br.uff.tempo.middleware.management.Operator;
 
 /**
  * This interface contains Interpreter methods
- * 
+ * <br /><br />
  * Interpreter contains methods that set and execute context rules
  */
 public interface IInterpreter extends IResourceAgent {

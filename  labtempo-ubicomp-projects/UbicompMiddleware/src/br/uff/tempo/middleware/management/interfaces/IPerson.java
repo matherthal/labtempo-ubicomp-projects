@@ -5,7 +5,7 @@ import br.uff.tempo.middleware.management.utils.Position;
 
 /**
  * This interface contains Person Agent methods
- * 
+ * <br /><br />
  * Person agent type contains methods that manage mobility and aggregate body sensors 
  */
 public interface IPerson extends IResourceAgent {
