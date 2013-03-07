@@ -14,7 +14,7 @@ import br.uff.tempo.middleware.management.utils.Stakeholder;
 
 /**
  * This interface contains ResourceAgent Agent methods
- * 
+ * <br /><br />
  * ResourceAgent represents smart modules that comprehends communications and contextual functionalities
  */
 public interface IResourceAgent extends Serializable {

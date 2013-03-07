@@ -5,7 +5,7 @@ import br.uff.tempo.middleware.management.utils.Position;
 
 /**
  * Resource Register Service (RRS) interface
- * 
+ * <br /><br />
  * It enables use of RRS in SmartServer  
  */
 public interface IResourceRegister {

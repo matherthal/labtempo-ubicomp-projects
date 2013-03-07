@@ -9,7 +9,7 @@ import br.uff.tempo.middleware.management.ResourceData;
 
 /**
  * Resource Discovery Service (RDS) interface
- * 
+ * <br /><br />
  * It enables use of RDS in SmartServer  
  */
 public interface IResourceDiscovery {
