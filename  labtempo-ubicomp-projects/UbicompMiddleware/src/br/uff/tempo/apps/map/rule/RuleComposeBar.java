@@ -8,6 +8,10 @@ import org.andengine.entity.primitive.Rectangle;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.color.Color;
 
+import br.uff.tempo.apps.map.utils.Transformations;
+
+import android.view.animation.Transformation;
+
 public class RuleComposeBar extends HUD {
 
 	private static float MAX_ALPHA = 0.5f;
@@ -56,37 +60,10 @@ public class RuleComposeBar extends HUD {
 		
 		this.setVisible(true);
 		
-		showEntities();
+		Transformations.applyAlphaModifierInChindren(this, MIN_ALPHA, MAX_ALPHA);
 	}
 	
 	public void dismiss() {
-		hideEntities();
-	}
-	
-	private void hideEntities() {
-		
-		int childCount = this.getChildCount();
-		
-		for (int i = 0; i < childCount; i++) {
-			
-			IEntity entity = this.getChildByIndex(i);
-			applyAlphaModifier(entity, MAX_ALPHA, MIN_ALPHA);
-		}
-	}
-	
-	private void showEntities() {
-		
-		int childCount = this.getChildCount();
-		
-		for (int i = 0; i < childCount; i++) {
-			
-			IEntity entity = this.getChildByIndex(i);
-			applyAlphaModifier(entity, MIN_ALPHA, MAX_ALPHA);
-		}
-	}
-	
-	private void applyAlphaModifier(final IEntity entity, final float fromAlpha, final float toAlpha) {
-		
-		entity.registerEntityModifier(new AlphaModifier(2, fromAlpha, toAlpha));
+		Transformations.applyAlphaModifierInChindren(this, MAX_ALPHA, MIN_ALPHA);
 	}
 }

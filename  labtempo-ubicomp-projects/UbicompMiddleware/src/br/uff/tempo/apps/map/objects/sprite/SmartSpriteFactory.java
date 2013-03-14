@@ -5,6 +5,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import br.uff.tempo.apps.map.SmartMapActivity;
 import br.uff.tempo.apps.simulators.utils.ResourceWrapper;
 import br.uff.tempo.middleware.management.utils.Space;
 
@@ -13,7 +14,7 @@ import br.uff.tempo.middleware.management.utils.Space;
  * @author dbarreto
  */
 public final class SmartSpriteFactory {
-
+	
 	private SmartSpriteFactory() {}
 	
 	/**
@@ -26,7 +27,7 @@ public final class SmartSpriteFactory {
 	 * @return The new Sprite created
 	 */
 	public static Sprite createSprite(String type, float x, float y, ITextureRegion texture, VertexBufferObjectManager vertex) {
-		return createSprite(type, x, y, texture, vertex, null, null, null);
+		return createSprite(type, x, y, texture, vertex, null, null, null, null);
 	}
 	
 	/**
@@ -39,9 +40,10 @@ public final class SmartSpriteFactory {
 	 * @param controler The object that will listen Sprite events
 	 * @param wrapper The object that stores information about the resource agent
 	 * @param map The map
-	 * @return The new Sprite created
+	 * @return The new Sprite createdbaseGameActivity.getFontManager()
 	 */
-	public static Sprite createSprite(String type, float x, float y, ITextureRegion texture, VertexBufferObjectManager vertex, ISpriteControler controler, ResourceWrapper wrapper, Space map) {
+	public static Sprite createSprite(String type, float x, float y, ITextureRegion texture, VertexBufferObjectManager vertex, ISpriteController controler, ResourceWrapper wrapper, Space map, SmartMapActivity activity) {
+		
 		if (type.equals("Person")) {
 			SmartAnimatedSprite sprite = new SmartAnimatedSprite(x, y, (ITiledTextureRegion) texture, vertex);
 			sprite.setResourceWrapper(wrapper);
@@ -49,8 +51,11 @@ public final class SmartSpriteFactory {
 			return sprite;
 		} else {
 			SmartSprite sprite = new SmartSprite(x, y, texture, vertex);
-			sprite.registerSpriteControler(controler);
+			sprite.registerSpriteController(controler);
 			sprite.setResourceWrapper(wrapper);
+			sprite.enableContextMenu(activity.getFontManager(), activity.getTextureManager());
+			sprite.getContextMenu().registerActionListener(activity);
+			activity.getScene().registerTouchArea(sprite.getContextMenu().getBoxMenu());
 			return sprite;
 		}
 	}
