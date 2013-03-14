@@ -15,9 +15,9 @@ import br.uff.tempo.apps.map.TouchEvents;
 import br.uff.tempo.apps.map.rule.ContextMenu;
 import br.uff.tempo.apps.map.rule.ContextMenuItem;
 import br.uff.tempo.apps.simulators.utils.ResourceWrapper;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent.ContextVariable;
-import br.uff.tempo.middleware.resources.interfaces.IStove;
 
 public class SmartSprite extends Sprite implements TouchEvents.ITouchEvents {
 
@@ -48,17 +48,40 @@ public class SmartSprite extends Sprite implements TouchEvents.ITouchEvents {
 	}
 	
 	private void fillContextVariables() {
-		Method[] methods = IStove.class.getMethods();
+		
+		IResourceAgent stub = wrapper.getStub();
+		
+		if (stub == null) {
+			String errorMessage = "Stub object from this agent is null";
+			Log.e("SmartAndroid", errorMessage);
+			throw new SmartAndroidRuntimeException(errorMessage);
+		}
+		Class<?> classes[] = stub.getClass().getInterfaces();
+		
+		if (classes.length == 0) {
+			String errorMessage = "The agent [" + stub.getName() + "] of class [" + stub.getClass().getSimpleName() + "] doesn't implement any interfaces. It should implement at least some 'IResourceAgent' subclass";
+			Log.wtf("SmartAndroid", errorMessage);
+			throw new SmartAndroidRuntimeException(errorMessage);
+		}
+		
+		//Iterate over the array of interfaces which are implemented by this agent.
+		//In fact, we're looking for a IResourceAgent subclass (e.g IStove).
+		//The loop is necessary because we don't know what position the desired interface is
+		for (Class<?> clazz : classes) {
 
-		for (Method m : methods){
+			Method[] methods = clazz.getMethods();
 			
-			if (m.isAnnotationPresent(IResourceAgent.ContextVariable.class)) {
+			for (Method m : methods){
 				
-				ContextVariable cv = m.getAnnotation(IResourceAgent.ContextVariable.class);
-				ContextMenuItem item = new ContextMenuItem(cv.name());
-				item.setExtra(m);
-				menu.addItem(item);
+				if (m.isAnnotationPresent(IResourceAgent.ContextVariable.class)) {
+					
+					ContextVariable cv = m.getAnnotation(IResourceAgent.ContextVariable.class);
+					ContextMenuItem item = new ContextMenuItem(cv.name());
+					item.setExtra(m);
+					menu.addItem(item);
+				}
 			}
+
 		}
 	}
 
