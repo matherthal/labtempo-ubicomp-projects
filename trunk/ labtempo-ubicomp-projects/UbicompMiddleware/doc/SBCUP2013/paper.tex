@@ -75,12 +75,12 @@ Desde as propostas de Mark Weiser na década de 1990~\cite{weiser1991computer}, o
 %2 - (as dificuldades, ?mas desenvolver é caro, difícil?, etc.)
 %Embora as tecnologias para a construção de AmbIs estejam disponíveis a mais de três décadas, ainda não fora amplamente adotadas. 
 %Estudos, como \cite{brush2011home}, sobre o uso de tecnologias para AmbIs ajudam a explicar a diferença estre as visões de longa data de ambientes conectados e a realidade. 
-Estudos, como \cite{brush2011home}, ajudam a explicar a diferença entre as visões de longa data de AmbIs e a realidade. Uma das barreiras é a \textit{baixa capacidade de gerenciamento}, que traz desafios, como o \textit{suporte à personalização}, \textit{confiabilidade}, e a \textit{complexidade das interfaces de usuário}. Do ponto de vista dos desenvolvedores, a \textit{heterogeneidade dos dispositivos envolvidos} dificulta a criação de aplicações ubíquas no que concerne à comunicação, assim como a quantidade e a \textit{variedade de informações de contexto e serviços} é um desafio à interatividade das aplicações.
+Estudos, como \cite{brush2011home}, ajudam a explicar a diferença entre as visões de longa data de AmbIs e a realidade, para os usuários. Uma das barreiras é a baixa capacidade de gerenciamento, que traz desafios, como o \textit{suporte à personalização}, \textit{confiabilidade}, e a \textit{complexidade das interfaces de usuário}. Do ponto de vista dos desenvolvedores, a \textit{heterogeneidade dos dispositivos envolvidos} dificulta a criação de aplicações ubíquas no que concerne à comunicação, assim como a quantidade e a \textit{variedade de informações de contexto e serviços} é um desafio à interatividade das aplicações; como identificado por \cite{araujo2003}.
 %Barreiras para esta adoção são: o alto preço, inflexibilidade, baixa capacidade de gerenciamento e dificuldade em se obter segurança.
 
 % A construção e a manipulação de aplicações ubíquas representam grandes desafios para desenvolvedores, especialmente em termos do conhecimento técnico exigido e da disponibilidade de dispositivos reais durante o desenvolvimento da aplicação. Alguns desses desafios podem ser assim destacados: (i) há dificuldades em se estabelecer um protocolo comum de comunicação entre os componentes do sistema distribuído, por conta da \textit{heterogeneidade dos dispositivos envolvidos}; (ii) a interatividade das aplicações ubíquas é dificultada dependendo da quantidade e da \textit{variedade de informações de contexto e serviços} disponíveis no ambiente; (iii) o desenvolvimento e o teste de aplicações exigem uma alta \textit{disponibilidade de recursos}, como por exemplo, sensores (e.g., presença, iluminação, temperatura), atuadores (e.g., chaves, alarmes, \textit{smart-tvs}), incluindo novos dispositivos embarcados, ou ainda de espaços físicos, tais como uma casa para aplicações do tipo \textit{smart home}.
 
-%3 - Falar de trabalhos relacionados brevemente (mais sobre contexto)
+%3 - Falar de trabalhos relacionados brevemente
 Muitos trabalhos têm por objetivo definir \mbox{\textit{frameworks}} voltados à construção e ao gerenciamento de aplicações ubíquas~\cite{helal2005gator, cardoso2006, ranganathan2005olympus}. Em~\cite{augusto2007ambient} são apontados desafios na aquisição de conhecimentos do ambiente. Em~\cite{helal2005gator} é proposto um \mbox{\textit{middleware}} entre a camada física (compreendida pelos sensores e atuadores) e a camada de aplicação (onde se encontram o ambiente de desenvolvimento e as aplicações ubíquas). Em~\cite{cardoso2006} são propostos serviços para gerenciar componentes representativos do ambiente no nível de \mbox{\textit{middleware}}. O trabalho de \cite{ranganathan2005olympus}, em especial, se preocupa em organizar estes componentes de forma a facilitar suas manipulações; a estruturação proposta permite ampliar o escopo de operações de suporte de um sistema ubíquo. Em~\cite{park2007cass}
 Estes trabalhos, no entanto, não têm como foco a integração das questões acima identificadas: \textit{suporte à personalização}, \textit{confiabilidade}, e \textit{complexidade das interfaces de usuário}, a fim de se tratar a \textit{baixa capacidade de gerenciamento} das soluções disponíveis atuais.
 
@@ -115,9 +115,9 @@ Este trabalho complementa o \textit{framework}, proposto em \cite{mareli2013}, q
 %TODO: ainda não falei em lugar nenhum que os ARs são a unidade básica de modularização do sistema =)
 Sensores, atuadores, dispositivos e eletrodomésticos inteligentes, além de módulos de \mbox{\textit{software}} que forneçam algum serviço para o ambiente, são definidos como \textit{recursos}. Estes são encapsulados em Agentes de Recurso (AR), que podem ser compreendidos como elementos que expõem informações dos recursos juntamente com sua interface, de forma que outras entidades possam acessá-las de maneira uniforme.
 
-Os ARs escondem detalhes de baixo nível do recurso encapsulado, diminuindo significativamente a complexidade de integração de um recurso no sistema. Por exemplo, os detalhes da coleta de dados de um sensor de temperatura seriam conhecidos apenas pelo seu AR, que se encarrega de fornecer uma interface simples para que os outros componentes do sistema tenham acesso as informações desse sensor. %Na Figura~\ref{fig:agent} temos um AR que encapsula um sensor de temperatura, expondo o método \texttt{getTemperature()}.
+Os ARs escondem detalhes de baixo nível do recurso encapsulado, diminuindo significativamente a complexidade de integração de um recurso no sistema. Por exemplo, os detalhes da coleta de dados de um sensor de temperatura seriam conhecidos apenas pelo seu AR, que se encarrega de fornecer uma interface simples para que os outros componentes do sistema tenham acesso as informações desse sensor. 
 
-%TODO: falar da resolução da \textit{heterogeneidade dos dispositivos} ???
+Proposto inicialmente em \cite{cardoso2006} como uma entidade de coleta de informações de contexto, a estrutura do AR permite resolver o desafio da \textit{heterogeneidade de dispositivos}, anterioremente identificado.  
 % O conceito de AR foi definido para padronizar os componentes de interação do ambiente, e dessa forma resolver a questão da \textit{heterogeneidade dos dispositivos}. A sua estrutura geral, como ilustrada na Figura~\ref{fig:arquitetura}~(a), é composta por nome único (``tvFamília''), hierarquia de tipos (``$\backslash$Visual$\backslash$TV''), localização corrente (``Sala''), classe (classe TV) com variáveis e métodos, e uma lista de interessados em informações de contexto. A hierarquia de tipos, que é composta por uma sequência de classes, foi inspirada na ontologia descrita em~\cite{ranganathan2005olympus} para classificar entidades (como os ARs). Esta hierarquia foi organizada para possibilitar a consulta e instanciação de ARs a partir de propriedades associadas a uma classe específica. Na Seção~\ref{subsubsec-sgar} é apresentado o SGAR que se beneficia desta estrutura do AR.
 
 %Descrever figura
@@ -134,21 +134,34 @@ A Figura~\ref{fig:arquitetura} representa uma arquitetura em camadas para o \tex
 
 \subsection{Suporte ao Gerenciamento de Recursos} \label{subsubsec-sgar}
 %introduzir o SGAR e relacioná-lo com o framework -- apontá-lo na figura, ou talvez no paragrafo abaixo 
-% Dentre as facilidades está a capacidade de abstrair detalhes das partes da aplicação que envolve a comunicação, a aquisição de contexto e a localização de recursos. Como abstração aos recursos são utilizados componentes chamados Agentes de Recursos (AR). O AR é a unidade básica de modularização do \textit{framework }, sendo utilizado na modelagem, implementação e gerenciamento das aplicações. Por exemplo: sensores de temperatura da casa, de vazamento de gás na cozinha, um medidor de pressão arterial, um atuador para fechar as janelas, etc. 
+O objetivo do \textit{framework} é fornecer suporte à programação, teste e execução de aplicações, permitindo lidar de forma consistente com sistemas de grande complexidade. O AR é a unidade básica de modularização do sistema, sendo gerenciados pelo Suporte ao Gerenciamento de Agentes de Recursos (SGAR). O SGAR é o serviço responsável por gerenciar o conjunto de ARs no AmbI. O controle de registro e descoberta de ARs segue a ideia geral sobre serviços que manipulam recursos apresentada em \cite{cardoso2006}. 
+%FIXME: paragrafo mal escrito... mtas definiçoes juntas
 
 %descrever os serviços do SGAR -- não falar muito do repositório de recursos
+A Figura~\ref{fig:arquitetura} apresenta o SGAR localizado na camada intermediária. Três componentes, ou serviços básicos, compõem o SGAR: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). O SRR é utilizado para registrar (\mbox{\textit{register}}) ou remover (\mbox{\textit{unregister}}) ARs no ambiente, o SDR localiza recursos para permitir o acesso remoto (\mbox{\textit{search}}) e o SLR os localizam através de posições físicas e  indica os recursos mais próximos (\mbox{\textit{searchByProximity}}). %O uso das operações ``\mbox{\textit{publish}}'' e ``\mbox{\textit{subscribe}}'' é explorado pelos Interpretadores de Contexto apresentados na Seção~\ref{subsubsec-ic}.
+
+
+
 %não acrescentar figuras adicionais. 
 %acho que a hierarquia de tipos vai vir junto da proposta, se eu for falar de modelo de contexto
 
 
 \section{Proposta}
 
+
+
 O gerenciamento de AmbIs pode ocorrer em dois níveis: controle por usuários e baseado em regras. O primeiro diz respeito ao usuário explicitamente efetuar uma ação (e.g., desligar todas as lâmpadas da casa). O segundo diz respeito ao ambiente executar ações baseado na ocorrência de eventos, segundo uma regra de contexto (e.g., uma lâmpada ser apagada se ninguém frequenta o cômodo durante algum tempo). 
 
 \subsection{Modelo de Contexto} \label{subsec-contexto}
+%Neste trabalho, o AR, além de manter informações de contexto, age como um componente que encapsula o código do dispositivo a ele associado, incluindo os aspectos de interação com os componentes da aplicação. Para a questão da \textit{variedade de informações de contexto e serviços}, é proposto um Modelo de Contexto que define o armazenamento e a distribuição de tais informações, e provê o suporte para a criação de regras de contexto.
+
 O Modelo de Contexto foi elaborado com o objetivo de tratar a questão da \textit{variedade de informações de contexto e serviços} presentes no AmbI. Neste modelo, o \mbox{\textit{framework}} utiliza uma abordagem flexível, onde o mecanismo de comunicação por eventos (visto na Seção~\ref{subsec-comunicacao}) possibilita que ARs divulguem mudanças de contexto. A informação pode estar em qualquer lugar do AmbI, contudo, é provido um nível de abstração tal que a subscrição ou consulta a qualquer informação de contexto é feita de maneira padronizada. O processo de aquisição do contexto envolve a descoberta do AR de interesse através dos serviços da SGAR, com a posterior subscrição do mesmo. A abordagem adotada é flexível de tal maneira que, caso seja conveniente, pode ser criada uma unidade centralizadora para gerenciar as informações de contexto, segundo uma arquitetura de memória compartilhada do tipo \mbox{\textit{blackboard}} (ou quadro-negro)~\cite{winograd2001architectures}.
 
-\subsubsection{Variáveis de Contexto e Operações} \label{subsubsec:cv}
+%falar da hierarquia de tipos, justificar e descrever
+
+A hierarquia de tipos é composta por uma sequência de classes, foi inspirada na ontologia descrita em~\cite{ranganathan2005olympus} para classificar entidades (como os ARs). Esta hierarquia foi organizada para possibilitar a consulta e instanciação de ARs a partir de propriedades associadas a uma classe específica. Na Seção~\ref{subsubsec-sgar} é apresentado o SGAR que se beneficia desta estrutura do AR.
+
+\subsection{Variáveis de Contexto e Operações} \label{subsubsec:cv}
 %explicar vc
 As informações de contexto respectivas de cada AR são expostas através de Variáveis de Contexto (VC). Por exemplo, um agente para uma \textit{smart-tv} pode prover VCs para: qual a programação que está sendo exibida, qual a programação agendada, se a própria televisão está ligada, se está gravando alguma programação, e outras. Em outros termos, tudo o que diz respeito ao estado da televisão e que pode efetivamente ser coletado.
 
@@ -161,7 +174,7 @@ Tanto VCs como OPs definem interfaces, ou portas do AR. Diferentes aplicações, i
 \begin{figure}[ht]
   \centering
   \includegraphics[height=.3\textwidth]{imgs/interpretador-fogao-cute.png}
-  \caption{Interpretador de Regra}
+  \caption{Interpretação de Contexto}
   \label{fig:inpt_cute}
 \end{figure}
 
@@ -307,7 +320,9 @@ on event received (ar_ref, vc, value): $\textit{//Quando chega uma notificação}$
 % CONCLUSÃO %
 %%%%%%%%%%%%%
 \section{Conclusão e Trabalhos Futuros} \label{sec-conclusao}
-
+%Falar sobre o resultado do que foi visto
+Em ambientes inteligentes, aplicações ubíquas não são pequenas e monolíticas, mas sistemas complexos. Neste artigo foi proposta uma solução para a representação de informações contextuais, distribuição das mesmas em ambientes inteligentes, e interpretação do contexto, facilitando o desenvolvimento de aplicações ubíquas. A proposta possibilita que sejam criadas regras de contexto em alto nível a partir de expressões lógicas, que relacionam variáveis de contexto entre si e com temporizadores.
+%falar da GUi
 
 
 \bibliographystyle{sbc}
