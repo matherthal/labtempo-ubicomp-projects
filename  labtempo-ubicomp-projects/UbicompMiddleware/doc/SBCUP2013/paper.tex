@@ -81,7 +81,7 @@ Estudos, como \cite{brush2011home}, ajudam a explicar a diferença entre as visõe
 % A construção e a manipulação de aplicações ubíquas representam grandes desafios para desenvolvedores, especialmente em termos do conhecimento técnico exigido e da disponibilidade de dispositivos reais durante o desenvolvimento da aplicação. Alguns desses desafios podem ser assim destacados: (i) há dificuldades em se estabelecer um protocolo comum de comunicação entre os componentes do sistema distribuído, por conta da \textit{heterogeneidade dos dispositivos envolvidos}; (ii) a interatividade das aplicações ubíquas é dificultada dependendo da quantidade e da \textit{variedade de informações de contexto e serviços} disponíveis no ambiente; (iii) o desenvolvimento e o teste de aplicações exigem uma alta \textit{disponibilidade de recursos}, como por exemplo, sensores (e.g., presença, iluminação, temperatura), atuadores (e.g., chaves, alarmes, \textit{smart-tvs}), incluindo novos dispositivos embarcados, ou ainda de espaços físicos, tais como uma casa para aplicações do tipo \textit{smart home}.
 
 %3 - Falar de trabalhos relacionados brevemente
-Muitos trabalhos têm por objetivo definir \mbox{\textit{frameworks}} voltados à construção e ao gerenciamento de aplicações ubíquas~\cite{helal2005gator, cardoso2006, ranganathan2005olympus}. Em~\cite{augusto2007ambient} são apontados desafios na aquisição de conhecimentos do ambiente. Em~\cite{helal2005gator} é proposto um \mbox{\textit{middleware}} entre a camada física (compreendida pelos sensores e atuadores) e a camada de aplicação (onde se encontram o ambiente de desenvolvimento e as aplicações ubíquas). Em~\cite{cardoso2006} são propostos serviços para gerenciar componentes representativos do ambiente no nível de \mbox{\textit{middleware}}. O trabalho de \cite{ranganathan2005olympus}, em especial, se preocupa em organizar estes componentes de forma a facilitar suas manipulações; a estruturação proposta permite ampliar o escopo de operações de suporte de um sistema ubíquo. Em~\cite{park2007cass}...
+Muitos trabalhos têm por objetivo definir \mbox{\textit{frameworks}} voltados à construção e ao gerenciamento de aplicações ubíquas~\cite{helal2005gator, cardoso2006, ranganathan2005olympus}. Em~\cite{augusto2007ambient} são apontados desafios na aquisição de conhecimentos do ambiente. Em~\cite{helal2005gator} é proposto um \mbox{\textit{middleware}} entre a camada física (compreendida pelos sensores e atuadores) e a camada de aplicação (onde se encontram o ambiente de desenvolvimento e as aplicações ubíquas). Em~\cite{cardoso2006} são propostos serviços para gerenciar componentes representativos do ambiente no nível de \mbox{\textit{middleware}}. O trabalho de \cite{ranganathan2005olympus}, em especial, se preocupa em organizar estes componentes de forma a facilitar suas manipulações; a estruturação proposta permite ampliar o escopo de operações de suporte de um sistema ubíquo. Em~\cite{park2007cass}
 Estes trabalhos, no entanto, não têm como foco a integração das questões acima identificadas: \textit{suporte à personalização}, \textit{confiabilidade}, e \textit{complexidade das interfaces de usuário}, a fim de se tratar a \textit{baixa capacidade de gerenciamento} das soluções disponíveis atuais.
 
 %4 - (?Este trabalho... vamos propor um protótipo ...?, nosso trabalho tem q ganhar. ?Tem que caber o smartandroid inteiro? - ARs)
@@ -128,7 +128,7 @@ A Figura~\ref{fig:arquitetura} representa uma arquitetura em camadas para o \tex
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[height= .4\textwidth]{imgs/framework/arquiteturaGeral5.1.png}
+  \includegraphics[height= .4\textwidth]{imgs/ic/framework/arquiteturaGeral5.1.png}
   \caption{Arquitetura do \textit{Framework}}
   \label{fig:arquitetura}
 \end{figure}
@@ -141,7 +141,7 @@ A Figura~\ref{fig:arquitetura} representa uma arquitetura em camadas para o \tex
 O objetivo do \textit{framework} é fornecer suporte à programação, teste e execução de aplicações, permitindo lidar de forma consistente com sistemas de grande complexidade. O AR é a unidade básica de modularização do sistema, sendo gerenciados pelo Suporte ao Gerenciamento de Agentes de Recursos (SGAR) e beneficiados pelos mecanismos de comunicação apresentados na Seção~\ref{subsubsec-comm}. 
 
 \subsubsection{Comunicação} \label{subsubsec-comm}
-De modo a atender requisitos típicos de ambientes distribuídos, o \textit{framework} dispõe de dois mecanismos de comunicação: a invocação remota de procedimentos (\textit{Remote Procedure Call} -- RPC) para comunicação síncrona e a comunicação por eventos seguindo o paradigma \textit{publish-subscribe} \cite{eugster2003many} para comunicação assíncrona. %No RPC, um \textit{proxy} contém a interface de chamadas de procedimentos públicos da instancia remota desejada. A chamada e o retorno do procedimento são enviados através de mensagens serializadas (no \textit{SmartAndroid} através da notação JSON). Este mecanismo pode ser usado para enviar comandos aos dispositivos (e.g, fechar uma  torneira, alterar remotamente o \textit{setup} de um ar-condicionado).
+De modo a atender requisitos tópicos de ambientes distribuídos, o \textit{framework} dispõe de dois mecanismos de comunicação: a invocação remota de procedimentos (\textit{Remote Procedure Call} -- RPC) para comunicação síncrona e a comunicação por eventos seguindo o paradigma \textit{publish-subscribe} \cite{eugster2003many} para comunicação assíncrona. %No RPC, um \textit{proxy} contém a interface de chamadas de procedimentos públicos da instancia remota desejada. A chamada e o retorno do procedimento são enviados através de mensagens serializadas (no \textit{SmartAndroid} através da notação JSON). Este mecanismo pode ser usado para enviar comandos aos dispositivos (e.g, fechar uma  torneira, alterar remotamente o \textit{setup} de um ar-condicionado).
 
 Como suporte, a comunicação no \textit{framework} requisita uma infraestrutura básica de rede. Por conveniência, foi adotado Wi-Fi, que garante o mínimo de segurança contra acesso de agentes externos à rede do ambiente e agrega benefícios de mecanismos de criptografia, como a WPA.
 
@@ -171,7 +171,7 @@ A proposta deste trabalho é oferecer uma solução para a representação da informa
 O Modelo de Contexto foi elaborado com o objetivo de tratar a questão da \textit{variedade de informações de contexto e serviços} presentes no AmbI. Neste modelo, o \mbox{\textit{framework}} utiliza uma abordagem flexível, onde o mecanismo de comunicação por eventos (visto na Seção~\ref{subsubsec-comm}) possibilita que ARs divulguem mudanças de contexto. A informação pode estar em qualquer lugar do AmbI, contudo, é provido um nível de abstração tal que a subscrição ou consulta a qualquer informação de contexto é feita de maneira padronizada. O processo de aquisição do contexto envolve a descoberta do AR de interesse através dos serviços da SGAR, com a posterior subscrição do mesmo. A abordagem adotada é flexível de tal maneira que, caso seja conveniente, pode ser criada uma unidade centralizadora para gerenciar as informações de contexto, segundo uma arquitetura de memória compartilhada do tipo \mbox{\textit{blackboard}} (ou quadro-negro)~\cite{winograd2001architectures}.
 
 %falar da hierarquia de tipos, justificar e descrever
-A estrutura geral do AR, possui, dentre outros atributos, uma hierarquia de tipos que é composta por uma sequência de classes, tendo sido inspirada na ontologia descrita em~\cite{ranganathan2005olympus} para classificar entidades (como os ARs). A hierarquia possibilita a consulta e instanciação de ARs a partir de propriedades associadas a uma classe específica. Na Seção~\ref{subsubsec-sgar} é apresentado o SGAR que se beneficia desta estrutura do AR. 
+A estrutura geral do AR, possui, dentre outros atributos, uma hierarquia de tipos que é composta por uma sequência de classes, tendo sido inspirada na ontologia descrita em~\cite{ranganathan2005olympus} para classificar entidades (como os ARs). A hierarquia possibilita a consulta e instanciação de ARs a partir de propriedades associadas a uma classe específica. 
 
 \subsubsection{Variáveis de Contexto e Operações} \label{subsubsec:cv}
 %explicar vc
@@ -185,7 +185,7 @@ Tanto VCs como OPs definem interfaces, ou portas do AR. Diferentes aplicações, i
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[height=.3\textwidth]{imgs/interpretador-fogao-cute.png}
+  \includegraphics[width=\textwidth]{imgs/ic/interpretador-fogao-cute_v2.png}
   \caption{Interpretação de Contexto}
   \label{fig:inpt_cute}
 \end{figure}
@@ -207,14 +207,15 @@ Considere a seguinte regra simples: se uma pessoa (que mora sozinha) ligou o fog
 
 %falar sobre a arquitetura do IC e da sua criação
 %Durante a criação do IC, este deve receber uma regra de contexto. Diferentes trabalhos (olhar o hydrogen e o cobra)
-O IC é encapsulado em um AR, assim estendendo suas funcionalidades. A arquitetura do IC é composta de um módulo que recebe as notificações e atualiza os valores em \mbox{\textit{cache}}; uma estrutura de dados em árvore, que não só armazena as referências para as VCs e os valores atualizados, mas também a lógica da regra; um módulo que avalia a árvore a cada atualização de valores; e um módulo que gerencia os temporizadores, controlado pelo módulo de avaliação.
+O IC é encapsulado em um AR, assim estendendo suas funcionalidades. A arquitetura do IC, como mostrada na Figura~\ref{intp_arq}
+possui uma porta notificações e e atualiza os valores em \mbox{\textit{cache}}; uma estrutura de dados em árvore, que não só armazena as referências para as VCs e os valores atualizados, mas também a lógica da regra; um módulo que avalia a árvore a cada atualização de valores; e um módulo que gerencia os temporizadores, controlado pelo módulo de avaliação.
 %TODO: ? Colocar a figura (nova) interpretador_arquitetura v1 aqui????
 
-A a estrutura do IC, como mostrada na figura~\ref{fig:intp_arq} é composta por um ``Parser'', que faz a tradução da regra escrita para o modelo usado pelo IC; a Estrutura Lógica %TODO:CONTINUAR AQUI
+O IC é encapsulado em um AR, assim estendendo suas funcionalidades. Sua criação ocorre quando é definida uma expressão lógica, segundo um padrão próprio adotado, no objeto do IC recém instanciado e um \textit{parser} constrói uma estrutura lógica interna, como mostrado na Figura~\ref{fig:inpt_arq}. A estrutura lógica abrigada pelo IC, contém uma árvore que representa a expressão e contém não só a lógica entre as VCs das condições, como também valores atualizados das mesmas. Enquanto em funcionamento, o IC recebe atualizações das VCs, tratando-as em seguida para atualizar na estrutura lógica. O módulo de avaliação é notificado de mudanças da estrutura lógica e avalia se a expressão se tornou verdadeira ou falsa. Se a expressão alcançou um estado válido, considerando as possíveis temporizações, notifica os atuadores. 
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[height=.3\textwidth]{imgs/interpretador_arquiteturav2.png}
+  \includegraphics[height=.4\textwidth]{imgs/ic/interpretador_arquiteturav4.png}
   \caption{Estrutura do Interpretador de Contexto}
   \label{fig:inpt_arq}
 \end{figure}
@@ -222,7 +223,7 @@ A a estrutura do IC, como mostrada na figura~\ref{fig:intp_arq} é composta por u
 \subsection{Temporização}
 A temporização em um IC é definida ao se associar temporizadores (``\textit{timers}'') à uma condição expressão da regra (ou subexpressões). Os temporizadores podem ser tanto relativos (e.g., fogão ligado e pessoa deitada na cama por 15min) quanto absolutos (e.g., ar-condicionado ligado às 18:00).
 
-No caso dos temporizadores relativos, durante o tempo indicado o valor ou expressão deve permanecer %TODO:CONTINUAR AQUI
+Durante a avaliação, se a expressão ou uma subexpressão que possuir um temporizador associado chegar em um estado válido, o temporizador é inicializado. Se, chegando ao final, o temporizador retorna, e não houver mais temporizadores a se esperar, os atuadores são notificados. Se, durante uma avaliação, a expressão ou subexpressão se torna invalida, então os temporizadores associados são interrompidos.
 
 \subsection{Prototipagem e Simulação} \label{subsec-ipgap}
 %falar da GUI de composição de regras
