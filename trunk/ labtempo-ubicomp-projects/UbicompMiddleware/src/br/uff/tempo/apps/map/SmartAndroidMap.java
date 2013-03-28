@@ -93,6 +93,8 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 	private Space houseMap;
 	private RuleComposeBar mBar;
 	private InterfaceApplicationManager mAppManager;
+	protected boolean ruleComposerMode = false;
+	
 	// ===========================================================
 	// Methods
 	// ===========================================================
@@ -311,6 +313,7 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 			break;
 
 		case R.id.rule:
+			this.ruleComposerMode = true;
 			this.mBar.show();
 			break;
 
