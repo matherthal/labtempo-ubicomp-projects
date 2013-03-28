@@ -28,13 +28,17 @@ public class RuleComposeBar extends HUD {
 	
 	public RuleComposeBar(final Camera camera, final VertexBufferObjectManager vertexBuffObjMan) {
 		
+		this(camera, vertexBuffObjMan, camera.getWidth() * 0.25f, camera.getHeight());
+	}
+	
+	public RuleComposeBar(final Camera camera, final VertexBufferObjectManager vertexBuffObjMan, float width, float height) {
 		super();
 		
 		setCamera(camera);
 		
 		// Defining the side bar dimensions
-		this.width = camera.getWidth() * 0.25f; // 25% of the width
-		this.height = camera.getHeight();       // 100% of the height
+		this.width = width;
+		this.height = height;
 		
 		// Initializing the background
 		backgroundRect = new Rectangle(this.x, this.y, this.width, this.height, vertexBuffObjMan);
