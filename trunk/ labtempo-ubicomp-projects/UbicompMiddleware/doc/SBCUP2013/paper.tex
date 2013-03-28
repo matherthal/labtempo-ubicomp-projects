@@ -85,16 +85,14 @@ Muitos trabalhos têm por objetivo definir \mbox{\textit{frameworks}} voltados à 
 Estes trabalhos, no entanto, não têm como foco a integração das questões acima identificadas: \textit{suporte à personalização}, \textit{confiabilidade}, e \textit{complexidade das interfaces de usuário}, a fim de se tratar a \textit{baixa capacidade de gerenciamento} das soluções disponíveis atuais.
 
 %4 - (?Este trabalho... vamos propor um protótipo ...?, nosso trabalho tem q ganhar. ?Tem que caber o smartandroid inteiro? - ARs)
-Este trabalho foca no gerenciamento de AmbIs baseado em regras de contexto. A solução proposta engloba a representação da informação contextual, a distribuição desta informação no AmbI, e a interpretação do contexto baseada em regras. Adicionalmente é proposta uma interface para a criação das regras de contexto integrada à Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas (IPGAP)~\cite{barreto2013ipgap}, voltada à visualização e ao teste de aplicações ubíquas, mesclando componentes reais e virtuais.
+Este trabalho foca no gerenciamento de AmbIs baseado em regras de contexto. A solução proposta engloba a representação da informação contextual, a distribuição desta informação no AmbI, e a interpretação do contexto baseado em regras. Adicionalmente é proposta uma interface para a criação das regras de contexto integrada à Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas (IPGAP)~\cite{barreto2013ipgap}, voltada à visualização e ao teste de aplicações ubíquas, mesclando componentes reais e virtuais.
 %TODO: QUE TAL DAR DE CARA O EXEMPLO DO FOGÃO! Assim ajudaria a identificar os desafios!
 
 %5 - falar do smartandroid usado na avaliação(mostrar uma prova de conceito: 1 (exatamente) aplicação, seja a de saúde, ou outra)
-A proposta foi concretizados sobre uma plataforma denominada \textit{SmartAndroid}\footnote{www.tempo.uff.br/smartandroid}, desenvolvida no contexto do projeto. Esta implementação tem viabilizado avaliações 
-
-A implementação deste projeto tem viabilizado avaliações no sentido de provar conceitualmente que o \textit{framework} facilita o processo de construção de aplicações ubíquas. Uma das avaliações ocorreu durante o processo de transformação de uma aplicação com funcionamento estritamente local em uma aplicação ubíqua.  Em outra avaliação, uma aplicação foi construída para verificar a viabilidade de implantação do Modelo de Contexto, por meio da exploração dos mecanismos de comunicação utilizados no Modelo de Componentes Distribuídos.
+Os conceitos apresentados neste trabalho foram concretizados sobre uma plataforma denominada \textit{SmartAndroid}\footnote{www.tempo.uff.br/smartandroid}, desenvolvida no contexto do projeto. A implementação deste projeto tem viabilizado a construção de casos de uso que evidenciam a efetividade da abordagem para prover sensibilidade ao contexto a novas apliações.
 
 %6 - (resumo das seções, falar das próximas seções)
-% O artigo está assim organizado: a Seção~\ref{sec-concept} apresenta os conceitos básicos que orientam o desenvolvimento deste trabalho; a Seção~\ref{sec-} apresenta a arquitetura geral do \mbox{\textit{framework}} incluindo o Modelo de Componentes Distribuídos e o Modelo de Contexto; na Seção~\ref{subsec-ipgap} é apresentada a IPGAP; a Seção~\ref{sec-av} apresenta uma prova de conceito demonstrando a viabilidade da construção de aplicações ubíquas utilizando o \textit{framework} e uma aplicação que explora as principais características do AmbI; a Seção~\ref{sec-trab_rel} apresenta uma comparação com trabalhos relacionados; e a Seção~\ref{sec-conclusao} apresenta as conclusões e trabalhos futuros.
+O artigo está assim organizado: a Seção~\ref{sec-concept} apresenta os conceitos básicos que orientam o desenvolvimento deste trabalho, incluindo a apresentação do \textit{framework}, que este trabalho complementa; a Seção~\ref{sec-proposta} apresenta uma nova abordagem para a representação, distribuição e interpretação de informações de contexto; na Seção~\ref{sec-implement} é apresentado SmartAndroid, uma implementação dos conceitos propostos; a Seção~\ref{sec-trab_rel} apresenta uma comparação com trabalhos relacionados; e a Seção~\ref{sec-conclusao} apresenta as conclusões e trabalhos futuros.
 %%%%%%%%%%%%%%%%
 %  FRAMEWORK   %
 %%%%%%%%%%%%%%%%
@@ -124,11 +122,11 @@ Proposto inicialmente em \cite{cardoso2006} como uma entidade de coleta de infor
 % O conceito de AR foi definido para padronizar os componentes de interação do ambiente, e dessa forma resolver a questão da \textit{heterogeneidade dos dispositivos}. A sua estrutura geral, como ilustrada na Figura~\ref{fig:arquitetura}~(a), é composta por nome único (``tvFamília''), hierarquia de tipos (``$\backslash$Visual$\backslash$TV''), localização corrente (``Sala''), classe (classe TV) com variáveis e métodos, e uma lista de interessados em informações de contexto. A hierarquia de tipos, que é composta por uma sequência de classes, foi inspirada na ontologia descrita em~\cite{ranganathan2005olympus} para classificar entidades (como os ARs). Esta hierarquia foi organizada para possibilitar a consulta e instanciação de ARs a partir de propriedades associadas a uma classe específica. Na Seção~\ref{subsubsec-sgar} é apresentado o SGAR que se beneficia desta estrutura do AR.
 
 %Descrever figura
-A Figura~\ref{fig:arquitetura} representa uma arquitetura em camadas para o \textit{framework}. Na camada ``Recursos'' encontram-se os dispositivos, ou módulos de software, que efetivamente interagem com os usuários (e.g., cama, fogão, TV). Na camada do ``Middleware'' encontram-se os ARs (e.g., Agente da Cama, Agente do Fogao, Agente da TV), que representam os recursos e expõem suas interfaces de maneira uniforme para as aplicações ou outros ARs. Encontra-se também na camada intermediária o Suporte ao Gerenciamento de Recursos (Seção~\ref{subsubsec-sgar}), e os ARs interpretadores e atuadores (Seção~\ref{subsec-ic}), definidos no nível da aplicação, mas com o suporte da camada intermediária. Na camada ``Aplicações'' encontram-se aplicações desenvolvidas por terceiros (Seção~\ref{sec-casos}) que usufruem de maneira segura das abstrações providas pela camada intermediária.
+A Figura~\ref{fig:arquitetura} representa uma arquitetura em camadas para o \textit{framework}. Na camada ``Recursos'' encontram-se os dispositivos, ou módulos de software, que efetivamente interagem com os usuários (e.g., cama, fogão, TV). Na camada do ``Middleware'' encontram-se os ARs (e.g., Agente da Cama, Agente do Fogao, Agente da TV), que representam os recursos e expõem suas interfaces de maneira uniforme para as aplicações ou outros ARs. Encontra-se também na camada intermediária o Suporte ao Gerenciamento de Recursos (Seção~\ref{subsubsec-sgar}), e os ARs interpretadores e atuadores (Seção~\ref{subsec-ic}), definidos no nível da aplicação, mas com o suporte da camada intermediária. Na camada ``Aplicações'' encontram-se aplicações desenvolvidas por terceiros (Seção~\ref{sec-implement}) que usufruem de maneira segura das abstrações providas pela camada intermediária.
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[height= .4\textwidth]{imgs/ic/framework/arquiteturaGeral5.1.png}
+  \includegraphics[height= .4\textwidth]{imgs/framework/arquiteturaGeral5.1.png}
   \caption{Arquitetura do \textit{Framework}}
   \label{fig:arquitetura}
 \end{figure}
@@ -136,7 +134,7 @@ A Figura~\ref{fig:arquitetura} representa uma arquitetura em camadas para o \tex
 %TODO: ainda não sei onde falarei sobre os padroões de comunicação (não vai ter seção para isso, e possivelmente não dedicarei nem um parágrafo inteiro a isso). Talvez seja no AR, ou no SGAR ou ainda antes disso tudo...
 
 % \subsection{Suporte ao Gerenciamento de Recursos} \label{subsubsec-sgar}
-\subsection{Infraestrutura de Comunicação e Gerenciamento} \label{subsubsec-sgar}
+\subsection{Infraestrutura de Comunicação e Gerenciamento} \label{subsec-infra}
 %introduzir o SGAR e relacioná-lo com o framework -- apontá-lo na figura, ou talvez no paragrafo abaixo 
 O objetivo do \textit{framework} é fornecer suporte à programação, teste e execução de aplicações, permitindo lidar de forma consistente com sistemas de grande complexidade. O AR é a unidade básica de modularização do sistema, sendo gerenciados pelo Suporte ao Gerenciamento de Agentes de Recursos (SGAR) e beneficiados pelos mecanismos de comunicação apresentados na Seção~\ref{subsubsec-comm}. 
 
@@ -158,7 +156,7 @@ A Figura~\ref{fig:arquitetura} apresenta o SGAR localizado na camada intermediár
 %acho que a hierarquia de tipos vai vir junto da proposta, se eu for falar de modelo de contexto
 
 
-\section{Proposta}
+\section{Proposta} \label{sec-proposta}
 A proposta deste trabalho é oferecer uma solução para a representação da informação de contexto e para a sua distribuição através do modelo de contexto apresentado na Seção~\ref{subsec-model}. A partir do modelo de contexto é suportada a interpretação de contexto, apresentada na Seção~\ref{subsec-ic}.
 %possibilitando que sejam expostas tanto de maneira síncrona quanto assíncrona, como discutido na Seção \ref{subsec-model}. A partir destes recursos básicos
 %TODO: falar em 'modelo de contexto'
@@ -207,8 +205,7 @@ Considere a seguinte regra simples: se uma pessoa (que mora sozinha) ligou o fog
 
 %falar sobre a arquitetura do IC e da sua criação
 %Durante a criação do IC, este deve receber uma regra de contexto. Diferentes trabalhos (olhar o hydrogen e o cobra)
-O IC é encapsulado em um AR, assim estendendo suas funcionalidades. A arquitetura do IC, como mostrada na Figura~\ref{intp_arq}
-possui uma porta notificações e e atualiza os valores em \mbox{\textit{cache}}; uma estrutura de dados em árvore, que não só armazena as referências para as VCs e os valores atualizados, mas também a lógica da regra; um módulo que avalia a árvore a cada atualização de valores; e um módulo que gerencia os temporizadores, controlado pelo módulo de avaliação.
+O IC é encapsulado em um AR, assim estendendo suas funcionalidades. A arquitetura do IC, como mostrada na Figura~\ref{fig:inpt_arq} possui uma porta notificações e e atualiza os valores em \mbox{\textit{cache}}; uma estrutura de dados em árvore, que não só armazena as referências para as VCs e os valores atualizados, mas também a lógica da regra; um módulo que avalia a árvore a cada atualização de valores; e um módulo que gerencia os temporizadores, controlado pelo módulo de avaliação.
 %TODO: ? Colocar a figura (nova) interpretador_arquitetura v1 aqui????
 
 O IC é encapsulado em um AR, assim estendendo suas funcionalidades. Sua criação ocorre quando é definida uma expressão lógica, segundo um padrão próprio adotado, no objeto do IC recém instanciado e um \textit{parser} constrói uma estrutura lógica interna, como mostrado na Figura~\ref{fig:inpt_arq}. A estrutura lógica abrigada pelo IC, contém uma árvore que representa a expressão e contém não só a lógica entre as VCs das condições, como também valores atualizados das mesmas. Enquanto em funcionamento, o IC recebe atualizações das VCs, tratando-as em seguida para atualizar na estrutura lógica. O módulo de avaliação é notificado de mudanças da estrutura lógica e avalia se a expressão se tornou verdadeira ou falsa. Se a expressão alcançou um estado válido, considerando as possíveis temporizações, notifica os atuadores. 
@@ -220,19 +217,23 @@ O IC é encapsulado em um AR, assim estendendo suas funcionalidades. Sua criação 
   \label{fig:inpt_arq}
 \end{figure}
 
-\subsection{Temporização}
+\subsubsection{Temporização} \label{subsubsec-timer}
 A temporização em um IC é definida ao se associar temporizadores (``\textit{timers}'') à uma condição expressão da regra (ou subexpressões). Os temporizadores podem ser tanto relativos (e.g., fogão ligado e pessoa deitada na cama por 15min) quanto absolutos (e.g., ar-condicionado ligado às 18:00).
 
 Durante a avaliação, se a expressão ou uma subexpressão que possuir um temporizador associado chegar em um estado válido, o temporizador é inicializado. Se, chegando ao final, o temporizador retorna, e não houver mais temporizadores a se esperar, os atuadores são notificados. Se, durante uma avaliação, a expressão ou subexpressão se torna invalida, então os temporizadores associados são interrompidos.
 
-\subsection{Prototipagem e Simulação} \label{subsec-ipgap}
-%falar da GUI de composição de regras
-A interpretação de contexto visa não só a construção de regras de contexto por parte das aplicações, mas também a definição das preferências dos usuários finais no sistema. Para isto, está sendo desenvolvida uma GUI que possibilitará a usuários sem experiência técnica a criar, editar, desabilitar, etc., regras para o seu dia-a-dia. A GUI permitirá que, com poucos toques, um usuário possa selecionar ARs em um mapa da casa, escolher as VCs, comparar com valores ou outras VCs (operadores de comparação: $=, \neq, <, >, \leq$ e $\geq$), montar a expressão lógica (operadores lógicos: ``\textit{E}'', ``\textit{OU}'', ``\textit{NÃO}''), e definir um conjunto de ações a serem desempenhadas no sistema. A definição do conjunto de ações pode ser feita tanto ao se escolher ARs atuadores para entrar em ação (e.g., Atuador Lembrar Usuário), como selecionando ARs no mapa e suas OPs em seguida (e.g., ar-condicionado - mudar temperatura - 20º). Através do mecanismo de subscrição os ICs notificarão os ARs atuadores, que executarão tarefas no AmbI através de chamadas RPC.
-%FIXME: 'esta sendo desenvolvida' a GUI ou ja foi desenvolvida?
-
+\subsubsection{Prototipagem e Simulação} \label{subsubsec-ipgap}
 %IPGAP
 %11 - falar sobre trabalho do david e da importancia de testar apicaçoes ubíquas
-A prototipagem de aplicações pervasivas é fundamental para a depuração e teste em um AmbI. A questão de \textit{disponibilidade de recursos} é resolvida através da \mbox{IPGAP}~\cite{barreto2012}, um aparato ferramental que permite ao desenvolvedor de aplicações ter acesso a estes benefícios. Além disso, a IPGAP disponibiliza uma  Interface Gráfica de Usuário (\textit{\mbox{Graphic} \mbox{User} \mbox{Interface}} -- GUI) que proporciona ao usuário final controlar remotamente recursos do ambiente.
+%Falar do desafio da PERSONALIZACAO!
+% A prototipagem de aplicações pervasivas é fundamental para a depuração e teste em um AmbI. A questão de \textit{disponibilidade de recursos} é resolvida através da \mbox{IPGAP}~\cite{barreto2012}, um aparato ferramental que permite ao desenvolvedor de aplicações ter acesso a estes benefícios. Além disso, a IPGAP disponibiliza uma  Interface Gráfica de Usuário (\textit{\mbox{Graphic} \mbox{User} \mbox{Interface}} -- GUI) que proporciona ao usuário final controlar remotamente recursos do ambiente.
+
+%Falar dos simuladores e emuladores
+
+%falar da GUI de composição de regras
+% A interpretação de contexto visa não só a construção de regras de contexto por parte das aplicações, mas também a definição das preferências dos usuários finais no sistema. Para isto, está sendo desenvolvida uma GUI que possibilitará a usuários sem experiência técnica a criar, editar, desabilitar, etc., regras para o seu dia-a-dia. A GUI permitirá que, com poucos toques, um usuário possa selecionar ARs em um mapa da casa, escolher as VCs, comparar com valores ou outras VCs (operadores de comparação: $=, \neq, <, >, \leq$ e $\geq$), montar a expressão lógica (operadores lógicos: ``\textit{E}'', ``\textit{OU}'', ``\textit{NÃO}''), e definir um conjunto de ações a serem desempenhadas no sistema. A definição do conjunto de ações pode ser feita tanto ao se escolher ARs atuadores para entrar em ação (e.g., Atuador Lembrar Usuário), como selecionando ARs no mapa e suas OPs em seguida (e.g., ar-condicionado - mudar temperatura - 20º). Através do mecanismo de subscrição os ICs notificarão os ARs atuadores, que executarão tarefas no AmbI através de chamadas RPC.
+%FIXME: 'esta sendo desenvolvida' a GUI ou ja foi desenvolvida?
+
 
 \begin{figure}[ht]
   \centering
@@ -242,32 +243,33 @@ A prototipagem de aplicações pervasivas é fundamental para a depuração e teste e
 \end{figure}    
 
 %13 - demonstrar uso em nossa proposta com exemplo (vide figura)
-Na Figura~\ref{fig:ipgap} é ilustrado um \mbox{\textit{tablet}} executando o aplicativo da IPGAP e \mbox{\textit{smartphones}} emulando recursos como TV, lâmpada e termômetro. A IPGAP faz o mapeamento do ambiente e permite visualizar e instanciar cada um destes elementos e representá-los na sua GUI. Outros recursos, além dos representados pelos \mbox{\textit{smartphones}}, podem ser simulados virtualmente por componentes de software. Assim, o desenvolvedor de aplicações não fica limitado pela disponibilidade de recursos físicos podendo simular os elementos indisponíveis.
+% Na Figura~\ref{fig:ipgap} é ilustrado um \mbox{\textit{tablet}} executando o aplicativo da IPGAP e \mbox{\textit{smartphones}} emulando recursos como TV, lâmpada e termômetro. A IPGAP faz o mapeamento do ambiente e permite visualizar e instanciar cada um destes elementos e representá-los na sua GUI. Outros recursos, além dos representados pelos \mbox{\textit{smartphones}}, podem ser simulados virtualmente por componentes de software. Assim, o desenvolvedor de aplicações não fica limitado pela disponibilidade de recursos físicos podendo simular os elementos indisponíveis.
 
 %14 - (descrever sua utilização na proposta)
-O \mbox{\textit{framework}} proposto permite criar aplicações de forma liberal, nas dimensões e quantidades desejadas para um ambiente real. Através da IPGAP, as restrições e viabilidade do funcionamento das aplicações desenvolvidas podem ser verificadas em ambiente próximo ao real. Isto permite avaliar o desempenho das implementações antes da sua implantação efetiva.
-
-
-\subsection{Conflitos}
-
+% O \mbox{\textit{framework}} proposto permite criar aplicações de forma liberal, nas dimensões e quantidades desejadas para um ambiente real. Através da IPGAP, as restrições e viabilidade do funcionamento das aplicações desenvolvidas podem ser verificadas em ambiente próximo ao real. Isto permite avaliar o desempenho das implementações antes da sua implantação efetiva.
 
 %%%%%%%%%%%%%%%%%%%
 %  CASOS DE USO   %
 %%%%%%%%%%%%%%%%%%%
-\section{SmartAndroid} \label{sec-casos}
+\section{SmartAndroid} \label{sec-implement}
+O desenvolvimento deste projeto se consolidou na implementação da plataforma \mbox{\textit{SmartAndroid}}\footnote{Para mais informações visite www.tempo.uff.br/smartandroid}, desenvolvido a partir de conceitos propostos em três dissertações de Mestrado~\cite{Erthal2012, Barreto2012, Mareli2012}. O projeto contempla a implementação das APIs do \textit{framework}, assim como a interface de prototipagem IPGAP, sobre a plataforma Android. 
 
-Como suporte, a comunicação no \textit{framework} necessita de uma infraestrutura básica de rede. Por conveniência, foi adotado Wi-Fi, que garante o mínimo de segurança contra acesso de agentes externos à rede do ambiente e agrega benefícios de mecanismos de criptografia,  como a WPA.
+A fim de se evidenciar dois aspectos da criação de regras de contexto no \mbox{SmartAndroid}, serão apresentados a criação de uma regra de contexto em alto nível na IPGAP e o funcionamento das mesmas (Seção~\ref{subsec-regrafog}), e a criação de regras mais complicadas por parte de uma aplicação (Seção~\ref{subsec-smartlic}).
 
 %aplicação do fogao
-\subsection{Regra Fogão Esquecido} \label{subsec-smartlic}
+\subsection{Regra Fogão Esquecido} \label{subsec-regrafog}
 %numa primeira etapa mostrar como é feita a comunicação 
 %mostrar no mapa as variáveis do fogão, cama, tv, despertador
+A Regra do Fogão Esquecido foi criada pensando em idosos que moram sozinhos e por vezes esquecem o fogão ligado, sendo um motivo de preocupação a sua própria segurança e de seus vizinhos. A utilização de elementos do dia-a-dia nesta regra (i.e., fogão, cama, TV), assim como em outras criadas, reflete o compromisso da abordagem em efetivamente tornar os recursos integrados ao AmbI, possibilitando a construção de regras de contexto e aplicações em alto nível.
+
+Este caso de uso já foi abordado na Seção~\ref{sec-proposta} e é ilustrado nas figuras~\ref{fig:arquitetura}~e~\ref{fig:inpt_cute}. Para sua implementação não foram usados recursos reais, ou seja, os eletrodomésticos relevantes. Contudo, foram criados simuladores para representar os recursos e validar a construção de regras de contexto por usuários finais.
+%, que são instâncias de ARs dos respectivos tipos usados na regra (i.e., Fogão, Cama, TV e Despertador) e que possuem uma interface de simulação agregada com a IPGAP.
 
 %segunda aplicação
 %controle de iluminação residencial
 \subsection{Aplicação de Controle de Iluminação Residencial} \label{subsec-smartlic}
 %descrição da prova de conceito desta implementação
-Dentre os protótipos construídos como prova de conceito, foi criada a Aplicação de Controle de Iluminação Residencial (\textit{\mbox{Smart} \mbox{Light} \mbox{Controller}} -- \mbox{SmartLiC}) com o intuito de promover economia no consumo de energia elétrica reduzindo gastos com iluminação. Através de sensores de presença, identifica-se a presença/ausência de pessoas no cômodo, conforme a pessoa sai de um cômodo e passam-se T$_{max}$ unidades de tempo sem que ela volte, então a luz daquele cômodo é desligada. 
+Dentre os protótipos de construídos como prova de conceito, foi criada a Aplicação de Controle de Iluminação Residencial (\textit{\mbox{Smart} \mbox{Light} \mbox{Controller}} -- \mbox{SmartLiC}) com o intuito de promover economia no consumo de energia elétrica reduzindo gastos com iluminação. Através de sensores de presença, identifica-se a presença/ausência de pessoas no cômodo, conforme a pessoa sai de um cômodo e passam-se T$_{max}$ unidades de tempo sem que ela volte, então a luz daquele cômodo é desligada. 
 %Em adição, foi especificado também que, se é noite e uma pessoa entrou em um cômodo, então a lâmpada daquele cômodo deve ser ligada -- a possibilidade de bloquear esta função evita ocasionais desconfortos. 
 
 % O Código 2 ilustra a inicialização do \mbox{SmartLiC}. A aplicação utiliza o SLR para localizar os cômodos, e obtém a lâmpada e o sensor de presença de cada um utilizando a busca do SDR. Com a referência para os ARs (``lampAR'' e ``presAR'') e o valor T$_{max}$ para temporização, cria-se um IC (``\mbox{\textit{ContextInterpreter}}'') definindo a regra: \emph{lâmpada ligada E o cômodo desocupado POR T$_{max}$ unidades de tempo}. Em reação a esta regra, cria-se um atuador para desligar a lâmpada. A ligação entre um IC e o agente atuador é realizada através do mecanismo padrão de subscrição entre ARs.
@@ -343,7 +345,17 @@ on event received (ar_ref, vc, value): $\textit{//Quando chega uma notificação}$
 % RELACIONADOS %
 %%%%%%%%%%%%%%%%
 \section{Trabalhos Relacionados} \label{sec-trab_rel}
+%CASS
+Em \cite{park2007cass} é proposto um sistema para simulação de ciência ao contexto para \textit{Smart Homes}. Este trabalho se foca na simulação de regras de contexto a fim de se descobrir possíveis conflitos, mas não provê suporte para a implantação das regras em ambiente de execução.
 
+%DIOS++
+Em \cite{liu2003dios++} é proposto um framework que propõe abstrações para se lidar com os sensores e atuadores; uma camada de comunicação para gerenciar e controlar os sensores e atuadores distribuídos; e um motor de regras distribuído, que possibilita o gerenciamento de regras em tempo de execução. No entanto, não é tratada a questão da temporização das regras de contexto, nem a criação de regras em nível de usuário final.
+
+%RuleModel Wang
+
+
+%Augusto
+%Mobicon
 
 %%%%%%%%%%%%%
 % CONCLUSÃO %
