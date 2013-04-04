@@ -46,19 +46,33 @@ showstringspaces=false
 
 \maketitle
 
+%_________________________________________________________________________________________%
+
 %%%%%%%%%%%%%%
 %  RESUMOS   %
 %%%%%%%%%%%%%%
-\begin{abstract}
-\end{abstract}
-
 
 \begin{resumo} 
 %Muito mal escrito
-% Aplicações cientes de contexto vêm adquirindo cada vez mais visibilidade no atual cenário de desenvolvimento de aplicações. São tratadas, neste artigo, questões relacionadas à representação das informações de contexto, à sua distribuição em ambientes inteligentes e à interpretação da informação de contexto, identificadas como problemas de primeira necessidade. A criação de regras de contexto possibilita que o ambiente interaja ativamente com pessoas ao prover serviços baseados em suas necessidades ou desejos. As regras são ligadas aos agentes provedores de contexto através de um mecanismo de subscrição, e reagem através do mesmo mecanismo, notificando os atuadores. Na implementação da proposta será também incluída uma interface gráfica que permite a criação de regras de contexto em alto nível, possibilitando que usuário finais definam suas preferências no ambiente de maneira simples.
-[ REESCREVER ESTA SEÇÃO ]
+% Aplicações sensíveis ao contexto vêm adquirindo cada vez mais visibilidade no atual cenário de desenvolvimento de aplicações. São tratadas, neste artigo, questões relacionadas à representação das informações de contexto, à sua distribuição em ambientes inteligentes e à interpretação da informação de contexto, identificadas como problemas de primeira necessidade. A criação de regras de contexto possibilita que o ambiente interaja ativamente com pessoas ao prover serviços baseados em suas necessidades ou desejos. As regras são ligadas aos agentes provedores de contexto através de um mecanismo de subscrição, e reagem através do mesmo mecanismo, notificando os atuadores. Na implementação da proposta será também incluída uma interface gráfica que permite a criação de regras de contexto em alto nível, possibilitando que usuários finais definam suas preferências no ambiente de maneira simples.
+
+A sensibilidade ao contexto vem adquirindo cada vez mais visibilidade no atual cenário de desenvolvimento de aplicações. Este trabalho propõe nesta área uma nova solução para a representação, distribuição e interpretação de informações de contexto, possibilitando a construção de aplicações para ambientes inteligentes. Através da infraestrutura descrita neste artigo, os recursos do ambiente são expostos em um nível mais alto, tornando a criação de regras de contexto mais simples e dinâmica para desenvolvedores; e através de uma interface gráfica, usuários finais podem facilmente criar e personalizar regras no ambiente.
 \end{resumo}
 
+%_________________________________________________________________________________________%
+
+\begin{abstract}
+% [ OPÇÃO 1]
+% Recently, context awareness is reaching increasingly visibility in the current applications development scenario. To address this problem, this work proposes a new solution for representing, distributing and interpreting context informations, thus allowing the construction of applications for intelligent ambients. Through the infrastructure described in this paper, the ambient resources are exposed in a higher level, leading to a simpler and more dynamic creation of context rules; and through a graphical interface, end users are able to easily create and customize rules in the ambient.
+
+% [OPÇÃO 2]
+Recently, context awareness is reaching increasingly visibility in the current applications development scenario. To address this problem, this work proposes a new solution for representing, distributing and interpreting context informations, thus allowing the construction of applications for intelligent ambients. The infrastructure described in this paper exposes the ambient in a higher level, leading to a simpler and more dynamic creation of context rules; and by means of a graphical interface, end users are able to easily create and customize rules in the ambient.
+
+%FIXME WORK OR PAPER OR ARTICLE?
+\end{abstract}
+
+
+%_________________________________________________________________________________________%
 
 %%%%%%%%%%%%%%
 % INTRODUÇÃO %
@@ -92,11 +106,14 @@ Os conceitos apresentados neste trabalho foram concretizados sobre uma plataform
 O artigo está assim organizado: a Seção~\ref{sec-concept} apresenta os conceitos de suporte que orientam o desenvolvimento deste trabalho, incluindo a apresentação do \textit{framework}, que este trabalho complementa; a Seção~\ref{sec-proposta} apresenta uma nova abordagem para a representação, distribuição e interpretação de informações de contexto; na Seção~\ref{sec-implement} é apresentado o SmartAndroid, uma implementação dos conceitos propostos; a Seção~\ref{sec-trab_rel} apresenta uma comparação com trabalhos relacionados; e a Seção~\ref{sec-conclusao} apresenta as conclusões e trabalhos futuros.
 
 
+%_________________________________________________________________________________________%
+
 %%%%%%%%%%%%%%%%
 %  FRAMEWORK   %
 %%%%%%%%%%%%%%%%
 \section{Conceitos de Suporte} \label{sec-concept}
 % [ ABSTRAÇÕES DO FRAMEWORK ]
+%FIXME: 1a frase igual na intro. Tá feio
 Este trabalho complementa o \textit{framework} proposto em \cite{mareli2013}, que provê facilidades e padrões de programação tipicamente requeridos em aplicações sensíveis ao contexto focadas em AmbI, definidas na Seção~\ref{subsec-context}. Dentre as facilidades está a capacidade de abstrair detalhes das partes da aplicação que envolve a comunicação, a aquisição de contexto e a localização de recursos. Como abstração aos recursos são utilizados componentes denominados Agentes de Recursos (AR), definidos na Seção~\ref{subsubsec-ar}. O gerenciamento dos ARs -- incluindo o registro dos mesmos, a consulta, a localização e o gerenciamento do ciclo de vida -- é descrito na Seção~\ref{subsubsec-sgar}.
 
 \subsection{Sensibilidade ao Contexto} \label{subsec-context}
@@ -132,7 +149,7 @@ O objetivo do \textit{framework} é fornecer suporte à programação, teste e execu
 \subsubsection{Comunicação} \label{subsubsec-comm}
 %TODO: REMOVER ESTA SEÇÃO PARA ECONOMIA
 % [ RPC E PUBSUB ]
-De modo a atender requisitos tópicos de ambientes distribuídos, o \textit{framework} dispõe de dois mecanismos de comunicação: a invocação remota de procedimentos (\textit{Remote Procedure Call} -- RPC), para possibilitar uma comunicação síncrona, e a comunicação por eventos seguindo o paradigma \textit{publish-subscribe} \cite{eugster2003many}, para comunicação assíncrona. %No RPC, um \textit{proxy} contém a interface de chamadas de procedimentos públicos da instancia remota desejada. A chamada e o retorno do procedimento são enviados através de mensagens serializadas (no \textit{SmartAndroid} através da notação JSON). Este mecanismo pode ser usado para enviar comandos aos dispositivos (e.g, fechar uma  torneira, alterar remotamente o \textit{setup} de um ar-condicionado).
+De modo a atender requisitos tópicos de ambientes distribuídos, o \textit{framework} dispõe de dois mecanismos de comunicação: a invocação remota de procedimentos (\textit{Remote Procedure Call} -- RPC), para possibilitar uma comunicação síncrona, e a comunicação por eventos seguindo o paradigma \textit{publish-subscribe} \cite{eugster2003many}, para comunicação assíncrona. 
 
 % [ SEGURANÇA ]
 Como suporte, a comunicação no \textit{framework} requisita uma infraestrutura básica de rede. Por conveniência, foi adotado Wi-Fi, que garante o mínimo de segurança contra acesso de agentes externos à rede do ambiente e agrega benefícios de mecanismos de criptografia, como a WPA.
@@ -143,35 +160,21 @@ Como suporte, a comunicação no \textit{framework} requisita uma infraestrutura b
 O SGAR é o serviço responsável por gerenciar o conjunto de ARs no AmbI. O controle de registro e descoberta de ARs segue a ideia geral sobre serviços que manipulam recursos apresentada em \cite{cardoso2006}. 
 
 %[ DESCREVER OS SERVIÇOS DO SGAR ]
-A Figura~\ref{fig:arquitetura} apresenta o SGAR localizado na camada intermediária e, internamente, apresenta o Banco de Dados (BD), que corresponde ao Repositório de Recursos. Três componentes, ou serviços básicos, compõem o SGAR: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). O SRR é utilizado para registrar ou remover ARs no ambiente, o SDR localiza recursos para permitir o acesso remoto e o SLR os localizam através de posições físicas e  indica os recursos mais próximos~\cite{mareli2013}. %O uso das operações ``\mbox{\textit{publish}}'' e ``\mbox{\textit{subscribe}}'' é explorado pelos Interpretadores de Contexto apresentados na Seção~\ref{subsubsec-ic}.
-%TODO: escrever melhor (e talvez mais) sobre os serviços -- olhar tb o q reclamaram nas revisões
+A Figura~\ref{fig:arquitetura} apresenta o SGAR localizado na camada intermediária e, internamente, apresenta o Banco de Dados (BD), que corresponde ao Repositório de Recursos. Três componentes, ou serviços básicos, compõem o SGAR: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). O SRR é utilizado para registrar ou remover ARs no ambiente, o SDR localiza recursos para permitir o acesso remoto e o SLR os localizam através de posições físicas e  indica os recursos mais próximos~\cite{mareli2013}. 
 
-%%%%%%%%%%%%
-% PROPOSTA %
-%%%%%%%%%%%%
+%%%%%%%%%%%%%%
+%  PROPOSTA  %
+%%%%%%%%%%%%%%
 \section{Proposta} \label{sec-proposta}
 % [ EXPICAR O QUE É A PROPOSTA E APONTAR PRAS SUBSEÇÕES EM SEQUENCIA ]
 A proposta deste trabalho é oferecer uma solução para a representação da informação de contexto e para a sua distribuição através do modelo de contexto apresentado na Seção~\ref{subsec-cv}. A partir do modelo de contexto é suportada a interpretação de contexto, apresentada na Seção~\ref{subsec-ic}.
-%possibilitando que sejam expostas tanto de maneira síncrona quanto assíncrona, como discutido na Seção \ref{subsec-model}. A partir destes recursos básicos
-%TODO: falar em 'modelo de contexto'
-
-% O gerenciamento de AmbIs pode ocorrer em dois níveis: controle por usuários e baseado em regras. O primeiro diz respeito ao usuário explicitamente efetuar uma ação (e.g., desligar todas as lâmpadas da casa). O segundo diz respeito ao ambiente executar ações baseado na ocorrência de eventos, segundo uma regra de contexto (e.g., uma lâmpada ser apagada se ninguém frequenta o cômodo durante algum tempo). 
-
-% \subsection{Modelo de Contexto} \label{subsec-model}
-%Neste trabalho, o AR, além de manter informações de contexto, age como um componente que encapsula o código do dispositivo a ele associado, incluindo os aspectos de interação com os componentes da aplicação. Para a questão da \textit{variedade de informações de contexto e serviços}, é proposto um Modelo de Contexto que define o armazenamento e a distribuição de tais informações, e provê o suporte para a criação de regras de contexto.
-
-% A fim de se tratar a representação da informação de contexto, foram definidas as Variáveis de Contexto e as Operações apresentado na Seção~\ref{subsec:cv}.
-% , como interfaces de entrada e saída dos ARS~\ref{subsubsec:cv}. 
-% A abordagem adotada é flexível de tal maneira que, caso seja conveniente, pode ser criada uma unidade centralizadora para gerenciar as informações de contexto, segundo uma arquitetura de memória compartilhada do tipo \mbox{\textit{blackboard}} (ou quadro-negro)~\cite{winograd2001architectures}.
-
-% O Modelo de Contexto foi elaborado com o objetivo de tratar a questão da \textit{variedade de informações de contexto e serviços} presentes no AmbI. Neste modelo, o \mbox{\textit{framework}} utiliza uma abordagem flexível, onde o mecanismo de comunicação por eventos (visto na Seção~\ref{subsubsec-comm}) possibilita que ARs divulguem mudanças de contexto. A informação pode estar em qualquer lugar do AmbI, contudo, é provido um nível de abstração tal que a subscrição ou consulta a qualquer informação de contexto é feita de maneira padronizada. O processo de aquisição do contexto envolve a descoberta do AR de interesse através dos serviços da SGAR, com a posterior subscrição do mesmo. A abordagem adotada é flexível de tal maneira que, caso seja conveniente, pode ser criada uma unidade centralizadora para gerenciar as informações de contexto, segundo uma arquitetura de memória compartilhada do tipo \mbox{\textit{blackboard}} (ou quadro-negro)~\cite{winograd2001architectures}.
 
 \subsection{Variáveis de Contexto e Operações} \label{subsec-cv}
 %[ EXPLICAR VC ]
 As informações de contexto respectivas de cada AR são expostas através de Variáveis de Contexto (VC). Por exemplo, um agente para uma \textit{smart-tv} pode prover VCs para: qual a programação que está sendo exibida, qual a programação agendada, se a própria televisão está ligada, se está gravando alguma programação, e outras. Em outros termos, tudo o que diz respeito ao estado da televisão e que pode efetivamente ser coletado.
 
 %[ EXPLICAR OPERAÇÕES ]
-Uma Operação (OP) tem o papel de expor uma funcionalidade (ou serviço) do AR, possibilitando às aplicações interagirem ativamente no ambiente. Por exemplo, uma televisão integrada ao sistema pode oferecer OPs para desligá-la, mudar de canal, gravar alguma programação, mostrar uma mensagem na tela, perguntar algo ao usuário, gerar um alerta, pausar a programação, etc.  %Através de OPs, inclusive, atuadores podem desempenhar ações em recursos distribuídos no ambiente em reação à mudanças no contexto notificadas pelos ICs.
+Uma Operação (OP) tem o papel de expor uma funcionalidade (ou serviço) do AR, possibilitando às aplicações interagirem ativamente no ambiente. Por exemplo, uma televisão integrada ao sistema pode oferecer OPs para desligá-la, mudar de canal, gravar alguma programação, mostrar uma mensagem na tela, perguntar algo ao usuário, gerar um alerta, pausar a programação, etc.
 
 %[ FALAR DE VC E OP COMO INTERFACES E FALAR DA FIGURA ]
 Tanto VCs como OPs definem interfaces, ou portas do AR. Diferentes aplicações, instaladas no mesmo ambiente podem usar estas interfaces para interagir com o próprio ambiente. A Figura~\ref{fig:inpt_cute} representa a subscrição às VCs ``Em uso'' do AR da cama e ``Ligado'' do AR do fogão. Na mesma figura pode-se observar a atuação no ambiente ao se utilizar as OPs ``Mostrar mensagem'' da televisão e ``Disparar'' do despertador. O Interpretador e o Atuador também representados na figura serão descritos na Seção~\ref{subsec-ic}.
@@ -182,6 +185,9 @@ Tanto VCs como OPs definem interfaces, ou portas do AR. Diferentes aplicações, i
   \caption{Interpretação de Contexto}
   \label{fig:inpt_cute}
 \end{figure}
+
+
+%_________________________________________________________________________________________%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %  INTERPRETAÇÃO DE CONTEXTO   %
@@ -194,12 +200,7 @@ A interpretação de contexto tem a função de agregar informações de contexto prov
 Em nossa proposta, como opção básica, a interpretação do contexto é desempenhada por entidades chamadas \mbox{Interpretadores} de Contexto (IC), que avaliam essas informações e notificam agentes atuadores interessados. Atuadores são quaisquer ARs que se subscrevem em ICs para desempenhar ações dado a ocorrência do evento de regra validada. As ações podem ser tanto no nível de software (e.g., guardar no histórico, enviar para um servidor remoto) quanto no nível do ambiente, ao se chamar OPs de outros ARs (e.g., mostrar uma mensagem na televisão, disparar o despertador, mudar a temperatura do ar-condicionado). 
 
 % [ ELOGIO À LIBERDADE DE LIGAR MAIS ATUADORES ]
-As ligações entre ICs e Atuadores podem ser feitas e desfeitas dinamicamente, uma vez que são baseadas no mecanismo de subscrição de ARs. Um usuário, que esteja personalizando o sistema, ao criar novas regras de contexto, tem a possibilidade de ligar ao IC não só um atuador que esteja criando, mas outros que já existem. Um exemplo de uso será visto na Seção~\ref{sec-implement}.%Considere o seguinte exemplo: \begin{itemize}
-% \item Um paciente em estado pós-operatório está recebendo cuidados em domicílio
-% \item O enfermeiro então cria uma regra para monitorar a pressão arterial do paciente e lembrá-lo com uma mensagem na TV de tomar um medicamento específico
-% \item Futuramente é instalada uma aplicação no AmbI que possui um atuador para enviar uma mensagem para uma central médica~\cite{carvalho2010sciads}
-% \item O enfermeiro então liga este atuador ao IC anteriormente criado, fazendo com que não só o paciente seja lembrado de tomar o medicamento, mas também a comunidade médica seja avisada do aumento na pressão arterial                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      \end{itemize}
-% um paciente em estado pós-operatório está recebendo cuidados em domicílio; o enfermeiro então cria uma regra para monitorar a pressão arterial do paciente e lembrá-lo com uma mensagem na TV de tomar um medicamento específico; futuramente é instalada uma aplicação no AmbI que possui um atuador para enviar uma mensagem para uma central médica~\cite{carvalho2010sciads}; o enfermeiro então liga este atuador ao IC anteriormente criado, fazendo com que não só o paciente seja lembrado de tomar o medicamento, mas também a comunidade médica seja avisada do aumento na pressão arterial.
+As ligações entre ICs e Atuadores podem ser feitas e desfeitas dinamicamente, uma vez que são baseadas no mecanismo de subscrição de ARs. Um usuário, que esteja personalizando o sistema, ao criar novas regras de contexto, tem a possibilidade de ligar ao IC não só um atuador que esteja criando, mas outros que já existem. Um exemplo de uso será visto na Seção~\ref{sec-implement}.
 
 % [ SEPARAÇÃO DE INTERESSES ATRAVÉS DO IC ] 
 A interpretação de contexto possibilita que diversas informações de contexto, relacionadas através de uma expressão lógica, sejam manipuladas em uma entidade em separado, provendo separação de interesses. O interessado poderá referenciar apenas uma entidade, ao invés de várias, a fim de se obter a informação interpretada. O termo ``regra de contexto'' também usado neste texto, se refere ao relacionamento IC-Atuador(es), que implementa propriamente uma regra para o AmbI.
@@ -208,11 +209,11 @@ A interpretação de contexto possibilita que diversas informações de contexto, re
 Considere a seguinte regra simples: se uma pessoa (que mora sozinha) ligou o fogão, se deitou na cama, e passaram-se 15 minutos, então dispare o alarme do despertador e mostre na televisão a mensagem ``O fogão foi esquecido ligado!''. Este exemplo poderia ser implementando no sistema como representado na Figura~\ref{fig:inpt_cute}. O IC recebe notificações da TV e do fogão com valores atualizados das VCs ``ligado'' e ``em uso'', \mbox{respectivamente}, e resolve internamente a temporização monitorada destas VCs. Uma vez que o IC tenha avaliado a regra como verdadeira durante o tempo de 15 minutos (previamente declarado), ele notifica o atuador ``Lembrar usuário''. O atuador, por sua vez, invoca as OPs ``Mostrar mensagem'' da TV e ``Disparar'' do despertador.
 
 % [ ESTRUTURA INTERNA DO IC E ENCAPSULAMENTO POR AR ]
-O IC é encapsulado em um AR, assim estendendo suas funcionalidades. Sua criação ocorre quando é definida uma expressão lógica -- segundo um padrão próprio adotado em arquivos tipo JSON--, no objeto do IC recém instanciado e um \textit{parser} constrói uma estrutura lógica interna, como mostrado na Figura~\ref{fig:inpt_arq}. A estrutura lógica abrigada pelo IC, contém uma estrutura em árvore que representa a expressão e contém não só a lógica entre as VCs das condições, como também valores atualizados das mesmas. Enquanto em funcionamento, o IC recebe atualizações das VCs, tratando-as em seguida para atualizar sua estrutura lógica. O módulo de avaliação é notificado de mudanças da estrutura lógica e avalia se a expressão se tornou verdadeira ou falsa. Se a expressão alcançou um estado verdadeiro, ou válido, considerando as possíveis temporizações, notifica os atuadores. 
+O IC é encapsulado em um AR, assim estendendo suas funcionalidades. Sua criação ocorre quando é definida uma expressão lógica -- segundo um padrão próprio adotado em arquivos tipo JSON --, no objeto do IC recém instanciado e um \textit{parser} constrói uma estrutura lógica interna, como mostrado na Figura~\ref{fig:inpt_arq}. A estrutura lógica abrigada pelo IC, contém uma estrutura em árvore que representa a expressão e contém não só a lógica entre as VCs das condições, como também valores atualizados das mesmas. Enquanto em funcionamento, o IC recebe atualizações das VCs, tratando-as em seguida para atualizar sua estrutura lógica. O módulo de avaliação é notificado de mudanças da estrutura lógica e avalia se a expressão se tornou verdadeira ou falsa. Se a expressão alcançou um estado verdadeiro, ou válido, considerando as possíveis temporizações, notifica os atuadores. 
 
 \begin{figure}[ht]
   \centering
-  \includegraphics[height=.4\textwidth]{imgs/ic/interpretador_arquiteturav4.png}
+  \includegraphics[height=.4\textwidth]{imgs/ic/interpretador_arquiteturav4_bigger.png}
   \caption{Estrutura do Interpretador de Contexto}
   \label{fig:inpt_arq}
 \end{figure}
@@ -229,7 +230,7 @@ Durante a avaliação, se a expressão ou uma subexpressão que possuir um temporiza
 
 \subsubsection{Prototipagem e Simulação} \label{subsubsec-ipgap}
 %[ IPGAP MOTIVAÇÃO ]
-Uma das causas da escassez de aplicações ubíquas no mercado, em comparação ao avanço no desenvolvimento de aplicações \textit{mobile}, é o alto custo de desenvolvimento demandado por elas, devido a questões como a falta de ferramentas adequadas para a criação e integração dessas aplicações, e a dificuldade para depurá-las~\cite{weis2007rapid}. Para resolver esses problemas, é proposto em~\cite{barreto2013ipgap} uma ferramenta de suporte à construção de protótipos de aplicações pervasivas chamada IPGAP (Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas), que fornece ao desenvolvedor um ambiente de testes para suas aplicações de maneira rápida e com baixo custo. 
+Uma das causas da escassez de aplicações ubíquas no mercado, em comparação ao avanço no desenvolvimento de aplicações \textit{mobile}, é o alto custo de desenvolvimento demandado por elas devido a questões como a falta de ferramentas adequadas para a criação e integração dessas aplicações, e a dificuldade para depurá-las~\cite{weis2007rapid}. Para resolver esses problemas, é proposto em~\cite{barreto2013ipgap} uma ferramenta de suporte à construção de protótipos de aplicações pervasivas chamada IPGAP (Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas), que fornece ao desenvolvedor um ambiente de testes para suas aplicações de maneira rápida e com baixo custo. 
 
 %[ FALAR DA AJUDA DA IPGAP PARA TESTAR REGRAS EM FUNCIONAMENTO ANTES DA IMPLANTAÇÃO -- INCLUINDO A SIMULAÇÃO E EMULAÇÃO ]
 A Figura~\ref{fig:ipgap}~(a) ilustra a IPGAP executando em um \mbox{\textit{tablet}} e \mbox{\textit{smartphones}} emulando recursos como TV, lâmpada e termômetro. O ambiente é mapeamento pela IPGAP, possibilitando a visualização e controle dos recursos representados. Outros recursos, além dos da figura, podem ser simulados virtualmente por componentes de software, de tal maneira que, a interface pode exibir conjuntamente recursos reais e simulados, criando assim um ambiente híbrido. A Figura~\ref{fig:ipgap}~(b) mostra uma interface gráfica para \textit{smartphone} desenvolvida para reiniciar ou interromper a execução de uma regra. Este ferramental facilita o teste de regras de contexto pois não exige a aquisição de dispositivos reais, como sensores e atuadores. Isto é útil em fases iniciais para os desenvolvedores e facilita a personalização por parte dos usuários finais no dia-a-dia.
@@ -242,7 +243,6 @@ A Figura~\ref{fig:ipgap}~(a) ilustra a IPGAP executando em um \mbox{\textit{tabl
 \end{figure}
 
 %[ FALAR DA GUI DE CRIAÇÃO DE REGRAS ]
-% A interpretação de contexto visa não só a construção de regras de contexto por parte das aplicações, mas também a definição das preferências dos usuários finais no sistema. 
 Atualmente está em andamento o desenvolvimento de uma interface gráfica integrada com o mapa da IPGAP para possibilitar a usuários sem experiência técnica a criar, editar, desabilitar, etc., regras para o seu dia-a-dia. A interface permitirá que, com poucos toques, um usuário possa selecionar ARs em um mapa da casa, escolher as VCs (como mostrado na Figura~\ref{fig:ipgap}~(a)), comparar com valores ou outras VCs (operadores de comparação: $=, \neq, <, >, \leq$ e $\geq$), montar a expressão lógica (operadores lógicos: ``\textit{E}'', ``\textit{OU}'', ``\textit{NÃO}''), e definir um conjunto de ações a serem desempenhadas no sistema em uma segunda etapa. A definição do conjunto de ações pode ser feita tanto ao se escolher ARs atuadores para entrar em ação (e.g., Atuador Lembrar Usuário), como selecionando ARs no mapa e suas OPs em seguida (e.g., ar-condicionado - mudar temperatura - 20º). Através do mecanismo de subscrição os ICs notificarão os ARs atuadores, que executarão tarefas no AmbI através de chamadas RPC.
 
 \subsubsection{Conflitos}
@@ -267,12 +267,9 @@ A solução para este tipo de conflito, envolve a comparação das expressões de um 
 % [ SOBRE O SMARTANDROID ]
 O desenvolvimento deste projeto se consolidou na implementação da plataforma \mbox{\textit{SmartAndroid}}\footnote{Para mais informações visite www.tempo.uff.br/smartandroid}, desenvolvido a partir de conceitos propostos em três dissertações de mestrado, em andamento, de autores deste artigo. O projeto contempla a implementação das APIs do \textit{framework}, assim como a interface de prototipagem IPGAP, sobre a plataforma Android. 
 
-% A fim de se evidenciar dois aspectos da criação de regras de contexto no \mbox{SmartAndroid}, serão apresentados a criação de uma regra de contexto em alto nível na IPGAP e o funcionamento das mesmas (Seção~\ref{subsec-regrafog}), e a criação de regras mais complicadas por parte de uma aplicação (Seção~\ref{subsec-smartlic}).
-
 % [ OUTRAS APLICAÇÕES ]
 Algumas aplicações foram costruídas para explorar o potencial do \textit{framework} para sensibilidade ao contexto. Dentre estas aplicações podemos citar: o SmartLiC (uma aplicação de controle de iluminação residencial) que faz com que, conforme usuários deixam um cômodo, as luzes do mesmo sejam apagadas; o MediaFollowMe, que faz com que um fluxo multimídia (e.g., vídeo, audio, imagens) seja repassado para o dispositivo (capaz de apresentar o fluxo) mais próximo do usuário, como se a mídia o seguisse; foram também construídas aplicações do tipo controle remoto, onde recursos são controlados remotamente por outro recurso (no caso, um \textit{smartphone}); dentre outras aplicações.
 
-%aplicação do fogao
 \subsection{Exemplo de Aplicação} \label{subsec-regrafog}
 % [ MOTIVAÇÃO DO EXEMPLO ]
 Como já abordado em seções anteriores, a Regra do Fogão Esquecido foi criada pensando em idosos que moram sozinhos e por vezes esquecem o fogão ligado, sendo um motivo de preocupação a sua própria segurança e de seus vizinhos. A utilização de elementos do dia-a-dia nesta regra (i.e., fogão, cama, TV), assim como em outras criadas, reflete o compromisso da abordagem em efetivamente tornar os recursos integrados ao AmbI, possibilitando a construção de regras de contexto e aplicações em alto nível.
@@ -292,6 +289,8 @@ Para tolerar a presença de mais pessoas na casa, sem confundir quem está deitada
 %[ DECLARAÇÃO DE ATUADORES ]
 A ligação com os atuadores foi feita de duas formas nos exemplos: declarando um atuador no arquivo da expressão da regra, definindo ação a ação (e.g., desligar fogão, mostrar determinada mensagem na TV do quarto); e ligando um atuador existente a um IC também já instanciado (e.g., além do atuador que desliga o fogão e mostra mensagem na TV, ligar outro que envia um SMS para alguém da família).
 
+%_________________________________________________________________________________________%
+
 %%%%%%%%%%%%%%%%
 % RELACIONADOS %
 %%%%%%%%%%%%%%%%
@@ -302,17 +301,18 @@ Em \cite{park2007cass} é proposto um sistema para simulação de ciência ao contex
 %[ DIOS++ ]
 Em \cite{liu2003dios++} é proposto um framework que propõe abstrações para se lidar com os sensores e atuadores; uma camada de comunicação para gerenciar e controlar os sensores e atuadores distribuídos; e um motor de regras distribuído, que possibilita o gerenciamento de regras em tempo de execução. No entanto, não é tratada a questão da temporização das regras de contexto, nem a criação de regras em nível de usuário final.
 
-%RuleModel Wang
-%Augusto
-%chen
-
 [ FALAR DO DeyAbowd-ContextToolkit ]
 
 % olhar o hydrogen e o cobra)
 %JESS ontologia OSGi
+%RuleModel Wang
+%Augusto
+%chen
 
 % [ TRABALHOS COM MOTORES DE REGRAS ]
 Alguns trabalhos utilizam um motor de regras para avaliar as regras de contexto~\cite{wang2005towards}~\cite{chen2010context}~\cite{biegel2004framework}. Embora o \textit{framework} proposto não imponha a utilização de um motor de regras, e o SmartAndroid não faça uso de um, este poderia ser facilmente agregado e se aproveitar da infraestrutura de acesso aos recursos.
+
+%_________________________________________________________________________________________%
 
 %%%%%%%%%%%%%
 % CONCLUSÃO %
