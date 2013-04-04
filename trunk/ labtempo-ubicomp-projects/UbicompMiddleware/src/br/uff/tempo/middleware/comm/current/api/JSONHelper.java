@@ -6,15 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-import org.json.JSONException;
-
 import android.util.Log;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 
 import com.google.gson.Gson;
 
 public class JSONHelper {
 
-	public static String createMethodCall(String method, List<Tuple<String, Object>> params) throws JSONException {
+	public static String createMethodCall(String method, List<Tuple<String, Object>> params) {
 		List<String> jsonparams = new ArrayList<String>();
 		List<String> jsontypes = new ArrayList<String>();
 
@@ -30,7 +29,7 @@ public class JSONHelper {
 				jsontypes.add(tp.key);
 			}
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			throw new SmartAndroidRuntimeException("Exception in JSONHelper#createMethodCall", e);
 		}
 		String id = UUID.randomUUID().toString();
 		JSONRPC jsonRpc = new JSONRPC(id, method, jsonparams, jsontypes);
@@ -38,7 +37,7 @@ public class JSONHelper {
 		return (new Gson()).toJson(jsonRpc, JSONRPC.class);
 	}
 
-	public static Object getMessage(String jsonRPCString, Type returnType) throws JSONException {
+	public static Object getMessage(String jsonRPCString, Type returnType) {
 		if (void.class.equals(returnType)) {
 			return null;
 		}
@@ -119,8 +118,7 @@ public class JSONHelper {
 					Class type = Class.forName(tuple.key);
 					args[i] = new Gson().fromJson(tuple.value.toString(), type);
 				} catch (ClassNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					throw new SmartAndroidRuntimeException("Exception in JSONHelper#createMethodCall", e);
 				}
 			} else {
 				args[i] = null;
