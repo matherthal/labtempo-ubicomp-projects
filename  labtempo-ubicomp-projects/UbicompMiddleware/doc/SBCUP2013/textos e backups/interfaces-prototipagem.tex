@@ -1,0 +1,310 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+
+\usepackage{graphicx,url}
+
+\usepackage[brazil]{babel}
+\usepackage[latin1]{inputenc}
+
+% Use this package to format text
+% with a true-type font (conslas like)
+%\usepackage{inconsolata}
+\usepackage{courier}
+
+\usepackage{enumerate}
+
+\usepackage{xcolor}
+
+% Use this package to insert a subfigura
+% e.g. Figura 1(a), Figura 1(b)...
+\usepackage{subfigure}
+
+% Use to insert source code
+\usepackage{listings}
+
+\definecolor{dkgreen}{rgb}{0,0.3,0}
+
+% begin source-code setup
+\lstset{numbers=left,
+stepnumber=1,
+numbersep=5pt,
+firstnumber=1,
+tabsize=2,
+numberstyle=\tiny\ttfamily\color{gray}\textbf,
+%extendedchars=false,
+keywordstyle=\color{purple}\textbf,
+breaklines=true,
+commentstyle=\footnotesize\color{dkgreen},
+frame=tb,
+basicstyle=\footnotesize\ttfamily,
+stringstyle=\footnotesize\color{blue},
+showstringspaces=false,
+}
+\renewcommand{\lstlistingname}{Listagem}
+\renewcommand{\lstlistlistingname}{Lista de Listagens}
+% end source-code setup
+
+
+\sloppy
+
+\title{Uma Interface de Prototipagem para Aplicações Pervasivas}
+\author{David Barreto\inst{1}, Matheus Erthal\inst{1}, Douglas Mareli\inst{1}, Orlando Loques\inst{1}}
+
+
+\address{Instituto de Computa\c{c}\~{a}o -- Universidade Federal Fluminense (UFF)\\
+  CEP: 24210 -- 240 -- Niter\'{o}i -- RJ -- Brasil
+%  \nextinstitute
+%	Instituto de Informática - Universidade Federal de Goiás (UFG)\\
+%	Goiânia -- GO -- Brasil
+  \email{\{dbarreto, merthal, dmareli, loques\}@ic.uff.br}
+%  \email{\{andre.ribeiro.coelho, taciosd\}@gmail.com}
+}
+
+\begin{document} 
+
+\maketitle
+
+\begin{resumo} 
+Este artigo descreve a Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas (IPGAP), que tem como objetivo prover uma plataforma de suporte à construção, teste e execução de aplicações para ambientes inteligentes (smart ambients). Para prover essa funcionalidade, a ferramenta proposta facilita a simulação de sensores e atuadores bem como meios para visualizar a interação com componentes reais presentes no ambiente. Assim, o desenvolvedor poderá construir suas aplicações sem a necessidade de se ter a infraestrutura completa de um ambiente inteligente.
+\end{resumo}
+
+\begin{abstract}
+This article describes the Pervasive Applications Prototyping and Management Interface (IPGAP) that aims to provide a platform to support construction, test and execution of applications for smart ambients. In order to provide these features capabilities, our tool helps to perform simulation of sensors and actuators as well as means to visualize the interaction of real components which are inside the ambient. This way the developer will be able to construct applications without having a complete smart ambient infrastructure.
+\end{abstract}
+      
+\section{Introdu\c{c}\~{a}o} \label{sec:intro}
+
+Desde as propostas de Mark Weiser na década de 1990 \cite{Weiser1991century}, os pesquisadores da área de computação ubíqua/pervasiva vêm propondo mudanças na interação homem-máquina, visando tornar o uso de dispositivos cada vez mais transparente no ambiente. Isso possibilita ao usuário, manter o foco na tarefa a ser realizada e não na ferramenta para realizá-la. A partir dessas ideias surgiu o conceito de ambientes inteligentes \cite{augusto2007ambient}, onde sensores e atuadores interconectados em rede são capazes de fornecer informações relevantes sobre o ambiente para aplicações e usuários, bem como, efetivamente, agir neste ambiente e alterar seu estado.
+
+O mercado de aplicações para plataformas \textit{mobile} vem caminhando na direção acima descrita, com milhões de aplicações desenvolvidas e distribuídas para os usuários nos últimos anos, provendo serviços que cada vez mais estão se inserindo em seu cotidiano. Esse sucesso se deve aos crescentes avanços nas tecnologias de comunicação e, sobretudo, ao surgimento de sistemas operacionais mais adequados para os dispositivos móveis, como Google Android, Apple iOS e Microsoft Windows Phone. Incluem-se neste número diversas aplicações interessantes como, por exemplo, um aplicativo para identificação de estresse no usuário através da captação de sua voz pelo microfone do aparelho \cite{Lu2012}, e um aplicativo que adquire a frequência cardíaca através do LED da câmera de um \textit{smartphone} \cite{gregoski2012}. Entretanto, de modo geral essas aplicações ainda são auto-contidas, ou seja, não compartilham as informações geradas, nem expõem seus serviços no ambiente a fim de cooperar com outros aplicativos e provisionar serviços diferenciados para o usuário. O grande desafio da computação ubíqua/pervasiva  é justamente utilizar essas aplicações integradas a um ambiente inteligente, fornecendo seus serviços e informações à outras entidades.
+
+Em comparação ao avanço no desenvolvimento de aplicações \textit{mobile}, as aplicações ubíquas ainda são escassas no mercado. Podemos citar como causas desse efeito o alto custo de desenvolvimento demandado por elas, devido a questões como a falta de ferramentas adequadas para a criação e integração dessas aplicações, e a dificuldade em depurá-las~\cite{weis2007rapid}. Além disso, um ambiente de testes contendo todos os dispositivos e a infraestrutura necessária para realizá-los pode ser inviável financeiramente, ao passo que um ambiente construído em pequena escala pode não ser suficiente para testar os diversos cenários possíveis em um ambiente inteligente.
+
+Para resolver esses problemas, é proposta uma ferramenta de suporte à construção de protótipos de aplicações pervasivas chamada IPGAP (Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas), que fornece ao desenvolvedor um ambiente de testes para suas aplicações de maneira rápida e com baixo custo. Além disso, a IPGAP oferece um conjunto de serviços básicos para gerenciamento dos recursos do ambiente (como descoberta e registro), APIs para invocação remota de operações e comunicação por eventos, e um suporte para interpretação de contexto, contendo uma GUI (\textit{Graphic User Interface)} para composição de regras. Assim, o desenvolvedor poderá se utilizar da infraestrutura provida para criar uma aplicação pervasiva mais facilmente. 
+
+Consideremos uma aplicação para controle do consumo de energia em uma residência aos moldes de \cite{Costanza2012}. Esta poderia coletar as informações de consumo de energia (em watts) de cada recurso no ambiente, e a partir dessas informações aplicar políticas predefinidas para tomar uma decisão, como restringir a ligação de grandes consumidores de energia em horários de pico ou escalonar a ligação desses aparelhos para horários com tarifação baixa. O desenvolvedor dessa aplicação, além de contar com uma API que possibilita reunir essas informações e atuar em recursos do ambiente, poderá testar sua aplicação na interface de prototipagem de forma rápida e barata, sem a necessidade de montar uma infraestrutura completa para um ambiente inteligente.
+
+O restante deste artigo está organizado como a seguir. Na Seção~\ref{sec:visao-geral}, apresentaremos uma visão geral dos principais conceitos utilizados como base para o desenvolvimento da IPGAP. Na Seção~\ref{sec:prototipagem}, veremos mais detalhes sobre o funcionamento da ferramenta, seus conceitos, características e exemplos de utilização. Mostraremos na Seção~\ref{sec:app} uma avaliação da IPGAP através de aplicações desenvolvidas. Os trabalhos relacionados serão apresentados e discutidos na Seção~\ref{sec:trab-rel}, e as conclusões e trabalhos futuros, na Seção~\ref{sec:concl-futuros}.
+
+\section{Visão Geral da Infraestrutura da IPGAP} \label{sec:visao-geral}
+
+A IPGAP é pautada em conceitos desenvolvidos em nosso grupo de pesquisa, que foram postos em prática através do projeto \mbox{\textbf{SmartAndroid}}\footnote{Para mais informações visite www.tempo.uff.br/smartandroid}, desenvolvido para comprovação de conceitos propostos em três dissertações de Mestrado \cite{Barreto2012, Erthal2012, Mareli2012}. O projeto \mbox{SmartAndroid} contempla o desenvolvimento das APIs e todo o \textit{framework} proposto, além da interface de prototipagem, utilizando a plataforma Android. Veremos a seguir uma breve descrição dos conceitos que servem de base para a implementações realizadas.
+
+\subsection{Agentes de Recurso} \label{sec:agentes}
+
+Sensores, atuadores, dispositivos e eletrodomésticos inteligentes, além de módulos de \mbox{\textit{software}} que forneçam algum serviço para o ambiente, são definidos como \textit{recursos}. Estes são encapsulados em Agentes de Recursos (AR), que podem ser compreendidos como elementos que expõem informações dos recursos juntamente com sua interface, de forma que outras entidades possam acessá-las de maneira uniforme.
+
+Os ARs escondem detalhes de baixo nível do recurso encapsulado, diminuindo significativamente a complexidade de integração de um recurso no sistema. Por exemplo, os detalhes da coleta de dados de um sensor de temperatura seriam conhecidos apenas pelo seu AR, que se encarrega de fornecer uma interface simples para que os outros componentes do sistema tenham acesso as informações desse sensor. Na Figura~\ref{fig:agent} temos um AR que encapsula um sensor de temperatura, expondo o método \texttt{getTemperature()}.
+
+\begin{figure}[ht]
+\centering
+\subfigure[Um Agente de Recurso para um sensor de Temperatura]{
+\includegraphics[width=0.34\textwidth]{img/ar.png}
+\label{fig:agent}
+}
+\subfigure[Serviço Básicos do \textit{framework}]{
+\includegraphics[width=0.45\textwidth]{img/discovery.png}
+\label{fig:discovery}
+}
+% Add more subfigures here!
+\label{fig:agents-discovery}
+\caption{Componentes do Sistema}
+\end{figure}
+\subsection{Serviços Básicos} \label{sec:descoberta}
+
+É necessário que os recursos do ambiente sejam descobertos para que as aplicações possam utilizá-los. Por esse motivo existe o \textit{Serviço de Descoberta de Recursos} (SDR), que permite que estes sejam localizados por meio de consultas a uma base, populada com as referências dos ARs pelo \textit{Serviço de Registro de Recursos} (SRR) (\mbox{Figura}~\ref{fig:discovery}).
+
+A descoberta pode ser realizada através de vários tipos de consulta, que retornam como resultado referências para os ARs que satisfazem os critérios da busca. Algumas consultas envolvem o tipo dos recursos, que são caracterizados através da definição de uma ontologia mínima (veja \cite{Bezerra2011} para um detalhamento). Na Figura~\ref{fig:discovery-class} vemos a assinatura dos principais métodos de busca do SDR. Para mais informações sobre os serviços básicos utilizados no \textit{framework}, veja \cite{Sztajnberg2009, Mareli2012}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.9\textwidth]{img/discovery_class.png}
+\caption{Métodos de Busca do SDR}
+\label{fig:discovery-class}
+\end{figure}
+
+Como exemplo de uso do mecanismo de descoberta, apresentamos uma aplicação de monitoramento de pacientes \cite{sbrc-carvalho2010}. Essa aplicação utiliza sensores para inferir o estado de saúde do paciente, através da coleta contínua de dados do ambiente (e.g. temperatura, umidade), dados fisiológicos (e.g. pressão arterial, frequência cardíaca), bem como um plano de cuidados -- um conjunto de prescrições feitas por um profissional de saúde, contendo os medicamentos que o paciente deve tomar, medições fisiológicas, exercícios físicos, e outras recomendações com seus respectivos horários.
+
+Para aumentar a adesão do paciente ao tratamento, é salutar que este seja alertado no momento em que deve realizar uma tarefa, através de um dispositivo como TV, celular, \textit{tablet}, etc. Porém, nem sempre um dispositivo está à vista do paciente. Por exemplo, enviar a mensagem \textit{``Está na hora de tomar o remédio''} para o celular do paciente, pode não ser eficaz se o paciente não tiver o hábito de estar próximo ao celular. Por outro lado, enviar a mesma mensagem para todos os dispositivos de visualização da residência, apesar de à primeira vista ser mais eficaz, pode ser um estorvo para o paciente e os outros moradores da casa, além de ser uma abordagem muito intrusiva podendo causar constrangimentos e exposição desnecessária do paciente. Utilizando-se o SDR, a aplicação poderia fazer a consulta: \textit{``o dispositivo de visualização mais próximo do paciente''} para obter uma referência para este recurso, e assim, enviar a mensagem de alerta. Dessa forma a aplicação seria menos intrusiva e reduziria a possibilidade do paciente não perceber o alerta. Um trecho de código com exemplos de uso do SDR poderá ser encontrado na Seção~\ref{sec:estudo_caso}.
+
+%Em uma aplicação de monitoramento remoto de pacientes como \cite{sbrc-carvalho2010}, o mecanismo de descoberta de recursos poderia ser utilizado para se obter o AR do dispositivo de visualização mais próximo ao paciente, e assim permitir o envio de uma mensagem notificando-lhe que chegou a hora de executar alguma tarefa descrita em seu Plano de Cuidados\footnote{Um conjunto de prescrições feitas por um profissional de saúde, contendo os medicamentos que o paciente deve tomar, medições fisiológicas, exercícios físicos, e outras recomendações com seus respectivos horários}, como tomar remédio. Dessa forma, a aplicação agiria de forma mais eficaz, diminuindo as chances de que o paciente não perceba o alerta.
+
+\subsection{Contexto} \label{sec:contexto}
+
+Aplicações sensíveis ao contexto são integradas com o mundo físico, e respondem a estímulos do ambiente obtidos através de sensores. Essa é uma caracterização fundamental para sistemas ubíquos/pervasivos. Assim, podemos dizer que essas aplicações são interessadas nas informações dos recursos que sejam relevantes para o sistema, ou seja, no contexto dos recursos e do ambiente (veja \cite{abowd1999} para mais informações sobre contexto). Em uma aplicação feita para um ambiente inteligente, por exemplo, o contexto poderia ser: se uma lâmpada está acesa, o canal em que se encontra uma TV, a temperatura de um ar-condicionado, entre outros.
+
+As aplicações construídas através do \textit{framework} proposto, podem utilizar regras envolvendo o contexto dos recursos, conhecidas como \textit{regras de contexto}. Essas regras são compostas por condições obtidas de informações de contexto dos ARs envolvidos e de um temporizador. Um \textit{interpretador de contexto} avalia constantemente as condições da regra. Se verificado que a condição é verdadeira, este notifica os ARs interessados, ou seja, aqueles que vão de fato efetuar uma ação no ambiente (Figura~\ref{fig:rule-interpreter}). Essa notificação é realizada através do padrão \textit{publish-subscribe}, largamente utilizado em sistemas distribuídos.
+
+As regras de contexto são criadas na IPGAP através de uma GUI, que permite a seleção das condições da regra intuitivamente. Ao acionar-se o ícone do dispositivo desejado são exibidas suas informações de contexto, que podem então ser selecionadas e incluídas na regra. Uma regra pode envolver o contexto de diversos dispositivos, combinados por conectivos lógicos. A partir da descrição da regra, as referências dos ARs envolvidos são obtidas automaticamente, e a regra é então executada. Assim, podem ser criadas regras simples, como desligar aparelhos que não estão sendo utilizados por um certo tempo, ou complexas, como acionar uma ambulância caso um morador tenha sua situação de saúde identificada como crítica, através da monitoração de seus dados fisiológicos \cite{Copetti2012}. Um estudo mais profundo sobre interpretação de contexto pode ser encontrado em \cite{Erthal2012}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{img/rule.png}
+\caption{Interpretação de uma Regra de Contexto}
+\label{fig:rule-interpreter}
+\end{figure}
+\section{A Interface de Prototipagem de Aplicações Pervasivas} \label{sec:prototipagem}
+
+A IPGAP foi desenvolvida para fornecer a seus usuários um mundo em que os dispositivos interajam entre si, e são facilmente acessíveis utilizando a API provida no \textit{framework}. Um desenvolvedor de aplicações para ambientes ubíquos/pervasivos pode testar suas aplicações no ambiente da IPGAP, de modo a avaliá-las e, consequentemente, aperfeiçoá-las. Isso seria um desafio se fosse preciso desenvolver toda infraestrutura a partir do zero.
+
+Através de aparelhos de fácil aquisição, que podem simular vários dispositivos de um ambiente inteligente, pode-se criar diversos cenários à baixo custo. Por exemplo, nossa prova de conceito foi implementada sobre o sistema operacional Android, sendo utilizado um \textit{tablet} para visualização da ferramenta de prototipagem (Figura~\ref{fig:mapa}). Os simuladores dos dispositivos (ver Seção~\ref{sec:simuladores}) foram instalados em celulares de baixo custo conectados por uma rede sem fio.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{img/map.png}
+\caption{IPGAP: Visão do mapa do ambiente}
+\label{fig:mapa}
+\end{figure}
+
+A utilização desses aparelhos diminui grande parte do custo de desenvolvimento (financeiro e temporal) do projeto, pois não exige a aquisição de dispositivos reais, como sensores e atuadores, o que é útil em fases iniciais. A ferramenta também dá suporte à integração de dispositivos reais no ambiente juntamente com os dispositivos simulados, criando assim um ambiente híbrido. Para as aplicações este fato é totalmente transparente, pois permite que os dispositivos reais e simulados sejam facilmente intercambiáveis. É importante salientar que os serviços básicos do sistema -- como o SDR, SRR e os interpretadores de contexto vistos na Seção~\ref{sec:visao-geral} -- podem ser executados em máquinas mais robustas, assegurando, assim, requisitos de qualidade de serviço e tolerância a falhas.
+
+\subsection{A IPGAP para o Desenvolvedor} \label{sec:desenvolvedor}
+
+O desenvolvedor tem a capacidade de, através da IPGAP, visualizar o ambiente alvo na tela de um computador ou \textit{tablet}, em um formato similar ao de uma planta baixa (Seção~\ref{sec:mapa}). O ambiente pode então ser populado na tela com os recursos necessários à aplicação que está sendo desenvolvida. Por exemplo, para que uma aplicação de controle de iluminação seja testada, é necessário que se tenha lâmpadas disponíveis, além de sensores que detectem a presença de pessoas nos cômodos e avatares para representar essas pessoas. O desenvolvedor pode adicionar todos esses recursos no mapa da casa e executar sua aplicação. Para testá-la, uma das alternativas seria utilizar a IPGAP para movimentar o avatar no mapa, e observar os sensores detectando a presença ou ausência do indivíduo, bem como as lâmpadas se acendendo e apagando.
+
+\subsection{A IPGAP para o Usuário Final} \label{sec:usuario}
+
+A IPGAP possui a característica de ser um \mbox{\textit{software}} intuitivo, por conta de sua GUI. Isso faz com que seja uma ferramenta muito conveniente para o usuário final (entenda-se ``usuário final'' como um utilizador do ambiente inteligente, potencialmente leigo na área da computação.), pois  se torna um poderoso controle remoto de todos os dispositivos de sua residência. Assim, o usuário final pode, via rede sem fio, manipular os dispositivos e criar regras de contexto que atuarão em seu ambiente. Dessa forma, pode-se configurar todo o ambiente de acordo com as preferências do usuário, através de um dispositivo móvel como um \textit{smartphone} ou \textit{tablet}.
+
+A situação ideal é que este usuário possa controlar toda sua casa remotamente, de qualquer parte do mundo através da internet. É claro que isso envolve uma série de questões sobre segurança de rede, níveis de permissões, entre outras. Estes aspectos são abordados com detalhes em \cite{Mareli2012}.
+
+\subsection{Representação do ambiente} \label{sec:mapa}
+
+Anteriormente, mencionamos que os recursos do ambiente poderiam ser visualizados através de representações gráficas na tela de um dispositivo (como um \textit{tablet}), para que o desenvolvedor ou usuário final possa manipulá-los. Essas representações são posicionadas em um mapa esquemático do ambiente inteligente. Cada cômodo no mapa tem sua área pré-definida pelo usuário em um editor de mapas\footnote{Foi o utilizado o \mbox{\textit{software}} \textbf{Tiled} (www.mapeditor.org) para criação do mapa do ambiente de testes.}, que também é responsável por definir a aparência da casa representada. Na Figura~\ref{fig:mapa} vemos o mapa do ambiente, populado com alguns recursos rodando em um \textit{tablet}
+
+Os recursos são exibidos no mapa pela IPGAP através de ícones, de acordo com o desejo do usuário, e suas posições são aproximadas em relação a posição real do recurso em metros. Dessa forma, o mapa do ambiente se transforma em uma espécie de ``área de trabalho'', semelhante à de sistemas operacionais como Windows, Linux e Android, contendo ícones que podem ser acionados para chamar outros processos.
+
+Salientamos que os recursos representados no mapa não são meramente imagens, sendo na verdade um espelho do ambiente inteligente. Os recursos estão registrados no sistema, e podem ser descobertos e utilizados por aplicações.
+
+\subsection{Aplicativos} \label{sec:aplicativos}
+
+Nossa ferramenta utiliza o conceito de aplicativos, atualmente atribuído ao universo dos \textit{smartphones} e \textit{tablets}, embora exista na grande maioria dos Sistemas Operacionais de propósito geral há bastante tempo (com uma semântica ligeiramente diferente). Nos ambientes \textit{mobile}, existem lojas virtuais (como Google Play e Apple Store) que disponibilizam uma base com milhares de aplicativos que podem ser baixados pelos usuários. Dessa forma, pode-se facilmente customizar o ambiente com a instalação de novos \mbox{\textit{softwares}}.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.8\textwidth]{img/stove_app.png}
+\caption{Aplicativo do fogão em um \textit{tablet}. Visão das bocas e do forno}
+\label{fig:stove-app}
+\end{figure}
+
+No contexto da IPGAP, um aplicativo possui uma GUI que representa a interface de um determinado recurso, além de poder invocar operações do AR do mesmo (potencialmente em outro \textit{host}), o que nos permite manipular e visualizar seu estado interno de forma intuitiva. Essa funcionalidade se dá através de primitivas de comunicação síncrona, semelhante às utilizadas no RPC (\textit{Remote Procedure Call}) e RMI (\textit{Remote Method Invocation}). Assim como nas abordagens do RPC e RMI, existe um \textit{stub} -- um componente que possui a mesma interface do recurso-alvo, porém sua implementação contém chamadas remotas para este recurso, agindo como um \textit{proxy}.
+
+Imagine um aplicativo capaz de exibir a interface de um fogão (Figura~\ref{fig:stove-app}), onde o usuário pode através dela, acender uma boca ou o forno do aparelho. Ao acionar-se alguma funcionalidade do aplicativo do fogão, essa operação deve invocar a sua correspondente no AR do fogão real (que pode ser embutido no \textit{hardware} do fogão real pelo seu fabricante. Ver Seção~\ref{sec:recursos-externos}), conforme mostramos no esquema da Figura~\ref{fig:stove-app-real}. Note que para isso, o aplicativo do fogão deve possuir um objeto \textit{stub} que encaminha a chamada para o fogão real. Um aplicativo pode ser acionado através da IPGAP por meio de sua representação no mapa, acionando seu ícone (ver Seção~\ref{sec:mapa}), passando a exibir a interface do dispositivo que representa, como na Figura~\ref{fig:stove-app}.
+
+O caminho inverso também deverá ocorrer, ou seja, o que acontecer no fogão real também deve ser refletido no aplicativo do fogão. Isso é fruto de uma comunicação assíncrona estabelecida entre o fogão real e o aplicativo, provida por uma implementação do padrão \textit{publish-subscribe}. Assim, dizemos que o aplicativo em questão é \textbf{interessado} nas mudanças que ocorrerem no fogão real, ou seja, sempre que o fogão real alterar seu estado, o aplicativo será notificado através de um evento
+
+\subsubsection{Simuladores} \label{sec:simuladores}
+
+É comum que o desenvolvedor necessite de diferentes entidades presentes em um ambiente inteligente para testar suas aplicações. Isso pode se tornar inviável conforme o número de entidades cresce, pois envolve os custos com os equipamentos e principalmente com a integração destes. Por esse motivo a IPGAP inclui um conjunto de aplicações (que pode ser constantemente ampliado) que simulam os principais dispositivos presentes em um ambiente inteligente, como lâmpada, fogão, TV, ar-condicionado assim como sensores de localização, temperatura, umidade, entre outros. Dessa forma, o desenvolvedor pode criar suas aplicações utilizando esses componentes -- chamados de simuladores -- como se fossem os equipamentos reais.
+
+\begin{figure}[ht]
+\centering
+\includegraphics[width=0.5\textwidth]{img/stove_real.png}
+\caption{Aplicativo do fogão atuando no fogão real}
+\label{fig:stove-app-real}
+\end{figure}
+
+Ressaltamos que os simuladores expõem seus serviços e o seu contexto no ambiente através de ARs, o que torna uma possível troca de um simulador por dispositivo real transparente para o desenvolvedor. Os simuladores fornecidos com a IPGAP são também considerados aplicativos. Um aplicativo simulador deve conter um código para gerar valores (aleatoriamente ou segundo diretivas de simulação) além de conter o AR do referido recurso simulado. Já um aplicativo comum, contém um \textit{stub} que encaminha os parâmetros passados nas operações chamadas para o AR do recurso alvo, através de invocações remotas.
+
+Um desenvolvedor pode, seguindo um estilo bem definido de programação, criar seus próprios aplicativos. Um exemplo desse caso seria um centro de pesquisas que está desenvolvendo um novo tipo de sensor. O primeiro passo seria utilizar um simulador para este sensor e testá-lo no ambiente da IPGAP juntamente com os demais recursos. Dessa forma pode-se testar o sensor antes mesmo de se ter um protótipo físico completo.
+
+\subsubsection{Instalação dos Aplicativos} \label{sec:instalacao}
+
+Como citado anteriormente, nossa ferramenta permite a instalação de aplicativos no ambiente de prototipagem, de maneira similar ao que ocorre nos sistemas operacionais de plataformas \textit{mobile}. Dessa forma o desenvolvedor tem a possibilidade de estender esse ambiente segundo as suas necessidades. Idealmente, os usuários da IPGAP podem baixar os aplicativos e/ou simuladores em uma loja aos moldes da Google Play e Apple Store, onde pode-se fazer buscas por aplicativos, visualizar sua descrição, fazer o download e assim, instalá-los na IPGAP. Esse processo se dá de forma automatizada, o que torna essa opção útil para o usuário final, podendo este, acrescentar os aplicativos que quiser na interface de visualização do ambiente.
+
+\subsection{Utilização de Recursos Externos} \label{sec:recursos-externos}
+
+Recursos reais como eletrodomésticos e sensores podem fazer parte do sistema, enriquecendo assim os testes realizados na aplicação a ser desenvolvida, além de possibilitar o uso da IPGAP pelos usuários finais para controlar dispositivos de ambientes inteligentes. Para isso os dispositivos devem possuir um chip embutido em seu próprio \textit{hardware}, que implemente as APIs padronizadas do \textit{framework}.
+
+Uma alternativa seria desenvolver um componente (\textit{wrapper}) que implemente ambas as APIs (a API de nossa proposta e a API nativa do recurso desejado). Quando esse componente recebe uma chamada através de nossa API, ele encaminha a chamada para o recurso-alvo, utilizando a API de seu fabricante. Ou seja, o componente faz a ``tradução'' de uma chamada do nosso sistema para uma chamada nativa da API do aparelho em questão. Essa técnica é mais viável nas etapas de desenvolvimento, pois não depende de que se tenha um recurso que utiliza o padrão do sistema nativamente.
+
+\begin{figure}[ht]
+\centering
+\subfigure[Beaglebone]{
+\includegraphics[width=0.3\textwidth]{img/beaglebone-in-hand.jpg}
+\label{fig:beagle-hand}
+}
+\subfigure[Esquema com Beaglebone e Lâmpada]{
+\includegraphics[width=0.45\textwidth]{img/beagle-lamp.png}
+\label{fig:beagle-lamp}
+}
+% Add more subfigures here!
+\label{fig:beagle}
+\caption{Experimentos com Beaglebone}
+\end{figure}
+
+Nosso grupo está realizando testes com o Beaglebone \cite{Beagle2012} com o objetivo de construir protótipos de diversos dispositivos. O Beaglebone (Figura~\ref{fig:beagle-hand}) é uma placa de desenvolvimento de tamanho reduzido e baixo custo, que contém pinos para entrada e saída e um processador ARM AM335x, que suporta a execução de sistemas como Ubuntu e Android. Através desse equipamento podemos, por exemplo, conectar uma lâmpada comum e controlá-la através de um relé ligado aos pinos de I/O do Beaglebone. A Figura~\ref{fig:beagle-lamp} ilustra essa possibilidade.
+
+\section{Aplicações} \label{sec:app}
+
+Um conjunto de aplicações pervasivas foi construído utilizando-se nossa API e a IPGAP como plataforma de testes. Através do desenvolvimento dessas aplicações foi possível avaliar a viabilidade da proposta, assim como a flexibilidade e usabilidade da mesma. Foram implementadas aplicações para controle dos dispositivos da casa (como um controle remoto), controle de iluminação da residência e jogos \textit{multiplayer} onde usuários do ambiente podem descobrir jogadores e jogar em conjunto, entre outras aplicações.
+
+Uma das aplicações implementadas, nomeada de \textbf{MediaFollowMe}, proporciona ao usuário final a facilidade de repassar áudio/vídeo/imagens (ou qualquer outro tipo de mídia) de um aparelho para outro automaticamente, levando em conta informações como proximidade do dispositivo em relação ao usuário, como se a mídia o seguisse. Exemplificaremos esta aplicação a seguir.
+
+\subsection{MediaFollowMe} \label{sec:estudo_caso}
+
+O usuário final está em casa assistindo a um filme em seu \textit{Blu-ray} na TV da sala, quando em um ponto crítico da trama precisa se deslocar rapidamente para outro cômodo. Ele inicia através de seu \textit{smartphone} o aplicativo \mbox{\textbf{MediaFollowMe}} e escolhe dentre uma lista de dispositivos presentes no ambiente (exibida na tela do aparelho) o \textit{Blu-ray} da sala como fonte emissora da mídia.
+
+A partir daí, a aplicação não necessita mais da interação direta do usuário, atuando autonomamente no ambiente. As referências dos ARs que representam o \textit{Blu-ray} da sala e o próprio usuário são obtidas através do SDR, para saber de onde obter a mídia e para onde deve transmiti-la (conforme a posição do usuário). Além disso, a aplicação deve possuir as referências dos ARs dos sensores de presença da casa, a fim de receber um evento (ou seja, ser notificada) quando o usuário entrar ou sair de um cômodo. Note que pessoas também são representadas no sistema através de ARs. O AR que representa uma pessoa, na verdade, agrega diversos outros ARs, como os de sensores corporais, emissores de RF-ID, entre outros dispositivos.
+
+\begin{lstlisting}[language=Java, label=code:discovery_interest, caption={Obtendo as referências e registrando interesse nos eventos}]
+ResourceAgent[] pSensors = discovery.searchByType("PresenceSensor");
+
+for (sensor : pSensors) {
+	sensor.registerStakeholder("IN", this);
+	sensor.registerStakeholder("OUT", this);
+}
+\end{lstlisting}
+
+Após obter todas as referências que precisa, a aplicação \mbox{MediaFollowMe} se registra como interessada em receber eventos dos ARs dos sensores de presença do ambiente. Na Listagem~\ref{code:discovery_interest} vemos um trecho de código exemplificando esse processo. Na linha 1 é feita uma busca por todas os sensores de presença do ambiente através do SDR. Para cada sensor obtido, o MediaFollowMe se registra como interessado em eventos de entrada (linha 4) e saída (linha 5) de usuários nos cômodos onde se encontram os sensores.
+
+No momento em que o usuário deixar a sala, o sensor de presença correspondente detectará que alguém saiu, e notificará através de um evento a todos os interessados nessa informação, incluindo o \mbox{MediaFollowMe}. Os eventos devem informar quem é o recurso que o originou (neste caso, o sensor de presença da sala), qual o contexto alterado (entrada ou saída do cômodo) e o qual o valor alterado (qual usuário se locomoveu). Assim, a aplicação receberá a referência do AR do usuário que saiu do cômodo em questão, e pausará a mídia proveniente do \textit{Blu-ray} da sala, devido à ausência do indivíduo.
+
+Dessa forma, quando o usuário adentra a cozinha, o sensor de presença deste cômodo detecta a sua chegada e notifica à aplicação via eventos. A aplicação busca o dispositivo mais próximo do usuário e descobre uma TV na cozinha. Agora, o \mbox{MediaFollowMe} pode realizar uma chamada remota para o \textit{Blu-ray} (fonte dos dados) solicitando que ele mude o receptor de vídeo da TV da sala para a TV da cozinha, e retoma a reprodução do filme (que estava em pausa). Isso é feito automaticamente e sem fio, resultando na transferência da mídia para esta TV.
+
+Na Listagem~\ref{code:closer} apresentamos o tratamento dos eventos recebidos pela aplicação. O método de \textit{callback} \textbf{notificationHandler} é definido na API do \textit{framework} e deve ser implementado pelos objetos que desejam receber notificações de eventos. Este método passa como parâmetros o AR que gerou o evento, o contexto que foi alterado e o valor que foi alterado. No \mbox{MediaFollowMe} esses parâmetros são o AR de do sensor de presença que gerou o evento, se o evento é de entrada (IN) ou saída (OUT), e qual usuário entrou ou saiu do cômodo. A classe \textbf{Person} (linha 4) é uma subclasse de \textbf{ResourceAgent}, portanto pode ser passada como parâmetro na consulta de proximidade (linha 12), que retorna uma lista de recursos ordenados por proximidade em relação ao recurso passado (neste caso o usuário). Na linha 6 a aplicação testa se o usuário que entrou/saiu do cômodo em questão é o usuário requerido. Por fim, na linha 13 é feita uma chamada para o AR do \textit{Blu-ray} solicitando que o \textit{stream} da mídia seja repassado para o dispositivo de visualização mais próximo do usuário, e na linha 14, é realizado uma chamada remota ao \textit{Blu-ray} para reproduzir a mídia.
+
+\begin{lstlisting}[language=Java, label=code:closer, caption={Tratamento dos eventos e consulta por dispositivo mais próximo}]
+@Override
+public void notificationHandler(ResourceAgent res, String context, Object obj) {
+	...
+	Person p = (Person) obj;
+	
+	if (p.getName().equals(USER_NAME) {
+		if (context.equals("OUT") {
+
+			bluray.pause();		
+		} else if(context.equals("IN") {
+
+			ResourceAgent[] views = discovery.searchByProximity("View", p);
+			bluray.streamTo(views[0]);
+			bluray.play();
+		}
+	}
+}
+\end{lstlisting}
+
+Foi possível observar a aplicação em funcionamento e o comportamento dos recursos envolvidos através da IPGAP. Ao movimentar-se o avatar do usuário pelos cômodos da casa, pôde-se visualizar a mídia sendo exibida no dispositivo de visualização mais próximo a ele, conforme esperado.
+
+\section{Trabalhos Relacionados} \label{sec:trab-rel}
+
+Podemos encontrar na literatura outras propostas de ferramentas para prototipagem de aplicações pervasivas (veja \cite{tang2010} para uma \textit{survey}). Em~\cite{Armac2007, nguyen2009iss} encontramos ferramentas de teste e a avalia\c{c}\~{a}o de servi\c{c}os para ambientes inteligentes. Entretanto, não incluem uma abordagem de descoberta de dispositivos recém adicionados no ambiente. A IPGAP abrange essa questão através do SDR e SRR (Seção~\ref{sec:visao-geral}).
+
+Já em \cite{Zhang2010} e \cite{Fu2011} encontramos simuladores para ambientes inteligentes baseados em OSGi (\textit{Open Service Gateway Initiative}), oferecendo a possibilidade de adição e remoção de dispositivos sem alterar o código do sistema, através da modificação de arquivos de configuração. Porém, estes trabalhos não focam no perfil do usuário final (Seção~\ref{sec:usuario}), pois não proveem uma interface clara para que o usuário configure seus dispositivos.
+
+Em \cite{bruneau2012} é apresentado um simulador para aplicações pervasivas, parametrizado por diretivas escritas em uma linguagem de configuração própria, porém não oferece suporte à configuração dinâmica das entidades do sistema. Além disso o trabalho não deixa claro a possibilidade de transparência entre dispositivos reais e simulados, recursos providos pela IPGAP.
+
+Outra vertente de trabalhos sobre simulação de sistemas pervasivos pode ser encontrada nos trabalhos \cite{barton2002ubiwise, nishikawa2006ubireal}. Esses projetos possuem uma visualização 3D do ambiente em que o usuário tem a possibilidade de controlar um avatar em uma visão de 3\textsuperscript{\d a} pessoa, como nos jogos de computador. Assim como a IPGAP, estes projetos permitem que se configure dispositivos no sistema e se interaja com eles. Porém, as ferramentas propostas nestes trabalhos focam em testes de interação dos dispositivos e a simulação do ambiente físico, não se preocupando com sensibilidade ao contexto, ou seja, não consideram um ambiente adaptativo onde o contexto pode causar a alteração do estado dos recursos.
+
+
+\section{Conclusão e Trabalhos Futuros} \label{sec:concl-futuros}
+
+Neste artigo foi apresentada a IPGAP -- Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas -- que visa auxiliar o desenvolvedor a construir e testar aplicações para ambientes inteligentes. A IPGAP permite que a criação de protótipos funcionais seja realizada em menos tempo e à baixo custo, através do uso de um misto de simuladores e dispositivos reais, e uma API para gerenciamento do ambiente. As aplicações desenvolvidas podem ser facilmente instaladas no ambiente inteligente, permitindo que se realize testes com uma infinidade de cenários. Além disso, aplicativos para gerenciamento dos recursos do ambiente (como fogão e TV) podem ser instalados na IPGAP, permitindo que seja estendida de acordo com as necessidades do desenvolvedor, sem necessidade de alteração no código.
+
+Entre as principais contribuições deste trabalho está a utilização de uma abordagem onde os recursos são descobertos no ambiente de forma autônoma, permitindo assim a inclusão de novos recursos sem que para isso tenha-se que recompilar o código da IPGAP ou mesmo interromper seu funcionamento. Além disso, um diferencial desta proposta é o foco também no usuário final, que pode através da IPGAP controlar o ambiente inteligente em que se encontra. As próximas etapas do projeto incluem o tratamento de informações de contexto mais complexas e a implementação de uma visualização 3D do ambiente inteligente na interface, além da utilização de uma abordagem baseada em contratos \cite{carvalhoTR2011}, para adaptação dinâmica da aplicação às necessidades do usuário final, possibilitando também a criação de subsistemas.
+
+\bibliographystyle{sbc}
+\bibliography{references}
+
+\end{document}
