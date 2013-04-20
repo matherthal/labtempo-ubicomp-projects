@@ -11,4 +11,13 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true" />
 
+	<Button
+	    android:id="@+id/buttonCreateRule"
+	    android:onClick="buttonCreateRule_Clicked"
+	    android:text="@string/rule_creation"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/lv_rules"
+	    android:clickable="true" />
+	
 </RelativeLayout>

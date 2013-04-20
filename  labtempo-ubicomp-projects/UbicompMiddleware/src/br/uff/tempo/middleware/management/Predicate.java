@@ -13,7 +13,7 @@ public class Predicate extends Formula {
 	// constVal is the value to compare the the change of the context variable
 	// The constant value can be the first or second operand
 	// private Object constVal;
-	
+
 	protected boolean valid = false;
 
 	/**
@@ -121,6 +121,14 @@ public class Predicate extends Formula {
 	 */
 	public void setOp2(Operand op2) {
 		this.op2 = op2;
+	}
+	
+	public Operator getOperator() {
+		return operator;
+	}
+
+	public void setOperator(Operator operator) {
+		this.operator = operator;
 	}
 
 	/**

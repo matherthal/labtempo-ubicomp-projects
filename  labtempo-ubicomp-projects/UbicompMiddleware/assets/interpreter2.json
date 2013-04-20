@@ -1,17 +1,17 @@
 {
 "interpreter": {
-	"name": "Rule test",
+	"name": "RULE_TEST",
 	"priority": 3,
 	"formula": [
 		{"formula": [
-			{"not": 
+			{"formula": [
 				{"predicate": [
 					{"context_elem": {
 						"rai": "bed1",
 						"elem": "occupied"
 					}}
 				]}
-			},
+			]},
 
 			{"connective": "or"},
 			
@@ -40,7 +40,9 @@
 						{"val": 30}
 					]}
 				]}
-			}
+			},
+			
+			{"timer": "10sec"}
 		]}
 	]
 }

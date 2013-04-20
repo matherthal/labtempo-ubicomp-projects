@@ -64,9 +64,12 @@
         <!-- Rule -->
         <activity
             android:name=".apps.rule.RuleManager"
-            android:label="@string/rule_manager" />
+            android:label="@string/rule_manager"
+            android:theme="@android:style/Theme.Light" />
         <service
             android:name=".apps.rule.RuleFactory" />
+        <service
+            android:name=".apps.rule.RuleComposer" />
         
         <activity
             android:name=".apps.rule.RuleActivity"
