@@ -1,5 +1,7 @@
 package br.uff.tempo.middleware.management;
 
+import org.json.JSONArray;
+
 import br.uff.tempo.middleware.management.utils.datastructure.GeneralTree;
 
 public class Formula extends GeneralTree {

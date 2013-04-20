@@ -22,6 +22,8 @@ import br.uff.tempo.middleware.management.interfaces.IResourceDiscovery;
 import br.uff.tempo.middleware.management.interfaces.IRuleInterpreter;
 import br.uff.tempo.middleware.management.stubs.ResourceAgentStub;
 import br.uff.tempo.middleware.management.stubs.ResourceDiscoveryStub;
+import br.uff.tempo.middleware.management.stubs.RuleInterpreterStub;
+import br.uff.tempo.middleware.resources.stubs.LampStub;
 
 public class RuleInterpreter extends ResourceAgent implements IRuleInterpreter {
 
@@ -348,4 +350,21 @@ public class RuleInterpreter extends ResourceAgent implements IRuleInterpreter {
 	public boolean isStarted() {
 		return !stopped;		
 	}
+	
+//	@Override
+//	public void registerStakeholder(String method, String rai) {
+//		//boolean conflict = false;
+//		//boolean ruleMatch = false;
+//		// Compare rule with all others that are active and has actuator(s)
+//		//List<ResourceData> ris = discovery.search(ResourceData.TYPE, ResourceAgent.type(RuleInterpreter.class));
+//		//Iterator<ResourceData> it = ris.iterator();
+//		//while (it.hasNext()) {
+//			//IRuleInterpreter ri = new RuleInterpreterStub(it.next().getRans());
+//			//if (ri.isStarted() && ri.getStakeholders() != null)
+//				//if (!ri.getStakeholders().isEmpty())
+//					// SAT problem
+//		//}
+//		// If a matched rule was found, compare actuator associated 
+//		super.registerStakeholder(method, rai);
+//	}
 }

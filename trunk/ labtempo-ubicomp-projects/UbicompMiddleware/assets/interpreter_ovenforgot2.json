@@ -1,6 +1,6 @@
 {
 "interpreter": {
-	"name": "OvenForgot2",
+	"name": "Fogao ligado E deitado por 15min",
 	"priority": 3,
 	"formula": [
 		{"formula": [
@@ -30,10 +30,10 @@
 						"rai": "_BED_CASAL_",
 						"elem": "occupied"
 					}}
-				]}
-			]},
-			
-			{"timer": 10sec}
+				]},
+				
+				{"timer": 10sec}
+			]}
 		]}
 	]
 }

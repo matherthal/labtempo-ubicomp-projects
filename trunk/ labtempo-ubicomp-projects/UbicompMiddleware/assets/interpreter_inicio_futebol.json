@@ -1,6 +1,6 @@
 {
 "interpreter": {
-	"name": "Fogão Esquecido por 15min",
+	"name": "Inicio Jogo Futebol",
 	"priority": 3,
 	"formula": [
 		{"formula": [
@@ -11,18 +11,7 @@
 				}},
 				{"op": ">"},
 				{"val": 50.0}
-			]},
-
-			{"connective": "and"},
-			
-			{"predicate": [
-				{"context_elem": {
-					"rai": "_BED_",
-					"elem": "occupied"
-				}}
-			]},
-
-			{"timer": 10sec}
+			]}
 		]}
 	]
 }

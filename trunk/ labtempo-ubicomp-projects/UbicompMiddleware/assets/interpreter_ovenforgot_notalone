@@ -1,6 +1,6 @@
 {
 "interpreter": {
-	"name": "Fogao Esquecido e Atuador",
+	"name": "Fogao ligado outras pessoas",
 	"priority": 3,
 	"formula": [
 		{"formula": [
@@ -15,14 +15,16 @@
 
 			{"connective": "and"},
 			
-			{"predicate": [
-				{"context_elem": {
-					"rai": "_BED_",
-					"elem": "occupied"
-				}}
-			]},
+			{"not": 
+				{"predicate": [
+					{"context_elem": {
+						"rai": "_PRESENCE_",
+						"elem": "getPresence"
+					}}
+				]},
 
-			{"timer": 10sec}
+				{"timer": 10sec}
+			}
 		]}
 	]
 },
@@ -35,7 +37,7 @@
 	{"action": {
 		"rai": "_TV_",
 		"service": "showMessage",
-		"params": "Fogao foi esquecido ligado"
+		"params": "Nao tem ninguem na cozinha"
 	}}
 ]
 }

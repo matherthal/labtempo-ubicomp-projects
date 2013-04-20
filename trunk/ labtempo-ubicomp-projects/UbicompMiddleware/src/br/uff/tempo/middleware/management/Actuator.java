@@ -75,7 +75,9 @@ public class Actuator extends ResourceAgent implements IActuator {
 
 	protected void parseExpression(String expr) throws Exception {
 		JSONArray act = new JSONObject(expr).getJSONArray("actuator");
-
+		if (act == null)
+			throw new Exception("Actuator not found while parsing JSON rule");
+		
 		JSONObject obj;
 		for (int i = 0; i < act.length(); ++i)
 		{
@@ -127,5 +129,22 @@ public class Actuator extends ResourceAgent implements IActuator {
 			Stub s = new Stub(rai);
 			s.makeCall(serv, params, void.class);
 		}
+		
+		public String getRai() {
+			return rai;
+		}
+
+		public String getService() {
+			return serv;
+		}
+
+		public List<Tuple<String, Object>> getParams() {
+			return params;
+		}
+
+	}
+	
+	public List<Action> getActions() {
+		return this.actions;
 	}
 }
