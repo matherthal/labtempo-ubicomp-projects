@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TableRow
+        android:id="@+id/ruleTableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <Button
+            android:onClick="onAndClick"
+            android:id="@+id/rule_btn_and"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:text="AND" />
+
+        <Button
+            android:onClick="onOrClick"
+            android:id="@+id/rule_btn_or"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:text="OR" />
+
+        <Button
+            android:onClick="onNotClick"
+            android:id="@+id/rule_btn_not"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:text="NOT" />
+
+        <Button
+            android:onClick="onOpenBracketClick"
+            android:id="@+id/rule_btn_open_bracket"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:text="(" />
+
+        <Button
+            android:onClick="onCloseBracketClick"
+            android:id="@+id/rule_btn_close_bracket"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:text=")" />
+    </TableRow>
+
+    <TableRow
+        android:id="@+id/ruleTableRow2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <Button
+            android:onClick="onEqualClick"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:id="@+id/rule_btn_equal"
+            android:text="Equal" />
+
+        <Button
+            android:onClick="onNotEqualClick"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:id="@+id/rule_btn_not_equal"
+            android:text="!Equal" />
+
+        <Button
+            android:onClick="onLessThanClick"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:id="@+id/rule_btn_less_than"
+            android:text="&lt;" />
+
+        <Button
+            android:onClick="onGreaterThanClick"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:id="@+id/rule_btn_greater_than"
+            android:text=">" />
+
+        <Button
+            android:onClick="onTimerClick"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:id="@+id/rule_btn_timer"
+            android:text="TIMER" />
+    </TableRow>
+    
+        <TableRow
+        android:id="@+id/ruleTableRow3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="5dip" >
+
+        <Button
+            android:onClick="onSetConstantClick"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:id="@+id/rule_btn_constant"
+            android:text="Constant Value" />
+
+        <Button
+            android:onClick="onChooseCVClick"
+            android:layout_width="0dip"
+            android:layout_weight="1"
+            android:id="@+id/rule_btn_context_variable"
+            android:text="Choose Another variable" />
+    </TableRow>
+
+</TableLayout>
