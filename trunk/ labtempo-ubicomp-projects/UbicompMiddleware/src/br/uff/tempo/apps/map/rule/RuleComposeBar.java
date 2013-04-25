@@ -45,8 +45,8 @@ public class RuleComposeBar extends HUD {
 		backgroundRect.setColor(Color.BLACK);
 		
 		// Initializing the Panels to setup Conditions and Actions
-		panelCondition = new ExpandablePanel(vertexBuffObjMan);
-		panelAction    = new ExpandablePanel(vertexBuffObjMan);
+//		panelcondition = new expandablepanel(vertexbuffobjman);
+//		panelaction    = new expandablepanel(vertexbuffobjman);
 
 		attachChild(backgroundRect);
 		setVisible(false);
@@ -69,5 +69,6 @@ public class RuleComposeBar extends HUD {
 	
 	public void dismiss() {
 		Transformations.applyAlphaModifierInChindren(this, MAX_ALPHA, MIN_ALPHA);
+		this.setVisible(false);
 	}
 }

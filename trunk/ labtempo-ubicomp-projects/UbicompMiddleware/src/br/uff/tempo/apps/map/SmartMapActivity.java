@@ -1,5 +1,7 @@
 package br.uff.tempo.apps.map;
 
+import java.lang.reflect.Method;
+
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -18,7 +20,7 @@ import br.uff.tempo.apps.map.rule.IContextMenuAction;
 import br.uff.tempo.apps.simulators.utils.ResourceWrapper;
 
 public class SmartMapActivity extends SmartAndroidMap implements ISpriteController, IContextMenuAction {
-
+	
 	// Called when a resource is just created by the Menu
 	@Override
 	public void onResourceCreationFinished(ResourceWrapper wrapper) {
@@ -81,5 +83,7 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 	@Override
 	public void onContextMenuAction(ContextMenu menu,	ContextMenuItem itemSelected) {
 		toastOnUIThread(itemSelected.getLabel(), Toast.LENGTH_LONG);
+		ruleToolBar.setContextVar(itemSelected.getRans(), ((Method) itemSelected.getExtra()).getName());
+		ruleToolBar.showDialog();
 	}
 }

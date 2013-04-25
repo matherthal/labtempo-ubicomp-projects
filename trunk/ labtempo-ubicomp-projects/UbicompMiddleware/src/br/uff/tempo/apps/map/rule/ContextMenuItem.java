@@ -8,7 +8,16 @@ public class ContextMenuItem {
 	private Text text;
 	private Object extra;
 	private Integer id;
+	private String rans;
 	
+	public String getRans() {
+		return rans;
+	}
+
+	public void setRans(String rans) {
+		this.rans = rans;
+	}
+
 	private static int count = 0;
 	
 	public ContextMenuItem(String label) {

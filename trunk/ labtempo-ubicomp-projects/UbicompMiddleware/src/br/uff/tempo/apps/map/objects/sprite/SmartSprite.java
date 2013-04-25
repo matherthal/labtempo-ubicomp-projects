@@ -78,6 +78,7 @@ public class SmartSprite extends Sprite implements TouchEvents.ITouchEvents {
 					ContextVariable cv = m.getAnnotation(IResourceAgent.ContextVariable.class);
 					ContextMenuItem item = new ContextMenuItem(cv.name());
 					item.setExtra(m);
+					item.setRans(stub.getRANS());
 					menu.addItem(item);
 				}
 			}

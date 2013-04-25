@@ -37,6 +37,7 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import br.uff.tempo.R;
+import br.uff.tempo.apps.map.dialogs.RuleToolbar;
 import br.uff.tempo.apps.map.log.LogActivity;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
 import br.uff.tempo.apps.map.objects.ResourceTextureFactory;
@@ -91,7 +92,8 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 	private TMXLayer mapWallLayer;
 
 	private Space houseMap;
-	private RuleComposeBar mBar;
+	protected RuleComposeBar mBar;
+	protected RuleToolbar ruleToolBar;
 	private InterfaceApplicationManager mAppManager;
 	protected boolean ruleComposerMode = false;
 	
@@ -202,6 +204,7 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		
 		mAppManager = InterfaceApplicationManager.getInstance();
+		ruleToolBar = new RuleToolbar(this);
 
 		// Add a default value for the preference "rdsAddress"
 		editor = prefs.edit();
