@@ -12,7 +12,7 @@ public abstract class MapDialog implements OnCancelListener, OnClickListener {
 	protected Activity activity;
 	protected boolean finished = false;
 
-	public MapDialog(final Activity activity, final int layout, final int titleString) {
+	public MapDialog(final Activity activity, final int layout, final int titleId) {
 
 		this.activity = activity;
 
@@ -24,7 +24,7 @@ public abstract class MapDialog implements OnCancelListener, OnClickListener {
 				dialog = new Dialog(activity);
 
 				dialog.setContentView(layout);
-				dialog.setTitle(titleString);
+				dialog.setTitle(titleId);
 
 				dialog.setOnCancelListener(MapDialog.this);
 			}
