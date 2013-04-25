@@ -70,15 +70,16 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 
 	@Override
 	public void onSpriteTap(SmartSprite sprite, TouchEvent pSceneTouchEvent) {
-		if (this.ruleComposerMode)
+		if (this.ruleComposerMode) {
 			sprite.showContextMenu(getCamera());
-		else
+		}
+		else {
 			getResourceCreator().callSimulator(sprite.getResourceWrapper().getStub(), sprite.getResourceWrapper().getSimulator());
+		}
 	}
 
 	@Override
-	public void onContextMenuAction(ContextMenu menu,
-			ContextMenuItem itemSelected) {
+	public void onContextMenuAction(ContextMenu menu,	ContextMenuItem itemSelected) {
 		toastOnUIThread(itemSelected.getLabel(), Toast.LENGTH_LONG);
 	}
 }
