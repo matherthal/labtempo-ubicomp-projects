@@ -3,10 +3,12 @@ package br.uff.tempo.apps.map.dialogs;
 import android.app.Activity;
 import android.view.View;
 import br.uff.tempo.R;
+import br.uff.tempo.middleware.management.RuleComposer;
 
 public class RuleToolbar extends MapDialog {
 
 	private IDialogFinishHandler handler;
+	private RuleComposer composer = new RuleComposer();
 
 	public RuleToolbar(final Activity act, final IDialogFinishHandler handler) {
 
@@ -72,6 +74,10 @@ public class RuleToolbar extends MapDialog {
 	
 	public void onChooseCVClick(View v) {
 
+	}
+	
+	public void setContextVar(String rans, String name) {
+		// TODO Auto-generated method stub
 	}
 
 }
