@@ -81,6 +81,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		this.name = name;
 		this.rans = rans;
 
+		// this.position = position == null ? new Position(0, 0) : position; 
 		this.position = position;
 		// initResource();
 		

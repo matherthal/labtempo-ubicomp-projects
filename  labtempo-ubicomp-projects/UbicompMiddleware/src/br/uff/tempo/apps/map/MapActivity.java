@@ -333,8 +333,8 @@ public class MapActivity extends SimpleBaseGameActivity implements
 		}
 
 		// Side bar to compose Context Rules
-		this.mBar = new RuleComposeBar(this.mCamera,
-				getVertexBufferObjectManager());
+		this.mBar = new RuleComposeBar(this.mCamera, getVertexBufferObjectManager(), this.fontManager,
+				this.textureManager);
 		this.mCamera.setHUD(this.mBar);
 
 		Log.i(TAG, "Create Resources");
