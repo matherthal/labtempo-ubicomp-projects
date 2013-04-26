@@ -53,8 +53,9 @@ import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Space;
 
-public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements IOnSceneTouchListener, IScrollDetectorListener,
-				IPinchZoomDetectorListener, IHoldDetectorListener,	OnSharedPreferenceChangeListener, ICreationFinisher {
+public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements IOnSceneTouchListener,
+		IScrollDetectorListener, IPinchZoomDetectorListener, IHoldDetectorListener,
+		OnSharedPreferenceChangeListener, ICreationFinisher {
 	// ===========================================================
 	// Constants
 	// ===========================================================
@@ -217,9 +218,10 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 
 		// Enable device vibrator
 		this.mEngine.enableVibrator(this);
-
+		
 		// Side bar to compose Context Rules
-		this.mBar = new RuleComposeBar(this.mCamera, getVertexBufferObjectManager());
+		this.mBar = new RuleComposeBar(this.mCamera, getVertexBufferObjectManager(), this.getFontManager(), this.getTextureManager());
+		//this.mBar = new RuleComposeBar(this.mCamera, getVertexBufferObjectManager());
 		this.resCreator = new Creator(this, this);
 
 		try {

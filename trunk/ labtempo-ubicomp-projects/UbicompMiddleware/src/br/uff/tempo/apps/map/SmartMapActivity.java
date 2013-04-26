@@ -7,7 +7,9 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
+import android.app.Dialog;
 import android.widget.Toast;
+import br.uff.tempo.apps.map.dialogs.IDialogFinishHandler;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
 import br.uff.tempo.apps.map.objects.ResourceIcon;
 import br.uff.tempo.apps.map.objects.notification.NotificationBox;
@@ -18,8 +20,10 @@ import br.uff.tempo.apps.map.rule.ContextMenu;
 import br.uff.tempo.apps.map.rule.ContextMenuItem;
 import br.uff.tempo.apps.map.rule.IContextMenuAction;
 import br.uff.tempo.apps.simulators.utils.ResourceWrapper;
+import br.uff.tempo.middleware.management.utils.Position;
 
-public class SmartMapActivity extends SmartAndroidMap implements ISpriteController, IContextMenuAction {
+public class SmartMapActivity extends SmartAndroidMap implements ISpriteController, IContextMenuAction,
+		IDialogFinishHandler {
 	
 	// Called when a resource is just created by the Menu
 	@Override
@@ -38,8 +42,14 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 	public ResourceIcon createSprite(ITextureRegion textureRegion, final ResourceWrapper wrapper) {
 		
 		// It's initially positioned at (x,y) position (pixels)
-		float x = getMap().metersToPixel(wrapper.getStub().getPosition().getX());
-		float y = getMap().metersToPixel(getMap().invertYcoordinate(wrapper.getStub().getPosition().getY()));
+		Position pos = wrapper.getStub().getPosition();
+		if (pos == null) {
+			pos = new Position(0f, 0f); // If unknown, that is the starting position
+			wrapper.getStub().identifyPosition(pos);
+		}
+		
+		float x = getMap().metersToPixel(pos.getX());
+		float y = getMap().metersToPixel(getMap().invertYcoordinate(pos.getY()));
 
 		VertexBufferObjectManager vertexBufferObj = this.getVertexBufferObjectManager();
 		Sprite sprite = SmartSpriteFactory.createSprite(wrapper.getId(), x, y, textureRegion, vertexBufferObj, this, wrapper, getMap(), this);
@@ -81,9 +91,15 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 	}
 
 	@Override
-	public void onContextMenuAction(ContextMenu menu,	ContextMenuItem itemSelected) {
+	public void onContextMenuAction(ContextMenu menu, ContextMenuItem itemSelected) {
 		toastOnUIThread(itemSelected.getLabel(), Toast.LENGTH_LONG);
 		ruleToolBar.setContextVar(itemSelected.getRans(), ((Method) itemSelected.getExtra()).getName());
 		ruleToolBar.showDialog();
+	}
+
+	@Override
+	public void onDialogFinished(Dialog dialog) {
+		// TODO:? Maybe get the string from RuleToobar here, instead of allow
+		// RuleToolbar to write on RuleComposeBar
 	}
 }
