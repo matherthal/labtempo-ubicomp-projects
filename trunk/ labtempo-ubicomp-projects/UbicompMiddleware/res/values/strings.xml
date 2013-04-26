@@ -25,6 +25,9 @@
     <string name="btn_config_res_ok">OK</string>
     <string name="btn_config_res_cancel">Cancel</string>
 
+	<!-- From Layout rule_toolbar.xml -->
+    <string name="title_rule_composer">Rule Composer</string>
+    
     <!-- From Layout tv.xml -->
     <string name="tvChPlus">CH +</string>
     <string name="tvChMinus">CH -</string>
