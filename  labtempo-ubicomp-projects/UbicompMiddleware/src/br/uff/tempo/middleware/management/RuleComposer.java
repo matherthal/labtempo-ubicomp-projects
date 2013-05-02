@@ -2,6 +2,7 @@ package br.uff.tempo.middleware.management;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -9,12 +10,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.sax.RootElement;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.Actuator.Action;
 
 public class RuleComposer { //extends Service {
 	private static final String TAG = "RuleComposer";
+	
+	private List<IRuleComposeListener> listeners = new LinkedList<IRuleComposeListener>();
 	
 	// Rule that will be parsed to a JSON file and loaded in the system
 	private Formula exprRoot;
@@ -34,12 +38,15 @@ public class RuleComposer { //extends Service {
 
 	public void setRuleName(String name) {
 		this.ruleName = name;
+		notifyRuleChanged(name, p_expr);
 	}
 
 	public void addCondition(String rai, String cv, Object[] params, long timeout) throws Exception {
 		Operand op = new Operand(rai, cv, params);
 		Predicate p = new Predicate(op, timeout, null);
 		this.p_expr.attachFormula(p);
+		
+		notifyRuleChanged(p, p_expr);
 	}
 
 	public void addConditionComp(String rai1, String cv1, Object[] params1, Operator op, String rai2,
@@ -56,33 +63,49 @@ public class RuleComposer { //extends Service {
 		Predicate p = new Predicate(op1, op, op2, timeout, null);
 		this.p_expr.attachFormula(p);
 	}
+	
+	public void addConditionComp(ContextVariableBundle cvBundle, Operator op, Object val, long timeout) throws Exception {
+		addConditionComp(cvBundle.getAgentRans(), cvBundle.getContextVariable(), cvBundle.getParameters(), op, val, timeout);
+	}
 
 	public void addOpenBracket() {
 		Formula f = new Formula();
 		this.p_expr.attachFormula(f);
 		this.p_expr = f;
+
+		notifyRuleChanged("(", p_expr);
 	}
 
 	public void addCloseBracket() {
 		this.p_expr = (Formula) this.p_expr.getFather();
+		
+		notifyRuleChanged(")", p_expr);
 	}
 
 	public void addAndClause() {
 		this.p_expr.setAndClause();
+		
+		notifyRuleChanged("AND", p_expr);
 	}
 
 	public void addOrClause() {
 		this.p_expr.setOrClause();
+		
+		notifyRuleChanged("OR", p_expr);
 	}
 
 	public void addNotClause() {
 		NotNode n = new NotNode();
 		this.p_expr.attachFormula(n);
 		this.p_expr = n;
+		
+		notifyRuleChanged("NOT", p_expr);
 	}
 
 	public void addExpressionTimer(long timeout) {
 		this.p_expr.setTimeout(timeout);
+		
+		notifyRuleChanged("TIMER " + timeout, p_expr);
 	}
 
 	public void setActuatorName(String name) {
@@ -125,6 +148,8 @@ public class RuleComposer { //extends Service {
 		FileOutputStream outputStream = context.openFileOutput(filename, Context.MODE_PRIVATE);
 		outputStream.write(ruleStr.getBytes());
 		outputStream.close();
+		
+		notifyRuleFinished(this.exprRoot);
 		
 		// Clean
 		this.exprRoot = null;
@@ -298,5 +323,27 @@ public class RuleComposer { //extends Service {
 		else 
 			elem.put(key, val.toString());
 		return elem;
+	}
+	
+	public void addListener(IRuleComposeListener listener) {
+		listeners.add(listener);
+	}
+	
+	private void notifyRuleChanged(Predicate predicate, Formula formula) {
+		for (IRuleComposeListener listener : listeners) {
+			listener.onRuleCompositionChanged(predicate, formula);
+		}
+	}
+	
+	private void notifyRuleChanged(String operandName, Formula formula) {
+		for (IRuleComposeListener listener : listeners) {
+			listener.onRuleCompositionChanged(operandName, formula);
+		}
+	}
+	
+	private void notifyRuleFinished(Formula formula) {
+		for (IRuleComposeListener listener : listeners) {
+			listener.onRuleCompositionFinished(formula);
+		}
 	}
 }
