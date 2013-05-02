@@ -1,7 +1,5 @@
 package br.uff.tempo.apps.map;
 
-import java.lang.reflect.Method;
-
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.region.ITextureRegion;
@@ -77,8 +75,7 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 	}
 
 	@Override
-	public void onSpriteEndLongPressMove(SmartSprite sprite, TouchEvent pSceneTouchEvent) {
-	}
+	public void onSpriteEndLongPressMove(SmartSprite sprite, TouchEvent pSceneTouchEvent) {}
 
 	@Override
 	public void onSpriteTap(SmartSprite sprite, TouchEvent pSceneTouchEvent) {
@@ -92,9 +89,22 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 
 	@Override
 	public void onContextMenuAction(ContextMenu menu, ContextMenuItem itemSelected) {
-		toastOnUIThread(itemSelected.getLabel(), Toast.LENGTH_LONG);
-		ruleToolBar.setContextVar(itemSelected.getRans(), ((Method) itemSelected.getExtra()).getName());
-		ruleToolBar.showDialog();
+		
+		//toastOnUIThread(itemSelected.getLabel(), Toast.LENGTH_LONG);
+		
+		// Insert a context variable in the context rule expression
+		ruleToolbar.setContextVariable(itemSelected.getRans(), itemSelected.getMethodName()); 
+		
+		//'show' operation must be executed in UI thread.
+		//Remember that 'onContextMenuAction' method is a kind of event (callback) called by another thread
+		//and you can't do UI operations from a non-ui thread.
+		
+		runOnUiThread(new Runnable() {			
+			@Override
+			public void run() {
+				ruleToolbar.showDialog();
+			}
+		});
 	}
 
 	@Override

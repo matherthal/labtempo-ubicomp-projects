@@ -79,6 +79,7 @@ public class SmartSprite extends Sprite implements TouchEvents.ITouchEvents {
 					ContextMenuItem item = new ContextMenuItem(cv.name());
 					item.setExtra(m);
 					item.setRans(stub.getRANS());
+					item.setMethodName(m.getName());
 					menu.addItem(item);
 				}
 			}

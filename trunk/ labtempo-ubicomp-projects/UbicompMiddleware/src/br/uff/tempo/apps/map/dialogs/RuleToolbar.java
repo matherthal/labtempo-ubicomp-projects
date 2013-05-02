@@ -1,152 +1,188 @@
 package br.uff.tempo.apps.map.dialogs;
 
-import java.io.IOException;
-
-import org.json.JSONException;
-
 import android.app.Activity;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import br.uff.tempo.R;
-import br.uff.tempo.apps.map.rule.RuleComposeBar;
+import android.widget.Toast;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
+import br.uff.tempo.middleware.management.ContextVariableBundle;
 import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.RuleComposer;
 
-public class RuleToolbar extends MapDialog {
-	private static final String TAG = "RuleToolbar";
+public class RuleToolbar extends BaseRuleToolbar {
 
+	public static final int CONTEXT_VARIABLE = 0;
+	public static final int CONSTANT_VALUE = CONTEXT_VARIABLE + 1;
+	
 	private IDialogFinishHandler handler;
-	private RuleComposer composer = new RuleComposer();
-
-	private RuleComposeBar composeBar;
+	private RuleComposer ruleComposer;
+	private boolean comparisonOperatorChoosed = false;
 	
-	// Context Variable 1
-	private String rai1;
-	private String cv1;
-	private Object[] params1;
-	// Comparison operator
-	private Operator op;
-	// Context Variable 2
-	private String rai2;
-	private String cv2;
-	private Object[] params2;
-	// Comparison timer
-	private long timeout;
-	// Comparison value (either this is used or the context variable 2)
-	private Object value;
-	
-	public RuleToolbar(final Activity act, final IDialogFinishHandler handler) {
+	//Rule condition items
+	private ContextVariableBundle contextVariable;
+	private Operator operator;
 
-		super(act, R.layout.rule_toolbar, R.string.title_rule_composer);
+	public RuleToolbar(final Activity act, final IDialogFinishHandler handler, RuleComposer ruleComposer) {
+		super(act);
 		this.handler = handler;
-	}
-	
-	public RuleToolbar(final Activity act) {
-		this(act, (IDialogFinishHandler) act);
-		Log.d(TAG, "OK");
+		this.ruleComposer = ruleComposer;
+		dialog.setCancelable(true);
+		dialog.setCanceledOnTouchOutside(true);
 	}
 
-	@Override
-	public void onClick(View view) {
+	public RuleToolbar(final Activity act, RuleComposer ruleComposer) {
+		this(act, (IDialogFinishHandler) act, ruleComposer);
+	}
+	
+	public void setComposer(RuleComposer ruleComposer) {
+		this.ruleComposer = ruleComposer;
 	}
 
 	// ===========================================================
 	// UI Events
 	// ===========================================================
 
-	public void onRuleName(View v) {
-		String name = "";//TODO: get from editbox
-		composer.setRuleName(name);
-	}
-	
+	@Override
 	public void onAndClick(View v) {
-		composer.addAndClause();
-		composeBar.appendTextLine("AND");
+		this.ruleComposer.addAndClause();
+		comparisonOperatorChoosed = false;
 	}
 
+	@Override
 	public void onOrClick(View v) {
-		composer.addOrClause();
-		composeBar.appendTextLine("OR");
+		this.ruleComposer.addOrClause();
+		comparisonOperatorChoosed = false;
 	}
 
+	@Override
 	public void onNotClick(View v) {
-		composer.addNotClause();
-		composeBar.appendTextLine("NOT");
+		this.ruleComposer.addNotClause();
+		comparisonOperatorChoosed = false;
 	}
 
+	@Override
 	public void onOpenBracketClick(View v) {
-		composer.addOpenBracket();
-		composeBar.appendTextLine("(");
-		composeBar.openBracket();
+		this.ruleComposer.addOpenBracket();
+		comparisonOperatorChoosed = false;
 	}
 
+	@Override
 	public void onCloseBracketClick(View v) {
-		composer.addCloseBracket();
-		composeBar.closeBracket();
-		composeBar.appendTextLine(")");		
+		this.ruleComposer.addCloseBracket();
+		comparisonOperatorChoosed = false;
 	}
 
+	@Override
 	public void onEqualClick(View v) {
-		this.op = Operator.Equal;
-		composeBar.appendTextLine("=");
+		
+		this.operator = Operator.Equal; 
+		comparisonOperatorCliked();
 	}
 
+	@Override
 	public void onNotEqualClick(View v) {
-		this.op = Operator.Different;
-		composeBar.appendTextLine("!=");
+		
+		this.operator = Operator.Different;
+		comparisonOperatorCliked();
 	}
 
+	@Override
 	public void onLessThanClick(View v) {
-		this.op = Operator.LessThan;
-		composeBar.appendTextLine("<");
+		
+		this.operator = Operator.LessThan;
+		comparisonOperatorCliked();
 	}
 
+	@Override
 	public void onGreaterThanClick(View v) {
-		this.op = Operator.GreaterThan;
-		composeBar.appendTextLine(">");
+		
+		this.operator = Operator.GreaterThan;
+		comparisonOperatorCliked();
 	}
 
+	@Override
 	public void onLessThanOrEqualClick(View v) {
-		this.op = Operator.LessThanOrEqual;
-		composeBar.appendTextLine("<=");
+		
+		this.operator = Operator.LessThanOrEqual;
+		comparisonOperatorCliked();
 	}
 
+	@Override
 	public void onGreaterThanOrEqualClick(View v) {
-		this.op = Operator.GreaterThanOrEqual;
-		composeBar.appendTextLine(">=");
+		
+		this.operator = Operator.GreaterThanOrEqual;
+		comparisonOperatorCliked();
 	}
 
+	@Override
 	public void onTimerClick(View v) {
-		long timeout = 0; //TODO: get from edit box
-		composer.addExpressionTimer(timeout);
-		composeBar.appendTextLine("FOR " + timeout/60 + " MIN");
+		// TODO Get a timer value from user
+		comparisonOperatorChoosed = false;
 	}
 	
-	public void onSetConstantClick(View v) {
-		//this.value;
-		composeBar.appendTextLine(this.value.toString());
-	}
-	
-	public void onChooseCVClick(View v) {
-		
-	}
-	
-	public void setContextVar(String rans, String name) {
-		
+	@Override
+	void onInsertConstantClick(View v) {
+		// TODO Get a value from user
 	}
 
-	public void btnEndRuleCreation() {
+	@Override
+	void onChooseContextVariableClick(View v) {
+
+		// Hide the dialog, in order to the user choose another context variable
+		dialog.dismiss();
+	}
+	
+	@Override
+	void onFinishContextVariableClick(View v) {
+		
 		try {
-			composer.finish(this.activity.getBaseContext());
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (JSONException e) {
-			e.printStackTrace();
+			this.ruleComposer.finish(activity);
+		} catch (Exception e) {
+			throw new SmartAndroidRuntimeException("Error by finishing a context rule expression!", e);
 		}
 	}
 	
-	public void linkToComposeBar(RuleComposeBar bar) {
-		composeBar = bar;
+	public void setContextVariable(String rans, String contextVariable) {
+		this.contextVariable = new ContextVariableBundle(rans, contextVariable);
+		
+		comparableClicked(CONTEXT_VARIABLE);
+	}
+	
+	private void comparableClicked(int type) {
+		
+		if (comparisonOperatorChoosed) {
+
+			// Finishes this condition
+			if (type == CONTEXT_VARIABLE) {
+				// TODO something like: this.ruleComposer.addConditionComp(contextVariable, operator, val, timeout)
+			} else if (type == CONSTANT_VALUE) {
+				try {
+					// TODO Get correct value
+					this.ruleComposer.addConditionComp(contextVariable, operator, 10.0, 0);
+				} catch (Exception e) {
+					throw new SmartAndroidRuntimeException("Error by finilizing current condition", e);
+				}
+			}
+			
+			showMessage("You can either choose a logical operator to add another condition or finish this Rule Expression");
+			
+		} else {
+			showMessage("Please, choose an comparison operator to continue...");
+		}
+	}
+	
+	private void comparisonOperatorCliked() {
+		
+		comparisonOperatorChoosed  = true;
+		showMessage("Now, choose a constant or another context variable...");
+	}
+	
+	private void showMessage(final String message) {
+		
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				Toast.makeText(activity, message, Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 }
