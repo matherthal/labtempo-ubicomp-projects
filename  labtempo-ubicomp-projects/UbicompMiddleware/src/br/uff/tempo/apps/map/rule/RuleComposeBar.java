@@ -17,10 +17,13 @@ import org.andengine.util.color.Color;
 
 import android.graphics.Typeface;
 import br.uff.tempo.apps.map.utils.Transformations;
+import br.uff.tempo.middleware.management.Formula;
+import br.uff.tempo.middleware.management.IRuleComposeListener;
 import br.uff.tempo.middleware.management.Operator;
+import br.uff.tempo.middleware.management.Predicate;
 import br.uff.tempo.middleware.management.RuleComposer;
 
-public class RuleComposeBar extends HUD {
+public class RuleComposeBar extends HUD implements IRuleComposeListener {
 	private static final String TAG = "RuleComposeBar";
 	
 	private static float MAX_ALPHA = 0.5f;
@@ -147,5 +150,27 @@ public class RuleComposeBar extends HUD {
 
 	public void closeBracket() {
 		this.bracketLevel--;
+	}
+
+	@Override
+	public void onRuleCompositionChanged(String changeName, Formula formula) {
+		
+		if (changeName.equals("(")) {
+			openBracket();
+		} else if (changeName.equals(")")) {
+			closeBracket();
+		}
+		
+		appendTextLine(changeName);
+	}
+
+	@Override
+	public void onRuleCompositionChanged(Predicate predicate, Formula formula) {
+		// TODO Handle with a 
+	}
+
+	@Override
+	public void onRuleCompositionFinished(Formula formula) {
+		// TODO what do you do when a compose finishes? terminate rule mode?
 	}
 }

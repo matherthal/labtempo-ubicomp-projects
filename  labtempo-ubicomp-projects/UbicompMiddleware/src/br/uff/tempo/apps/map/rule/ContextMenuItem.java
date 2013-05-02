@@ -9,6 +9,7 @@ public class ContextMenuItem {
 	private Object extra;
 	private Integer id;
 	private String rans;
+	private String methodName;
 	
 	public String getRans() {
 		return rans;
@@ -51,5 +52,13 @@ public class ContextMenuItem {
 
 	public void setText(Text text) {
 		this.text = text;
+	}
+
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
 	}
 }

@@ -48,6 +48,7 @@ import br.uff.tempo.apps.simulators.utils.ICreationFinisher;
 import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.e.SmartAndroidException;
 import br.uff.tempo.middleware.management.Place;
+import br.uff.tempo.middleware.management.RuleComposer;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.stubs.ResourceLocationStub;
 import br.uff.tempo.middleware.management.utils.Position;
@@ -94,9 +95,10 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 
 	private Space houseMap;
 	protected RuleComposeBar mBar;
-	protected RuleToolbar ruleToolBar;
+	protected RuleToolbar ruleToolbar;
 	private InterfaceApplicationManager mAppManager;
 	protected boolean ruleComposerMode = false;
+	protected RuleComposer ruleComposer;
 	
 	// ===========================================================
 	// Methods
@@ -205,7 +207,6 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		
 		mAppManager = InterfaceApplicationManager.getInstance();
-		ruleToolBar = new RuleToolbar(this);
 
 		// Add a default value for the preference "rdsAddress"
 		editor = prefs.edit();
@@ -221,7 +222,6 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 		
 		// Side bar to compose Context Rules
 		this.mBar = new RuleComposeBar(this.mCamera, getVertexBufferObjectManager(), this.getFontManager(), this.getTextureManager());
-		//this.mBar = new RuleComposeBar(this.mCamera, getVertexBufferObjectManager());
 		this.resCreator = new Creator(this, this);
 
 		try {
@@ -320,6 +320,10 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 		case R.id.rule:
 			this.ruleComposerMode = true;
 			this.mBar.show();
+			this.ruleComposer = new RuleComposer();
+			this.ruleComposer.addListener(this.mBar);
+			this.ruleToolbar = new RuleToolbar(this, this.ruleComposer);
+			
 			break;
 
 		case R.id.settings:
@@ -432,6 +436,9 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 						Log.i("SmartAndroid", "MAP: Double tap");
 						SmartAndroidMap.this.mCamera.setZoomFactor(1f);
 						SmartAndroidMap.this.mBar.dismiss();
+						SmartAndroidMap.this.ruleComposer = null;
+						SmartAndroidMap.this.ruleToolbar = null;
+						
 						return true;
 					}
 				};
