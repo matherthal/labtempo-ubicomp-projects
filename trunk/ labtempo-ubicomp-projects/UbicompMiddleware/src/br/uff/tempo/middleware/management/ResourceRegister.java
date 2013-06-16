@@ -1,6 +1,9 @@
 package br.uff.tempo.middleware.management;
 
+import static br.uff.tempo.middleware.management.interfaces.IResourceRegister.rans;
+import android.util.Log;
 import br.uff.tempo.middleware.SmartAndroid;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.interfaces.IResourceRegister;
 import br.uff.tempo.middleware.management.utils.Position;
 
@@ -43,21 +46,33 @@ public class ResourceRegister extends ResourceAgent implements IResourceRegister
 	
 	@Override
 	public boolean register(ResourceData resourceData) {
-		ResourceNSContainer.getInstance().add(resourceData.getResourceAgentNS());
-		ResourceRepository.getInstance().add(resourceData);
-				
-		notifyStakeholders("register", rans);
-		return true;
+		
+		try {
+			ResourceNSContainer.getInstance().add(resourceData.getResourceAgentNS());
+			ResourceRepository.getInstance().add(resourceData);
+
+			notifyStakeholders("register", rans);
+			return true;
+		} catch (SmartAndroidRuntimeException e) {
+			
+			Log.e("SmartAndroid", "[ResourceRegister] Error in register method: " + e.getMessage());
+			return false;
+		}
 	}
 	
 	@Override
 	public boolean registerLocation(Position position, ResourceData resourceData) {
 		
-		ResourceNSContainer.getInstance().add(resourceData.getResourceAgentNS());
-		
-		ResourceLocation.getInstance().registerInPlace(rans, position);
-		ResourceRepository.getInstance().add(resourceData);
-		return true;
+		try {
+			ResourceNSContainer.getInstance().add(resourceData.getResourceAgentNS());
+
+			ResourceLocation.getInstance().registerInPlace(rans, position);
+			ResourceRepository.getInstance().add(resourceData);
+			return true;
+		} catch (SmartAndroidRuntimeException e) {
+			Log.e("SmartAndroid", "[ResourceRegister] Error in registerLocation method: " + e.getMessage());
+			return false;
+		}
 	}
 
 	/**

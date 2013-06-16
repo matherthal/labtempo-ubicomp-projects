@@ -6,6 +6,7 @@ import android.util.FloatMath;
 
 public class Position implements Serializable {
 
+	public static final double DELTA = 0.1;
 	private static final long serialVersionUID = -2046096530465014330L;
 	
 	float x;
@@ -34,22 +35,28 @@ public class Position implements Serializable {
 	}
 
 	//return quadrant number (in clockwise direction: 1: ++; 2: -+; 3: --; 4: +-;)
-	public int compareTo(Position position) {
-		int result = -1;
-		if (x>=position.x){ 
-			if (y>=position.y){
-				result = 1;
+	public Quadrant compareTo(Position position) {
+		Quadrant result = Quadrant.NOT_FOUND;
+		
+		double absX = Math.abs(x - position.x);
+		double absY = Math.abs(y - position.y);
+		
+		//Greater than condition, using a DELTA error
+		//PS: x == y -> x - y == 0. Using error, comes: |x-y| < DELTA
+		if (absX < DELTA || x > position.x) {
+			if (absY < DELTA || y > position.y) {
+				result = Quadrant.FIRST;
 			} else {
-				result = 4;
+				result = Quadrant.FOURTH;
 			}
-		} else
-		{
-			if (y>=position.y){
-				result = 2;
+		} else {
+			if (absY < DELTA || y < position.y) {
+				result = Quadrant.THIRD;
 			} else {
-				result = 3;
-			}				
+				result = Quadrant.SECOND;
+			}
 		}
+		
 		return result;
 	}
 	

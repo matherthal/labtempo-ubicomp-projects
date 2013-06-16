@@ -160,12 +160,15 @@ public class Creator implements IChooser, IListGetter, IDialogFinishHandler {
 
 	@SuppressWarnings("rawtypes")
 	private void prepareCall(ResourceWrapper wrapper) {
-		Class simulator = wrapper.getSimulator();
 		
-		//The stub to the agent
-		IResourceAgent stub = wrapper.getStub();
-		
-		callSimulator(stub, simulator);
+		if (wrapper != null) {
+			Class simulator = wrapper.getSimulator();
+
+			// The stub to the agent
+			IResourceAgent stub = wrapper.getStub();
+
+			callSimulator(stub, simulator);
+		}
 		finishCreation(wrapper);
 	}
 
@@ -203,7 +206,7 @@ public class Creator implements IChooser, IListGetter, IDialogFinishHandler {
 			this.creationFinisher.onResourceCreationFinished(wrapper);
 		} else {
 			Log.w("SmartAndroid",
-					"Creator: Cannot call onResourceCreationFinished. Interface doesn't provide by the user");
+					"Creator: Cannot call onResourceCreationFinished. Interface doesn't provided by the user");
 		}
 	}
 }

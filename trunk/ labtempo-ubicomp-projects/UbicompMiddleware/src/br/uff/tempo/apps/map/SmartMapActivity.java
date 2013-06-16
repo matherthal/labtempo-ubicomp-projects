@@ -26,15 +26,20 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 	// Called when a resource is just created by the Menu
 	@Override
 	public void onResourceCreationFinished(ResourceWrapper wrapper) {
-		//Get the appropriated texture
-		ITextureRegion resTexture = getTextureFactory().getResourceTextureRegion(wrapper.getId());
-		ResourceIcon icon = createSprite(resTexture, wrapper);
 		
-		InterfaceApplicationManager manager = getInterfaceManager();
-		manager.addResource(wrapper.getStub().getRANS(), icon);
-		
-		// Register interest in all context variables
-		wrapper.getStub().registerStakeholder("all", manager.getRANS());
+		if (wrapper != null) {
+			//Get the appropriated texture
+			ITextureRegion resTexture = getTextureFactory().getResourceTextureRegion(wrapper.getId());
+			ResourceIcon icon = createSprite(resTexture, wrapper);
+			
+			InterfaceApplicationManager manager = getInterfaceManager();
+			manager.addResource(wrapper.getStub().getRANS(), icon);
+			
+			// Register interest in all context variables
+			wrapper.getStub().registerStakeholder("all", manager.getRANS());
+		} else {
+			toastOnUIThread("Error creating resource... try again", Toast.LENGTH_LONG);
+		}
 	}
 
 	public ResourceIcon createSprite(ITextureRegion textureRegion, final ResourceWrapper wrapper) {

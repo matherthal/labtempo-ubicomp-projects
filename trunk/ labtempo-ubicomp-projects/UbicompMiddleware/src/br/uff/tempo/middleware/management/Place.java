@@ -6,6 +6,7 @@ import java.util.Map;
 
 import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.utils.Position;
+import br.uff.tempo.middleware.management.utils.Quadrant;
 
 public class Place /*extends ResourceAgent*/ implements IPlace,Serializable {
 	
@@ -101,7 +102,7 @@ public class Place /*extends ResourceAgent*/ implements IPlace,Serializable {
 
 	public boolean contains(Position position)
 	{
-		return (position.compareTo(lower)==1 && position.compareTo(upper)==3); 
+		return (position.compareTo(lower) == Quadrant.FIRST && position.compareTo(upper) == Quadrant.THIRD); 
 	}
 
 //	@Override

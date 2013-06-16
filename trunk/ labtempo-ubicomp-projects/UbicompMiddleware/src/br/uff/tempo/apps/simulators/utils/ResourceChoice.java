@@ -53,7 +53,7 @@ public class ResourceChoice {
 		} else if (resourceData.getType().equals(ResourceAgent.type(Person.class))) {
 			
 			wrapper.setStub(new PersonStub(resourceData.getName()));
-			//PS: Thre is no simulator class to the person
+			//PS: There is no simulator class to the person
 			
 		} else {
 			
@@ -68,14 +68,16 @@ public class ResourceChoice {
 
 	public static ResourceWrapper choiceNewResource(ChosenData chosenData, Position position) {
 
+		IResourceAgent agent = null;
 		ResourceWrapper wrapper = new ResourceWrapper();
+		boolean success = false;
 
 		if (chosenData.getTag().equals(ResourceAgent.type(Stove.class))) {
 			
 			String name = chosenData.getName();
 			wrapper.setSimulator(StoveView.class);
-			IResourceAgent agent = new Stove(name, name, position);
-			agent.identify();
+			agent = new Stove(name, name, position);
+			success = agent.identify();
 			wrapper.setAgent(agent);
 			wrapper.setStub(new StoveStub(name));
 
@@ -83,8 +85,8 @@ public class ResourceChoice {
 			
 			String name = chosenData.getName();
 			wrapper.setSimulator(LampView.class);
-			IResourceAgent agent = new Lamp(name, name, position);
-			agent.identify();
+			agent = new Lamp(name, name, position);
+			success = agent.identify();
 			wrapper.setAgent(agent);
 			wrapper.setStub(new LampStub(name));
 
@@ -92,8 +94,8 @@ public class ResourceChoice {
 			
 			String name = chosenData.getName();
 			wrapper.setSimulator(BedView.class);
-			IResourceAgent agent = new Bed(name, name, position);
-			agent.identify();
+			agent = new Bed(name, name, position);
+			success = agent.identify();
 			wrapper.setAgent(agent);
 			wrapper.setStub(new BedStub(name));
 
@@ -101,8 +103,8 @@ public class ResourceChoice {
 			
 			String name = chosenData.getName();
 			wrapper.setSimulator(TvView.class);
-			IResourceAgent agent = new Television(name, name, position);
-			agent.identify();
+			agent = new Television(name, name, position);
+			success = agent.identify();
 			wrapper.setAgent(agent);
 			wrapper.setStub(new TelevisionStub(name));
 			
@@ -112,6 +114,11 @@ public class ResourceChoice {
 		}
 		
 		wrapper.setId(chosenData.getTag());
+		
+		//If the register fail, there's no wrapper...
+		if (!success) {
+			wrapper = null;
+		}			
 
 		return wrapper;
 	}
