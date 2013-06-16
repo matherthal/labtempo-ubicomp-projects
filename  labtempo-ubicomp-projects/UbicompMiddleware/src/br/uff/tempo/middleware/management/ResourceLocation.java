@@ -11,6 +11,7 @@ import java.util.Set;
 import android.util.Log;
 import br.uff.tempo.middleware.SmartAndroid;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Sorter;
@@ -159,7 +160,11 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 				return local;
 			}
 		}
-		return null;
+		
+		String msg = "Position [" + position + "] doesn't fit in any place!";
+		Log.e("SmartAndroid", msg);
+		
+		throw new SmartAndroidRuntimeException(msg);
 	}
 	
 	/**

@@ -30,7 +30,7 @@ public class RuleToolbar extends BaseRuleToolbar {
 	}
 
 	public RuleToolbar(final Activity act, RuleComposer ruleComposer) {
-		this(act, (IDialogFinishHandler) act, ruleComposer);
+		this(act, null, ruleComposer);
 	}
 	
 	public void setComposer(RuleComposer ruleComposer) {

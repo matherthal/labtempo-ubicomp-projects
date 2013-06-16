@@ -37,7 +37,7 @@ public class ResourceConfig extends MapDialog {
 	}
 	
 	public ResourceConfig(final Activity act) {
-		this(act, (IDialogFinishHandler) act);
+		this(act, null);
 	}
 
 	// When OK button is clicked
@@ -64,7 +64,10 @@ public class ResourceConfig extends MapDialog {
 			}
 
 			dialog.cancel();
-			handler.onDialogFinished(this.dialog);
+			
+			if (handler != null) {
+				handler.onDialogFinished(this.dialog);
+			}
 
 		} catch (SmartAndroidException e) {
 			activity.runOnUiThread(new Runnable() {
