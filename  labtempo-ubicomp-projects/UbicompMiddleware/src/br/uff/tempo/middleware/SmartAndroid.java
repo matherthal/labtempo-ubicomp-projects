@@ -1,11 +1,13 @@
 package br.uff.tempo.middleware;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.UUID;
 
+import android.content.Context;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.common.Callable;
 import br.uff.tempo.middleware.comm.common.InterestAPI;
@@ -33,7 +35,7 @@ public class SmartAndroid {
 	private static String myIp = defaultMyIp;
 	private static int myLocalPrefix = 0;
 
-	public static String resourceDiscoveryIP = "192.168.0.100";//getLocalIpAddressForRds();
+	public static String resourceDiscoveryIP = getLocalIpAddressForRds();
 
 	public static Integer resourceDiscoveryPREFIX = 0;
 	public static boolean interestAPIEnable = false;
@@ -53,13 +55,23 @@ public class SmartAndroid {
 	/**
 	 * Following Sigleton Design Patter it is the constructor that initialize the SmartServer
 	 */
-	public synchronized static void newInstance() {
+	public synchronized static void newInstance(Context context) {
 		if (instance == null) {
-			instance = new SmartAndroid();
+			instance = new SmartAndroid(context);
 		}
-	}
-
-	private SmartAndroid() {
+	}	
+	
+	private SmartAndroid(Context context) {
+		SocketService soServ = new SocketService("Multicast");
+		try {
+			soServ.initiateMulticastSocket(context);
+			soServ.sendMessage("hello");
+			Log.d("Multicast", soServ.receiveMessage());
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		initializeIpAndPrefixDaemon();
 		initializeMiddlewareResources();
 		initializeCommunicationDaemon();			
