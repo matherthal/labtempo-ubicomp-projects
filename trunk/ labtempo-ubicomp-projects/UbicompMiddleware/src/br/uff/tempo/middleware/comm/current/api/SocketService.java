@@ -1,13 +1,17 @@
 package br.uff.tempo.middleware.comm.current.api;
 
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.MulticastSocket;
 import java.net.SocketException;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
 import android.util.Log;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 
@@ -114,5 +118,62 @@ public class SocketService {
 		} catch (Exception e) {
 			throw new SmartAndroidRuntimeException("Exception decompressing: " + compressedBytes, e);
 		}
+	}
+	
+	//Multicast session
+	private MulticastSocket socket;
+
+	private InetAddress iAddr;
+	private final static int port = 9876;
+
+	public SocketService(String flag){
+		
+	}
+	public void initiateMulticastSocket(Context context) throws IOException
+	{
+	    
+		WifiManager wm = (WifiManager)context.getSystemService(Context.WIFI_SERVICE);
+		WifiManager.MulticastLock multicastLock = wm.createMulticastLock("mydebuginfo");
+		multicastLock.acquire();
+		
+		//  Create a socket and start the communication
+		socket = new MulticastSocket(port);
+		iAddr = InetAddress.getByName("234.235.236.237");
+	
+	    //  Joins the multicastSocket group
+		socket.joinGroup(iAddr);	
+		
+	} 
+	
+	public void sendMessage(String _s)
+	{
+	    
+	    //Translate message to bytes
+	    byte[] _data = (_s).getBytes();
+
+	        //Create and send a packet
+	    DatagramPacket _packet = new DatagramPacket(_data, _data.length, iAddr, port);
+
+        try {
+            socket.send(_packet);
+        } catch (IOException e) {
+        	Log.e("Multicast", e.toString());
+        }
+	}
+	
+	public String receiveMessage(){
+		byte[] _data = new byte[1024];
+		try
+        {
+            //Datagram for receiving
+            DatagramPacket packet = new DatagramPacket(_data, _data.length);
+			//Receive the packet, convert it and send it to the Activity class
+            socket.receive(packet);
+            return new String(_data, 0 , packet.getLength());
+        }
+        catch(IOException e)
+        {
+            return null;//Will break when the socket is closed
+        }
 	}
 }

@@ -35,7 +35,7 @@ public class MainListView extends ListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		SmartAndroid.newInstance();
+		SmartAndroid.newInstance(this);
 
 		// Print devices list
 		String[] devices = getResources().getStringArray(R.array.devices_array);

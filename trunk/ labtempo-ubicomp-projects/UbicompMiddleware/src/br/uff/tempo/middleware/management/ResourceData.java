@@ -3,7 +3,7 @@ package br.uff.tempo.middleware.management;
 import br.uff.tempo.middleware.management.utils.Position;
 
 /**
- * Resource Agent data class
+ * Resource Agent data class 
  * <br /><br />
  * It contains rans, type, position and place
  */
