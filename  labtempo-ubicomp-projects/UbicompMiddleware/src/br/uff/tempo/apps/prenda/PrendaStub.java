@@ -131,4 +131,16 @@ public class PrendaStub extends Stub implements IPrenda {
 		
 	}
 
+	@Override
+	public boolean identifyPosition(Position position) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean identifyInPlace(String placeName, Position position) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }

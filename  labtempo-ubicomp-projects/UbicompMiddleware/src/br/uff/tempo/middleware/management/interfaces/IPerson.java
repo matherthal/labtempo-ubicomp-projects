@@ -41,7 +41,7 @@ public interface IPerson extends IResourceAgent {
 	 * @param i index in recent positions list
 	 * @return i-th position in list
 	 */
-	public Position getPosition(int i);
+	public Position getPositionIndex(int i);
 
 	/**
 	 * @return current instance position

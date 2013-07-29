@@ -306,7 +306,7 @@ public class ResourceDirectory {
 	public void delete(ResourceData resource){
 		List<ResourceData> result;
 		if ((result = read(ResourceData.RANS, resource.getRans()))!= null){
-			result.set(0,null);
+			result.remove(0);
 		}
 		Log.d(TAG, "Deleted");
 	}

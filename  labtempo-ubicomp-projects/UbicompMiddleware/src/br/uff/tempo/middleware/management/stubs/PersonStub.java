@@ -42,11 +42,11 @@ public class PersonStub extends ResourceAgentStub implements IPerson {
 	}
 
 	@Override
-	public Position getPosition(int i) {
+	public Position getPositionIndex(int i) {
 		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
 		params.add(new Tuple<String, Object>(int.class.getName(), i));
 
-		return (Position) makeCall("getPosition", params, Position.class);
+		return (Position) makeCall("getPositionIndex", params, Position.class);
 	}
 	
 	@Override
