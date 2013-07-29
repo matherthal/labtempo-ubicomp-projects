@@ -63,6 +63,7 @@
         <item name="item_smartandroid_debugger">SmartAndroid Debugger</item>
         <item name="item_smartandroid_debugger">Simulador de Tracking</item>
         <item name="item_reminder">Plano de Cuidados</item>
+        <item name="item_prenda">Prenda</item>
     </string-array>
     
     <!-- Freq Array -->

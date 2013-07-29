@@ -62,10 +62,10 @@ class Avatar {
 				+ len);
 		
 		IResourceDiscovery resourceDiscovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
-		List<ResourceData> listResource = resourceDiscovery.searchForAttribute(ResourceData.TYPE, PrendaAgent.class.getSimpleName());
+		List<ResourceData> listResource = resourceDiscovery.search(ResourceData.TYPE, PrendaAgent.class.getSimpleName());
 		
 		if (listResource != null) {
-			IPrenda prenda = new PrendaStub(listResource.get(0).getRai());
+			IPrenda prenda = new PrendaStub(listResource.get(0).getRans());
 			prendaPosition = prenda.getPosition();
 		} else {
 			// definir prenda

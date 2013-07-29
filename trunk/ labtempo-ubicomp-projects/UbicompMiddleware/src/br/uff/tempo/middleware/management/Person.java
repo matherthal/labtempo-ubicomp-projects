@@ -79,13 +79,16 @@ public class Person extends ResourceAgent implements IPerson {
 		return objects.remove(sensor);
 	}
 
-	public Position getPosition(int i) {
+	public Position getPositionIndex(int i) {
 		return recentPositions.get(objects.size() - (i + 1));
 	}
 
-	// Just to keep compatibility
-	public Position getPosition() {
-		return recentPositions.getLast();
+    //Just to keep compatibility
+	public Position getPosition() {	
+		if (!recentPositions.isEmpty()) {
+			return recentPositions.getLast();
+		}
+		return super.getPosition();
 	}
 
 	public Position getCurrentPosition() {
@@ -120,4 +123,6 @@ public class Person extends ResourceAgent implements IPerson {
 	@Override
 	public void notificationHandler(String rai, String method, Object value) {
 	}
+
+
 }

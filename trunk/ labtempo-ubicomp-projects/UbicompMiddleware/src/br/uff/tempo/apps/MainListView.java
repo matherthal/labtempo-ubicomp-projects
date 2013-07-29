@@ -16,6 +16,7 @@ import br.uff.tempo.apps.map.SmartMapActivity;
 import br.uff.tempo.apps.onOffCounter.CounterApp;
 import br.uff.tempo.apps.onOffCounter.copyToTestCommAPI.CounterApp2;
 import br.uff.tempo.apps.onoffsample.OnOffView;
+import br.uff.tempo.apps.prenda.tracking.PrendaTrackingView;
 import br.uff.tempo.apps.reminder.ReminderActivity;
 import br.uff.tempo.apps.rule.RuleFactory;
 import br.uff.tempo.apps.rule.RuleManager;
@@ -113,6 +114,9 @@ public class MainListView extends ListActivity {
 					startActivity(intent);
 				} else if (item.equals("Simuladores")) {
 					Intent intent = new Intent(MainListView.this, SimulCreatorActivity.class);
+					startActivity(intent);
+				} else if (item.equals("Prenda")) {
+					Intent intent = new Intent(MainListView.this, PrendaTrackingView.class);
 					startActivity(intent);
 				} else {
 					Toast.makeText(MainListView.this, "Não existe agente para este item: " + item.toString(), Toast.LENGTH_SHORT).show();

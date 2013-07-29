@@ -96,12 +96,14 @@ public class TicTacToe extends Activity {
   public void onPause() {
     super.onPause();
     this.game.pause();
+    Log.d("TicTacToe", gameAgent.getPlayer().toString()+" onPause()");
   }
 
   @Override
   public void onResume() {
     super.onResume();
     this.game.resume();
+    Log.d("TicTacToe", gameAgent.getPlayer().toString()+" onResume()");
   }
   
   
