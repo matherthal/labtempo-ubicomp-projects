@@ -1,0 +1,454 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+
+\usepackage{graphicx,url}
+\usepackage[space]{grffile}
+
+\usepackage[brazil]{babel}   
+\usepackage[latin1]{inputenc}  
+
+\usepackage{listings}
+\lstset{numbers=left,
+stepnumber=1,
+firstnumber=1,
+numberstyle=\footnotesize,
+extendedchars=true,
+breaklines=true,
+frame=tb,
+basicstyle=\footnotesize,
+stringstyle=\ttfamily,
+showstringspaces=false
+}
+\renewcommand{\lstlistingname}{Código}
+\renewcommand{\lstlistlistingname}{Lista de Listagens}
+\providecommand*{\lstnumberautorefname}{line} 
+     
+\sloppy
+
+\title{Um \textit{Framework} de Desenvolvimento de Aplicações Ubíquas em Ambientes Inteligentes}
+%acho q \\ pula linha
+\author{Douglas Mareli\inst{1}, Matheus Erthal\inst{1}, David Barreto\inst{1}, Orlando Loques\inst{1}}
+
+
+\address{Instituto de Computação -- Universidade Federal Fluminense (UFF)\\
+  Niterói -- RJ -- Brasil
+% \nextinstitute
+%   Department of Computer Science -- University of Durham\\
+%   Durham, U.K.
+% \nextinstitute
+%   Departamento de Sistemas e Computação\\
+%   Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
+  \email{\{dmareli,merthal,dbarreto,loques\}@ic.uff.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+%%%%%%%%%%%%%%
+%  RESUMOS   %
+%%%%%%%%%%%%%%
+
+
+
+\begin{resumo} 
+Com os recentes avanços da computação móvel e nas tecnologias de comunicação sem fio, percebe-se o surgimento de um cenário favorável à construção de aplicações ubíquas. Este trabalho propõe um novo \mbox{\textit{framework}} para a construção de tais aplicações, provendo um ferramental conceitual e de implementação. São propostas abstrações que possibilitam aos desenvolvedores lidar com os recursos distribuídos no ambiente de maneira simples e homogênea, e interpretar as informações de contexto. A fim de se demonstrar a viabilidade da proposta, os conceitos foram implementados em uma plataforma chamada \textit{SmartAndroid}. Sobre esta plataforma foi implementada uma interface de prototipagem de aplicações ubíquas onde configurações de ambientes podem ser testadas antes da aquisição de todos os dispositivos; e uma interface de composição de regras de contexto, onde usuários finais podem definir suas preferências no ambiente.
+\end{resumo}
+
+\begin{abstract}
+Due to recent advances in mobile computing and wireless communication technologies, we can see the emergence of a favorable scenario for building ubiquitous applications. This work proposes a new framework that aims at building those applications, providing a set of concepts and implementation tools. We propose abstractions that allow developers to handle the resources spread in the environment in a simple and homogeneous way, and to interpret context information. In order to demonstrate the feasibility of the proposal, the concepts were implemented in a platform named \textit{SmartAndroid}. A ubiquitous applications prototyping interface was implemented over this platform to allow testing of different environment configurations before purchasing all devices; and also a context rules composition interface, where end users can define their preferences in the environment.
+\end{abstract}
+
+
+%%%%%%%%%%%%%%
+% INTRODUÇÃO %
+%%%%%%%%%%%%%%
+\section{Introdução}
+%1 - (motivação: jogar pra cima ubicomp introduzindo a inteligência ambiental como aplicação funamental)
+A Computação Ubíqua, como proposta por Weiser na década de 1990~\cite{weiser1991computer}, descrevia uma mudança no paradigma de interação entre o usuário e os sistemas computacionais. Weiser previu o surgimento do que chamou de ``computação calma'', onde a interação entre os usuários e os computadores ocorre de forma natural, sem ações explícitas. Uma aplicação ubíqua identifica as necessidades de seus usuários coletando, por meio de sensores, as informações do seu contexto de execução, e as atende provendo serviços, por meio de atuadores, os quais incluem diversos tipos de interfaces.
+
+%2 - (as dificuldades, ?mas desenvolver é caro, difícil?, etc.)
+A construção e a manipulação de aplicações ubíquas representam grandes desafios para desenvolvedores, especialmente em termos do conhecimento técnico exigido e da disponibilidade de dispositivos reais durante o desenvolvimento da aplicação. Alguns desses desafios podem ser assim destacados: (i) há dificuldades em se estabelecer um protocolo comum de comunicação entre os componentes do sistema distribuído, por conta da \textit{heterogeneidade dos dispositivos envolvidos}; (ii) a interatividade das aplicações ubíquas é dificultada dependendo da quantidade e da \textit{variedade de informações de contexto e serviços} disponíveis no ambiente; (iii) o desenvolvimento e o teste de aplicações exigem uma alta \textit{disponibilidade de recursos}, como por exemplo, sensores (e.g., presença, iluminação, temperatura), atuadores (e.g., chaves, alarmes, \textit{smart-tvs}), incluindo novos dispositivos embarcados, ou ainda de espaços físicos, tais como uma casa para aplicações do tipo \textit{smart home}.
+
+%3 - (o q os outros tem feito, falar rapidamente)
+Muitos trabalhos têm por objetivo definir \mbox{\textit{frameworks}} voltados à construção e ao gerenciamento de aplicações ubíquas~\cite{helal2005gator, cardoso2006, ranganathan2005olympus}. Em~\cite{augusto2007ambient} são apontados desafios na aquisição de conhecimentos do ambiente. Em~\cite{helal2005gator} é proposto um \mbox{\textit{middleware}} entre a camada física (compreendida pelos sensores e atuadores) e a camada de aplicação (onde se encontram o ambiente de desenvolvimento e as aplicações ubíquas). Em~\cite{cardoso2006} são propostos serviços para gerenciar componentes representativos do ambiente no nível de \mbox{\textit{middleware}}. Este artigo aborda o conceito de Ambientes Inteligentes (AmbI), onde uma variedade de dispositivos está disponível, como por exemplo, em casas inteligentes (ou \textit{smart homes}), com televisores, termômetros, \textit{smartphones}, e outros, os quais podem ser descobertos  e configurados de acordo com suas especificidades. O trabalho de \cite{ranganathan2005olympus}, em especial, se preocupa em organizar estes componentes de forma a facilitar suas manipulações; a estruturação proposta permite ampliar o escopo de operações de suporte de um sistema ubíquo. Estes trabalhos, no entanto, não têm como foco a integração das questões acima identificadas: \textit{heterogeneidade dos dispositivos}, \textit{variedade de informações de contexto e serviços}, e \textit{disponibilidade de recursos}.
+%TODO:(matheus) não?! Tem certeza q nem o ranganathan2005olympus faz isso??? Se isso estiver errado, nego vai meter o pau... 
+
+%4 - (?Este trabalho... vamos propor um protótipo ...?, nosso trabalho tem q ganhar. ?Tem que caber o smartandroid inteiro? - ARs)
+Este artigo apresenta a proposta de um novo \textit{framework} para o desenvolvimento de aplicações ubíquas em AmbI. O objetivo é fornecer suporte à programação, teste e execução de aplicações, permitindo lidar de forma consistente com sistemas de grande complexidade. Este \textit{framework} destaca-se por tratar dos desafios já identificados na Computação Ubíqua \cite{araujo2003}. A \textit{heterogeneidade de dispositivos} é tratada através da definição de um Modelo de Componentes Distribuídos, no qual o componente básico tem uma estrutura uniforme definida como um Agente de Recurso (AR), proposto inicialmente em \cite{cardoso2006} como uma entidade de coleta de informações de contexto. Neste trabalho, o AR, além de manter informações de contexto, age como um componente que encapsula o código do dispositivo a ele associado, incluindo os aspectos de interação com os componentes da aplicação. Para a questão da \textit{variedade de informações de contexto e serviços}, é proposto um Modelo de Contexto que define o armazenamento e a distribuição de tais informações, e provê o suporte para a criação de regras de contexto. Finalmente, em relação à questão sobre a \textit{disponibilidade de recursos}, o \textit{framework} inclui uma aplicação de Interface de Prototipagem e Gerenciamento de Aplicações Pervasivas (IPGAP) \cite{barreto2012}, voltada à visualização e ao teste de aplicações ubíquas, mesclando componentes reais e virtuais.
+%FIXME: (matheus) MAL ESCRITO: incluindo os aspectos de interação com os componentes da aplicação
+
+%5 - falar do smartandroid usado na avaliação(mostrar uma prova de conceito: 1 (exatamente) aplicação, seja a de saúde, ou outra)
+Os conceitos do \mbox{\textit{framework}} foram concretizados sobre uma plataforma denominada \textit{SmartAndroid}\footnote{www.tempo.uff.br/smartandroid}, desenvolvida no contexto do projeto. A implementação deste projeto tem viabilizado avaliações no sentido de provar conceitualmente que o \textit{framework} facilita o processo de construção de aplicações ubíquas. Uma das avaliações ocorreu durante o processo de transformação de uma aplicação com funcionamento estritamente local em uma aplicação ubíqua.  Em outra avaliação, uma aplicação foi construída para verificar a viabilidade de implantação do Modelo de Contexto, por meio da exploração dos mecanismos de comunicação utilizados no Modelo de Componentes Distribuídos.
+%FIXME: (matheus) Nâo gostei da segunda frase, nem do início das frases seguintes
+
+%6 - (resumo das seções, falar das próximas seções)
+O artigo está assim organizado: a Seção~\ref{sec-concept} apresenta os conceitos básicos que orientam o desenvolvimento deste trabalho; a Seção~\ref{sec-framework} apresenta a arquitetura geral do \mbox{\textit{framework}} incluindo o Modelo de Componentes Distribuídos e o Modelo de Contexto; na Seção~\ref{subsec-ipgap} é apresentada a IPGAP; a Seção~\ref{sec-av} apresenta uma prova de conceito demonstrando a viabilidade da construção de aplicações ubíquas utilizando o \textit{framework} e uma aplicação que explora as principais características do AmbI; a Seção~\ref{sec-trab_rel} apresenta uma comparação com trabalhos relacionados; e a Seção~\ref{sec-conclusao} apresenta as conclusões e trabalhos futuros.
+%FIXME: (matheu) se pudesse pelo menos tirar o último ``apresenta'' acho q já dava uma quebrada....
+
+%%%%%%%%%%%%%%%%
+%    BASICO    %
+%%%%%%%%%%%%%%%%
+\section{Conceitos Básicos} \label{sec-concept}
+
+%7 - [(introduzir e motivar os conceitos abordados por nossa proposta)
+Os \textit{frameworks} para aplicações ubíquas utilizam em geral conceitos de Inteligência Ambiental~\cite{augusto2007ambient}, de Computação Sensível ao Contexto~\cite{Dey2001} e de Prototipagem de Aplicações Ubíquas~\cite{weis2007rapid}. A Inteligência Ambiental define o AmbI, que é um espaço onde estas aplicações funcionam. O comportamento de sistemas ubíquos é definido a partir de técnicas aplicadas na Computação Sensível ao Contexto. A prototipagem, por sua vez, é utilizada para manipular e testar o funcionamento do conjunto de aplicações no ambiente.
+
+%8 - (ambientes inteligentes)
+Os sistemas com enfoque na Computação Ubíqua aplicada no AmbI são baseados geralmente em uma arquitetura em camadas. Na camada inferior encontra-se o espaço físico com seus ocupantes, e em uma camada acima estão os sensores coletando informações de contexto e os atuadores provendo serviços para atender às necessidades destes  ocupantes. Uma camada intermediária (\textit{middleware}) é definida entre as tomadas de decisão e as interações com o ambiente, incluindo também conceitos e mecanismos para a construção de software dessa classe de sistemas. As decisões podem ser tomadas por um ocupante ou através de mecanismos de inteligência artificial. Há propostas na literatura que caracterizam este tipo de ambiente, dentre eles o termo ``\textit{smart home}'' (casa inteligente) se mostra como um dos mais conhecidos \cite{helal2005gator,augusto2007ambient,ranganathan2005olympus}. 
+
+O \textit{framework} proposto neste artigo envolve, além de um \textit{middleware} com suporte a serviços, os conceitos de Computação Sensível ao Contexto e de comunicação e interação, apresentados nas próximas subseções.
+%FIXME: Isso está muito estranho! O framework não propõe um conceito de Computação Sensível ao Contexto!
+
+\subsection{Computação Sensível ao Contexto} \label{subsec-aware}
+%15 - introduzir o conceito de contexto definição detalhada de contexto e seus elementos
+O contexto exerce um papel de fundamental importância na Computação Ubíqua. Sintetizando propostas anteriores, Dey e Abowd \cite{Dey2001} definiram que contexto é qualquer informação relevante usada para caracterizar a situação de entidades, especificamente: pessoas, lugares e coisas. No AmbI, ``Lugares'' são os cômodos, os andares de uma edificação, ou espaços em geral que possibilitam a localização de outras entidades; ``Pessoas'' são indivíduos que povoam o ambiente e interagem com o mesmo; e ``Coisas'' são representações virtuais de objetos físicos ou componentes de software.
+
+A sensibilidade ao contexto está em se determinar o que o usuário está tentando realizar a partir da aquisição de contexto. Por exemplo, se uma pessoa sai de casa e deixa a torneira aberta, provavelmente a tenha esquecido nesse estado. Neste caso, um sistema sensível ao contexto faz o que qualquer pessoa faria se detectasse esta situação (i.e., fecharia as torneiras). A aquisição do contexto de forma automatizada contribui para a construção de aplicações para AmbI que, de outra maneira, seriam inviáveis, por exigir a entrada de dados ou comandos diretamente por parte dos usuários. O \textit{framework} proposto neste artigo oferece um suporte para a declaração e consulta destas informações (ver a Seção~\ref{subsubsec-sgar}), além da definição de Interpretadores de Contextos (ver a Seção~\ref{subsubsec-ic}), que facilitam a construção de regras de contexto para atuar no AmbI.
+%TODO: possibilidade de economia na ultima linha
+
+%deslocar para cá a seção de comunicação
+\subsection{Comunicação e Interação} \label{subsec-comunicacao}
+%passar para conceitos básicos
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.3\textwidth]{imgs/com/publish-subscribe.png}
+  \caption{Esquema de \textit{publish-subscribe}}
+  \label{fig:pubsub}
+\end{figure}
+
+De modo a atender requisitos típicos de ambientes distribuídos, foram incluídos dois mecanismos no \textit{framework} proposto: a invocação remota de procedimentos (\textit{Remote Procedure Call} -- RPC) e a comunicação por eventos (ou interesses) seguindo o paradigma \textit{publish-subscribe} \cite{eugster2003many}. O mecanismo de RPC é utilizado para estabelecer a comunicação síncrona direta entre os componentes do AmbI. Uma entidade invocadora utiliza um \textit{proxy} da entidade invocada, nele estando contida a sua interface de chamadas de procedimentos públicos. A chamada e o retorno do procedimento são enviados através de mensagens serializadas (no \textit{SmartAndroid} através da notação JSON). Este mecanismo pode ser usado para enviar comandos aos dispositivos, por exemplo, fechar uma  torneira, ou alterar remotamente o \textit{setup} de um ar-condicionado.
+
+O paradigma \textit{publish-subscribe} é utilizado no \textit{framework} proposto  para a aquisição do status de componentes do ambiente. A Figura~\ref{fig:pubsub} ilustra sua inserção no esquema de componentes. Inicialmente, os Componentes A e B se subscrevem aos Eventos X e Y, respectivamente, do Componente C (Passo 1) e esta subscrição é armazenada no campo de Interessados. Posteriormente, o Componente D envia um comando que ativa o Evento X (Passo 2). Em seguida, ocorre a interceptação (Passo 3) e o Componente A, interessado neste evento (Passo 4), é notificado (Passo 5). 
+
+Como suporte, a comunicação no \textit{framework} necessita de uma infraestrutura básica de rede. Por conveniência, foi adotado Wi-Fi, que garante o mínimo de segurança contra acesso de agentes externos à rede do ambiente e agrega benefícios de mecanismos de criptografia,  como a WPA.
+%TODO: (orlando) sem perda de generalidade (marcou o ``Por conveniência'')
+ 
+%%%%%%%%%%%%%%%%
+%  FRAMEWORK   %
+%%%%%%%%%%%%%%%%
+\section{Descrição do \textit{Framework}} \label{sec-framework}
+
+%20 - definição geral do framework - 21 - definiçao de uso geral da AR
+O \mbox{\textit{framework}} provê facilidades e padrões de programação tipicamente requeridos em aplicações sensíveis ao contexto focadas em AmbI. Dentre as facilidades está a capacidade de abstrair detalhes das partes da aplicação que envolve a comunicação, a aquisição de contexto e a localização de recursos. Como abstração aos recursos são utilizados componentes chamados Agentes de Recursos (AR). O AR é a unidade básica de modularização do \textit{framework }, sendo utilizado na modelagem, implementação e gerenciamento das aplicações. Por exemplo: sensores de temperatura da casa, de vazamento de gás na cozinha, um medidor de pressão arterial, um atuador para fechar as janelas, etc. 
+
+%falar sobre smartandroid
+Para consolidar a proposta do \mbox{\textit{framework}}, seus conceitos e mecanismos foram implementados numa plataforma que denominamos \textit{SmartAndroid}. Essa opção se beneficia da acessibilidade da tecnologia \textit{Android}~\cite{saha2008android} facilitando a integração de dispositivos disponíveis em seu ecossistema e o desenvolvimento de sistemas embarcados. Isto permitiu uma construção rápida da plataforma facilitando a experimentação de aplicações ubíquas sofisticadas. Deve ser ressaltado que o \textit{framework} usa conceitos de implementação imediata em outras plataformas distribuídas atuais. Adicionalmente, a técnica de \textit{Wrappers} pode ser usada para integrar componentes de outras tecnologias em aplicações \textit{SmartAndroid}. A arquitetura do \mbox{\textit{framework}} é definida a partir de um Modelo de Componentes Distribuídos (Seção~\ref{subsec-mcd}) e de um Modelo de Contexto (Seção~\ref{subsec-contexto}).
+%FIXME: ficou meio estranho isso aqui: ``Essa opção se beneficia da acessibilidade da tecnologia \textit{Android}'', parece q já falou do android, e nem parece q está falando do recém introduzido SmartAndroid... ``esta opção''?!
+%FIXME: ``técnicas de implementação imediata''?! mas q coisa é essa??!!
+
+%Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recursos (SGAR) e encontra-se centralizado no ambiente distribuído. Como apresentado na Figura~\ref{fig:suporte}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
+
+%24 - objetivo do SGAR (talvesz remover daqui para evitar repretição em demasia)
+%O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos ARs e tornar a comunicação transparente para o programador das aplicações. A instalação e desinstalação de aplicações ubíquas são viabilizadas pelo SRR. O reconhecimento dos ARs por outras aplicações é possibilitado pelo SDR. E as localizações de ARs de elementos físicos do AmbI podem ser consultadas através da SLR. 
+%TODO: talvez possamos falar aqui mesmo que aplicações poderiam ser instaladas no ambiente e inclusive compartilhar informações
+
+% \begin{figure}[ht]
+%   \centering
+%   \includegraphics[width=.7\textwidth]{imgs/arq-camadas-interpretador.png}
+%   \caption{Camada de Interpretação de Regra}
+%   \label{fig:cmd-intp}
+% \end{figure}
+
+\subsection{Modelo de Componentes Distribuídos} \label{subsec-mcd}
+%falar sobre interfaces de serviços do AR e os serviços de descoberta, registro e localização
+
+%25 - descrever de forma geral o componente distribuido - 27 - descrever a estrutura do agente
+Como visto anteriormente na Seção~\ref{sec-concept}, sistemas para AmbI são geralmente estruturados nas camadas física, de \textit{middleware} e de aplicação (Figura~\ref{fig:arquitetura}). O Modelo de Componentes Distribuídos segue esta estrutura para mapear as aplicações ubíquas no AmbI. Neste Modelo são definidos: a estrutura do AR e o Suporte ao Gerenciamento de Agentes de Recursos (SGAR).
+
+O conceito de AR foi definido para padronizar os componentes de interação do ambiente, e dessa forma resolver a questão da \textit{heterogeneidade dos dispositivos}. A sua estrutura geral, como ilustrada na Figura~\ref{fig:arquitetura}~(a), é composta por nome único (``tvFamília''), hierarquia de tipos (``$\backslash$Visual$\backslash$TV''), localização corrente (``Sala''), classe (classe TV) com variáveis e métodos, e uma lista de interessados em informações de contexto. A hierarquia de tipos, que é composta por uma sequência de classes, foi inspirada na ontologia descrita em~\cite{ranganathan2005olympus} para classificar entidades (como os ARs). Esta hierarquia foi organizada para possibilitar a consulta e instanciação de ARs a partir de propriedades associadas a uma classe específica. Na Seção~\ref{subsubsec-sgar} é apresentado o SGAR que se beneficia desta estrutura do AR.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height= .3\textwidth]{imgs/framework/arquiteturaGeral.PNG}
+  \caption{Arquitetura do \textit{Framework}: (a) Estrutura do AR; (b) Camadas}
+  \label{fig:arquitetura}
+\end{figure}
+
+%30 - descrever as portas de interação (VC e operações) do AR 
+A lista de interessados de um AR é uma estrutura de suporte ao mecanismo de comunicação por eventos apresentado na Seção~\ref{subsec-comunicacao}. O Modelo de Contexto (ver Seção~\ref{subsec-contexto}) se beneficia deste mecanismo, dado que as mudanças no contexto de uma instância de AR são publicadas como eventos para outras instâncias.
+
+% Na definição deste modelo é visto que um AR armazena o seu estado por meio de seus atributos declarados e os expõe através da criação de Variáveis de Contexto (VC); as mudanças nas VCs podem ser provocadas por Operações (OP). Do ponto de vista do mecanismo de comunicação utilizado, as VCs são as portas de saída que geram os eventos de informação, e as OPs são as portas de entrada de comandos que ativam estes eventos.
+
+%26 - descrever um exemplo de modelo de componente distribuído (figura arqGeral)
+% Na Figura~\ref{fig:arquitetura}~(b) são apresentados componentes típicos de uma \textit{smart home}. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (por conveniência usamos \mbox{\textit{smartphones}} e \textit{tablets}) ou criados através da IPGAP. A figura apresenta como exemplos de recursos um televisor, uma cama e um fogão. No \mbox{\textit{middleware}} são apresentados os ARs representativos destes recursos, além de um interpretação de contexto para verificar se o fogão foi esquecido ligado por um ocupante da casa. Este interpretador verifica se alguém está presente na cama e por quanto tempo o fogão está ligado; se um tempo limite for ultrapassado uma ação é disparada para que o fogão seja desligado. Os ARs referentes à cama e ao fogão coletam o status destes recursos físicos e os divulgam para ARs interessados. Isto permite que estas informações sejam utilizadas pelos componentes da camada da aplicação. Ainda no \mbox{\textit{middleware}}, o SGAR (ver Seção~\ref{subsubsec-sgar}) é definido como suporte para aplicações criarem, consultarem e instanciarem ARs.
+%TODO: (orlando) prof. falou q não devemos obrigar a ter um AR específico para o interpretador, e tinha falado tb q o interpretador não fica no middleware, por isso tentei concertar no paragrafo escrito abaixo:
+
+%26 - descrever um exemplo de modelo de componente distribuído (figura arqGeral)
+Na Figura~\ref{fig:arquitetura}~(b) são apresentados componentes típicos de uma \textit{smart home}. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (por conveniência usamos \mbox{\textit{smartphones}} e \textit{tablets}) ou criados através da IPGAP (ver Seção~\ref{subsec-ipgap}). A figura apresenta como exemplos de recursos um televisor, uma cama e um fogão. No \mbox{\textit{middleware}} são apresentados os ARs representativos destes recursos, o SGAR e uma entidade de interpretação de contexto, a qual é definida no nível da aplicação, mas com o suporte da camada intermediária. O interpretador descrito na figura verifica se o ocupante da casa esqueceu o fogão ligado e, para isso, avalia se ele está deitado na cama e se o fogão está ligado durante determinado tempo; uma vez passado o tempo limite, ações são disparadas para acordá-lo, ou para desligar o fogão, atendendo às preferências do usuário. Os ARs referentes à cama e ao fogão coletam o status destes recursos físicos e os divulgam para ARs interessados. Isto permite que estas informações sejam utilizadas pelos componentes da camada da aplicação. Ainda no \mbox{\textit{middleware}}, o SGAR (ver Seção~\ref{subsubsec-sgar}) é definido como suporte para aplicações criarem, consultarem e instanciarem ARs.
+
+\subsubsection{Suporte ao Gerenciamento de Recursos} \label{subsubsec-sgar}
+%((((((((((((((((((((((((((((tabela 1))))))))))))))))))))))))))))))
+\begin{table} % aqui começa o ambiente tabela
+\centering
+\caption{Operações do SGAR} % igual ao ambiente figura
+\begin{tabular}{|c|c|p{2.6cm}|p{6.1cm}|} 
+\hline % este comando coloca uma linha na tabela
+Serviço & Operação & Argumentos & Descrição\\ 
+\hline
+SRR & \textit{register} & Dados do AR & Insere dados do AR no Repositório  \\ \hline
+SRR & \textit{unregister} & Dados do AR & Remove AR do Repositório  \\ \hline
+SDR & \textit{search} & Consulta & Busca ARs por tipo, local e/ou nome   \\ \hline
+SLR & \textit{getPlaces} & Nenhum & Retorna a lista de espaços do Mapa \\ \hline
+SLR & \textit{searchByProximity} & Posição & Retorna ARs mais próximos \\ \hline
+AR & \textit{subscribe} & AR e Evento & Adiciona interesse do AR no Evento \\ \hline
+AR & \textit{publish} & Evento e Valor & Notifica ARs interessados no Evento \\ \hline
+\end{tabular}
+\label{tab:api}
+\end{table}
+
+%31 - falar sobre uso geral do SGAR (figura Suporte)
+O SGAR é o responsável por gerenciar o conjunto de ARs no AmbI. O controle de registro e descoberta de ARs segue a ideia geral sobre serviços que manipulam recursos apresentada em \cite{cardoso2006}. Neste trabalho, o SGAR é composto por três componentes, ou serviços básicos: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A Tabela~\ref{tab:api} destaca as principais operações de cada serviço de suporte. O SRR é utilizado para registrar (\mbox{\textit{register}}) ou remover (\mbox{\textit{unregister}}) ARs no ambiente, o SDR localiza recursos para permitir o acesso remoto (\mbox{\textit{search}}) e o SLR os localiza através de posições físicas e  indica os recursos mais próximos (\mbox{\textit{searchByProximity}}). Estas operações manipulam dados representativos dos respectivos ARs no Repositório de Recursos.  As operações ``\mbox{\textit{subscribe}}'' e ``\mbox{\textit{publish}}'' são comuns a todos os ARs e funcionam com base no mecanismo de comunicação por eventos descrito na Seção~\ref{subsec-comunicacao}. Os componentes (A, B, C, D) na Figura~\ref{fig:pubsub} correspondem aos ARs e os Eventos correspondem à suas respectivas mudanças de estados. %O uso das operações ``\mbox{\textit{publish}}'' e ``\mbox{\textit{subscribe}}'' é explorado pelos Interpretadores de Contexto apresentados na Seção~\ref{subsubsec-ic}.
+%TODO: (matheus) removi essa última frase... estava mto feia e acho q desnecessária
+
+%\begin{figure}[ht]
+%  \centering
+%  \includegraphics[width=.7\textwidth]{imgs/suporte/suporte.PNG}
+%  \caption{Serviços de Suporte}
+%  \label{fig:suporte}
+%\end{figure}
+
+%32 - descrever estrutura de repositorio 
+O Repositório de Recursos, como apresentado na Figura~\ref{fig:repositorio}, possui o Diretório de Recursos e o Mapa, o qual contém representado o conjunto de espaços físicos do AmbI. O Diretório contém os nomes das instâncias de AR existentes no ambiente, armazenados conforme seus respectivos tipos. No caso da figura há o tipo TV com a ``tvFamília'' e o tipo \mbox{\textit{tablet}} com o ``iPad'' e o ``Galaxy''. Os dados consistem do nome, tipo, localização e a referência de acesso. A referência de acesso permite a interação de instâncias de ARs através do RPC (ver Seção~\ref{subsec-comunicacao}). Cada espaço do Mapa possui uma área e um nome. No caso de uma \mbox{\textit{smart home}} os cômodos da casa representam estes espaços. Cada entrada do Mapa referencia o conjunto de ARs contidos no respectivo espaço. Os ARs representando dispositivos com mobilidade têm suas referências atualizadas dinamicamente.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.3\textwidth]{imgs/suporte/repositorio.png}
+  \caption{Repositório de Recursos}
+  \label{fig:repositorio}
+\end{figure}
+
+\subsection{Modelo de Contexto} \label{subsec-contexto}
+% O Modelo de Contexto foi elaborado com o objetivo de tratar a questão da \textit{variedade de informações de contexto e serviços} presentes no AmbI. Neste modelo, o \mbox{\textit{framework}} utiliza uma abordagem flexível, onde o mecanismo de comunicação por eventos (visto na Seção~\ref{subsec-comunicacao}) possibilita que ARs divulguem mudanças de contexto. A informação pode estar em qualquer lugar do AmbI, contudo, é provido um nível de abstração tal que a subscrição ou consulta a qualquer informação de contexto é feita de maneira padronizada. O processo de aquisição do contexto envolve a descoberta do AR de interesse através dos serviços da SGAR, com a posterior subscrição do mesmo. A abordagem adotada é flexível de tal maneira que, caso seja conveniente, pode ser criada uma unidade centralizadora para gerenciar as informações de contexto, segundo uma arquitetura de memória compartilhada do tipo \mbox{\textit{blackboard}} (ou quadro-negro)~\cite{winograd2001architectures}.
+
+O Modelo de Contexto foi elaborado com o objetivo de tratar a questão da \textit{variedade de informações de contexto e serviços} presentes no AmbI. Neste modelo, o \mbox{\textit{framework}} utiliza uma abordagem flexível, onde o mecanismo de comunicação por eventos (visto na Seção~\ref{subsec-comunicacao}) possibilita que ARs divulguem mudanças de contexto. A informação pode estar em qualquer lugar do AmbI, contudo, é provido um nível de abstração tal que a subscrição ou consulta a qualquer informação de contexto é feita de maneira padronizada. O processo de aquisição do contexto envolve a descoberta do AR de interesse através dos serviços da SGAR, com a posterior subscrição do mesmo. A flexibilidade da abordagem adotada possibilita a utilização de uma unidade centralizadora para gerenciar as informações de contexto, caso seja conveniente, segundo uma arquitetura de memória compartilhada do tipo \mbox{\textit{blackboard}}~\cite{winograd2001architectures}.
+
+\subsubsection{Variáveis de Contexto e Operações} \label{subsubsec:cv}
+%explicar vc
+As informações de contexto respectivas de cada AR são expostas através de Variáveis de Contexto (VC). Por exemplo, um agente para uma \textit{smart-tv} pode prover VCs para: a programação que está sendo exibida, a programação agendada, se a própria televisão está ligada, se está gravando alguma programação, e outras. Em outros termos, tudo o que diz respeito ao estado da televisão e que pode efetivamente ser coletado.
+
+%explicar operações
+Uma Operação (OP) tem o papel de expor uma funcionalidade (ou serviço) do AR, possibilitando às aplicações interagirem ativamente no ambiente. Por exemplo, uma televisão integrada ao sistema pode oferecer OPs para desligá-la, mudar de canal, gravar alguma programação, mostrar uma mensagem na tela, perguntar algo ao usuário, gerar um alerta, pausar a programação, etc. 
+
+%falar de VC e OP como interfaces e falar da figura
+Tanto VCs como OPs definem interfaces, ou portas do AR. Diferentes aplicações, instaladas no mesmo ambiente podem usar estas interfaces para interagir com o próprio ambiente. A Figura~\ref{fig:inpt_cute} representa a subscrição às VCs ``Em uso'' do AR da cama e ``Ligado'' do AR do fogão. Na mesma figura pode-se observar a atuação no ambiente ao se utilizar as OPs ``Mostrar mensagem'' da televisão e ``Disparar'' do despertador. O Interpretador e o Atuador também representados na figura serão descritos na Seção~\ref{subsubsec-ic}.
+
+% possui implementado uma estrutura de tipos que facilita a descoberta de ARs de interesse e possibilita o conhecimento de suas interfaces. Na implementação foi criado uma hierarquia de tipos com foco em \textit{smart homes}, porém novos tipos podem ser criados.
+
+%segurança
+As questões de segurança, inerentes ao problema, são resolvidas com duas técnicas: a própria segurança da rede e com a criação de domínios dentro de um AmbI. A segurança da rede (criptografia de pacotes em redes LAN, como WPA2) evita que aplicações estrangeiras possam acessar os recursos de um ambiente. Domínios podem ser usados para isolar aplicações específicas dentro do AmbI, como, por exemplo, uma aplicação de monitoramento de pacientes~\cite{carvalho2010sciads}. %TODO:falar tb q isso protege contra aplicações maliciosas? como falei até a revisão 494??? 
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.3\textwidth]{imgs/interpretador-fogao-cute.png}
+  \caption{Interpretador de Regra}
+  \label{fig:inpt_cute}
+\end{figure}
+
+\subsubsection{Interpretação de Contexto} \label{subsubsec-ic}
+%falar de maneira geral da interpretação de contexto, do IC e do atuador
+A interpretação de contexto tem a função de agregar informações de contexto provenientes de diferentes fontes, considerando também a passagem de tempo, e avaliá-las segundo alguma lógica específica. O suporte à interpretação de contexto pelo \mbox{\textit{framework}} possibilita uma separação de interesses, onde os desenvolvedores abstraem a implementação de regras de contexto e focam na lógica da aplicação.
+
+Em nossa proposta, como opção básica, a interpretação do contexto é desempenhada por entidades chamadas \mbox{Interpretadores} de Contexto (IC), que avaliam essas informações e notificam agentes atuadores interessados (ver outras opções na Seção~\ref{subsec-smartlic}). Atuadores são quaisquer ARs que se subscrevem em ICs para desempenhar ações; sejam estas ações no nível de software (e.g., guardar no histórico, enviar para um servidor remoto) ou no nível do ambiente, ao se chamar OPs de outros ARs (e.g., mostrar uma mensagem na televisão, disparar o despertador, mudar a temperatura do ar-condicionado). 
+
+%A interpretação de contexto possibilita que diversas informações de contexto, relacionadas através de uma expressão lógica, sejam manipuladas em uma entidade em separado, provendo separação de interesses. O interessado poderá referenciar apenas uma entidade, ao invés de várias, a fim de se obter a informação interpretada.
+
+%falar do IC em funcionamento
+Considere a seguinte regra simples: se uma pessoa (que mora sozinha) ligou o fogão, se deitou na cama, e passaram-se 15 minutos, então dispare o alarme do despertador e mostre na televisão a mensagem ``O fogão foi esquecido ligado!''. Este exemplo poderia ser implementando no sistema como representado na Figura~\ref{fig:inpt_cute}. O IC recebe notificações da cama e do fogão com valores atualizados das VCs ``ligado'' e ``em uso'', \mbox{respectivamente}, e resolve internamente a temporização monitorada destas VCs. Uma vez que o IC tenha avaliado a regra como verdadeira durante o tempo de 15 minutos (previamente declarado), ele notifica o atuador ``Lembrar usuário''. O atuador, por sua vez, invoca as OPs ``Mostrar mensagem'' da TV e ``Disparar'' do despertador.
+
+%falar sobre a arquitetura do IC e da sua criação
+%Durante a criação do IC, este deve receber uma regra de contexto. Diferentes trabalhos (olhar o hydrogen e o cobra)
+O IC pode ser encapsulado em um AR, assim estendendo suas funcionalidades. A arquitetura do IC é composta de um módulo que recebe as notificações e atualiza os valores em \mbox{\textit{cache}}; uma estrutura de dados em árvore que não só armazena as referências para as VCs e os valores atualizados, mas também a lógica da regra; um módulo que avalia a árvore a cada atualização de valores; e um módulo que gerencia os temporizadores, controlado pelo módulo de avaliação.
+
+%falar da GUI de composição de regras
+A interpretação de contexto visa não só a construção de regras de contexto por parte das aplicações, mas também a definição das preferências dos usuários finais no sistema. Uma GUI está sendo desenvolvida para possibilitar aos usuários sem experiência técnica criarem, editarem, desabilitarem etc., regras para o seu dia-a-dia. A GUI permitirá que, com poucos toques, um usuário possa selecionar ARs em um mapa da casa, escolher as VCs, comparar com valores ou outras VCs (operadores de comparação: $=, \neq, <, >, \leq$ e $\geq$), montar a expressão lógica (operadores lógicos: ``\textit{E}'', ``\textit{OU}'', ``\textit{NÃO}''), e definir um conjunto de ações a serem desempenhadas no sistema. A definição do conjunto de ações pode ser feita tanto ao se escolher ARs atuadores para entrar em ação (e.g., Atuador Lembrar Usuário), como selecionando ARs no mapa e suas OPs em seguida (e.g., ar-condicionado - mudar temperatura - 20º). Através do mecanismo de subscrição os ICs notificarão os ARs atuadores, que executarão tarefas no AmbI através de chamadas RPC.
+
+% A interpretação de contexto visa não só a construção de regras de contexto por parte das aplicações, mas também a definição das preferências dos usuários finais no sistema. Para isto, está sendo desenvolvida uma GUI que possibilitará a usuários sem experiência técnica a criar, editar, desabilitar, etc., regras para o seu dia-a-dia. A GUI permitirá que, com poucos toques, um usuário possa selecionar ARs em um mapa da casa, escolher as VCs, comparar com valores ou outras VCs (operadores de comparação: $=, \neq, <, >, \leq$ e $\geq$), montar a expressão lógica (operadores lógicos: ``\textit{E}'', ``\textit{OU}'', ``\textit{NÃO}''), e definir um conjunto de ações a serem desempenhadas no sistema. A definição do conjunto de ações pode ser feita tanto ao se escolher ARs atuadores para entrar em ação (e.g., Atuador Lembrar Usuário), como selecionando ARs no mapa e suas OPs em seguida (e.g., ar-condicionado - mudar temperatura - 20º). Através do mecanismo de subscrição os ICs notificarão os ARs atuadores, que executarão tarefas no AmbI através de chamadas RPC.
+
+%%%%%%%%%%%%
+%  IPGAP   %
+%%%%%%%%%%%%
+\section{Prototipagem de Aplicações Pervasivas} \label{subsec-ipgap}
+%11 - falar sobre trabalho do david e da importancia de testar apicaçoes ubíquas
+A prototipagem de aplicações pervasivas é fundamental para a depuração e teste em um AmbI. A questão de \textit{disponibilidade de recursos} é resolvida através da \mbox{IPGAP}~\cite{barreto2012}, um aparato ferramental que proporciona ao desenvolvedor de aplicações ter acesso a estes benefícios. Além disso, a IPGAP disponibiliza uma  Interface Gráfica de Usuário (\textit{\mbox{Graphic} \mbox{User} \mbox{Interface}} -- GUI) que proporciona ao usuário final controlar remotamente recursos do ambiente.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.3\textwidth]{imgs/ipgap/ipgap1.PNG}
+  \caption{Interface de Prototipagem}
+  \label{fig:ipgap}
+\end{figure}    
+
+%13 - demonstrar uso em nossa proposta com exemplo (vide figura)
+Na Figura~\ref{fig:ipgap} é ilustrado um \mbox{\textit{tablet}} executando o aplicativo da IPGAP e \mbox{\textit{smartphones}} emulando recursos como TV, lâmpada e termômetro. A IPGAP faz o mapeamento do ambiente e permite visualizar e instanciar cada um destes elementos e representá-los na sua GUI. Outros recursos, além dos representados pelos \mbox{\textit{smartphones}}, podem ser simulados virtualmente por componentes de software. Assim, o desenvolvedor de aplicações não fica limitado pela disponibilidade de recursos físicos podendo simular os elementos indisponíveis.
+
+%14 - (descrever sua utilização na proposta)
+O \mbox{\textit{framework}} proposto permite criar aplicações de forma liberal, nas dimensões e quantidades desejadas para um ambiente real. Através da IPGAP, as restrições e viabilidade do funcionamento das aplicações desenvolvidas podem ser verificadas em ambiente próximo ao real. Isto permite avaliar o desempenho das implementações antes da sua implantação efetiva.
+
+%%%%%%%%%%%%%%%%
+%  AVALIACAO   %
+%%%%%%%%%%%%%%%%
+\section{Avaliação} \label{sec-av}
+%falar sobre o que foi desenvolvido para avaliar a qualidade do framework (jogo da velha e aplicação de economia de luz)
+A avaliação do \mbox{\textit{framework}} foi realizada em duas fases. Primeiro foi avaliado o fator de transparência de comunicação na construção de aplicações ubíquas. Esta avaliação ocorre através do processo de transformação de uma aplicação estritamente local \textit{Android} em uma aplicação ubíqua através do \textit{SmartAndroid}. Depois é avaliada a transparência no desenvolvimento de aplicações sensíveis ao contexto e manipulação de informações promovida pelo Modelo de Contexto.
+
+\subsection{Prova de Conceito do \textit{Framework}}
+
+% Uso de AOP (citar ref do Android)
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.4\textwidth]{imgs/app/tictactoeSmart.png}
+  \caption{Comparação entre os modelos das aplicações \textit{Android} e \textit{SmartAndroid}}
+  \label{fig:tictactoe}
+\end{figure}
+
+%descrição da prova de conceito jogo da velha (figura tictactoe)
+Para a primeira avaliação utilizou-se a aplicação do jogo da velha como base. Em sua versão \textit{Android} (Figura~\ref{fig:tictactoe}), os jogadores interagem através de uma mesma tela de dispositivo (\mbox{\textit{tablet}} ou \mbox{\textit{smartphone}}). Na versão desenvolvida com o \textit{SmartAndroid} os jogadores interagem sobre um mesmo tabuleiro em dispositivos diferentes. A Figura~\ref{fig:tictactoe} mostra detalhes relevantes do modelo de aplicação da versão \textit{Android} e apresenta modificações sobre esta estrutura na versão \textit{SmartAndroid}. Na versão original destacam-se os seguintes componentes: o Motor do Jogo (Motor), a estrutura do Tabuleiro e a identidade dos Jogadores que pode ser do tipo ``X'' ou ``O'' (Tipo $<$X,O$>$). O Motor atualiza o estado do Tabuleiro que é mostrado na GUI da aplicação. O Tipo do Jogador é verificado para indicar qual símbolo da jogada é marcado no Tabuleiro (``X'' ou ``O''). 
+
+%\begin{lrbox}{\mylisting}
+%\lstset{numbers=left, numberstyle=\tiny, stepnumber=2, numbersep=5pt}  
+%\end{lrbox}
+
+%\usebox{\mylisting}% Print box mylisting
+
+%descrição do processo de transformação e avaliação jogo da velha
+Na versão \textit{SmartAndroid} as principais estruturas do jogo da velha são encapsuladas no AR do jogo. O AR do Jogo é responsável por interceptar as indicações de jogadas dos respectivos jogadores representados no dispositivo (``X'' ou ``O'') e encaminhar para o outro jogador. O outro jogador recebe estas jogadas através de seu AR que as encaminha ao Motor de jogo que efetiva a atualização do tabuleiro com a jogada do adversário. A etapa de inicialização da nova aplicação foi desenvolvida a partir das operações definidas na Tabela~\ref{tab:api}. O Código 1 apresenta a descoberta de ARs de outros jogadores na Linha 1, o registro do AR do jogador local na Linha 2, e a subscrição de interesses em jogadas entre ARs de jogo do AmbI nas Linhas 5 e 6.  Após isto, nenhuma alteração no nível de comunicação ou contexto torna-se necessária. Logo, podemos comprovar que o uso de AR tornou transparente a programação da aplicação ubíqua.
+
+% \begin{lstlisting}[caption=Inicialização do jogo da velha no SmartAndroid]
+%     List gameList = SDR.search(TYPE, GameAgent); \\Consulta por tipo
+%     SRR.register(gameAgent); \\Registro do Agente do Jogo (gameAgent)
+%     if (gameList.size>0) { \\Caso haja outros jogadores...
+%        for (iGameAgent : gameList) { \\Subscrição entre ARs 
+%            iGameAgent.subscribe("indica jogada", gameAgent);
+%            gameAgent.subscribe("indica jogada", iGameAgent);
+%        }
+%     }...
+% \end{lstlisting} 
+
+\begin{lstlisting}[caption=Inicialização do jogo da velha no \textit{SmartAndroid}, mathescape]
+List ARs = SDR.search(TYPE, ARJogo) $\textit{//Consulta por tipo}$
+SRR.register(arJogo) $\textit{//Registro do Agente do Jogo}$
+if (ARs.size>0): $\textit{//Caso haja outros jogadores...}$
+    for each iAR in ARs: $\textit{//Subscrição entre ARs}$
+	iAR.subscribe("indica jogada", arJogo)
+	arJogo.subscribe("indica jogada", iAR)
+\end{lstlisting} 
+
+\subsection{Aplicação de Controle de Iluminação Residencial} \label{subsec-smartlic}
+%descrição da prova de conceito desta implementação
+Dentre os protótipos construídos como prova de conceito, foi criada a Aplicação de Controle de Iluminação Residencial (\textit{\mbox{Smart} \mbox{Light} \mbox{Controller}} -- \mbox{SmartLiC}) com o intuito de promover economia no consumo de energia elétrica reduzindo gastos com iluminação. Através de sensores de presença, identifica-se a presença/ausência de pessoas no cômodo, conforme a pessoa sai de um cômodo e passam-se T$_{max}$ unidades de tempo sem que ela volte, então a luz daquele cômodo é desligada. 
+%Em adição, foi especificado também que, se é noite e uma pessoa entrou em um cômodo, então a lâmpada daquele cômodo deve ser ligada -- a possibilidade de bloquear esta função evita ocasionais desconfortos. 
+
+% O Código 2 ilustra a inicialização do \mbox{SmartLiC}. A aplicação utiliza o SLR para localizar os cômodos, e obtém a lâmpada e o sensor de presença de cada um utilizando a busca do SDR. Com a referência para os ARs (``lampAR'' e ``presAR'') e o valor T$_{max}$ para temporização, cria-se um IC (``\mbox{\textit{ContextInterpreter}}'') definindo a regra: \emph{lâmpada ligada E o cômodo desocupado POR T$_{max}$ unidades de tempo}. Em reação a esta regra, cria-se um atuador para desligar a lâmpada. A ligação entre um IC e o agente atuador é realizada através do mecanismo padrão de subscrição entre ARs.
+
+A Figura~\ref{fig:inpt_cute} representa um caso simples de utilização de interpretadores, onde este contém uma regra apenas e as atuações ocorrem em separado, desempenhadas pelos agentes atuadores. A fim de se prover maior flexibilidade para os desenvolvedores, o \textit{framework} possibilita também que a interpretação de contexto seja desenvolvida no nível da aplicação, contudo, aproveitando o mecanismo de comunicação por eventos e compilações de regras. Note que esta abordagem possibilita a utilização de um motor de regras (e.g., Jess, Drools), se for conveniente. 
+
+O Código 2 ilustra uma possível implementação da interpretação de contexto pela aplicação \mbox{SmartLiC}. Na etapa de inicialização, a aplicação utiliza o SLR para localizar os cômodos (Linha 2), e obter a lâmpada e o sensor de presença (``lampAR'' e ``presAR'') de cada um, utilizando a busca do SDR (Linhas 4 e 5). Para evitar a repetição do código da regra, suas referências e a respectiva ação a ser desempenhada (desligar a lâmpada referenciada -- ``lampAR.turnOff'') são adicionadas na lista de configurações (``configList'') (Linha 6). A regra é criada em ``rule'' como: ``\mbox{\emph{lâmpada ligada E o cômodo desocupado POR T$_{max}$ unidades de tempo}}'', e desempenha uma relação lógica entre as diferentes VCs e a temporização da regra (Linha 7). Em seguida, subscreve-se às VCs dos ARs de interesse, começando o processamento da regra (Linha 8).
+
+Na etapa de avaliação, também descrita no Código 2, é definido um bloco de comando para o tratamento das notificações recebidas dos ARs de interesse (lâmpadas e sensores de presença subscritos). Uma vez recebido um evento com a atualização de uma VC de um dos ARs (``ar\_ref'') (Linha 11), é selecionada a configuração de ``configList'' respectiva (Linha 12). Segue-se a avaliação da regra (\textit{``evaluate}''), utilizando a configuração obtida, e considerando os temporizadores (Linha 13). A etapa de avaliação é bloqueante no caso da existência de temporizadores associados, e a invocação das ações (OPs) ocorre na mesma \textit{thread} que a avaliação. A temporização ocorre enquanto a expressão da regra é válida, se eventos chegarem antes do fim da temporização e isto fizer com que a expressão da regra seja invalidada, então o temporizador é finalizado e as ações não são disparadas.
+
+%\begin{lstlisting}[caption=Inicialização do SmartLiC, mathescape] 
+%for each place from SLR.getPlaces(): 
+%    lampAR = SDR.search(TYPE, Lamp, place)
+%    presAR = SDR.search(TYPE, Presence, place)
+%    ci = ContextInterpreter(lampAR.on $\land$ $\lnot$(presAR.occupied) $\land$ T > T$_{max}$)
+%    Actuator(lampAR.turnOff).subscribe(ci)
+%\end{lstlisting} 
+
+% \pagebreak
+
+% \begin{lstlisting}[caption=Inicialização do SmartLiC, mathescape] 
+% for each place from SLR.getPlaces(): 
+%     lampAR = SDR.search(Lamp, place)
+%     presAR = SDR.search(Presence, place)
+%     configList.add(place, lampAR, presAR, lampAR)
+% rule = IF Lamp.on $\land$ $\lnot$(Presence.occupied) $\land$ T > T$_{max}$ THEN Lamp.turnOff
+% ci = ContextInterpreter(rule, configList)
+% \end{lstlisting}
+
+\begin{lstlisting}[caption=Interpretação de Contexto no SmartLiC, mathescape] 
+$\textit{//Inicialização}$
+placeList = SLR.getPlaces() $\textit{//Obtém cômodos}$
+for each place from placeList: $\textit{//Seleciona um cômodo da lista}$
+    lampAR = SDR.search(Lamp, place) $\textit{//Obtém lâmpada do cômodo}$
+    presAR = SDR.search(Presence, place) $\textit{//Obtém sensor de presença do cômodo}$
+    configList.add(lampAR, presAR, lampAR.turnOff) $\textit{//Guarda configuração}$
+rule = Lamp.on $\land$ $\lnot$(Presence.occupied) $\land$ T > T$_{max}$ $\textit{//Função de regra}$
+subscribeTo(configList) $\textit{//Subscreve às lâmpadas e sensores de presença}$
+
+$\textit{//Avaliação da regra de contexto}$
+on event received (ar_ref, vc, value): $\textit{//Quando chega uma notificação}$
+    config = configList(ar_ref, vc) $\textit{//Seleciona a configuração do AR}$
+    if (evaluate(rule, config)) then: $\textit{//Avalia regra com configuração}$
+	invoke(config.getActions()) $\textit{//Invoca ações}$
+\end{lstlisting}
+
+% Como representado no Código 3, o IC é responsável por avaliar a regra de contexto. Durante a sua criação este recebe a expressão da regra, que contém: a identificação dos ARs, suas respectivas VCs, a relação lógica entre estas VCs, e a ligação com temporizadores. Primeiramente o IC obtém os ARs (com suas VCs) da expressão e subscreve em todos. Ao IC receber um evento, o mesmo reavalia a regra armazenada em sua representação interna (``\mbox{\textit{evaluate}}''). A avaliação considera os temporizadores associados à regra, de tal maneira que a regra continue válida durante todo o tempo de espera, e esta espera deve ser cancelada caso o IC receba um novo evento que venha a invalidar a regra. Uma vez completamente validada, o IC notifica seus atuadores.
+
+%\begin{lstlisting}[caption=Interpretador de Contexto, mathescape]
+%ContextInterpreter(rule):
+%    subscribeTo(getARs(rule))
+%    on event received:
+%	  validated = evaluate(rule)
+%	  if validated:
+%	      notifyActuators()
+%\end{lstlisting} 
+
+% \begin{lstlisting}[caption=Interpretador de Contexto, mathescape]
+% ContextInterpreter(rule, configList):
+%     contextRule = compile(rule, configList)
+%     subscribeTo(contextRule.getVCs()) 
+%     on event received (ar, vc, value): 
+% 	  contextRule.update(ar, cv, value)
+% 	  if (evaluate(contextRule)) then:
+% 	      invoke(contextRule.getOPs())
+% \end{lstlisting} 
+
+%conclusão da avaliação
+
+%TODO: está falando em eficiente.... averiguar
+
+O SmartLiC é um projeto simples, mas que possibilita a avaliação de boa parte do ferramental proposto pelo \mbox{\textit{framework}} e implementado no \textit{SmartAndroid}. O foco tomado na implementação foi economia de energia, porém, outras funcionalidades podem ser agregadas ao serviço. Por exemplo, uma aplicação de segurança do tipo ``engana ladrão'', onde lâmpadas da casa são acendidas e apagadas seguindo uma ordem pré-estabelecida ou informações de um histórico, objetivando simular a presença de pessoas na casa quando os proprietários estão ausentes.
+
+%%%%%%%%%%%%%%%%
+% RELACIONADOS %
+%%%%%%%%%%%%%%%%
+\section{Trabalhos Relacionados} \label{sec-trab_rel}
+
+%trabalhos relacionados a middlewares e frameworks
+%\cite{helal2005gator}
+Em \cite{helal2005gator} é proposta uma arquitetura de camadas semelhante ao já apresentado neste trabalho. Além destas, há a camada de conhecimento que tem função similar ao SGAR, e a camada de contexto que tem função similar ao Modelo de Contexto, mas atua em uma granularidade maior. Nosso \mbox{\textit{framework}} descreve mecanismos para construção e instalação de novas aplicações, algo que em \cite{helal2005gator} não fica evidente sobre como pode ser feito. Um conjunto de operações de alto nível para ambientes inteligentes (espaços ativos) é proposto em \cite{ranganathan2005olympus}. As operações básicas são semelhantes às funções de um sistema operacional, só que ao invés de manipular recursos, entidades do ambiente são manipuladas. Em nosso \mbox{\textit{framework}} há as funções apresentadas na Tabela~\ref{tab:api}. Outras funções como parar, iniciar, suspender, reiniciar são definidas por cada AR e aplicação ubíqua do sistema, permitindo uma distribuição do controle de serviços do ambiente.
+
+%\cite{santi2011jaca}
+Boa parte dos \mbox{\textit{frameworks}} propostos evita levantar pontos sobre a sobrecarga de comunicação ocorrida em sistemas ubíquos. O artigo \cite{villanueva2009framework} é uma proposta com abordagem distribuída para a parte de suporte (SGAR), onde cada componente possui o suporte replicado e que utiliza comunicação \mbox{\textit{multicast}} para realizar os serviços. O custo de espaço desta abordagem é muito alto devido à ocorrência de replicação de dados sobre o ambiente, e acaba ocasionando uma sobrecarga no consumo de energia devido ao excesso de comunicação. O JaCa-Android~\cite{santi2011jaca} utiliza o esquema de captura de mudança de estado em recursos através de escuta de eventos, semelhante à comunicação por eventos apresentada na Seção~\ref{subsec-comunicacao}, mas limitado a componentes em um mesmo dispositivo. Além de não ser voltada a sistemas distribuídos, esta proposta tem sua abordagem limitada pela a plataforma \textit{Android} por utilizar mecanismos específicos da tecnologia para a captura de eventos.
+
+O \mbox{\textit{framework}} busca como diferencial que novas aplicações ubíquas possam ser concebidas de forma dinâmica e adaptativa. A proposta disponibiliza ao desenvolvedor de aplicações um ferramental para montar AmbIs personalizados. O desenvolvedor adquire como benefício à separação de interesses, que reduz a carga de codificação de requisitos essenciais de um sistema (e.g. segurança, manutenção), e possui ainda um suporte para construção de regras sobre o contexto do ambiente, permitindo prover serviços em alto nível aos usuários do sistema inteligente.
+%essencialmente focamos em sistemas distribuídos, <não vamos falar dos sistemas 
+%falar dos sistemas q tb tem uma arquitetura em camadas, mas nas diferenças entre o deles e o nosso
+%FIXME: (matheus) aqui é o único lugar q pluraliza AmbI para AmbIs
+
+
+%~\cite{liu2003dios++}
+%\cite{Chen2002} \cite{sudha2007ubiquitous} \cite{lee2012mobicon}
+
+
+%%%%%%%%%%%%%
+% CONCLUSÃO %
+%%%%%%%%%%%%%
+\section{Conclusão e Trabalhos Futuros} \label{sec-conclusao}
+
+%Falar sobre o resultado do que foi visto
+Neste artigo, foi apresentado o \mbox{\textit{Framework}} de Desenvolvimento de Aplicações Ubíquas em \mbox{Ambientes} Inteligentes, com abstrações que visam facilitar o desenvolvimento e a implantação de aplicações que interajam de forma ubíqua com o ambiente e seus ocupantes. Através do \mbox{\textit{framework}}, o desenvolvedor cria serviços que atendem a requisitos preestabelecidos de acordo com as características de um AmbI. Após a concepção de serviços para o AmbI, a implantação ocorre a partir da instalação do conjunto de aplicações sobre uma infraestrutura de rede Wi-Fi segura. Os serviços, depois de implantados, podem ser manipulados pelos ocupantes através da IPGAP e das interfaces de operações de cada aplicação instalada. Na avaliação, que se deu por meio das implementações das aplicações do jogo da velha com múltiplos participantes e do SmartLiC, foi constatada a qualidade do \mbox{\textit{framework}} em lidar com problemas de um AmbI.
+%FIXME: dei uma melhorada, mas ainda não gostei dessa confusão entre serviços e aplicações... qnd vai falar da implentação, fica mto bagunçado, difícil de entender oq vc qria dizer
+
+%falar sobre os desafios do futuro
+A proposta possui potencial para ampliar suas funcionalidades e atender a outros desafios importantes na área de Computação Ubíqua e Computação Sensível ao Contexto. A segurança atual está limitada às configurações da rede Wi-Fi, futuramente pretende-se agregar ao suporte restrições de acesso a determinados ocupantes e entre diferentes domínios de aplicações. A economia de energia em dispositivos pode ser aprimorada reduzindo a sobrecarga de comunicação em quantidade e qualidade. Na parte de Computação Sensível ao Contexto, pretende-se identificar as preferências do usuário de forma menos intrusiva através de técnicas de mineração de dados aliadas à aprendizagem de máquina. Para permitir um controle de serviços maior no nível do usuário, está sendo definida uma interface amigável para a definição de regras de contexto. Como resultado desses incrementos, aplicações críticas como um sistema de assistência domiciliar a saúde~\cite{carvalho2010sciads} serão beneficiadas.
+
+
+\bibliographystyle{sbc}
+\bibliography{references}
+
+\end{document}

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/createResource"
+          android:title="@string/createResource"
+          android:icon="@drawable/add" />
+    
+    <item android:id="@+id/conectToResource"
+          android:title="@string/conectToResource"
+          android:icon="@drawable/connect" />
+    
+    <item android:id="@+id/rule"
+          android:title="@string/rule"
+          android:icon="@drawable/thunder" />
+    
+    <item android:id="@+id/log"
+          android:title="@string/log"
+          android:icon="@drawable/log_icon" />
+    
+    <item android:id="@+id/erase"
+          android:title="@string/erase"
+          android:icon="@drawable/cancel" />
+    
+    <item android:id="@+id/settings"
+          android:title="@string/settings"
+          android:icon="@drawable/settings" />
+</menu>
+

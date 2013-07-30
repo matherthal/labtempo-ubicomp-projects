@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="@string/map_prefs_title_categoryResources" >
+        <Preference android:key="regResources" android:summary="@string/map_prefs_summary_regResources" android:title="@string/map_prefs_title_regResources"/>
+        <Preference android:key="resStakeholders" android:summary="@string/map_prefs_summary_resStakeholders" android:title="@string/map_prefs_title_resStakeholders"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/map_prefs_title_categoryMap" >
+        <EditTextPreference
+            android:key="rdsAddress"
+            android:summary="@string/map_prefs_summary_rdsAddress"
+            android:title="@string/map_prefs_title_rdsAddress" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

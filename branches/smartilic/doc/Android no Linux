@@ -1,0 +1,41 @@
+Instrução para se encontrar dispositivos Android, que não estejam sendo automaticamente encontrados, no Linux
+
+Este manual considera que o SDK Android já está corretamente instalado no sistema.
+Se não estiver, vá para o manual: "Instalação Android no Linux"
+
+No diretório "/etc/udev/rules.d"
+procurar o arquivo "51-android.rules"
+se não houver, deve ser criado.
+
+O arquivo 51-android.rules deve conter a seguinte linha de comando:
+SUBSYSTEM=="usb", SYSFS{idVendor}=="04e8", MODE="0666"
+
+O idVendor desta linha indica a permissão para dipositivos do tipo Samsung Galaxy
+(funcionou para o Tablet Samsung Galaxy 10.1 e para o celular Samsung Galaxy 2.3)
+
+A permissão deste arquivo (51-android-rules) deve também ser alterada,
+o que pode ser feito com o comando:
+sudo chmod 777 /etc/udev/rules.d/51-android-rules
+
+Agora que editamos o arquivo de configuração, bastará reinicializar o servidor adb.
+Entre no diretório de onde o SDK do Android foi inicializado e depois em "platform-tools"
+(no meu PC fica em "/home/meu_nome/android-sdks/platform-tools")
+
+Com o dipositivo Android conectado na USB, pode ser usado o comando:
+./adb devices
+Que verifica os dispositivos Android conectados na USB. Se há algum problema de permissão
+deve aparecer com "???" na id do dispositivo.
+Então deve se reinicializar o servidor adb fazendo o seguinte:
+sudo ./adb kill-server
+sudo ./adb start-server
+sudo ./adb devices
+Agora devem aparecer o(s) dispositivo(s).
+E você poderá usar o ./adb devices sem o sudo, que também aparecerá o dispositivo.
+
+Algumas pessoas recomendam reinicializar o computador. Acho que não é necessário.
+
+Se isso não funcionar pode ser também que aquela idVendor não sirva para o seu aparelho.
+
+Se nada disso funcionar, pesquise aqui: google.com hahaha
+
+Valeu!

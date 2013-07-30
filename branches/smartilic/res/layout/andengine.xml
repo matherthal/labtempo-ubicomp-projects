@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:background="#FFF" >
+
+        <!-- Be carreful with these values... The screen size can influenciate -->
+        <org.andengine.opengl.view.RenderSurfaceView
+            android:id="@+id/xmllayoutexample_rendersurfaceview"
+            android:layout_width="1200px"
+            android:layout_height="800px" />
+    </LinearLayout>
+
+</LinearLayout>

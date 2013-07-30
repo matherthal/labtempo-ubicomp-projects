@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:id="@+id/popup_element"
+	android:background="#AA000000"
+    >
+
+    <TextView
+        android:id="@+id/tv1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dip"
+        android:text="@string/information" />
+
+    <SeekBar
+        android:id="@+id/seekBar1"
+        android:layout_width="223dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
+
+    <Button
+        android:id="@+id/btn1"
+        android:layout_width="66dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Ok" />
+
+</LinearLayout>

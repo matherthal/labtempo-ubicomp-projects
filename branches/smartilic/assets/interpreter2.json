@@ -1,0 +1,49 @@
+{
+"interpreter": {
+	"name": "RULE_TEST",
+	"priority": 3,
+	"formula": [
+		{"formula": [
+			{"formula": [
+				{"predicate": [
+					{"context_elem": {
+						"rai": "bed1",
+						"elem": "occupied"
+					}}
+				]}
+			]},
+
+			{"connective": "or"},
+			
+			{"not": 
+				{"formula": [
+					{"predicate": [
+						{"context_elem": {
+							"rai": "tv1",
+							"elem": "getChannel"
+						}},
+						{"op": "="},
+						{"context_elem": {
+							"rai": "tv2",
+							"elem": "getChannel"
+						}}
+					]},
+		
+					{"connective": "and"},
+		
+					{"predicate": [
+						{"context_elem": {
+							"rai": "stv1",
+							"elem": "getOvenTemperature"
+						}},
+						{"op": ">"},
+						{"val": 30}
+					]}
+				]}
+			},
+			
+			{"timer": "10sec"}
+		]}
+	]
+}
+}

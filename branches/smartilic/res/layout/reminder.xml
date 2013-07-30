@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <EditText
+        android:id="@+id/edtPrescriptionName"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="Prescription Name"
+        android:textSize="18sp" />
+
+    <LinearLayout
+        android:id="@+id/layout_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <TextView
+            android:id="@+id/txtStartPrescription"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="Start Prescription"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        <TextView
+            android:id="@+id/txtEndPrescription"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="End Prescription"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btnPrescriptionStart"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:onClick="onPrescriptionStartClick"
+            android:text="Choose Prescription Start" />
+
+        <Button
+            android:id="@+id/btnPrescriptionEnd"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:onClick="onPrescriptionEndClick"
+            android:text="Choose Prescription End" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/layout_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/edtPrescriptionPeriodicity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:hint="Periodicity"
+            android:inputType="number"
+            android:textSize="18sp" />
+
+        <Spinner
+            android:id="@+id/spnPrescriptionPeriodicity"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:entries="@array/freq_array" />
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/edtPrescriptionDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Enter some words in order to describe this Prescription. (Optional)"
+        android:inputType="textMultiLine" >
+
+        <requestFocus />
+    </EditText>
+    
+    <Button
+        android:id="@+id/btnPrescriptionPatient"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onChoosePatientClick"
+        android:text="Chosse the Patient..." >
+    </Button>
+
+    <Button
+        android:id="@+id/btnPrescriptionOK"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:onClick="onSubmitPrescriptionClick"
+        android:text="Ok" >
+    </Button>
+
+</LinearLayout>

@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <string name="hello">Hello World, TestRPC!</string>
+    <string name="app_name">SmartAndroid</string>
+    <string name="ip_ok">IP OK!</string>
+    <string name="button_stove">Fogão</string>
+    <string name="regButton">Register this device</string>
+    <string name="information">"Choose the intensity (0 means off) of the burner "</string>
+    <string name="textView_log">Log: </string>
+    
+    <!-- Map Activity Menu -->
+    <string name="createResource">Create a new Agent</string>
+    <string name="conectToResource">Conect to an existing Agent</string>
+    <string name="rule">Compose a Context Rule</string>
+    <string name="log">View Log</string>
+    <string name="settings">Settings</string>
+    <string name="erase">Erase saved data</string>
+
+    <!-- From Layout resource_config.xml -->
+    <string name="title_config_res">Resource Settings</string>
+    <string name="tv_config_res_name">Resource Name</string>
+    <string name="tv_config_res_posX">X Position (m)</string>
+    <string name="tv_config_res_posY">Y Position (m)</string>
+    <string name="btn_config_res_ok">OK</string>
+    <string name="btn_config_res_cancel">Cancel</string>
+
+	<!-- From Layout rule_toolbar.xml -->
+    <string name="title_rule_composer">Rule Composer</string>
+    
+    <!-- From Layout tv.xml -->
+    <string name="tvChPlus">CH +</string>
+    <string name="tvChMinus">CH -</string>
+    <string name="tvVolPlus">Vol +</string>
+    <string name="tvVolMinus">Vol -</string>
+    <string name="tvTurnOn">Turn On</string>
+    <string name="tvTurnOff">Turn Off</string>
+
+    <!-- From Layout -->
+
+    <string-array name="devices_array">
+        <item name="item_rule">Simuladores</item>
+        <item name="item_rule">Regra</item>
+        <item name="item_tv">Televisao</item>
+        <item name="item_Cel">Celular</item>
+        <item name="item_Lamp">Lampada</item>
+        <item name="item_">Tablet</item>
+        <item name="item_stove">Fogao</item>
+        <item name="item_pc">Computador</item>
+        <item name="item_radio">Radio</item>
+        <item name="item_clock">Relogio</item>
+        <item name="item_bed">Cama</item>
+        <item name="item_base">Repositorio de Recursos</item>
+        <item name="item_place">Base de Lugares</item>
+        <item name="item_map">Mapa da casa</item>
+        <item name="item_tttoe">Jogo da velha</item>
+        <item name="item_app_lampcontrol">Controlador de Lampada</item>
+        <item name="item_app_counter_onoff">Contador de OnOff</item>
+        <item name="item_app_counter_onoff2">Copyyy Contador de OnOff</item>
+        <item name="item_device">DeviceOnOff</item>
+        <item name="item_counter">Counter</item>
+        <item name="item_app_lamp_control_sys">Sistema de Controle de Lâmpadas</item>
+        <item name="item_smartandroid_debugger">SmartAndroid Debugger</item>
+        <item name="item_smartandroid_debugger">Simulador de Tracking</item>
+        <item name="item_reminder">Plano de Cuidados</item>
+        <item name="item_prenda">Prenda</item>
+    </string-array>
+    
+    <!-- Freq Array -->
+    <string-array name="freq_array">
+        <item name="item_horas">Hours</item>
+        <item name="item_dias">Days</item>
+        <item name="item_semanas">Weeks</item>
+        <item name="item_semanas">Months</item>
+    </string-array>
+
+    <!-- RuleActivity -->
+    <string name="rule_manager">Gerenciador de Regras</string>
+    <string name="menu_rule_manager">Regras</string>
+    <string name="rule_creation">Criar Regra</string>
+    <string name="rule_name">Nome</string>
+    <!--
+    <string-array name="rule_select_ra_class_array">
+        <item name="rule_select_ra_class">Escolha um tipo de dispositivo:</item>
+    </string-array>
+    
+	<string-array name="rule_select_ra_array">
+	    <item name="rule_select_ra">Escolha o recurso:</item>
+    </string-array>
+    
+    <string-array name="rule_select_ra_var_array">
+        <item name="rule_select_ra_var">Escolha um atributo:</item>
+    </string-array>
+    
+    <string-array name="rule_select_operation_array">
+        <item name="rule_select_operation">Escolha a operação de comparação:</item>
+    </string-array>
+    -->
+    <string name="rule_select_ra_class">Escolha um tipo de dispositivo:</string>
+    <string name="rule_select_ra">Escolha o recurso:</string>
+    <string name="rule_select_ra_var">Escolha um atributo:</string>
+    <string name="rule_select_operation">Escolha a operação de comparação:</string>
+    <string name="rule_select_ra_mtd">Escolha uma ação:</string>
+    <string name="rule_comparing_val">Valor</string>
+    <string name="button_runscript">Executar regra</string>
+    <string name="button_createrule">Criar</string>
+    <string name="button_createrulecond">Criar</string>
+    <string name="button_addCond">Nova Condição</string>
+    <string name="button_rmCond">Remover Condição</string>
+    <string name="button_addAction">Nova Ação</string>
+    <string name="button_rmAction">Remover Ação</string>
+    <string name="rule_cond">Criar Condição</string>
+    <string name="rule_action">Criar Ação</string>
+    <string name="button_condList">Condições</string>
+    <string name="button_actionList">Ações</string>
+    <string name="button_rule">Regra</string>
+    <!-- End RuleActivity -->
+    <string name="content">Base content</string>
+
+    <!-- Begin tictactoe app -->
+    <string name="app_tic_name">Tic-Tac-Toe</string>
+    <string name="about_label">About</string>
+    <string name="about_title">Tic-Tac-Toe</string>
+    <string name="about_content">2010 Science Fair Project\nby Sarah Moloney</string>
+    <string name="new_game_label">New Game</string>
+    <string name="settings_label">Settings...</string>
+    <string name="settings_title">Tic-Tac-Toe Settings</string>
+    <string name="type_player_computer">Computer</string>
+    <string name="type_player_human">Human</string>
+
+    <string-array name="type_player_list">
+        <item>@string/type_player_computer</item>
+        <item>@string/type_player_human</item>
+    </string-array>
+
+    <!-- Resources that already have simulators -->
+    <string-array name="res_simulators">
+        <item>Stove</item>
+        <item>Television</item>
+        <item>Bed</item>
+        <item>Lamp</item>
+    </string-array>
+
+    <string name="type_player_o_default">@string/type_player_human</string>
+    <string name="type_player_o_key">typePlayerO</string>
+    <string name="type_player_o_title">Player O</string>
+    <string name="type_player_summary">Computer or Human</string>
+    <string name="type_player_x_default">@string/type_player_human</string>
+    <string name="type_player_x_key">typePlayerX</string>
+    <string name="type_player_x_title">Player X</string>
+    <!-- End tictactoe app -->
+
+    <string name="menu_settings">Settings</string>
+
+    <!-- Simulator Chooser -->
+    <string name="add_simulator">New Agent</string>
+    <string name="choose_simulator">Existing Agent</string>
+
+    <!-- Custom Color Buttons Style -->
+    <style name="ButtonText">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">#ffffff</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_margin">3dp</item>
+        <item name="android:textSize">30dp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:shadowColor">#000000</item>
+        <item name="android:shadowDx">1</item>
+        <item name="android:shadowDy">1</item>
+        <item name="android:shadowRadius">2</item>
+    </style>
+
+    <!-- App Lamp Controller -->
+    <string name="title_activity_app_lamp_controller">AppLampController</string>
+    <string name="app_lamp_controller">Controlador de Lâmpada</string>
+    <!-- End App Lamp Controller -->
+    <string name="title_activity_app_lamp_control_system">AppLampControlSystem</string>
+
+    <!-- Begin Debugger app -->
+    <string name="debugger_name">SmartAndroid Debugger</string>
+    <!-- End Debugger app -->
+    <string name="dias">Dias</string>
+    <string name="horas">Horas</string>
+    <string name="semanas">Semanas</string>
+    <string name="description">Descrição</string>
+    <string name="hour">Horário</string>
+    <string name="freq">Frequência</string>
+    <string name="register">Cadastrar</string>
+    <string name="map_prefs_title_rdsAddress">Resource Discovery Address</string>
+    <string name="map_prefs_summary_rdsAddress">URL of Resource Discovery Service</string>
+    <string name="map_prefs_title_regResources">Unregister Resources</string>
+    <string name="map_prefs_summary_regResources">Unregister Resources from Registry Service</string>
+    <string name="map_prefs_title_categoryResources">Resources Settings</string>
+    <string name="map_prefs_title_categoryMap">Application Settings</string>
+    <string name="map_prefs_title_resStakeholders">Setup Stakeholders</string>
+    <string name="map_prefs_summary_resStakeholders">Add or Remove Stakeholders from an Agent Interest</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="title_activity_simul_creator">Simulators Creator</string>
+    <string name="strSmartAndroid">SmartAndroid</string>
+    <string name="strResCreatorIntro">You can conect a simulator to either a new Resource Agent or an existing (registered) one </string>
+
+</resources>

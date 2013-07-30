@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+<!--  
+    <Button
+        android:id="@+id/btnReg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:onClick="onRegisterClick"
+        android:text="@string/regButton" />
+-->
+<FrameLayout 
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content">
+<br.uff.tempo.apps.stove.Panel
+    android:id="@+id/panel"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" />
+</FrameLayout>
+</LinearLayout>

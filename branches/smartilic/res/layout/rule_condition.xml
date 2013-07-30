@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+	<TextView
+	    android:id="@+id/textViewRule"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:text="@string/rule_creation"
+	    android:textSize="22dp" />
+
+	<Spinner
+	    android:id="@+id/spinnerClasseChoice"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:prompt="@string/rule_select_ra_class" />
+
+	<Spinner
+	    android:id="@+id/spinnerRAChoice"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:prompt="@string/rule_select_ra"
+	    android:clickable="false" />
+
+	<Spinner
+	    android:id="@+id/spinnerRAAttribChoice"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:prompt="@string/rule_select_ra_var"
+	    android:clickable="false" />
+
+	<Spinner
+	    android:id="@+id/spinnerOperation"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:prompt="@string/rule_select_operation" />
+
+	<EditText
+	    android:id="@+id/editTextValue"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content"
+	    android:ems="10"
+	    android:hint="@string/rule_comparing_val" />
+	
+	<Button
+	    android:id="@+id/buttonCreateRuleCond"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:text="@string/button_createrulecond"
+	    android:clickable="true"
+     	android:onClick="buttonCreateCond_Clicked" />
+</LinearLayout>

@@ -1,0 +1,43 @@
+{
+"interpreter": {
+	"name": "Fogao ligado outras pessoas",
+	"priority": 3,
+	"formula": [
+		{"formula": [
+			{"predicate": [
+				{"context_elem": {
+					"rai": "_STOVE_",
+					"elem": "getOvenTemperature"
+				}},
+				{"op": ">"},
+				{"val": 50.0}
+			]},
+
+			{"connective": "and"},
+			
+			{"not": 
+				{"predicate": [
+					{"context_elem": {
+						"rai": "_PRESENCE_",
+						"elem": "getPresence"
+					}}
+				]},
+
+				{"timer": 10sec}
+			}
+		]}
+	]
+},
+"actuator": [
+	{"name" : "OvenTurnOffActuator"},
+	{"action": {
+		"rai": "_STOVE_",
+		"service": "turnOffOven"
+	}},
+	{"action": {
+		"rai": "_TV_",
+		"service": "showMessage",
+		"params": "Nao tem ninguem na cozinha"
+	}}
+]
+}

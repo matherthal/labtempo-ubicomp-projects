@@ -1,0 +1,34 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/textViewAppLampName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="@string/app_lamp_controller"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <Button
+        android:id="@+id/buttonTurnLampOn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textViewAppLampName"
+        android:layout_below="@+id/textViewAppLampName"
+        android:onClick="buttonTurnLampOn_Clicked"
+        android:text="Acender Lâmpada" />
+
+    <Button
+        android:id="@+id/buttonTurnLampOff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/buttonTurnLampOn"
+        android:layout_below="@+id/buttonTurnLampOn"
+        android:onClick="buttonTurnLampOff_Clicked"
+        android:text="Apagar Lâmpada" />
+
+</RelativeLayout>

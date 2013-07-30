@@ -1,0 +1,18 @@
+{
+"interpreter": {
+	"name": "Campainha tocando",
+	"priority": 3,
+	"formula": [
+		{"formula": [
+			{"predicate": [
+				{"context_elem": {
+					"rai": "_STOVE_",
+					"elem": "getOvenTemperature"
+				}},
+				{"op": ">"},
+				{"val": 50.0}
+			]}
+		]}
+	]
+}
+}

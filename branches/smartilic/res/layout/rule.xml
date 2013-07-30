@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+	<TextView
+	    android:id="@+id/textViewRule"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:text="@string/rule_creation"
+	    android:textSize="22dp" />
+	
+	<EditText
+	    android:id="@+id/editTextCreateRule"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:hint="@string/rule_name"
+	    android:inputType="text" />
+
+	<Button
+	    android:id="@+id/buttonCondList"
+	    android:onClick="buttonConds_Clicked"
+	    android:text="@string/button_condList"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:clickable="true" />
+
+	<Button
+	    android:id="@+id/buttonActionList"
+	    android:onClick="buttonActions_Clicked"
+	    android:text="@string/button_actionList"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:clickable="true" />
+	
+	<Button
+	    android:id="@+id/buttonCreateRule"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:text="@string/button_createrule"
+	    android:clickable="true"
+     	android:onClick="buttonCreateRule_Clicked" />
+	
+	<Button
+	    android:id="@+id/buttonRunScript"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:text="@string/button_runscript"
+	    android:clickable="true"
+     	android:onClick="buttonRunScript_Clicked" />
+
+	<TextView
+	    android:id="@+id/textViewLog"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:text="@string/textView_log"
+	    android:textSize="12dp" />
+</LinearLayout>

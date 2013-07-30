@@ -1,0 +1,40 @@
+{
+"interpreter": {
+	"name": "Fogao ligado E deitado por 15min",
+	"priority": 3,
+	"formula": [
+		{"formula": [
+			{"predicate": [
+				{"context_elem": {
+					"rai": "_STOVE_",
+					"elem": "getOvenTemperature"
+				}},
+				{"op": ">"},
+				{"val": 50.0}
+			]},
+
+			{"connective": "and"},
+			
+			{"formula": [
+				{"predicate": [
+					{"context_elem": {
+						"rai": "_BED_SOLT_",
+						"elem": "occupied"
+					}}
+				]},
+	
+				{"connective": "or"},
+				
+				{"predicate": [
+					{"context_elem": {
+						"rai": "_BED_CASAL_",
+						"elem": "occupied"
+					}}
+				]},
+				
+				{"timer": 10sec}
+			]}
+		]}
+	]
+}
+}

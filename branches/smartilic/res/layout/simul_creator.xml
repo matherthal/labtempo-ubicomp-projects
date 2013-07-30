@@ -1,0 +1,32 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <Button
+        android:id="@+id/btnChooseResource"
+        style="@style/ButtonText"
+        android:layout_centerInParent="true"
+        android:background="@drawable/button_green"
+        android:text="@string/choose_simulator" />
+
+    <Button
+        android:id="@+id/btnAddResource"
+        style="@style/ButtonText"
+        android:layout_above="@id/btnChooseResource"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_green"
+        android:text="@string/add_simulator" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="25dp"
+        android:text="@string/strResCreatorIntro"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+</RelativeLayout>

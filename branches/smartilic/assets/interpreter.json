@@ -1,0 +1,51 @@
+{
+"interpreter": {
+	"name": "Stove pre warming",
+	"priority": 3,
+	"formula": [
+		{"formula": [
+			{"predicate": [
+				{"context_elem": {
+					"rai": "sala",
+					"elem": "temperatura",
+					"params": "oi, 12, 14.5"
+				}},
+				{"op": ">"},
+				{"val": 25},
+				{"timer": "30min"}
+			]},
+
+			{"connective": "and"},
+			
+			{"formula": [
+				{"predicate": [
+					{"context_elem": {
+						"rai": "rai2",
+						"elem": "cv2"
+					}},
+					{"op": "<"},
+					{"context_elem": {
+						"rai": "rai3",
+						"elem": "cv3"
+					}},
+					{"timer": "12min"}
+				]},
+	
+				{"connective": "and"},
+	
+				{"predicate": [
+					{"context_elem": {
+						"rai": "sala",
+						"elem": "temperatura"
+					}},
+					{"op": "!="},
+					{"val": 25},
+					{"timer": "5min"}
+				]}
+			]},
+
+			{"timer": "30min"}
+		]}
+	]
+}
+}

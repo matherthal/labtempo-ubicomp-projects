@@ -1,0 +1,318 @@
+\documentclass[12pt]{article}
+
+\usepackage{sbc-template}
+
+\usepackage{graphicx,url}
+\usepackage[space]{grffile}
+
+\usepackage[brazil]{babel}   
+\usepackage[latin1]{inputenc}  
+
+     
+\sloppy
+
+\title{Um \textit{Framework} de Desenvolvimento de Aplicações Ubíquas em Ambientes Inteligentes}
+%acho q \\ pula linha
+\author{Matheus Erthal\inst{1}, Douglas Mareli\inst{1}, David Barreto\inst{1}, Orlando Loques\inst{1}}
+
+
+\address{Instituto de Computação -- Universidade Federal Fluminense (UFF)\\
+  Niterói -- RJ -- Brazil
+% \nextinstitute
+%   Department of Computer Science -- University of Durham\\
+%   Durham, U.K.
+% \nextinstitute
+%   Departamento de Sistemas e Computação\\
+%   Universidade Regional de Blumenal (FURB) -- Blumenau, SC -- Brazil
+  \email{\{merthal,dmareli,dbarreto,loques\}@ic.uff.br}
+}
+
+\begin{document} 
+
+\maketitle
+
+% \begin{abstract}
+% \end{abstract}
+%      
+\begin{resumo} 
+
+\end{resumo}
+
+
+%%%%%%%%%%%%%%
+% INTRODUÇÃO %
+%%%%%%%%%%%%%%
+\section{Introdução}
+%(motivação: jogar pra cima ubicomp introduzindo a inteligência ambiental como aplicação funamental)
+A Computação Ubíqua, como proposta por Weiser na década de 90~\cite{weiser1991computer}, prevê uma mudança no paradigma de interação entre o usuário e os sistemas computacionais. Weiser previu o surgimento do que chamou de "computação calma", onde a interação entre os usuários e os computadores ocorre de forma indireta. Uma aplicação ubíqua identifica as necessidades do usuário obtendo informação de contexto através de sensores, e provê serviços através de atuadores. Este tipo de sistema de aplicações está geralmente associado a um espaço denominado de ambiente inteligente~\cite{augusto2007ambient}. 
+
+%TODO: (matheus) Douglas, não é melhor colocarmos uma referência para SmartHome, ao invés de Ambient Inteligence, pq este último só fala de IA... se vc quiser, eu acho q tenho até a referência pra qm criou este termo ``smarthome'', só que isso foi criado num relatório técnico (é difícil de achar, mas eu acho q tenho uma cópia pq pedi à própria autora). 
+
+%TODO:(douglas) Não acho apropriado citar algo diferente do que já vinha sendo citado e aconselhado pelo orlando, e há uma concenso de que smart home é uma instancia de ambientes inteligentes. Quando houver citação do caso específico de smarthome (exemplos) esta referência de ''smarthome'' é bem vinda
+   
+%(as dificuldades, ?mas desenvolver é caro, difícil?, etc.)
+A construção e manipulação de aplicações ubíquas representam um grande desafio para desenvolvedores com pouco conhecimento técnico e recursos escassos. Alguns problemas estão mais em evidência como a diversidade de requisitos não funcionais característicos de sistemas distribuídos, como segurança e tolerância a falhas. Para construção e teste de aplicações há a necessidade de um contingente de recursos como dispositivos embarcados e espaço físico. Há uma dificuldade de estabelecer um protocolo comum de comunicação em boa parte destes dispositivos. E por fim, a quantidade e variedade de informações de contexto disponível no ambiente dificulta a interatividade das aplicações ubíquas. Atendendo a esta demanda é proposto um \textit{framework} com o objetivo de facilitar a aplicação dos conceitos de computação ubíqua em ambientes inteligentes de forma simples e confiável. %TODO: (matheus) Está meio confuso o meio deste parágrafo, depois a gente dá uma olhada
+
+%(o q os outros tem feito, falar rapidamente)
+Muitos trabalhos como~\cite{helal2005gator, cardoso2006, ranganathan2005olympus} tentam atingir esse objetivo. Em~\cite{augusto2007ambient} são apontados desafios na aquisição de conhecimentos do ambiente. Em~\cite{helal2005gator}, é proposto um \textit{middleware} entre a camada física, a qual compreende os sensores e atuadores, e a camada de aplicação, na qual se encontram o ambiente de desenvolvimento e as aplicações. Em~\cite{cardoso2006} são propostos serviços para gerenciar, no nível de \textit{middleware}, componentes representativos do ambiente. Em~\cite{ranganathan2005olympus}, sabendo-se que um ambiente inteligente pode possuir uma variedade imensa de dispositivos, propõe se uma estrutura de representação dos componentes da camada física através de ontologia. Esta estruturação permite ampliar o escopo de operações de suporte sobre um ambiente inteligente.
+
+%(?Este trabalho... vamos propor um protótipo ...?, nosso trabalho tem q ganhar. ?Tem que caber o smartandroid inteiro? - ARs)
+Neste trabalho é proposto um \textit{framework} de desenvolvimento de aplicações ubíquas em ambientes inteligentes. O objetivo é dar suporte a programação, teste e execução de aplicações para ambientes inteligentes permitindo lidar de forma consistente com sistemas de grande complexidade. O \textit{framework} destaca-se por cobrir grande parte dos desafios destacados na computação ubíqua \cite{araujo2003} como tratamento da heterogeneidade de dispositivos, tratamento de informações de contexto e descoberta de serviços. A heterogeneidade é tratada através da definição de um modelo de componentes distribuídos, no qual o componente básico tem uma estrutura uniforme definida como um agente de recurso. Segundo [Xavier 2006], agente de recurso é a entidade de coleta de informações contexto. Neste trabalho, esta definição é ampliada para qualquer módulo de interação com elementos ambiente inteligente. Para o tratamento de informações de contexto é proposto um modelo de regras que consiste de um conjunto de 
+interpretadores de contexto. Além disso, no \textit{framework} é proposto uma interface de prototipagem \cite{david2012ipgap} que permite a visualização e o teste de aplicações ubíquas mesclando componentes reais e virtuais. %TODO: (matheus) nós vamos citar a comutação ubíqua com letras maiúsculas ou minúsculas? Temos q decidir de pronto.
+%TODO: (matheus) Douglas, nós não vamos citar o david e a ipgap dessa maneira aí. Nós temos que falar que essa parte tb foi submetida para o SBRC 2013
+
+%(mostrar uma prova de conceito: 1 (exatamente) aplicação, seja a de saúde, ou outra)
+A qualidade do suporte do \textit{framework} foi avaliada durante o processo de transformação de uma aplicação com funcionamento estritamente local em uma aplicação ubíqua. Com isso foi possível concluir provar conceitualmente que o \textit{framework} facilita o processo de construção de aplicações ubíquas. Para testar a eficiência do modelo de regras foi construída uma aplicação que explora os mecanismos de comunicação utilizados no modelo de componentes distribuídos e as informações básicas de um agente de recurso como localização e identificação de tipo.
+  
+%(dependendo do tamanho: e nós concluímos que é possível fazer isso, isso e isso)
+
+%(resumo das seções, falar das próximas seções)
+Este artigo é organizado da seguinte forma: a Seção 2 apresenta os conceitos básicos utilizados ao longo do texto. A Seção 3 apresenta a arquitetura geral do SmartAndroid incluindo o modelo de componentes distribuídos e de regras. Na Seção 4 é apresentada uma prova de conceito demonstrando a eficiência do \textit{framework} em construir aplicações ubíquas. Após a avaliação, a Seção 5 apresenta uma comparação com trabalhos relacionados. E para finalizar, a Seção 7 apresenta as conclusões e trabalhos futuros.
+
+
+
+%%%%%%%%%%%%%%%%
+%    BASICO    %
+%%%%%%%%%%%%%%%%
+\section{Conceitos Básicos}
+
+%[(introduzir e motivar os conceitos abordados por nossa proposta)
+Os \textit{frameworks} para aplicações ubíquas costumam utilizar como base os conceitos de inteligencia ambiental, de computação ciente de contexto e de prototipagem de aplicações pervasivas. A inteligencia ambiental define o espaço onde estas aplicações funcionam. O comportamento de sistemas ubíquos são definidos a partir de técnicas aplicadas na computação ciente de contexto. E os esquemas de prototipagem são utilizados para manipular e testar o funcionamento do conjunto de aplicações no ambiente.
+  
+%(ambientes inteligentes)
+A computação ubíqua se inclui dentre as inúmeras áreas abrangidas pela inteligencia ambiental (IAmb). Em~\cite{augusto2007ambient} é apresentada uma arquitetura em camadas como base para sistemas para ambientes inteligentes. Na camada mais profunda encontra-se o espaço com seus ocupantes, em uma camada acima estão os sensores captando interações destes e atuadores promovendo interações com estes indivíduos. E é definido uma camada intermediária (\textit{middleware} entre as tomadas de decisões , as quais podem ocorrer por um ocupante ou inteligencia artificial, e as interações com o ambiente. O \textit{middleware} é parte que melhor define a função geral de nosso \textit{framework}, as aplicações ubíquas são definidas e gerenciadas nesta camada para promover a ligação entre o ambiente e os serviços computacionais. 
+
+%smarthome como um tipo de ambiente inteligente
+Um ambiente inteligente é o meio onde se agrega inteligencia computacional. Há diversos exemplos na literatura que utilizam especificações deste tipo de ambiente, dentre eles o termo "smarthome" se mostra como um dos mais populares por ser associado a casas inteligentes. As casas inteligentes são utilizadas por muitas propostas no estado da arte como em \cite{helal2005gator}, \cite{augusto2007ambient} e \cite{ranganathan2005olympus}. Com a casa inteligente como cenário, estes trabalhos costumam explorar a heterogeneidade de dispositivos e as rotinas bem definidas de seus ocupantes. Apesar do \textit{framework} proposto neste trabalho abranger qualquer tipo de ambiente inteligente, boa parte dos exemplos de aplicações abordados tem como cenário uma residência.
+
+%TODO: falta a referencia ''(matheus) Douglas, não é melhor colocarmos uma referência para SmartHome, ao invés de Ambient Inteligence, pq este último só fala de IA... se vc quiser, eu acho q tenho até a referência pra qm criou este termo ``smarthome'', só que isso foi criado num relatório técnico (é difícil de achar, mas eu acho q tenho uma cópia pq pedi à própria autora).'' 
+ 
+%(modelo de componentes distrbuídos(agente de recurso como definição de componente básico))]
+Para que as aplicações ubíquas possam ser integradas a elementos de baixo nível do ambiente inteligente é necessário que este espaço seja representado no nível de \textit{middleware}. Segundo \cite{kramer2007abstraction}, a abstração quando bem definida pode melhorar a visualização de problemas do mundo real e consequentemente ajudar na definição de uma resolução clara e objetiva por meio computacional. Este trabalho define um modelo de componentes arquiteturais distribuídos \cite{brown1998dcom} para representar de forma geral sistemas construídos pelo nosso \textit{framework}.
+
+\subsection{Prototipagem de Aplicações Pervasivas}
+%falar sobre travalho do david e da importancia de testar apicaçoes ubíquas
+No contexto do \textit{framework}, a prototipagem de aplicações pervasivas é fundamental para a depuração e teste em um ambiente inteligente. No trabalho \cite{david2012sbrc} é proposta a Interface de Prototipagem para Aplicações Pervasivas (IPGAP), um aparato ferramental que permite ao desenvolvedor de aplicações ter acesso a esses benefícios. Além disso, a IPGAP possui uma GUI (sigla em inglês para Interface Gráfica de Usuário) que proporciona ao usuário final controlar remotamente recursos do ambiente.
+
+%detalhar elementos da IPGAP
+Estas capacidades destacadas são proporcionadas pelas seguintes funcionalidades: mapeamento do ambiente, instalação de novas aplicações ubíquas e ligação com aplicações já existentes. Através destas funcionalidades é possível ter uma ambiente preenchido de recursos simulados (como televisor virtual, geladeira virtual, etc.) e fazê-los executar junto a recursos reais que podem ser representados em sua GUI. A GUI da IPGAP foi elaborada apropriadamente para o universo dos  \textit{tablets} e \textit{smartphones}, nela podem ser visualizados os recursos reais e virtuais localizados no mapa como ilustrado na Figura~\ref{fig:ipgap}.     
+
+%demonstrar uso em nossa proposta com exemplo (vide figura)
+Na Figura~\ref{fig:ipgap} é ilustrado um \textit{tablet} executando o aplicativo da IPGAP e \textit{smartphones} simulando recursos como TV, lampada e um termômetro. Através da IPGAP é possível visualizar cada um desses elementos e representá-los no mapa. Repare que na figura há outros recursos além dos representados pelos \textit{smartphones}, estes são recursos criados na própria IPGAP. Com isso o desenvolvedor de aplicações não fica limitado pela disponibilidade de recursos físicos, ou seja, não é preciso ter uma a mesma quantidade de dispositivos disponíveis que uma aplicação exige para que ocorra sua execução.
+ 
+Figura~\ref{fig:ipgap}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.8\textwidth]{imgs/ipgap/ipgap.PNG}
+  \caption{Interface de Prototipagem}
+  \label{fig:ipgap}
+\end{figure}
+
+%(descrever sua utilização na proposta)
+O \textit{famework} proposto permite ao desenvolvedor criar aplicações nas dimensões e quantidade que desejar para um ambiente real. A IPGAP permite verificar a viabilidade do funcionamento das aplicações desenvolvidas em ambiente real. As restrições deste ambiente para o representado na IPGAP são semelhantes, o que permite avaliar o desempenho antes da implantação efetiva das aplicações.
+
+\subsection{Computação Ciente de Contexto}
+%introduzir o conceito de contexto
+
+%descrever sobre importancia para ambientes inteligentes (áreas relacionadas e aplicações)
+
+%descrever importancia em nossa proposta   
+
+%%%%%%%%%%%%%%%%
+%  FRAMEWORK   %
+%%%%%%%%%%%%%%%%
+\section{Proposta do \textit{Framework}}
+
+%definição geral do framework
+O \textit{framework} provê facilidades e padrões de programação a aplicações cientes de contexto focadas em ambientes inteligentes (incluindo \textit{smarthomes}). O \textit{framework} torna o mais transparente possível as partes da aplicação que envolve a comunicação, a aquisição de contexto e a localização de recursos no ambiente.
+
+%definição da unidade básica do framework (AR)
+Ao invés de se lidar diretamente com sensores e atuadores espalhados no ambiente, o \textit{framework} utiliza, como abstração, componentes chamados Agentes de Recurso (AR). Os ARs são elementos de primeira ordem da plataforma, representando recursos de hardware ou software disponíveis no ambiente. Eles têm como responsabilidade coletar as diversas medidas dos sensores ou componentes de software presentes no contexto de execução do das aplicações~\cite{bezerrauso}. Os ARs resolvem a complexidade de tratamento com os componente de baixo nível e disponibilizam interfaces padrões de interação tanto local como em rede. Em ambientes inteligentes podem ser criados ARs para representar, por exemplo: uma televisão que expõe suas informações de contexto e provê serviços para as aplicações; sensores de temperatura da casa; sensores de vazamento de gás na cozinha; um medidor de pressão arterial; um atuador para fechar as janelas; etc. 
+
+%definiçao de uso geral da AR
+O AR é a unidade básica de modularização do ambiente distribuído proposto pelo \textit{framework}, assim sendo, o mesmo pode também ser utilizado na modelagem das aplicações. Se uma aplicação necessita de uma entidade distribuída, pode representá-la através de um AR. Por exemplo, um desenvolvedor poderia construir um jogo, representando através de ARs os jogadores, o tabuleiro, os monstros, recursos do cenário, etc. 
+
+%introduzindo o SGAR
+Para possibilitar a comunicação entre os diferentes ARs, o SmartAndroid dispõe de um serviço que gerencia estes recursos, e mantém informações de identificação e localização dos mesmos, dentre outras. Este serviço chama-se Serviço de Gerenciamento de Agentes de Recurso (SGAR) e é instanciado apenas uma vez no sistema distribuído. Como apresentado na Figura~\ref{fig:suporte}, o SGAR é composto por três componentes, ou serviços: o Serviço de Registro de Recurso (SRR), o Serviço de Descoberta de Recursos (SDR) e o Serviço de Localização de Recursos (SLR). A diferença entre o SDR e o SLR está no fato de que o primeiro se refere à localização na rede de computadores, e o segundo se refere à localização física do dispositivo no ambiente. %TODO: antes de falar isso, enfatizar um pouco o problema da localização
+
+O SGAR tem por objetivo aumentar a visibilidade das informações de contexto dos ARs e tornar a comunicação transparente para o programador das aplicações. 
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.7\textwidth]{imgs/arq-camadas-interpretador.png}
+  \caption{Camada de Interpretação de Regra}
+  \label{fig:cmd-intp}
+\end{figure}
+
+\subsection{Modelo de Componentes Distribuídos}%falar sobre interfaces de serviços do AR e os serviços de descoberta, registro e localização
+
+%descrever de forma geral o componente distribuido
+O modelo de componentes distribuídos mapeia as aplicações ubíquas em um ambiente inteligente genérico. Em geral este mapeamento é dividido em três camadas essenciais: a camada física ou conceitual dos recursos, a camada intermediária (\mbox{\textit{middleware}}) com os ARs dos respectivos recursos e componentes de ciência do contexto (interpretadores), e a camada das aplicações que agregam os componentes do \mbox{\textit{middleware}} em aplicativos. O modelo de componentes distribuído pode variar dentre estas camadas de acordo com as aplicações ubíquas implantadas no ambiente.
+
+%descrever um exemplo de modelo de componente distribuído (figura arqGeral)
+Na Figura~\ref{fig:arquitetura}, um exemplo de \textit{smarthome} gerenciado pelo \textit{framework} é apresentado. Na camada de recursos estão componentes físicos ou conceituais. Os recursos conceituais são aqueles simulados através de outro tipo de dispositivos (como \textit{smartphones} e \textit{tablets}) ou criados virtualmente através da IPGAP. A Figura~\ref{fig:arquitetura} apresenta exemplos como televisor, cama e fogão. No \mbox{\textit{middleware}} são apresentados os seus ARs representativos, além do AR de interpretação de contexto para verificar se o fogão foi esquecido ligado por um ocupante da casa. O interpretador verifica se alguém está presente na cama e por quanto tempo o fogão está ligado, se um tempo limite for ultrapassado uma ação é disparada para que o fogão seja desligado. Os ARs referentes a cama e ao fogão coletam os dados destes recursos e os representam na camada do \mbox{\textit{middleware}}.
+
+Figura~\ref{fig:arquitetura}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.7\textwidth]{imgs/framework/arquiteturaGeral.PNG}
+  \caption{Arquitetura do \textit{Framework}}
+  \label{fig:arquitetura}
+\end{figure}
+
+%descrever a estrutura do agente 
+O AR foi definido para padronizar os componentes de interação do ambiente, e dessa forma resolver questão da heterogeneidade apresentada em \cite{araujo2003}. A estrutura geral do AR é composta por nome único, tipo, localização, código(classe) com variáveis e métodos e uma lista de interessados em informações de contexto. O tipo é definido por uma hierarquia que vai se especializando desde o tipo raiz até o tipo da classe(código) específico da classe. Todo AR possui como super pai o tipo raiz. A lista de interessados possui registros com dois campos, um com a variável de contexto AR corrente e outro com a referência do outro AR interessado nela.  
+
+%descrever instancia do agente (figura instanciaAR)
+A Figura~\ref{fig:agente} ilustra um exemplo de instancia de AR representando um televisor em ambiente residencial. O nome identifica unicamente a TV no ambiente residencial ("tvDaSala"), a localização é definida como a sala de estar da casa. O tipo "TV", nome da classe corrente, é definido como especialização do tipo "Visual". O código possui as variáveis e as operações específicas da classe, como o número de canais. E a lista de interessador possui a lista de variáveis que tem como alvo de interesse os AR associados, por exemplo celular está interessado no canal da TV. 
+
+Figura~\ref{fig:agente}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.4\textwidth]{imgs/suporte/instanciaAR.PNG}
+  \caption{Instância do Agente de Recurso}
+  \label{fig:agente}
+\end{figure}
+
+%descrever as portas de interação (VC e operações) do AR 
+
+\subsubsection{Suporte ao Gerenciamento de Recursos}
+
+%falar sobre uso geral do SGAR (figura Suporte)
+Figura~\ref{fig:suporte}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.7\textwidth]{imgs/suporte/suporte.PNG}
+  \caption{Serviços de Suporte}
+  \label{fig:suporte}
+\end{figure}
+
+%descrever o serviço de registro e exemplos
+
+%descrever o serviço de descoberta e exemplos
+
+%descrever o serviço de localização e exemplos
+
+%descrever estrutura de repositorio (figura repositorio) 
+Figura~\ref{fig:repositorio}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.6\textwidth]{imgs/suporte/repositorio.png}
+  \caption{Repositório de Recursos}
+  \label{fig:repositorio}
+\end{figure}
+
+\subsection{Comunicação} \label{subsec-comunicacao}
+Figura: Comunicação direta e indireta em alto nível
+%contextualizaçao da comunicaçao no modelo de componentes distribuídos
+
+
+
+%descriçao do mecanismo p/s 
+A principal forma de comunicação no SmartAndroid é através de um mecanismo de publica-subscreve (\textit{publish-subscribe}), também chamado de comunicação por eventos. Este paradigma corresponde à uma comunicação assíncrona, que envolve o registro de interesse por parte da entidade interessada na entidade de interesse. As entidades são mapeadas no SmartAndroid em ARs, e uma entidade pode registrar seu interesse no contexto de uma outra qualquer, co-localizada ou remota. Conforme o contexto da entidade de interesse varia no tempo, esta notifica aos interessados, que desempenham suas ações relacionadas.
+
+%descrição breve do mecanismo RPC para o SmartAndroid
+
+
+%A abordagem adotada no SmartAndroid difere daquelas onde 
+
+\subsection{Modelo de Contexto}
+%Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) envolve a escolha de um modelo de contexto. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, onde os dispositivos ou entitades que os representam enviam suas medições para este serviço de gerenciamento. O serviço se encarrega então de enviar as medidas para os interessados. Este é o caso, por exemplo do 
+
+Uma infraestrutura para construção de aplicações cientes de contexto (ou aplicações ubíquas) pode ter uma abordagem centralizada ou distribuída. Em abordagens centralizadas se faz necessário a utilização de um serviço de gerenciamento de contexto, responsável por manter a informação contextual e oferecer interfaces para subscrições e consultas. Este tipo de abordagem corresponde à uma arquitetura do tipo \textit{blackboard} (ou quadro-negro), onde uma entidade envia uma mensagem para uma memória compartilhada entre todas as entidades, e também pode se subscrever para receber mensagens que respeitam algum padrão especificado~\cite{winograd2001architectures}. Todas as comunicações ocorrem através de um servidor centralizado e as mensagens são redirecionadas para os interessados.
+
+Este trabalho adotou uma abordagem distribuída, onde a informação de contexto não é armazenada em um servidor centralizado, mas é mantida pelos ARs. O processo de aquisição do contexto envolve a descoberta do AR de interesse através do SDR, com a posterior subscrição do mesmo, como apresentado na Subsessão~\ref{subsec-comunicacao}. 
+
+
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=.7\textwidth]{imgs/interpretador-fogao-cute.png}
+  \caption{Interpretador de Regra}
+  \label{fig:inpt_cute}
+\end{figure}
+
+\subsubsection{Variáveis de Contexto e Operações} \label{subsec:cv}
+As informações de contexto respectivas de cada AR são expostas através de Variáveis de Contexto (VC). Se, por exemplo, há um agente para a televisão registrado no sistema, possivelmente ele provê VCs para qual a programação que está sendo exibida, qual a programação agendada, se a própria televisão está ligada, se está gravando alguma programação, enfim, tudo que diz respeito ao estado da televisão e é efetivamente coletado.
+
+As VCs possibilitam que as informações de contexto sejam acessadas sem que haja um componente centralizado armazenando-as e disponibilizando-as, %como são as abordagens que utilizam tuple space (T Space, Google Interactive Space (acho q tb usa), outras) %TODO: Falar disso tudo
+
+%Figura: Arquitetura que mostre as portas de entrada e exit dos ARs (VCs e Operações). Deve mostrar, ou ser explicado como se ligar.
+
+
+\subsubsection{Interpretador de Contexto}
+%Figura: Arquitetura em camadas: desde os recursos até a aplicação, passando pelo IC
+
+%\subsubsection{Criação de Interpretador de Contexto}
+%Figura: Figura que demonstre essa rotina.
+
+%\subsubsection{Interpretador de Contexto em Funcionamento}
+Figura: Figura que permita mostrar o funcionamento passo-a-passo do IC
+
+%\subsubsection{Temporização}
+%Figura: Figura equivalente à anterior, mas mostrando com o temporizador.
+
+%\subsection{Interface Gráfica de Composição de Regras}
+%Se tiver alguma coisa da GUI pronta até lá, colocar uma figura aqui.
+%referenciar no paper do david
+
+
+%%%%%%%%%%%%%%%%
+%  AVALIACAO   %
+%%%%%%%%%%%%%%%%
+\section{Avaliação}
+
+%falar sobre o que foi desenvolvido para avaliar a qualidade do framework (jogo da velha e aplicação de economia de luz)
+
+%descrição da prova de conceito jogo da velha (figura tictactoe)
+Figura~\ref{fig:tictactoe}
+\begin{figure}[ht]
+  \centering
+  \includegraphics[height=.8\textwidth]{imgs/app/tictactoe.PNG}
+  \caption{Comparação entre os modelos das aplicações Android e SmartAndroid}
+  \label{fig:tictactoe}
+\end{figure}
+
+%descrição da aplicação de economia de energia
+
+%%%%%%%%%%%%%%%%
+% RELACIONADOS %
+%%%%%%%%%%%%%%%%
+\section{Trabalhos Relacionados}
+%Diversos trabalhos vem sendo desenvolvidos nas áreas de Computação Ubíqua ou Pervasiva, Computação Sensível ao Contexto, 
+
+%trabalhos relacionados a middlewares e frameworks
+%\cite{Cardoso2006}
+%\cite{helal2005gator}
+%\cite{santi2011jaca}
+%essencialmente focamos em sistemas distribuídos, <não vamos falar dos sistemas 
+%falar dos sistemas q tb tem uma arquitetura em camadas, mas nas diferenças entre o deles e o nosso
+%\cite{bruneau2009diasim}
+
+%~\cite{liu2003dios++}
+
+
+%%%%%%%%%%%%%
+% CONCLUSÃO %
+%%%%%%%%%%%%%
+\section{Conclusão e Trabalhos Futuros}
+
+
+
+%\cite{boulic:91}
+\nocite{abowd1999towards}
+\nocite{Brandle2007}
+\nocite{Cardoso2006}
+\nocite{Chen2002}
+\nocite{chen2010context}
+\nocite{Dey2001}
+\nocite{lee2012mobicon}
+\nocite{liu2003dios++}
+\nocite{sudha2007ubiquitous}
+\nocite{wang2005towards}
+
+
+\bibliographystyle{sbc}
+\bibliography{references}
+
+\end{document}

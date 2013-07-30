@@ -1,0 +1,29 @@
+{
+"interpreter": {
+	"name": "Fogão Esquecido por 15min",
+	"priority": 3,
+	"formula": [
+		{"formula": [
+			{"predicate": [
+				{"context_elem": {
+					"rai": "_STOVE_",
+					"elem": "getOvenTemperature"
+				}},
+				{"op": ">"},
+				{"val": 50.0}
+			]},
+
+			{"connective": "and"},
+			
+			{"predicate": [
+				{"context_elem": {
+					"rai": "_BED_",
+					"elem": "occupied"
+				}}
+			]},
+
+			{"timer": 10sec}
+		]}
+	]
+}
+}
