@@ -63,13 +63,18 @@ public class RuleComposer { //extends Service {
 		Operand op1 = new Operand(rai1, cv1, params1);
 		Operand op2 = new Operand(val);
 		Predicate p = new Predicate(op1, op, op2, timeout, null);
-		this.p_expr.attachFormula(p);
-		
-		notifyRuleChanged(p.asText());
+		this.p_expr.attachFormula(p);		
 	}
 	
 	public void addConditionComp(ContextVariableBundle cvBundle, Operator op, Object val, long timeout) throws Exception {
 		addConditionComp(cvBundle.getAgentRans(), cvBundle.getContextVariable(), cvBundle.getParameters(), op, val, timeout);
+		
+		String cond = "";
+		cond = cvBundle.getAgentRans() + ": " + cvBundle.getCvName();
+		cond += "\n" + op.getSymbol() + "\n";
+		cond += val.toString();
+		
+		notifyRuleChanged(cond);
 	}
 
 	public void addOpenBracket() {
@@ -117,12 +122,19 @@ public class RuleComposer { //extends Service {
 			act = new Actuator(name, "");
 		else
 			act.setName(name);
+		
+		notifyInterpreterFinished();
 	}
 
 	public void addAction(String rai, String serv, Object[] params) {
 		if (act == null)
 			act = new Actuator("", "");
 		act.addAction(rai, serv, params);
+	}
+	
+	public void addAction(String rai, String serv, Object[] params, String opName) {
+		addAction(rai, serv, params);
+		notifyActionAdded(rai + ": " + opName);
 	}
 
 	public void finish(Context context) throws IOException, JSONException {
@@ -153,7 +165,7 @@ public class RuleComposer { //extends Service {
 		outputStream.write(ruleStr.getBytes());
 		outputStream.close();
 		
-		notifyRuleFinished(this.exprRoot);
+		notifyRuleFinished();
 		
 		// Clean
 		this.exprRoot = null;
@@ -339,9 +351,21 @@ public class RuleComposer { //extends Service {
 		}
 	}
 	
-	private void notifyRuleFinished(Formula formula) {
+	private void notifyRuleFinished() {
 		for (IRuleComposeListener listener : listeners) {
-			listener.onRuleCompositionFinished(formula);
+			listener.onRuleCompositionFinished();
+		}
+	}
+	
+	private void notifyInterpreterFinished() {
+		for (IRuleComposeListener listener : listeners) {
+			listener.onInterpreterFinished();
+		}
+	}
+	
+	private void notifyActionAdded(String name) {
+		for (IRuleComposeListener listener : listeners) {
+			listener.onActionAdded(name);
 		}
 	}
 }

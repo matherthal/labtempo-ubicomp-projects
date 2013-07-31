@@ -165,7 +165,19 @@ public class RuleComposeBar extends HUD implements IRuleComposeListener {
 	}
 
 	@Override
-	public void onRuleCompositionFinished(Formula formula) {
-		// TODO what do you do when a compose finishes? terminate rule mode?
+	public void onRuleCompositionFinished() {
+		backgroundRect.detachChildren();
+		leftText = null;
+	}
+
+	@Override
+	public void onInterpreterFinished() {
+		backgroundRect.detachChildren();
+		leftText = null;
+	}
+
+	@Override
+	public void onActionAdded(String name) {
+		appendTextLine(name);
 	}
 }

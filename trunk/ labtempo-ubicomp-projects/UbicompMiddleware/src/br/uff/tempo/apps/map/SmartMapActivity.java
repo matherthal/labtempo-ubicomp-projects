@@ -8,6 +8,8 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import android.app.Dialog;
 import android.widget.Toast;
 import br.uff.tempo.apps.map.dialogs.IDialogFinishHandler;
+import br.uff.tempo.apps.map.dialogs.YesNoDialog;
+import br.uff.tempo.apps.map.dialogs.YesNoGetter;
 import br.uff.tempo.apps.map.objects.InterfaceApplicationManager;
 import br.uff.tempo.apps.map.objects.ResourceIcon;
 import br.uff.tempo.apps.map.objects.notification.NotificationBox;
@@ -18,10 +20,11 @@ import br.uff.tempo.apps.map.rule.ContextMenu;
 import br.uff.tempo.apps.map.rule.ContextMenuItem;
 import br.uff.tempo.apps.map.rule.IContextMenuAction;
 import br.uff.tempo.apps.simulators.utils.ResourceWrapper;
+import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.utils.Position;
 
 public class SmartMapActivity extends SmartAndroidMap implements ISpriteController, IContextMenuAction,
-		IDialogFinishHandler {
+		IDialogFinishHandler, YesNoGetter {
 	
 	// Called when a resource is just created by the Menu
 	@Override
@@ -99,19 +102,31 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 		
 		//toastOnUIThread(itemSelected.getLabel(), Toast.LENGTH_LONG);
 		
-		// Insert a context variable in the context rule expression
-		ruleToolbar.setContextVariable(itemSelected.getRans(), itemSelected.getMethodName()); 
-		
-		//'show' operation must be executed in UI thread.
-		//Remember that 'onContextMenuAction' method is a kind of event (callback) called by another thread
-		//and you can't do UI operations from a non-ui thread.
-		
-		runOnUiThread(new Runnable() {			
-			@Override
-			public void run() {
-				ruleToolbar.showDialog();
-			}
-		});
+		if (viewMode == INTERPRETER_MODE) {
+			// Insert a context variable in the context rule expression
+			ruleToolbar.setContextVariable(itemSelected.getRans(), itemSelected.getMethodName(), itemSelected.getLabel()); 
+			
+			//'show' operation must be executed in UI thread.
+			//Remember that 'onContextMenuAction' method is a kind of event (callback) called by another thread
+			//and you can't do UI operations from a non-ui thread.
+			
+			runOnUiThread(new Runnable() {			
+				@Override
+				public void run() {
+					ruleToolbar.showDialog();
+				}
+			});
+		} else if (viewMode == ACTUATOR_MODE) {
+			//create action
+			ruleComposer.addAction(itemSelected.getRans(), itemSelected.getMethodName(), new Object[0], itemSelected.getLabel());
+			runOnUiThread(new Runnable() {			
+				@Override
+				public void run() {
+					//call again dialog
+					new YesNoDialog("Action", "Choose new Action?", "Yes", "No", SmartMapActivity.this, SmartMapActivity.this);
+				}
+			});
+		}
 	}
 
 	@Override
@@ -122,5 +137,19 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 
 	public void setMode(int actuatorMode) {
 		this.viewMode = ACTUATOR_MODE;
+		new YesNoDialog("Action", "Choose new Action?", "Yes", "No", this, this);
+	}
+
+	@Override
+	public void onYesPressed() {}
+
+	@Override
+	public void onNoPressed() {
+		try {
+			this.ruleComposer.finish(this);
+		} catch (Exception e) {
+			throw new SmartAndroidRuntimeException("Error by finishing a context rule expression!", e);
+		}
+		viewMode = SIMULATOR_MODE;
 	}
 }

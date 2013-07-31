@@ -54,6 +54,8 @@ public final class SmartSpriteFactory {
 			sprite.registerSpriteController(controler);
 			sprite.setResourceWrapper(wrapper);
 			sprite.enableContextMenu(activity.getFontManager(), activity.getTextureManager());
+			sprite.getOpMenu().registerActionListener(activity);
+			activity.getScene().registerTouchArea(sprite.getOpMenu().getBoxMenu());
 			sprite.getContextMenu().registerActionListener(activity);
 			activity.getScene().registerTouchArea(sprite.getContextMenu().getBoxMenu());
 			return sprite;
