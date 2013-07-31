@@ -84,10 +84,12 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 
 	@Override
 	public void onSpriteTap(SmartSprite sprite, TouchEvent pSceneTouchEvent) {
-		if (this.ruleComposerMode) {
+		if (this.viewMode == INTERPRETER_MODE) {
 			sprite.showContextMenu(getCamera());
 		}
-		else {
+		else if (this.viewMode == ACTUATOR_MODE) {
+			sprite.showOperationsMenu(getCamera());
+		} else {
 			getResourceCreator().callSimulator(sprite.getResourceWrapper().getStub(), sprite.getResourceWrapper().getSimulator());
 		}
 	}
@@ -116,5 +118,9 @@ public class SmartMapActivity extends SmartAndroidMap implements ISpriteControll
 	public void onDialogFinished(Dialog dialog) {
 		// TODO:? Maybe get the string from RuleToobar here, instead of allow
 		// RuleToolbar to write on RuleComposeBar
+	}
+
+	public void setMode(int actuatorMode) {
+		this.viewMode = ACTUATOR_MODE;
 	}
 }

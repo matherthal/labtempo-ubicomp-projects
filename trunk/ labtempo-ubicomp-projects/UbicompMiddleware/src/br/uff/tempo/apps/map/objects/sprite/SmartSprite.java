@@ -18,13 +18,15 @@ import br.uff.tempo.apps.simulators.utils.ResourceWrapper;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent.ContextVariable;
+import br.uff.tempo.middleware.management.interfaces.IResourceAgent.Service;
 
 public class SmartSprite extends Sprite implements TouchEvents.ITouchEvents {
 
 	private TouchEvents touch;
 	private ISpriteController spriteController;
 	private ResourceWrapper wrapper;
-	private ContextMenu menu;
+	private ContextMenu menuIc;
+	private ContextMenu menuOp;
 
 	public SmartSprite(float pX, float pY, ITextureRegion pTextureRegion,
 			VertexBufferObjectManager pVertexBufferObjectManager) {
@@ -80,7 +82,14 @@ public class SmartSprite extends Sprite implements TouchEvents.ITouchEvents {
 					item.setExtra(m);
 					item.setRans(stub.getRANS());
 					item.setMethodName(m.getName());
-					menu.addItem(item);
+					menuIc.addItem(item);
+				} else if (m.isAnnotationPresent(IResourceAgent.Service.class)) {
+					Service service = m.getAnnotation(IResourceAgent.Service.class);
+					ContextMenuItem item = new ContextMenuItem(service.name());
+					item.setExtra(m);
+					item.setRans(stub.getRANS());
+					item.setMethodName(m.getName());
+					menuOp.addItem(item);
 				}
 			}
 
@@ -97,39 +106,57 @@ public class SmartSprite extends Sprite implements TouchEvents.ITouchEvents {
 	}
 	
 	public void enableContextMenu(FontManager menuFontManager, TextureManager menuTextureManager) {
-		if (menu == null) {
-			menu = new ContextMenu(getWidth(), getHeight(), getVertexBufferObjectManager(), menuFontManager, menuTextureManager);
+		if (menuIc == null && menuOp == null) {
+			menuIc = new ContextMenu(getWidth(), getHeight(), getVertexBufferObjectManager(), menuFontManager, menuTextureManager);
+			menuOp = new ContextMenu(getWidth(), getHeight(), getVertexBufferObjectManager(), menuFontManager, menuTextureManager);
 			fillContextVariables();
 		}
-		attachChild(menu);
+		attachChild(menuIc);
+		attachChild(menuOp);
 	}
 	
-	public void showContextMenu(Camera camera) {
-		float testX = getX() + getWidth() + menu.getBoxMenu().getWidth();
-		float testY = getY() + getHeight() + menu.getBoxMenu().getHeight();
+	public void showMenu(Camera camera, ContextMenu m) {
+		float testX = getX() + getWidth() + m.getBoxMenu().getWidth();
+		float testY = getY() + getHeight() + m.getBoxMenu().getHeight();
 		
 		if (testX > camera.getWidth()) {
-			menu.setX(-menu.getWidth());
+			m.setX(-m.getWidth());
 		} else {
-			menu.setX(getWidth());
+			m.setX(getWidth());
 		}
 		
 		if (testY > camera.getHeight()) {
-			menu.setY(-menu.getHeight());
+			m.setY(-m.getHeight());
 		} else {
-			menu.setY(getHeight());
+			m.setY(getHeight());
 		}
 		
-		menu.show();
+		m.show();
+	}
+	
+	public void showContextMenu(Camera camera) {
+		showMenu(camera, menuIc);
+	}
+	
+	public void showOperationsMenu(Camera camera) {
+		showMenu(camera, menuOp);
 	}
 	
 	public void hideContextMenu() {
-		menu.hide();
+		menuIc.hide();
+	}
+	
+	public void hideOpMenu() {
+		menuOp.hide();
 	}
 	
 	public ContextMenu getContextMenu() {
-		return this.menu;
+		return this.menuIc;
 	}
+	
+	public ContextMenu getOpMenu() {
+		return this.menuOp;
+	}	
 	
 	public void setPosition(float pX, float pY) {
 		super.setPosition(pX, pY);

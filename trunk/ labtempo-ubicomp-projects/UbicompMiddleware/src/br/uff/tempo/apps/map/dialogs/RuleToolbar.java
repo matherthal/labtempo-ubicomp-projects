@@ -3,12 +3,13 @@ package br.uff.tempo.apps.map.dialogs;
 import android.app.Activity;
 import android.view.View;
 import android.widget.Toast;
+import br.uff.tempo.apps.map.SmartMapActivity;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.ContextVariableBundle;
 import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.RuleComposer;
 
-public class RuleToolbar extends BaseRuleToolbar {
+public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 
 	public static final int CONTEXT_VARIABLE = 0;
 	public static final int CONSTANT_VALUE = CONTEXT_VARIABLE + 1;
@@ -20,6 +21,7 @@ public class RuleToolbar extends BaseRuleToolbar {
 	//Rule condition items
 	private ContextVariableBundle contextVariable;
 	private Operator operator;
+	private Object cte;
 
 	public RuleToolbar(final Activity act, final IDialogFinishHandler handler, RuleComposer ruleComposer) {
 		super(act);
@@ -121,7 +123,21 @@ public class RuleToolbar extends BaseRuleToolbar {
 	
 	@Override
 	void onInsertConstantClick(View v) {
-		// TODO Get a value from user
+		
+		InputDialog dialog = new InputDialog("Insert constant", "Constant:", activity, this);
+	}
+	
+	@Override
+	public void onInputText(String text) {
+		// TODO Auto-generated method stub
+		
+		try {
+			cte = Float.parseFloat(text);
+		} catch(NumberFormatException e) {
+			cte = text;
+		}
+		
+		comparableClicked(CONSTANT_VALUE);
 	}
 
 	@Override
@@ -139,6 +155,8 @@ public class RuleToolbar extends BaseRuleToolbar {
 		} catch (Exception e) {
 			throw new SmartAndroidRuntimeException("Error by finishing a context rule expression!", e);
 		}
+		dialog.dismiss();
+		((SmartMapActivity)activity).setMode(SmartMapActivity.ACTUATOR_MODE);
 	}
 	
 	public void setContextVariable(String rans, String contextVariable) {
@@ -157,7 +175,7 @@ public class RuleToolbar extends BaseRuleToolbar {
 			} else if (type == CONSTANT_VALUE) {
 				try {
 					// TODO Get correct value
-					this.ruleComposer.addConditionComp(contextVariable, operator, 10.0, 0);
+					this.ruleComposer.addConditionComp(contextVariable, operator, cte, 0);
 				} catch (Exception e) {
 					throw new SmartAndroidRuntimeException("Error by finilizing current condition", e);
 				}
