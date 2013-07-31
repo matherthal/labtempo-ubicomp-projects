@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import android.app.Activity;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.Toast;
 import br.uff.tempo.apps.map.SmartMapActivity;
@@ -45,7 +46,7 @@ public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyMMddHHmmss");
 		Date dt = new Date();
 		String myDate = sdf.format(dt);
-		this.ruleComposer.setRuleName(myDate);
+		this.ruleComposer.setRuleName("RULE_" + myDate);
 	}
 
 	// ===========================================================
@@ -159,17 +160,23 @@ public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 	@Override
 	void onFinishContextVariableClick(View v) {
 		
-		try {
-			this.ruleComposer.finish(activity);
-		} catch (Exception e) {
-			throw new SmartAndroidRuntimeException("Error by finishing a context rule expression!", e);
-		}
+//		try {
+//			this.ruleComposer.finish(activity);
+//		} catch (Exception e) {
+//			throw new SmartAndroidRuntimeException("Error by finishing a context rule expression!", e);
+//		}
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyMMddHHmmss");
+		Date dt = new Date();
+		String myDate = sdf.format(dt);
+		
+		this.ruleComposer.setActuatorName("Act_" + myDate);
 		dialog.dismiss();
 		((SmartMapActivity)activity).setMode(SmartMapActivity.ACTUATOR_MODE);
 	}
 	
-	public void setContextVariable(String rans, String contextVariable) {
-		this.contextVariable = new ContextVariableBundle(rans, contextVariable);
+	public void setContextVariable(String rans, String contextVariable, String cvName) {
+		this.contextVariable = new ContextVariableBundle(rans, contextVariable, cvName);
 		
 		comparableClicked(CONTEXT_VARIABLE);
 	}
