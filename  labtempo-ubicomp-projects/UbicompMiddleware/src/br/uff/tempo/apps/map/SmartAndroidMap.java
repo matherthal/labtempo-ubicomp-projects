@@ -62,6 +62,10 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 	// ===========================================================
 	public static final String TAG = "SmartAndroid";
 	public static final long VIBRATE_TIME = 100;
+	
+	public static final int SIMULATOR_MODE = 0;
+	public static final int INTERPRETER_MODE = 1;
+	public static final int ACTUATOR_MODE = 2;
 	// ===========================================================
 	// Fields
 	// ===========================================================
@@ -97,7 +101,7 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 	protected RuleComposeBar mBar;
 	protected RuleToolbar ruleToolbar;
 	private InterfaceApplicationManager mAppManager;
-	protected boolean ruleComposerMode = false;
+	protected int viewMode = SIMULATOR_MODE;
 	protected RuleComposer ruleComposer;
 	
 	// ===========================================================
@@ -318,7 +322,7 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 			break;
 
 		case R.id.rule:
-			this.ruleComposerMode = true;
+			this.viewMode = INTERPRETER_MODE;
 			this.mBar.show();
 			this.ruleComposer = new RuleComposer();
 			this.ruleComposer.addListener(this.mBar);
