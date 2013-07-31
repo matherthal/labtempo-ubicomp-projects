@@ -152,4 +152,13 @@ public class Predicate extends Formula {
 		this.timerexp = b;
 		this.valid = b;
 	}
+	
+	public String asText() {
+		String pred = "";
+		pred = this.op1.isConstant() ? this.op1.getValue().toString() : this.op1.getRai() + ": " + this.op1.getCv();
+		pred += "\n" + this.operator.toString() + "\n";
+		pred += this.op2.isConstant() ? this.op2.getValue().toString() : this.op2.getRai() + ": " + this.op2.getCv();
+		
+		return pred;
+	}
 }

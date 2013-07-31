@@ -153,7 +153,7 @@ public class RuleComposeBar extends HUD implements IRuleComposeListener {
 	}
 
 	@Override
-	public void onRuleCompositionChanged(String changeName, Formula formula) {
+	public void onRuleCompositionChanged(String changeName) {
 		
 		if (changeName.equals("(")) {
 			openBracket();
@@ -162,11 +162,6 @@ public class RuleComposeBar extends HUD implements IRuleComposeListener {
 		}
 		
 		appendTextLine(changeName);
-	}
-
-	@Override
-	public void onRuleCompositionChanged(Predicate predicate, Formula formula) {
-		// TODO Handle with a 
 	}
 
 	@Override
