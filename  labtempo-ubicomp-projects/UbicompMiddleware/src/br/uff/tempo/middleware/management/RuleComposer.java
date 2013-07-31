@@ -38,7 +38,7 @@ public class RuleComposer { //extends Service {
 
 	public void setRuleName(String name) {
 		this.ruleName = name;
-		notifyRuleChanged(name, p_expr);
+		notifyRuleChanged(name);
 	}
 
 	public void addCondition(String rai, String cv, Object[] params, long timeout) throws Exception {
@@ -46,7 +46,7 @@ public class RuleComposer { //extends Service {
 		Predicate p = new Predicate(op, timeout, null);
 		this.p_expr.attachFormula(p);
 		
-		notifyRuleChanged(p, p_expr);
+		notifyRuleChanged(p.asText());
 	}
 
 	public void addConditionComp(String rai1, String cv1, Object[] params1, Operator op, String rai2,
@@ -55,6 +55,8 @@ public class RuleComposer { //extends Service {
 		Operand op2 = new Operand(rai2, cv2, params2);
 		Predicate p = new Predicate(op1, op, op2, timeout, null);
 		this.p_expr.attachFormula(p);
+		
+		notifyRuleChanged(p.asText());
 	}
 
 	public void addConditionComp(String rai1, String cv1, Object[] params1, Operator op, Object val, long timeout) throws Exception {
@@ -62,6 +64,8 @@ public class RuleComposer { //extends Service {
 		Operand op2 = new Operand(val);
 		Predicate p = new Predicate(op1, op, op2, timeout, null);
 		this.p_expr.attachFormula(p);
+		
+		notifyRuleChanged(p.asText());
 	}
 	
 	public void addConditionComp(ContextVariableBundle cvBundle, Operator op, Object val, long timeout) throws Exception {
@@ -73,25 +77,25 @@ public class RuleComposer { //extends Service {
 		this.p_expr.attachFormula(f);
 		this.p_expr = f;
 
-		notifyRuleChanged("(", p_expr);
+		notifyRuleChanged("(");
 	}
 
 	public void addCloseBracket() {
 		this.p_expr = (Formula) this.p_expr.getFather();
 		
-		notifyRuleChanged(")", p_expr);
+		notifyRuleChanged(")");
 	}
 
 	public void addAndClause() {
 		this.p_expr.setAndClause();
 		
-		notifyRuleChanged("AND", p_expr);
+		notifyRuleChanged("AND");
 	}
 
 	public void addOrClause() {
 		this.p_expr.setOrClause();
 		
-		notifyRuleChanged("OR", p_expr);
+		notifyRuleChanged("OR");
 	}
 
 	public void addNotClause() {
@@ -99,13 +103,13 @@ public class RuleComposer { //extends Service {
 		this.p_expr.attachFormula(n);
 		this.p_expr = n;
 		
-		notifyRuleChanged("NOT", p_expr);
+		notifyRuleChanged("NOT");
 	}
 
 	public void addExpressionTimer(long timeout) {
 		this.p_expr.setTimeout(timeout);
 		
-		notifyRuleChanged("TIMER " + timeout, p_expr);
+		notifyRuleChanged("TIMER " + timeout);
 	}
 
 	public void setActuatorName(String name) {
@@ -329,15 +333,9 @@ public class RuleComposer { //extends Service {
 		listeners.add(listener);
 	}
 	
-	private void notifyRuleChanged(Predicate predicate, Formula formula) {
+	private void notifyRuleChanged(String name) {
 		for (IRuleComposeListener listener : listeners) {
-			listener.onRuleCompositionChanged(predicate, formula);
-		}
-	}
-	
-	private void notifyRuleChanged(String operandName, Formula formula) {
-		for (IRuleComposeListener listener : listeners) {
-			listener.onRuleCompositionChanged(operandName, formula);
+			listener.onRuleCompositionChanged(name);
 		}
 	}
 	

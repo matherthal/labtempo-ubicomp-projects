@@ -1,5 +1,9 @@
 package br.uff.tempo.apps.map.dialogs;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 import android.app.Activity;
 import android.view.View;
 import android.widget.Toast;
@@ -26,7 +30,7 @@ public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 	public RuleToolbar(final Activity act, final IDialogFinishHandler handler, RuleComposer ruleComposer) {
 		super(act);
 		this.handler = handler;
-		this.ruleComposer = ruleComposer;
+		this.setComposer(ruleComposer);
 		dialog.setCancelable(true);
 		dialog.setCanceledOnTouchOutside(true);
 	}
@@ -37,6 +41,11 @@ public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 	
 	public void setComposer(RuleComposer ruleComposer) {
 		this.ruleComposer = ruleComposer;
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyMMddHHmmss");
+		Date dt = new Date();
+		String myDate = sdf.format(dt);
+		this.ruleComposer.setRuleName(myDate);
 	}
 
 	// ===========================================================
