@@ -415,15 +415,22 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	
 	@Override
 	public void updateLocation(Position position) {
-		rls = new ResourceLocationStub(IResourceLocation.rans);
-		IPlace place = new PlaceStub(rls.getLocalReference(this.position));
-		IPlace newPlace = new PlaceStub(rls.getLocalReference(position));
-		ResourceData raData = new ResourceData(this.rans, this.name, this.type, position, rls.getLocal(position)); 
-		if (!place.equals(newPlace)) {
-			place.exit(raData);
-			newPlace.enter(raData);
+		if (position !=null) {
+			rls = new ResourceLocationStub(IResourceLocation.rans);
+//			IPlace newPlace = new PlaceStub(rls.getLocalReference(position));
+			ResourceData raData = new ResourceData(this.rans, this.name, this.type, position, rls.getLocal(position));
+//			if (this.position != null) {
+//				IPlace place = new PlaceStub(rls.getLocalReference(this.position));
+//				if (!place.equals(newPlace)) {
+//					place.exit(raData);
+//					newPlace.enter(raData);
+//				}
+//			} else {
+//				newPlace.enter(raData);
+//			}
+			
+			rls.updateLocation(raData);
+			notifyStakeholders("updateLocation", position);
 		}
-		rls.updateLocation(raData);
-		notifyStakeholders("updateLocation", position);
 	}
 }

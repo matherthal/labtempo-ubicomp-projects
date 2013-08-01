@@ -243,6 +243,18 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 		resources.put(url, position);
 	}
 
+	private void removeResource(String rans, Place place) {
+		if (place != null) {
+			HashMap<String, Position> rAMap = baseIndexer.get(place.getName());
+			rAMap.remove(rans);
+		}
+	}
+	
+	private void moveResource(String rans, Place old, Place current, Position position){
+		registerResource(rans, current, position);
+		removeResource(rans, old);
+	}
+	
 	public ArrayList<String> queryByLocal(Position position) {
 		List<Tuple<String, Position>> raList = new ArrayList<Tuple<String, Position>>();
 		Set<String> setRai = resources.keySet();
@@ -257,15 +269,20 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	}
 	
 	public void updateLocation(ResourceData resource){
+		ResourceData oldResource = ResourceDirectory.getInstance().read(ResourceData.RANS, resource.getRans()).get(0);
 		ResourceDirectory.getInstance().update(resource);
-		registerResource(resource.getRans(), resource.getPlace(), resource.getPosition());
+		Place oldPlace = oldResource.getPlace();
+		Place newPlace = resource.getPlace();
+		if (oldPlace != newPlace) {
+			moveResource(resource.getRans(), oldPlace, newPlace, resource.getPosition());
+			
+			//It can be used by IPGAP to update MAP interface
+			if (oldPlace != null) {
+				notifyStakeholders("exit("+resource.getType()+")", oldResource.getPlace());
+			}
+			notifyStakeholders("enter("+resource.getType()+")", resource.getPlace());	
+		}
 		
-		//It can be used by IPGAP to update MAP interface
-		//notifyStakeholders("updateLocation", resource.getPosition());
-		
-		//It can be used by tracking applications
-		//notifyStakeholders("updateLocation:"+resource.getType(), resource.getPosition());
-		//notifyStakeholders("updateLocation:"+resource.getRai(), resource.getPosition());
 	}
 	
 	@Override
