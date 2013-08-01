@@ -114,6 +114,7 @@ public class Person extends ResourceAgent implements IPerson {
 		}
 
 		lastPos = position;
+		updateLocation(position);
 	}
 
 	public boolean removePosition(Position position) {
@@ -124,5 +125,6 @@ public class Person extends ResourceAgent implements IPerson {
 	public void notificationHandler(String rai, String method, Object value) {
 	}
 
+	
 
 }

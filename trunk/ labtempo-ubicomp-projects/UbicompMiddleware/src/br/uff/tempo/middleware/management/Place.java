@@ -7,6 +7,7 @@ import java.util.Map;
 import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Quadrant;
+import br.uff.tempo.middleware.resources.Generic;
 
 public class Place /*extends ResourceAgent*/ implements IPlace,Serializable {
 	
@@ -19,6 +20,8 @@ public class Place /*extends ResourceAgent*/ implements IPlace,Serializable {
 	Position lower;// left lower vertex
 	Position upper;// right upper vertex
 
+	//public Generic eventAgent;
+	
 	public Place(String name, Position lower, Position upper)// It defines a rectangle from
 												// the vertex
 	{
@@ -28,11 +31,14 @@ public class Place /*extends ResourceAgent*/ implements IPlace,Serializable {
 		this.upper = upper;
 		this.name = name;
 		raDir = new HashMap<String, ResourceData>();
+//		eventAgent = new  Generic("EventAgent"+name, "EventAgent"+name+".ra") {
+//			private static final long serialVersionUID = 1L;
+//		};
 	}
 	
 	public void enter(ResourceData ra) {
 		raDir.put(ra.getRans(), ra);
-//		notifyStakeholders("enter", ra);
+//		eventAgent.notifyStakeholders("enter", ra);
 //		notifyStakeholders("enter("+ra.getType()+")", ra);
 	}
 	

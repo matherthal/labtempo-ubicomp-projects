@@ -75,6 +75,7 @@ class Avatar {
 			float width = map.getWidth();
 			prendaPosition = new Position((float) (width * Math.random()), (float) (height * Math.random()));
 			IPrenda novaPrenda = new PrendaAgent("Prenda", "PrendaAgent", "prenda.ra", prendaPosition);
+			novaPrenda.identify();
 		}
 		
 
