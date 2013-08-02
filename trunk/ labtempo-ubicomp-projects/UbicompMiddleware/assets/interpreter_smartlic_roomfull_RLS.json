@@ -1,0 +1,29 @@
+{
+"interpreter": {
+	"name": "Detecta Sala Cheia",
+	"priority": 3,
+	"formula": [
+		{"formula": [
+			{"predicate": [
+				{"context_elem": {
+					"rai": "_RLS_",
+					"elem": "enter(Person)"
+				}},
+				{"op": "="},
+				{"val": _PLACE_}
+			]},
+
+			{"connective": "and"},
+			
+			{"not": 
+				{"predicate": [
+					{"context_elem": {
+						"rai": "_DAYLIGHT_",
+						"elem": "isDay"
+					}}
+				]}
+			}
+		]}
+	]
+}
+}
