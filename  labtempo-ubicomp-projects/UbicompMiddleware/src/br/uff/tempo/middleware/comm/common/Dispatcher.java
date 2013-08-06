@@ -14,6 +14,7 @@ import br.uff.tempo.middleware.management.ResourceContainer;
 public class Dispatcher {
 	private static Dispatcher instance;
 	
+	
 	public synchronized static Dispatcher getInstance() {
 		if (instance == null) {
 			instance = new Dispatcher();
