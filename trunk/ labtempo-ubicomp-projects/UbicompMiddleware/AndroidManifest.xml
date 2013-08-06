@@ -158,6 +158,11 @@
             android:name=".apps.AppLampControlSystem"
             android:label="@string/title_activity_app_lamp_control_system" >
         </activity>
+        
+        <activity
+            android:name=".apps.AppLampControlSystemRLS"
+            android:label="@string/title_activity_app_lamp_control_system" >
+        </activity>
     </application>
 
 </manifest>
