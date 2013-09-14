@@ -495,14 +495,19 @@ The remainder of this paper is organized as follows. First we present in Section
 
 \section{Related Work} \label{sec:related}
 % [ubicomp is nice but it is not priceless]
-The benefits to users and developers that UbiComp foresees reach beyond the horizon of many imaginative researchers. The possibilities that arise from it surpass the bounds established by keyboards and mice, our standard interfaces. Nonetheless, building such adaptable applications requires much effort from developers that see themselves immersed in a universe of device's specifications and communication technologies, apart from the problem itself that the application must solve.
+The benefits to users and developers that UbiComp foresees reach beyond the horizon of many imaginative researchers. The possibilities that arise from it surpass the bounds established by keyboards and mice, our standard interfaces. Nonetheless, building such adaptable applications requires much effort from developers that see themselves immersed in a universe of device's specifications and communication technologies, apart from the problem itself that the application must solve. Therefore, many researchers have focused on diminishing those obstacles by providing abstractions, middlewares, services, tools, and other suportive techniques, not only for development but also for prototyping.
 
 %ubicomp implies dealing with limited and dinamically varying computational resources [kindberg2002ieee]
 
-Therefore, many researchers have focused on diminishing those obstacles by providing abstractions, middlewares, services, tools, and other suportive techniques, not only for development but also for prototyping.
+Most approaches focus on one aspect of ubicomp, such as security~\cite{}, location~\cite{}, context representation~\cite{}, smarthome specific~\cite{dixon2012operating}, among others. 
+% The works that focus on context interpretation/context rules
+% Some works focus on composing and managing context rules  %About the adaptability 
+%Challenges in Access Right Assignment for Secure Home Networks - 17
 
-As one of the most famous, the Gaia middleware is designed to facilitate the construction of applications for IE. It consists of a set of core services and a framework for building distributed context aware applications. 
-This project 
+
+
+%TODO: Gaia
+As one of the most famous, the Gaia middleware is designed to facilitate the construction of applications for IE. It consists of a set of core services and a framework for building distributed context aware applications. The Gaia embraces many goals that include the acquisition of context, the maintenance of hardware and software descriptions, mechanisms fo find resources and to compose context rules, among others.
 %uses operating systems abstractions to define its architecture
 %have many goals that include the provision of mechanisms of acquisition of context; composition of rules (using first logic order), 
 %%maintenance of hardwares and softwares description and about applications; 
@@ -511,9 +516,19 @@ This project
 %interpretation mechanism that gathers and interprets informations, as defined by programmers
 %mvc
 %The main goals of Gaia's approach are the acquisition of context by applications, the monitoring of entities location, the maintenance of hardwares and softwares descriptions, and 
-%FIXME: second phrase was copied
 %Active Spaces
-%ontologies
+%FIXME: second phrase was copied
+
+%TODO: Context Toolkit - Dey
+%also a famous approach
+%we use these abstractions, the aggregation, interpretation, the widget
+The Context Toolkit provides a set of abstractions for the composition of reusable components that focus on context acquisition and interpretation.
+
+%TODO: Gator Tech
+The Gator Tech 
+%generic reference architecture applicable to any IE 
+%middleware layers:
+%physical, sensor platform (OSGi , service, knowledge, context management, application
 
 % [many researchers research but few people use]
 
@@ -526,6 +541,9 @@ This project
 % [talk about market, which approach are already in use?] Google IS, onX
 
 % [explain that our solution strives to accomodate several problems of UbiComp and to be flexible enough to accomodate the others]
+
+The solution presented in this paper strives to accomodate central issues in the development of ubiquitous applications, as identified by the challenges (i), (ii) and (iii). The framework proposed facilitates the construction of those applications but don't restrict its development, being flexible enough to accomodate other concerns that are system specific.
+% We propose a framework that 
 
 \section{Overview} \label{sec:overview}
 % [context/contx sensibility]
@@ -544,12 +562,47 @@ Context aware (or context sensible) applications is a designation to those appli
 \section{Framework} \label{sec:framework}
 [framework description] 
 
+% O framework provê facilidades e padrões de programação tipicamente requeridos em aplicações sensíveis ao contexto focadas em AmbI. Dentre as facilidades está a capacidade de abstrair detalhes das partes da aplicação que envolve a comunicação, a aquisição de contexto e a localização de recursos. Como abstração aos recursos são utilizados componentes chamados Agentes de Recursos (AR). O AR é a unidade básica de modularização do \textit{framework }, sendo utilizado na modelagem, implementação e gerenciamento das aplicações. Por exemplo: sensores de temperatura da casa, de vazamento de gás na cozinha, um medidor de pressão arterial, um atuador para fechar as janelas, etc. 
+
+
+[we have implemented most of the framework features, thought much more remain to be done]
+
 \subsection{Resource Agents}
+% [resource]
+% A resource may be defined as any hardware or software entity that exposes services which can be used by other entities and applications present in IE. Thus, sensors, actuators and smart devices (e.g. stove, fridge, air-conditioning) fall within this definition. For example, a light bulb can expose a service to get its current state (either on or off) and another to effectively turn it on and off. A software module that monitors all these light bulbs turned on, deduce the power consumption and expose this information is also an example of resource.
+
+The Resource Agents (RA) can be understood as entities that represent resources, which are sensors, actuators, devices, and smart appliances, as well as software modules that provide a service to the environment. The RAs encapsulate the specificities of resources and expose their information to the environment through standard interfaces, so that others can access them uniformly reducing the complexity of integration. For example, details of data collection from a temperature sensor would be known only by their RA, which is responsible for providing a simple interface to other system components.
+%it's similar to the widget of the context toolkit
+%enjoys benefits of SOA
 
 [communication mechanisms]
 
+The RA concept meets the first challente (i), related to the devices heterogeneity.
+
+%From gator tech:
+%decoupling sensors and actuators from sensor platfors ensures openness and makes it possible to introduce new technology as it becomes available
+
 \subsection{Architeture}
 [distributed components model]
+
+% \begin{figure*}[!t]
+%   \centering
+%   \includegraphics[width=\textwidth]{figures/architecture_2.pdf}
+%   \caption{Layer Architeture}
+%   \label{fig:arch}
+% \end{figure*}
+
+% \begin{figure*}[!t]
+%   \centering
+%   \centerline{\subfloat\includegraphics[figures/architecture_2.pdf}%
+% %   \label{fig_first_case}}
+% %   \hfil
+% %   \subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
+%   \includegraphics[width=\textwidth]{figures/architecture_2.pdf}
+% %   \label{fig_second_case}}}
+%   \caption{Layer Architeture}
+%   \label{fig:arch}
+% \end{figure*}
 
 \subsection{Management Services}
 [resource register service]
