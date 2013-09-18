@@ -33,19 +33,30 @@ R.~de~Araujo, ``Computa{\c{c}}{\~a}o ub{\'\i}qua: Princ{\'\i}pios, tecnologias
   e desafios,'' in \emph{XXI Simp{\'o}sio Brasileiro de Redes de Computadores},
   vol.~8, 2003, pp. 11--13.
 
+\bibitem{dixon2012operating}
+C.~Dixon, R.~Mahajan, S.~Agarwal, A.~Brush, B.~Lee, S.~Saroiu, and V.~Bahl,
+  ``An operating system for the home,'' \emph{Proc. NSDI 2012}, 2012.
+
 \bibitem{baldauf2007survey}
 M.~Baldauf, S.~Dustdar, and F.~Rosenberg, ``A survey on context-aware
   systems,'' \emph{International Journal of Ad Hoc and Ubiquitous Computing},
   vol.~2, no.~4, pp. 263--277, 2007.
 
-\bibitem{Dey2001}
-\BIBentryALTinterwordspacing
-A.~Dey, G.~Abowd, and D.~Salber, ``{A Conceptual Framework and a Toolkit for
-  Supporting the Rapid Prototyping of Context-Aware Applications},''
-  \emph{Human-Computer Interaction}, vol.~16, no.~2, pp. 97--166, Dec. 2001.
-  [Online]. Available:
-  \url{http://www.informaworld.com/openurl?genre=article\&doi=10.1207/S1532705%
-1HCI16234\_02\&magic=crossref||D404A21C5BB053405B1A640AFFD44AE3}
-\BIBentrySTDinterwordspacing
+\bibitem{dey2001conceptual}
+A.~K. Dey, G.~D. Abowd, and D.~Salber, ``A conceptual framework and a toolkit
+  for supporting the rapid prototyping of context-aware applications,''
+  \emph{Human-computer interaction}, vol.~16, no.~2, pp. 97--166, 2001.
+
+\bibitem{eugster2003many}
+P.~Eugster, P.~Felber, R.~Guerraoui, and A.~Kermarrec, ``The many faces of
+  publish/subscribe,'' \emph{ACM Computing Surveys (CSUR)}, vol.~35, no.~2, pp.
+  114--131, 2003.
+
+\bibitem{ranganathan2005olympus}
+A.~Ranganathan, S.~Chetan, J.~Al-Muhtadi, R.~Campbell, and M.~Mickunas,
+  ``Olympus: A high-level programming model for pervasive computing
+  environments,'' in \emph{Pervasive Computing and Communications, 2005. PerCom
+  2005. Third IEEE International Conference on}.\hskip 1em plus 0.5em minus
+  0.4em\relax IEEE, 2005, pp. 7--16.
 
 \end{thebibliography}
