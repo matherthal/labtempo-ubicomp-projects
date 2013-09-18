@@ -103,7 +103,7 @@
 
 % *** CITATION PACKAGES ***
 %
-%\usepackage{cite}
+\usepackage{cite}
 % cite.sty was written by Donald Arseneau
 % V1.6 and later of IEEEtran pre-defines the format of the cite.sty package
 % \cite{} output to follow that of IEEE. Loading the cite package will
@@ -127,12 +127,13 @@
 % *** GRAPHICS RELATED PACKAGES ***
 %
 \ifCLASSINFOpdf
-  % \usepackage[pdftex]{graphicx}
+  \usepackage[pdftex]{graphicx}
   % declare the path(s) where your graphic files are
   % \graphicspath{{../pdf/}{../jpeg/}}
+  \graphicspath{./figures/}
   % and their extensions so you won't have to specify these with
   % every instance of \includegraphics
-  % \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
+  \DeclareGraphicsExtensions{.pdf,.jpeg,.png}
 \else
   % or other class option (dvipsone, dvipdf, if not using dvips). graphicx
   % will default to the driver specified in the system graphics.cfg if no
@@ -345,7 +346,7 @@
 
 
 % correct bad hyphenation here
-\hyphenation{op-tical net-works semi-conduc-tor}
+\hyphenation{op-tical net-works semi-conduc-tor UbiApp UbiComp}
 
 
 \begin{document}
@@ -433,7 +434,7 @@ Email: loques@ic.uff.br}}
 
 \begin{abstract}
 %\boldmath
-Due to recent advances in mobile computing and wireless communication technologies, we can see the emergence of a favorable scenario for building ubiquitous/pervasive applications. This work proposes a new framework that aims at building those applications, providing a set of concepts and implementation tools. We propose abstractions that allow developers to handle the resources spread in the environment in a simple and homogeneous way, and to interpret context information. In order to demonstrate the feasibility of the proposal, the concepts were implemented in a platform named \textit{SmartAndroid}. A ubiquitous applications prototyping interface was implemented over this platform to allow testing of different environment configurations before purchasing all devices; and also a context rules composition interface, where end users can define their preferences in the environment.
+Due to recent advances in mobile computing and wireless communication technologies, we can see the emergence of a favourable scenario for building ubiquitous/pervasive applications. This work proposes a new framework that aims at building those applications, providing a set of concepts and implementation tools. We propose abstractions that allow developers to handle the resources spread in the environment in a simple and homogeneous way, and to interpret context information. In order to demonstrate the feasibility of the proposal, the concepts were implemented in a platform named \textit{SmartAndroid}. A ubiquitous applications prototyping interface was implemented over this platform to allow testing of different environment configurations before purchasing all devices; and also a context rules composition interface, where end users can define their preferences in the environment.
 
 % Context awareness is reaching increasingly visibility in the current applications development scenario. The goal of this paper is to propose a new solution for representing, distributing and interpreting context informations, thus allowing the construction of applications for intelligent ambients. The infrastructure described in this paper exposes the ambient resources in a higher level, leading to a simpler and more dynamic creation of context rules; and by means of a graphical interface, end users are able to easily create and customize rules in the ambient. The proposed concepts have been implemented as a platform focused on building smart homes.
 % 
@@ -464,42 +465,49 @@ Due to recent advances in mobile computing and wireless communication technologi
 
 
 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              SECTION
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 % no \IEEEPARstart
 % You must have at least 2 lines in the paragraph with the drop letter
 % (should never be an issue)
-The field of Ubiquitous Computing (UbiComp), nowadays widely discussed, was first proposed by Mark Weiser in the 1990's~\cite{Weiser1991century}. Also referred by pervasive computing, the field aims at providing a different paradigm of human-machine interaction. As traditional applications provides services to users through their explicit interaction (using devices as mouse, keyword, monitor, for example), in ubiquitous applications the interaction happens without the need of explicit interaction, i.e. the application tries to discover the users needs through the acquisition of context (using sensors) and the knowledge of their preferences, and providing services in the environment (using actuators). These environments enhanced with sensors and actuators to provide automated services to persons are also called Intelligent Environments (IE).
+The field of Ubiquitous Computing (UbiComp), nowadays widely discussed, was first proposed by Mark Weiser in the 1990's~\cite{Weiser1991century}. Also referred by pervasive computing, the field aims at providing a different paradigm of human-machine interaction. As traditional applications provides services to users through their explicit interaction (using devices as mouse, keyword, monitor, for example), in ubiquitous applications (UbiApp) the interaction happens without the need of explicit interaction, i.e. the application tries to discover the users needs through the acquisition of context (using sensors) and the knowledge of their preferences, and providing services in the environment (using actuators). These environments enhanced with sensors and actuators to provide automated services to persons are also called Intelligent Environments (IE).
 
-% The construction of a ubiquitous application from the start is not a simple task, since the developer will have concerns from the communication level to the representation of resources in high level before even start programming the business logic of her application. 
-The construction and manipulation of ubiquitous applications represent major challenges for developers, especially in terms of technical knowledge required and the availability of real devices during application development. Some of these challenges can be well highlighted: (i) there are difficulties in establishing a common protocol for communication between the components of the distributed system, because of the \textit{heterogeneity of devices} involved, (ii) the interactivity of ubiquitous applications is hampered depending on the amount and \textit{variety of context information and services} available in the environment, (iii) \textit{developing and testing applications} require high availability of resources, such as sensors (e.g. presence, lighting, temperature), actuators (e.g. keys, alarms, smart-tvs), including new embedded devices, or physical spaces, such as a house for applications of type smart home.
+% The construction of a UbiApp from the start is not a simple task, since the developer will have concerns from the communication level to the representation of resources in high level before even start programming the business logic of her application. 
+The construction and manipulation of UbiApps represent major challenges for developers, especially in terms of technical knowledge required and the availability of real devices during application development. Some of these challenges can be well highlighted: (i) there are difficulties in establishing a common protocol for communication between the components of the distributed system, because of the \textit{heterogeneity of devices} involved, (ii) the interactivity of UbiApps is hampered depending on the amount and \textit{variety of context information and services} available in the environment, (iii) \textit{developing and testing applications} require high availability of resources, such as sensors (e.g. presence, lighting, temperature), actuators (e.g. keys, alarms, smart-tvs), including new embedded devices, or physical spaces, such as a house for applications of type smart home.
 
 % From the Mark Weiser proposed in the 1990s, researchers in the field of ubicomp / pervasive have proposed changes in human-machine interaction, in order to make the use of devices increasingly transparent environment. This enables the user to focus on the task at hand and not the tool to do it. From these ideas came the concept of smart environments, where sensors and actuators interconnected network are able to provide relevant information about the environment to applications and users, and effectively act in this environment and change its state.
 
 
 
 %FIXME: araujo é um artigo em PT, arrumar um em EN
-In this work we propose a framework for developing ubiquitous applications in IE. The goal is to provide support for the programming, testing and execution of applications, thus allowing to deal consistently with systems great complexity. The framework stands out for addressing the challenges already identified in UbiComp~\cite{araujo2003}. The \textit{heterogeneity of devices} is handled through the definition of a Distributed Component Model, that provides abstractions to encapsulate these devices, also called resources, enabling developers to interact with them seamlessly. Regarding the \textit{variety of context information and services} issue, we propose a solution for context interpretation that allows developers to create and manage context rules at runtime, and users to set their preferences in the IE. Finally, regarding the issue on the \textit{resource availability}, the framework includes an application interface for the prototyping and management of pervasive applications (IPGAP), focused on visualization and testing ubiquitous applications, mixing real and virtual components.
+In this work we propose a framework for developing UbiApps in IE. The goal is to provide support for the programming, testing and execution of applications, thus allowing to deal consistently with systems great complexity. The framework stands out for addressing the challenges already identified in UbiComp~\cite{araujo2003}. The \textit{heterogeneity of devices} is handled through the definition of a Distributed Component Model, that provides abstractions to encapsulate these devices, also called resources, enabling developers to interact with them seamlessly. Regarding the \textit{variety of context information and services} issue, we propose a solution for context interpretation that allows developers to create and manage context rules at runtime, and users to set their preferences in the IE. Finally, regarding the issue on the \textit{resource availability}, the framework includes an application interface for the prototyping and management of pervasive applications (IPGAP), focused on visualization and testing UbiApps, mixing real and virtual components.
 %in which the basic component has a uniform structure defined as a Resource Agent (RA), formerly proposed in~\cite{cardoso2006} as an entity gathering context information. In this work, the RA, while maintaining context information, acts as a component that encapsulates the device code associated with it, including aspects of interaction with application components. 
 %The \textit{heterogeneity of devices} is handled through the definition of a Distributed Component Model, in which the basic component has a uniform structure defined as a Resource Agent (RA), formerly proposed in~\cite{cardoso2006} as an entity gathering context information. In this work, the RA, while maintaining context information, acts as a component that encapsulates the device code associated with it, including aspects of interaction with application components. 
 
-The concepts of the framework were materialized on a platform called \textit{SmartAndroid}\footnote{www.tempo.uff.br/smartandroid}, whose development has enabled appraisal in order to prove that the conceptual framework facilitates the process of building ubiquitous applications. We implemented some use cases to validate different aspects of the framework proposed and to testify its capabilities, supported by the elaboration of competency questions, which is a mechanism mostly used to evaluate ontologies, but can also be used as an assessment to this work. 
+The concepts of the framework were materialized on a platform called \textit{SmartAndroid}\footnote{www.tempo.uff.br/smartandroid}, whose development has enabled appraisal in order to prove that the conceptual framework facilitates the process of building UbiApps. We implemented some use cases to validate different aspects of the framework proposed and to testify its capabilities, supported by the elaboration of competency questions, which is a mechanism mostly used to evaluate ontologies, but can also be used as an assessment to this work. 
 %power of representation 
 %testify the feasibility 
 % has enabled the construction of use cases that demonstrate the effectiveness of the approach to provide context awareness to new applications.
 
-% The concepts of the framework have been implemented on a platform called \textit{SmartAndroid}\footnote{www.tempo.uff.br/smartandroid} developed in the context of the project. The implementation of this project has enabled appraisal in order to prove that the conceptual framework facilitates the process of building ubiquitous applications.  One of the evaluations occurred during the processing of an application running on a purely local ubiquitous application. In another assessment, an application was built to verify the feasibility of implementation of Context Model, through the exploitation of communication mechanisms used in the Distributed Component Model.
+% The concepts of the framework have been implemented on a platform called \textit{SmartAndroid}\footnote{www.tempo.uff.br/smartandroid} developed in the context of the project. The implementation of this project has enabled appraisal in order to prove that the conceptual framework facilitates the process of building UbiApps.  One of the evaluations occurred during the processing of an application running on a purely local UbiApp. In another assessment, an application was built to verify the feasibility of implementation of Context Model, through the exploitation of communication mechanisms used in the Distributed Component Model.
 
 
-The remainder of this paper is organized as follows. First we present in Section~\ref{sec:overview} an overview of the main concepts used as a basis for the framework's development. In Section~\ref{sec:framework}, we present the framework's overall architecture and main features. We then, in Section~\ref{sec:evaluation}, present a proof of concept demonstrating the feasibility of building ubiquitous applications using the framework and we show examples of applications that explores the key features of the IE. Finally, in Section~\ref{sec:related} we compare our approach with related work and in Section~\ref{sec:conclusion} we conclude this paper with the main remarks.
+The remainder of this paper is organized as follows. First we present in Section~\ref{sec:overview} an overview of the main concepts used as a basis for the framework's development. In Section~\ref{sec:framework}, we present the framework's overall architecture and main features. We then, in Section~\ref{sec:evaluation}, present a proof of concept demonstrating the feasibility of building UbiApps using the framework and we show examples of applications that explores the key features of the IE. Finally, in Section~\ref{sec:related} we compare our approach with related work and in Section~\ref{sec:conclusion} we conclude this paper with the main remarks.
+[refactor this paragraph]
 
 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              SECTION
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Related Work} \label{sec:related}
 % [ubicomp is nice but it is not priceless]
-The benefits to users and developers that UbiComp foresees reach beyond the horizon of many imaginative researchers. The possibilities that arise from it surpass the bounds established by keyboards and mice, our standard interfaces. Nonetheless, building such adaptable applications requires much effort from developers that see themselves immersed in a universe of device's specifications and communication technologies, apart from the problem itself that the application must solve. Therefore, many researchers have focused on diminishing those obstacles by providing abstractions, middlewares, services, tools, and other suportive techniques, not only for development but also for prototyping.
+The benefits to users and developers that UbiComp foresees reach beyond the horizon of many imaginative researchers. The possibilities that arise from it surpass the bounds established by keyboards and mice, our standard interfaces. Nonetheless, building such adaptable applications requires much effort from developers that see themselves immersed in a universe of device's specifications and communication technologies, apart from the problem itself that the application must solve. Therefore, many researchers have focused on diminishing those obstacles by providing abstractions, middlewares, services, tools, and other supportive techniques, not only for development but also for prototyping.
 
-%ubicomp implies dealing with limited and dinamically varying computational resources [kindberg2002ieee]
+%ubicomp implies dealing with limited and dynamically varying computational resources [kindberg2002ieee]
 
-Most approaches focus on one aspect of ubicomp, such as security~\cite{}, location~\cite{}, context representation~\cite{}, smarthome specific~\cite{dixon2012operating}, among others. 
+Most approaches focus on one aspect of UbiComp, such as security~\cite{}, location~\cite{}, context representation~\cite{}, SmartHome specific~\cite{dixon2012operating}, among others. [+++]
 % The works that focus on context interpretation/context rules
 % Some works focus on composing and managing context rules  %About the adaptability 
 %Challenges in Access Right Assignment for Secure Home Networks - 17
@@ -507,7 +515,7 @@ Most approaches focus on one aspect of ubicomp, such as security~\cite{}, locati
 
 
 %TODO: Gaia
-As one of the most famous, the Gaia middleware is designed to facilitate the construction of applications for IE. It consists of a set of core services and a framework for building distributed context aware applications. The Gaia embraces many goals that include the acquisition of context, the maintenance of hardware and software descriptions, mechanisms fo find resources and to compose context rules, among others.
+As one of the most famous, the Gaia middleware is designed to facilitate the construction of applications for IE. It consists of a set of core services and a framework for building distributed context aware applications. The Gaia embraces many goals that include the acquisition of context, the maintenance of hardware and software descriptions, mechanisms to find resources and to compose context rules, among others.
 %uses operating systems abstractions to define its architecture
 %have many goals that include the provision of mechanisms of acquisition of context; composition of rules (using first logic order), 
 %%maintenance of hardwares and softwares description and about applications; 
@@ -522,10 +530,10 @@ As one of the most famous, the Gaia middleware is designed to facilitate the con
 %TODO: Context Toolkit - Dey
 %also a famous approach
 %we use these abstractions, the aggregation, interpretation, the widget
-The Context Toolkit provides a set of abstractions for the composition of reusable components that focus on context acquisition and interpretation.
+The Context Toolkit provides a set of abstractions for the composition of reusable components that focus on context acquisition and interpretation. [+++]
 
 %TODO: Gator Tech
-The Gator Tech 
+[Gator Tech]
 %generic reference architecture applicable to any IE 
 %middleware layers:
 %physical, sensor platform (OSGi , service, knowledge, context management, application
@@ -536,126 +544,240 @@ The Gator Tech
 
 % [compare based on user/developer center focus]
 
-% [compare based on pontual solution]
+% [compare based on punctual solution]
 
 % [talk about market, which approach are already in use?] Google IS, onX
 
-% [explain that our solution strives to accomodate several problems of UbiComp and to be flexible enough to accomodate the others]
+% [explain that our solution strives to accommodate several problems of UbiComp and to be flexible enough to accommodate the others]
 
-The solution presented in this paper strives to accomodate central issues in the development of ubiquitous applications, as identified by the challenges (i), (ii) and (iii). The framework proposed facilitates the construction of those applications but don't restrict its development, being flexible enough to accomodate other concerns that are system specific.
+The solution presented in this paper strives to accommodate central issues in the development of UbiApps, as identified by the challenges (i), (ii) and (iii). The framework proposed facilitates the construction of those applications but don't restrict its development, being flexible enough to accommodate other concerns that are system specific.
 % We propose a framework that 
 
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              SECTION
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Overview} \label{sec:overview}
 % [context/contx sensibility]
-It is easy to notice that the context information is a first concern topic in ubiquitous systems. But what is ``context''? Many authors have proposed definitions to this concept, though most are little accurate~\cite{baldauf2007survey}. Synthetizing previous definitions, Dey and Abowd have proposed that context is ``any information that can be used to characterize the situation of entities (i.e., whether a person, place or object) that are considered relevant to the interaction between a user and an application, including the user and the application themselves''~\cite{Dey2001}. In a IE ``Places'' are the rooms, the floors of a building, or spaces in general that enable the localization of other entities, ``People'' are individuals that populate the environment and interact with it, and ``things'' are virtual representations of physical objects or software components.
+It is easy to notice that the context information is a first concern topic in ubiquitous systems. But what is ``context''? Many authors have proposed definitions to this concept, though most are little accurate~\cite{baldauf2007survey}. Synthesizing previous definitions, Dey and Abowd have proposed that context is ``any information that can be used to characterize the situation of entities (i.e., whether a person, place or object) that are considered relevant to the interaction between a user and an application, including the user and the application themselves''~\cite{dey2001conceptual}. In a IE ``Places'' are the rooms, the floors of a building, or spaces in general that enable the localization of other entities, ``People'' are individuals that populate the environment and interact with it, and ``things'' are virtual representations of physical objects or software components.
 %Considering the diversity of devices, systems and protocols, one 
 %Many authors have proposed definitions to this concept, though most use examples to explain it or adopt a restrictive definition, that may not contemplate a set of systems. <- wrong. Most are wide or use synonyms
-%Synthetizing previous definitions, Dey and Abowd have proposed that context is any relevant information used to caracterize the situation of entities, specifically: people, places and things.
+%Synthetizing previous definitions, Dey and Abowd have proposed that context is any relevant information used to characterize the situation of entities, specifically: people, places and things.
 
 Context aware (or context sensible) applications is a designation to those applications that not only are capable of knowing the context of the environment, but also react to it either by means of changing the environment or in a software level.
 
-[distribs sys]
+[distributed systems]
 
 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              SECTION
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Framework Architecture} \label{sec:framework}
+% [framework description] 
+The framework provides facilities and programming standards typically required in context-aware applications focused on IE. Among the features is the ability to abstract details that involve communication, context acquisition and resource location, by the applications. For the sake of abstracting resource details we have used components called \textit{Resource Agents} (RA). The RA is the basic modularization unit of the framework being used in the modelling, implementation and management of applications (Subsection~\ref{subsec:ra}). %Example?
+
+The decentralization of components of the framework (the RAs) follow the principles of the Service-oriented Architecture (SoA), where the more decentralization the more flexibility on connectivity, since the dependence of centralized services is lowered.
+%TODO: write it better
+
+% Resolution of the issue is achieved through the decentralization of services, using service-oriented architecture (SoA). The use of SOA enables the relationship between different entities, where the greater decentralization connectivity is more flexible, since the dependence of a service center is minimized. Therefore, problems in a system component are softened and can be absorbed by mechanisms of fault tolerance and persistence.
+
+% Thus, to expose services following the style SoA, other components can access it uniformly reducing the complexity of integration. For example, details of data collection from a temperature sensor are known internally by AR, which is responsible for providing a simple interface to other system components, such as collecting the temperature in Celsius (C) or Fahrenheit (F) that internally, the sensor represented is captured in Kelvin (K).
+
+% [distributed components model]
+
+% The general architecture of the framework is expressed in a form of a distributed components model, which defines the RA structure 
+The general architecture of the framework includes a Distributed Components Model, which defines the RA structure and the Resource Management Support Services (RMSS). The Figure~\ref{fig:arch} presents a layer architecture that highlights main aspects of the framework. The layers are described in the following items.
+
+% [architecture picture]
+\begin{figure}[!t]
+\centering
+\includegraphics[width=3.5in]{figures/architecture-refactored-v2.pdf}
+\caption{Framework Layer Architecture}
+\label{fig:arch}
+\end{figure}
+
+\subsubsection{Physical Resources Layer}
+The deepest layer is the one where is found the resources present in the environment. In a IE these resources are the smarter versions of daily used objects, such as beds, stoves, TVs, clocks, and so on. Since all these resources have their own mechanisms of communication and operation, then a higher level entity is required to deal with them.
+
+\subsubsection{Middleware Layer}
+This layer comprehends the main services that sustain the interoperability of the RAs and provides basic features to the development of UbiApps. The management services and the RA Repository, that compose the middleware, will be further discussed in Subsection~\ref{subsec:sgar}.
+% Below the management services a RA Repository keeps , that  as will be further discussed in Subsection~\ref{subsec:sgar}, 
+
+\subsubsection{Resource Agents Layer}
+This layer is composed by all the RAs that represent physical resources already coupled with the IE. The RA will be presented in Subsection~\ref{subsec:ra}.
+
+\subsubsection{Applications Layer}
+The higher layer includes all UbiApps that are enjoying the middleware features and also all the software level RAs, which are represented in the figure by the ``Forgotten Stove Interpreter'' and the ``Remainder Actuator''.
 
 
-\section{Framework} \label{sec:framework}
-[framework description] 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              SECTION
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Framework Features and Application}This section approaches the main features provided by the framework, which includes the definition of the RA (Subsection~\ref{subsec:ra}), the management services (Subsection~\ref{subsec:sgar}) and the context interpretation (Subsection~\ref{subsec:ci}). In the next section we will present the current status of the implementation.
+% This section approaches the main features provided by the framework, which includes the definition of the RA (Subsection~\ref{subsec:ra}), the management services (Subsection~\ref{subsec:sgar}) and the context interpretation (Subsection~\ref{subsec:ci}). Also, based on the reference implementation, an application was built to provide a tool for the prototyping, management and visualization of applications and resources running on the IE.
 
-% O framework provê facilidades e padrões de programação tipicamente requeridos em aplicações sensíveis ao contexto focadas em AmbI. Dentre as facilidades está a capacidade de abstrair detalhes das partes da aplicação que envolve a comunicação, a aquisição de contexto e a localização de recursos. Como abstração aos recursos são utilizados componentes chamados Agentes de Recursos (AR). O AR é a unidade básica de modularização do \textit{framework }, sendo utilizado na modelagem, implementação e gerenciamento das aplicações. Por exemplo: sensores de temperatura da casa, de vazamento de gás na cozinha, um medidor de pressão arterial, um atuador para fechar as janelas, etc. 
+  \subsection{Resource Agents} \label{subsec:ra}
+  % [resource]
+  % A resource may be defined as any hardware or software entity that exposes services which can be used by other entities and applications present in IE. Thus, sensors, actuators and smart devices (e.g. stove, fridge, air-conditioning) fall within this definition. For example, a light bulb can expose a service to get its current state (either on or off) and another to effectively turn it on and off. A software module that monitors all these light bulbs turned on, deduce the power consumption and expose this information is also an example of resource.
 
+  A resource may be defined as any hardware or software entity that exposes services (of data acquisition or actuation) which can be used by other entities and applications present in IE. Thus, sensors, actuators and smart devices (e.g. stove, fridge, air-conditioning), as well as software modules that provide a service to the environment, fall within this definition. 
+
+  The RAs are entities that represent resources. They encapsulate the specificities of resources and expose their information to the environment through standard interfaces, so that others can access them uniformly reducing the complexity of integration. 
+
+  The Dey and Abowd's definition to context proposes three entities as the most basic of a ubiquitous system, i.e. person, place and object (or thing). Although the difference of concepts, we have conceived all these three entities as RAs on the framework, but observed their particular features. Thus they inherit the convenience of being a RA.
+
+  % The Resource Agents (RA) can be understood as entities that represent resources, which are sensors, actuators, devices, and smart appliances, as well as software modules that provide a service to the environment. The RAs encapsulate the specificities of resources and expose their information to the environment through standard interfaces, so that others can access them uniformly reducing the complexity of integration. For example, data collection details from a temperature sensor would be known only by their RA, which is responsible for providing a simple interface to other system components.
+  %it's similar to the widget of the context toolkit
+  %enjoys benefits of SOA
+
+  %From gator tech:
+  %decoupling sensors and actuators from sensor platforms ensures openness and makes it possible to introduce new technology as it becomes available
+
+  [wrapper]
+
+    \subsubsection{RA Interfaces}
+
+    The RA architecture includes two interfaces for input and output. The former is called Context Variable (CV) and is responsible for exposing the RA's context information. The latter is called Operation (OP) and is responsible for exposing features (or actuation services) belonging to RAs, enabling applications to actively interact in the environment.
+    % In the previous example, the ``oven is turned on'' and the ``oven temperature in ºC'' are the some of the RA's CVs. 
+
+    Consider the simple example of a smart stove where the instantiation of its RA exposes services to get its current context (e.g., oven is turned on, oven temperature in $\,^{\circ}\mathrm{C}$) and services that may change its context (e.g., turn oven off, set temperature as $150\,^{\circ}\mathrm{C}$). Hence, the RA concept meets the first challenge (i), which is the \textit{devices heterogeneity}, since decoupling sensor and actuator from the sensor platforms favors the flexibility. %FIXME: is it right?
+
+    % The RA are distributed components that can be used to 
+
+
+    \subsubsection{Communication}
+
+    % [communication mechanisms]
+    % The communication performed between two different ARs or between an AR and an application is developed through '
+    % Towards implementing 
+    In order to meet requirements typical of distributed environments, two communications mechanisms have been included in the framework: the Remote Procedure Call (RPC), that implements synchronous communication; and a publish-subscribe mechanism (pub-sub)~\cite{eugster2003many}, that implements asynchronous communication. The RPC is used to access directly the RA, querying for its context by accessing its CVs, or calling its OPs. On the other hand, through the pub-sub a RA can subscribe to a CV of another one (consumer) and further receive a notification, when the first RA publishes its CV state change (provider).
+
+    The RA has a domain name, the RA Name System (RANS), that allows its unique identification in the IE. This identification is similar to the DNS, where the name remains the same even if the network address (IP) changes, the only change is the updating of the addressing table. 
+
+    \subsubsection{RA Structure}
+    In analogy to object-oriented programming we define classes of RAs to represent the type of the resource with specific interfaces. Besides other informations present in the AR's structure (such as name, location, subscribed RAs, among others) it has its type hierarchy. The type hierarchy is composed by a sequence of classes that classify the entity and has been inspired by the ontology described by Ranganathan~\cite{ranganathan2005olympus}. In the Subsection~\ref{subsec:sgar} we will present how this feature can be used to find a RA and to define its functionalities.
+
+
+  \subsection{Resource Management Support Service} \label{subsec:sgar}
+  A set of services is responsible for providing basic functionalities to manage the RAs. The four main services are the RA Register Service (RRS), the RA Discovery Service (RDS), the RA Location service (RLS) and the Security Management Service (SecMS). All these services access the RA Repository (RR) that maintains informations about the RAs (addresses and descriptions) and the map data structure (map of the environment). The Figure~\ref{fig:arch} represents, in the Middleware layer, the RR and above it the management services.
+
+  The management services are also designed as RAs, hence they take advantage of the communication mechanisms already provided by it and communicate using the same primitives. 
+
+    \subsubsection{RA Register Service} 
+    The RRS allows the registration and deregistration of RAs instances references and description. This service also has CVs that allows the developer to know when RAs enter and leave the IE
+
+    The naming and addressing scheme can be generalized to work over the internet, and comply with the internet of things concept.
+
+    \subsubsection{RA Discovery Service}
+    The RDS allows the search for registered RAs based on specific attributes, which are the RA name, RANS and type. The search by RANS will only return one RA, but the search by name or type will return all RAs that meet this criteria.
+
+    After the discovery of a RA, the stakeholder can instantiate a stub (i.e. a proxy) of this RA, when both the stub and the current implementation of the RA implement the same interface. Through the stub the CVs and OPs can be accessed, what internally will be converted to network calls to the RA object (RPC functioning). 
+
+    During the application initialization the only information required get started is the RDS address. And even this information can be obtained, if within a LAN, by sending a broadcast message with the request; or using the DNS, if within a WAN. With the RDS address on hands any RA can be found, including the other management services (i.e., the RRS, RLS and RSS). 
+    %, before doing the connections to RAs,
+
+    \subsubsection{RA Location Service}
+    The RLS explores the map of the environment to run the required queries. This service performs searches related to the location of RAs, such as the physical location of RAs, the RAs located on some place, the RAs of some type located on some place, the RAs close to another and order by proximity, among others. Thus, if a developer needs audiovisual devices close to some person, for example, she can run this search through the RLS and will receive a list, where an utility function can choose the more relevant result.
+
+    The RLS exposes CVs that allows not only the query for if a RA is located at some place, but also to subscribe to that place for the sake of being notified of the entrance or exit of a specified RA type. Therefore, even if the RA is still not registered, an application can subscribe to a place and wait for its appearance.
+
+    Nowadays there are several technologies to map and/or track the location of entities, that may include from people to small things. These technologies vary mainly based on precision, ubiquity (capable of being ``invisible'') and price. As examples we have the GPS, the smart floor, cameras (associated to image processing softwares), Wi-Fi triangulation, RFID tags, and so on. In this approach we do not comply with any specific technology, and we assume that the RA can discover its own location or the RLS can.
+    % already established technology of location
+
+    \subsubsection{Security Management Service}
+    The security concern is always a central topic on UbiComp systems, moreover because of diverse aspects of security required. Some aspects are already inherited depending on the technology adopted, e.t., the Wi-Fi already ensures against the registration of outside devices and the exchange of informations.
+
+    [credentials]
+
+    [domains]
+    % The SecMS manages both the user's credentials and the application's domains.
+    % 
+    % On the 
+
+  \subsection{Context Interpretation} \label{subsec:ci}
+  % [directly programmed]
+  The context interpretation serves to aggregate context information from different sources in accordance with some specific logic and considering the passage of time. This logic is defined by the developer and the interpretation is implemented with the framework's support. %The CI concept was inspired by the Aggregator in Dey and Abowd~\cite{dey2001conceptual} whose objective was to gather logically related context and provides them in a single component.
+  
+  The entity that performs the context interpretation may be encapsulated by a RA, thus allowing the subscription to other RAs, what is called Context Interpreter (CI). This concept allows dealing with context in a higher level and also provides a separation on concerns, since a context interpreter decouples the steps for context acquisition, evaluation, timing and notification, that are repeatedly performed by the UbiApps. Therefore, using the CIs also promotes the reuse, either by the creator application or by other ones. 
+  %FIXME: Doubt: ``a RA'' or ``an RA''?
+  
+  The framework uses a generic approach for creating context rules, which are composed by two parts: the interpretation and the actuation. The interpretation part, as already stated before, concerns on binding the CI itself with CVs from different RAs, evaluating the expression that interrelates those CVs, and notifying whoever is interested. The actuation part is a RA that is subscribed to the CI, and develop some job, that may change the context of the IE or change some state in a software level.
+%   in which developers are able to define the logic of the rule in the application using the framework support for context acquisition, as well as to perform actions on the environment. 
+  
+  The Figure~\ref{fig:arch} shows on Applications Layer an examplo of a context rule with two components: the CI (``Forgotten Stove Interpreter'') and the actuator (``Remainder Actuator''). In this simple example, the CI is subscribed to the RAs ``Bed RA'' and ``Stove RA'', and internally it contains the following rule expression: ``bed is occupied and stove is on for T min''. The actuator, awaits for when the condition of the CI met for triggering its action that, in case, is to play the clock's alarm sound and to show on TV a message saying that ``the stove has been forgotten''.
+  
+%   A avaliação da expressão é desempenhada pelo próprio IC quando o contexto muda. A atuação ocorre quando um agente atuador é subscrito à um IC, recebendo assim a notificação de que a expressão da regra foi avaliada como verdadeira. Estes agentes atuadores podem tanto ser atuadores simples, que desempenham ações sequencialmente no ambiente utilizando OPs diretamente (e.g., desligar lâmpada, gravar programação de determinado canal da TV); como atuadores mais complexos, que executam ações não necessariamente baseadas em OPs (e.g., execução de algum outro software, que utiliza um canal de emergência do serviço de saúde ou bombeiros).
+
+  [talk more about actuators]
+  
+  [can have many actuators]
+
+  [timer can be CV]
+  
+  [how to aggregate others standards such as rule engines]
+%   Thus, developers can use their own standards, if appropriate. An alternative approach implemented in the context of middleware is to use the Context Processors (see Section 3.2).
+  
+%   The CI concept was inspired by the Aggregator in Dey and Abowd~\cite{dey2001conceptual} whose objective was to gather logically related context and provides them in a single component. However, in our approach, the information gathered compose a context rule whose evaluation returns true or false, and triggers an actuator listener. 
+  
+  
+  
+  Through the CI the framework address the challenge (ii), which is related to the amount and diversity of context informations and services, since the context interpretation allows the autonomous behaviour of RAs.
+  
+%   The RA can be used to aggregate informations come from other RAs similarly to the Aggregator presented by Dey and Abowd~\cite{dey2001conceptual}.
+
+  
+%. This concept allows dealing with context in a higher level so that developers are free to focus on their business logic
+  
+\section{SmartAndroid}
+[android and other techs]
 
 [we have implemented most of the framework features, thought much more remain to be done]
 
-\subsection{Resource Agents}
-% [resource]
-% A resource may be defined as any hardware or software entity that exposes services which can be used by other entities and applications present in IE. Thus, sensors, actuators and smart devices (e.g. stove, fridge, air-conditioning) fall within this definition. For example, a light bulb can expose a service to get its current state (either on or off) and another to effectively turn it on and off. A software module that monitors all these light bulbs turned on, deduce the power consumption and expose this information is also an example of resource.
+  \subsection{Distributed Components Model}
+  [implementation of RA and services]
 
-The Resource Agents (RA) can be understood as entities that represent resources, which are sensors, actuators, devices, and smart appliances, as well as software modules that provide a service to the environment. The RAs encapsulate the specificities of resources and expose their information to the environment through standard interfaces, so that others can access them uniformly reducing the complexity of integration. For example, details of data collection from a temperature sensor would be known only by their RA, which is responsible for providing a simple interface to other system components.
-%it's similar to the widget of the context toolkit
-%enjoys benefits of SOA
+  \subsection{Context Rules Parsing}
+  [implementation of context rules]
+  %   Support the interpretation of the context framework enables a separation of concerns, where developers abstract implementation of contextual rules and focus on the application logic.
+  
+  \subsection{Context Rules Running}
+  
+  [context rules conflicts is an ongoing study that aims at discover a conflict in runtime,]
+  
+  \subsection{Interface for Management and Prototyping} \label{subsec:ipgap}
+  % interface de prototipagem e gerenciamento de aplicações pervasivas
+  % prototyping and management of pervasive applications interface
+  % pervasive applications' management and prototyping interface
+  % PAMPI
+  % management and prototyping interface MPI
+  [description]
 
-[communication mechanisms]
+  [main figure]
 
-The RA concept meets the first challente (i), related to the devices heterogeneity.
-
-%From gator tech:
-%decoupling sensors and actuators from sensor platfors ensures openness and makes it possible to introduce new technology as it becomes available
-
-\subsection{Architeture}
-[distributed components model]
-
-% \begin{figure*}[!t]
-%   \centering
-%   \includegraphics[width=\textwidth]{figures/architecture_2.pdf}
-%   \caption{Layer Architeture}
-%   \label{fig:arch}
-% \end{figure*}
-
-% \begin{figure*}[!t]
-%   \centering
-%   \centerline{\subfloat\includegraphics[figures/architecture_2.pdf}%
-% %   \label{fig_first_case}}
-% %   \hfil
-% %   \subfloat[Case II]{\includegraphics[width=2.5in]{subfigcase2}%
-%   \includegraphics[width=\textwidth]{figures/architecture_2.pdf}
-% %   \label{fig_second_case}}}
-%   \caption{Layer Architeture}
-%   \label{fig:arch}
-% \end{figure*}
-
-\subsection{Management Services}
-[resource register service]
-
-[resource discovery service]
-
-[resource location service]
-
-[location concerns]
-
-[security concerns]
-
-\subsection{Context Interpretation}
-[directly programmed]
-
-[as a separated entity]
-
-\subsection{Framework Implementation}
-[android and other techs]
-
-[impl of AR and services]
-
-[impl of context rules]
-
-[context rules conflicts is an ongoing study that aims at discover a conflict in runtime, ]
-
-\subsection{Management and Prototyping Interface}
-% interface de prototipagem e gerenciamento de aplicações pervasivas
-% prototyping and management of pervasive applications interface
-% pervasive applications' management and prototyping interface
-% PAMPI
-% management and prototyping interface MPI
-[description]
-
-[main figure]
-
-[rules composer]
+  [rules composer]
 
 
-\section{Case Study} \label{sec:evaluation}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              SECTION
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Application Examples} \label{sec:evaluation}
 
 
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              SECTION
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion} \label{sec:conclusion}
 The conclusion goes here.
 
 
-
-
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%              SECTION
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % use section* for acknowledgement
 \section*{Acknowledgment}
-
-
-The authors would like to thank...
+The authors would like to thank CNPq and FAPERJ for partial funding of this work.
 
 
 % references section
