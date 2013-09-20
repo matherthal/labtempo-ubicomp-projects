@@ -59,4 +59,9 @@ A.~Ranganathan, S.~Chetan, J.~Al-Muhtadi, R.~Campbell, and M.~Mickunas,
   2005. Third IEEE International Conference on}.\hskip 1em plus 0.5em minus
   0.4em\relax IEEE, 2005, pp. 7--16.
 
+\bibitem{forgy1982rete}
+C.~Forgy, ``Rete: A fast algorithm for the many pattern/many object pattern
+  match problem,'' \emph{Artificial intelligence}, vol.~19, no.~1, pp. 17--37,
+  1982.
+
 \end{thebibliography}
