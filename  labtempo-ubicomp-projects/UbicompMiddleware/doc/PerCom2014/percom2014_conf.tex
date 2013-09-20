@@ -354,8 +354,9 @@
 % paper title
 % can use linebreaks \\ within to get better formatting as desired
 % \title{Interacting with the environment: a framework to develop ubiquitous applications for intelligent environments}
-\title{Encapsulating the environment: a flexible framework to develop ubiquitous applications for intelligent environments}
-
+% \title{Encapsulating the environment: a flexible framework to develop ubiquitous applications for intelligent environments}
+% \title{A flexible framework to develop ubiquitous applications for intelligent environments}
+\title{A flexible framework to prototype, develop and manage ubiquitous applications for intelligent environments}
 
 % author names and affiliations
 % use a multiple column layout for up to three different
@@ -434,7 +435,25 @@ Email: loques@ic.uff.br}}
 
 \begin{abstract}
 %\boldmath
-Due to recent advances in mobile computing and wireless communication technologies, we can see the emergence of a favourable scenario for building ubiquitous/pervasive applications. This work proposes a new framework that aims at building those applications, providing a set of concepts and implementation tools. We propose abstractions that allow developers to handle the resources spread in the environment in a simple and homogeneous way, and to interpret context information. In order to demonstrate the feasibility of the proposal, the concepts were implemented in a platform named \textit{SmartAndroid}. A ubiquitous applications prototyping interface was implemented over this platform to allow testing of different environment configurations before purchasing all devices; and also a context rules composition interface, where end users can define their preferences in the environment.
+% Due to recent advances in mobile computing and wireless communication technologies, we can see the emergence of a favorable scenario for building ubiquitous/pervasive applications. This work proposes a framework that aims at building those applications, providing a set of concepts and implementation tools. We propose abstractions that allow developers to handle the resources spread in the environment in a simple and homogeneous way, and to interpret context information. In order to demonstrate the feasibility of the proposal, the concepts were implemented in a platform named \textit{SmartAndroid}. A ubiquitous applications prototyping interface was implemented over this platform to allow testing of different environment configurations before purchasing all devices; and also a context rules composition interface, where end users can define their preferences in the environment.
+
+Due to recent advances in mobile computing and wireless communication technologies, we can see the emergence of a favorable scenario for building ubiquitous/pervasive applications. This work proposes a state-of-art framework for building those applications by solving some of the main issues of the field, namely the heterogeneity of devices, the amount and diversity of context informations and services, and the difficulty of developing and testing ubiquitous applications. The abstractions provided, and the management services conceived, allow developers to handle resources spread within the intelligent environment in a simple and homogeneous way. Furthermore, they enhance the capability of implementing context-aware applications, while still keep the flexibility on developing such applications. In order to demonstrate the applicability of the proposal, we implemented the concepts in a platform named \textit{SmartAndroid}, which contemplates most of the framework's features and has enabled the construction of a set of example applications to validate the framework. Above the platform we implemented a management and prototyping interface that uses a tablet device to allow the testing of applications running on different configurations of the environment. This intelligent environment may be loaded with physical and/or virtual resources, what enables the emulation of devices as well as the simulation, without the need of purchasing all those devices. The interface also allows the composition of context rules either by developers or non trained users.
+
+% This intelligent environment may be loaded with the representation of physical resources and/or simulators, what enables the prototyping of applications without the need of purchasing all those devices.
+ 
+% This intelligent environment may be loaded with the representation of physical and/or virtual resources, what enables the prototyping of applications without the need of purchasing all those devices. 
+
+% With the purpose of evaluating the proposal we implemented the concepts 
+% and enable the context interpretation and 
+%  even without the need of purchasing all those devices
+%  (with a touch screen interface)
+% The abstractions provided, and the management services conceived, allow developers to handle resources spread within the intelligent environment in a simple and homogeneous way, and enhances the capability of implementing context sensible applications, while still keep the flexibility on developing such applications. 
+% Above the platform we implemented a management and prototyping interface that uses a tablet device to allow the testing of applications running on different configurations of the environment, which may be loaded with simulators or the representation of the resources. The interface also allows the composition of context rules either by developers or non trained users.
+%FIXME: ``while still keep the flexibility ON developing such applications'' <- este on está certo?
+
+% This work proposes a framework that aims at building those applications, providing a set of concepts and implementation tools. We propose abstractions that allow developers to handle the resources spread in the environment in a simple and homogeneous way, and to interpret context information. In order to demonstrate the feasibility of the proposal, the concepts were implemented in a platform named \textit{SmartAndroid}. A ubiquitous applications prototyping interface was implemented over this platform to allow testing of different environment configurations before purchasing all devices; and also a context rules composition interface, where end users can define their preferences in the environment.
+
+
 
 % Context awareness is reaching increasingly visibility in the current applications development scenario. The goal of this paper is to propose a new solution for representing, distributing and interpreting context informations, thus allowing the construction of applications for intelligent ambients. The infrastructure described in this paper exposes the ambient resources in a higher level, leading to a simpler and more dynamic creation of context rules; and by means of a graphical interface, end users are able to easily create and customize rules in the ambient. The proposed concepts have been implemented as a platform focused on building smart homes.
 % 
@@ -462,7 +481,6 @@ Due to recent advances in mobile computing and wireless communication technologi
 % For peerreview papers, this IEEEtran command inserts a page break and
 % creates the second title. It will be ignored for other modes.
 \IEEEpeerreviewmaketitle
-
 
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -503,7 +521,7 @@ The remainder of this paper is organized as follows. First we present in Section
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Related Work} \label{sec:related}
 % [ubicomp is nice but it is not priceless]
-The benefits to users and developers that UbiComp foresees reach beyond the horizon of many imaginative researchers. The possibilities that arise from it surpass the bounds established by keyboards and mice, our standard interfaces. Nonetheless, building such adaptable applications requires much effort from developers that see themselves immersed in a universe of device's specifications and communication technologies, apart from the problem itself that the application must solve. Therefore, many researchers have focused on diminishing those obstacles by providing abstractions, middlewares, services, tools, and other supportive techniques, not only for development but also for prototyping.
+The benefits to users and developers that UbiComp foresees reach beyond the horizon of many imaginative researchers. The possibilities that arise from it surpass the bounds established by keyboards and mice, our standard interfaces. Nonetheless, building such adaptable applications requires much effort from developers that see themselves immersed in a universe of device's specifications and communication technologies, apart from the problem itself that the application must solve. Therefore, many researchers have focused on diminishing those obstacles by providing abstractions, middlewares, services, tools, and other supportive techniques, not only for development but also for prototyping of UbiApps.
 
 %ubicomp implies dealing with limited and dynamically varying computational resources [kindberg2002ieee]
 
@@ -564,7 +582,7 @@ It is easy to notice that the context information is a first concern topic in ub
 %Many authors have proposed definitions to this concept, though most use examples to explain it or adopt a restrictive definition, that may not contemplate a set of systems. <- wrong. Most are wide or use synonyms
 %Synthetizing previous definitions, Dey and Abowd have proposed that context is any relevant information used to characterize the situation of entities, specifically: people, places and things.
 
-Context aware (or context sensible) applications is a designation to those applications that not only are capable of knowing the context of the environment, but also react to it either by means of changing the environment or in a software level.
+Context aware (or context sensible) applications is a designation to those applications that not only are capable of knowing the context of the environment, but also react to it either by means of changing the environment or in a software level. []
 
 [distributed systems]
 
@@ -574,7 +592,7 @@ Context aware (or context sensible) applications is a designation to those appli
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Framework Architecture} \label{sec:framework}
 % [framework description] 
-The framework provides facilities and programming standards typically required in context-aware applications focused on IE. Among the features is the ability to abstract details that involve communication, context acquisition and resource location, by the applications. For the sake of abstracting resource details we have used components called \textit{Resource Agents} (RA). The RA is the basic modularization unit of the framework being used in the modelling, implementation and management of applications (Subsection~\ref{subsec:ra}). %Example?
+The framework provides facilities and programming standards typically required in context-aware applications focused on IE. Among the features is the ability to abstract details that involve communication, context acquisition and resource location, by the applications. For the sake of abstracting resource details we have used components called \textit{Resource Agents} (RA). The RA is the basic modularization unit of the framework being used in the modeling, implementation and management of applications (Subsection~\ref{subsec:ra}). %Example?
 
 The decentralization of components of the framework (the RAs) follow the principles of the Service-oriented Architecture (SoA), where the more decentralization the more flexibility on connectivity, since the dependence of centralized services is lowered.
 %TODO: write it better
@@ -607,7 +625,7 @@ This layer comprehends the main services that sustain the interoperability of th
 This layer is composed by all the RAs that represent physical resources already coupled with the IE. The RA will be presented in Subsection~\ref{subsec:ra}.
 
 \subsubsection{Applications Layer}
-The higher layer includes all UbiApps that are enjoying the middleware features and also all the software level RAs, which are represented in the figure by the ``Forgotten Stove Interpreter'' and the ``Remainder Actuator''.
+The higher layer includes all UbiApps that are enjoying the middleware features and also all the software level RAs, which are represented in the figure by the ``Forgotten Stove Interpreter'' and the ``Reminder Actuator''.
 
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -666,7 +684,7 @@ The higher layer includes all UbiApps that are enjoying the middleware features 
     \subsubsection{RA Register Service} 
     The RRS allows the registration and deregistration of RAs instances references and description. This service also has CVs that allows the developer to know when RAs enter and leave the IE
 
-    The naming and addressing scheme can be generalized to work over the internet, and comply with the internet of things concept.
+    The naming and addressing scheme can be generalized to work over the internet, and comply with the Internet of Things concept.
 
     \subsubsection{RA Discovery Service}
     The RDS allows the search for registered RAs based on specific attributes, which are the RA name, RANS and type. The search by RANS will only return one RA, but the search by name or type will return all RAs that meet this criteria.
@@ -695,6 +713,8 @@ The higher layer includes all UbiApps that are enjoying the middleware features 
     % On the 
 
   \subsection{Context Interpretation} \label{subsec:ci}
+  [motivation]
+  
   % [directly programmed]
   The context interpretation serves to aggregate context information from different sources in accordance with some specific logic and considering the passage of time. This logic is defined by the developer and the interpretation is implemented with the framework's support. %The CI concept was inspired by the Aggregator in Dey and Abowd~\cite{dey2001conceptual} whose objective was to gather logically related context and provides them in a single component.
   
@@ -704,10 +724,16 @@ The higher layer includes all UbiApps that are enjoying the middleware features 
   The framework uses a generic approach for creating context rules, which are composed by two parts: the interpretation and the actuation. The interpretation part, as already stated before, concerns on binding the CI itself with CVs from different RAs, evaluating the expression that interrelates those CVs, and notifying whoever is interested. The actuation part is a RA that is subscribed to the CI, and develop some job, that may change the context of the IE or change some state in a software level.
 %   in which developers are able to define the logic of the rule in the application using the framework support for context acquisition, as well as to perform actions on the environment. 
   
-  The Figure~\ref{fig:arch} shows on Applications Layer an examplo of a context rule with two components: the CI (``Forgotten Stove Interpreter'') and the actuator (``Remainder Actuator''). In this simple example, the CI is subscribed to the RAs ``Bed RA'' and ``Stove RA'', and internally it contains the following rule expression: ``bed is occupied and stove is on for T min''. The actuator, awaits for when the condition of the CI met for triggering its action that, in case, is to play the clock's alarm sound and to show on TV a message saying that ``the stove has been forgotten''.
+  An example of context rules has been presented on Figure~\ref{fig:arch}. At the Applications Layer a set of two components implements the interpretation-actuation pattern: the ``Forgotten Stove Interpreter'' and the ``Reminder Actuator'' repectivelly, where the goal of the rule is to remind the elderly that he has forgotten the oven on while he went to sleep. The former component, which is a CI, is subscribed to two RAs, namely the ``Bed RA'' and the ``Stove RA'' (the dashed arrow means notify subscriptors). The latter is subscribed to the CI and calls the RAs, namely the ``TV RA'' and the ``Clock RA'', directly using RPC (represented by the straight arrow). Internally to the CI a rule expression relates the RAs as  ``bed is occupied and stove is turned on for 30 min'', which means that the CI only will be valid if this condition remains true during ``30 min''. When the CI changes its state from invalid to valid (what includes the timing), the subscriptors are notified, the ``Reminder Actuator'' in case. This actuator, in its turn, calls the OPs ``fire alarm'' from ``Clock RA'' and ``set message'' from ``TV RA'', with the parameter ``You forgot the stove on!''. Then it is expected that an accident is prevented.
   
+%   In this simple example, the CI is subscribed to the RAs ``Bed RA'' and ``Stove RA'', and internally it contains the following rule expression: ``bed is occupied and stove is on for T min''. The actuator, awaits for when the condition of the CI met for triggering its action that, in case, is to play the clock's alarm sound and to show on TV a message saying that ``the stove has been forgotten''.
+%   The Figure~\ref{fig:arch} shows on Applications Layer an example of a context rule with two components: the CI (``Forgotten Stove Interpreter'') and the actuator (``Reminder Actuator''). 
+
 %   A avaliação da expressão é desempenhada pelo próprio IC quando o contexto muda. A atuação ocorre quando um agente atuador é subscrito à um IC, recebendo assim a notificação de que a expressão da regra foi avaliada como verdadeira. Estes agentes atuadores podem tanto ser atuadores simples, que desempenham ações sequencialmente no ambiente utilizando OPs diretamente (e.g., desligar lâmpada, gravar programação de determinado canal da TV); como atuadores mais complexos, que executam ações não necessariamente baseadas em OPs (e.g., execução de algum outro software, que utiliza um canal de emergência do serviço de saúde ou bombeiros).
 
+  An actuator can be simple as a list of actions to be invoked sequentially, the OPs of RAs in case such as in the previous example, or it can be more complex, e.g. a program that send a SMS to some person in case of emergency, or that consults the whether from an website and shows on some visual interface at morning, among others.
+
+%   program that records TV program if person is late from work
   [talk more about actuators]
   
   [can have many actuators]
@@ -763,13 +789,29 @@ The higher layer includes all UbiApps that are enjoying the middleware features 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Application Examples} \label{sec:evaluation}
 
+[smartlic]
 
+[media follow me]
+
+[prenda]
+
+[review of capabilities]
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion} \label{sec:conclusion}
-The conclusion goes here.
+
+[framework main features]
+
+[smartandroid]
+
+[future work]
+[more complex resource discovery]
+[aggregate other security concerns]
+[machine learning and data mining]
+[internet of things - expand to internet]
+
 
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
