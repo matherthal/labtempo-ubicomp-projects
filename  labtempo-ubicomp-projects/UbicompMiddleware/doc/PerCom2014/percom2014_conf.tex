@@ -27,6 +27,7 @@
 %% consequential, or any other damages, resulting from the use or misuse
 %% of any information contained here.
 %%
+
 %% All comments are the opinions of their respective authors and are not
 %% necessarily endorsed by the IEEE.
 %%
@@ -814,13 +815,14 @@ The conceptual framework proposed at this work was tested through a reference im
   %[David]
 The main purpose of the [IPGAP] is provide to developers a hybrid environment where simulated and real resources can interact to each other transparently, enabling that their UbiApps are tested and evaluated through a wide variety of scenarios. RAs from sensors, actuators and household appliances can be graphically represented at our tool, along with a schematic map from the intelligent environment so that the developer can visualize the context of all resources and debug his application.
 
-Besides, non-technical users are able to use [IPGAP] to manage their intelligent environment remotely using a mobile device such as a tablet. Through a intuitive GUI, he can not only visualize the state of their home devices but control them, for instance, turning off a stove burner. By touching the device in the screen, an interface that presents its main functions is shown, where the user can operate it as the tool were a remote control.
+Besides, [IPGAP] can operate in two different modes: the \textit{developer mode}, already mentioned, and the \textit{end-user mode}. In the end-user mode, users in general, i.e. non-technical users, are able to use [IPGAP] to manage their intelligent environment remotely using a mobile device, such as a tablet. Through an intuitive GUI, end-users can not only visualize the state of their home devices but control them. For instance, it's possible turning off a stove burner, change the air-conditioner temperature, and so on. By touching the device in the screen, an interface that presents its main functions is shown, where the user can operate it as the tool were a remote control.
 
   [main figure]
   
 
   [rules composer]
 
+In addition, [IPGAP] allow end-users to compose context rules in a hi-level way by graphically combining the context variables from any RA and logical connectives, forming logical expressions as `'if the TV from living room is on and nobody has been present at the living room for 15 minutes then turn off that TV.'' 
 
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
