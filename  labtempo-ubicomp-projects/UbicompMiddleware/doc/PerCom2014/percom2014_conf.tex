@@ -649,7 +649,8 @@ The higher layer includes all UbiApps that are enjoying the middleware features 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Framework Features and Application}This section approaches the main features provided by the framework, which includes the definition of the RA (Subsection~\ref{subsec:ra}), the management services (Subsection~\ref{subsec:sgar}) and the context interpretation (Subsection~\ref{subsec:ci}). In the next section we will present the current status of the implementation.
+\section{Framework Features}
+This section approaches the main features provided by the framework, which includes the definition of the RA (Subsection~\ref{subsec:ra}), the management services (Subsection~\ref{subsec:sgar}) and the context interpretation (Subsection~\ref{subsec:ci}). In the next section we will present the current status of the implementation.
 % This section approaches the main features provided by the framework, which includes the definition of the RA (Subsection~\ref{subsec:ra}), the management services (Subsection~\ref{subsec:sgar}) and the context interpretation (Subsection~\ref{subsec:ci}). Also, based on the reference implementation, an application was built to provide a tool for the prototyping, management and visualization of applications and resources running on the IE.
 
   \subsection{Resource Agents} \label{subsec:ra}
@@ -790,18 +791,33 @@ The higher layer includes all UbiApps that are enjoying the middleware features 
 
 %[David]
 The conceptual framework proposed at this work was tested through a reference implementation called \mbox{SmartAndroid} Project\footnote{For more information visit www.tempo.uff.br/smartandroid}. The project includes a programming API to help the developers in constructing UbiApps as well as offers basic management services to provide resource registration, discovery and localization. The SmartAndroid has been developed over Google Android platform as we believe that in a near future it will be widely used in sensors and devices embedded in furnitures and home appliances.
+%FIXME: in a near future it will be 
+% [we have implemented most of the framework features, thought much more remain to be done]
 
-[we have implemented most of the framework features, thought much more remain to be done]
+%proposta de uso de marketplace
+% A exposição de dados por meio de \textit{Content Provider} permite a integração de aplicativos externos ao servidor. Estes aplicativos podem ser dispostos em um \textit{marketplace} (http://developer.android.com/distribute/open.html) permitindo que tanto usuários comuns quanto programadores incrementem o ambiente com novas aplicações ubíquas. 
+The SmartAndroid middleware contemplates the possility of running multiple applications in the same IE. Thus, focusing on the user and inspired by the Google Play -- which is a application market for Android devices --, we have as a future work the creation of a SmartAndroid Market~\cite{google2013}, where users will be able to easily download and start different applications. Also similar to the Google Play, a Manifest file will require permission for acessing the domains, what will allow users to maintain control over what off-the-shelf applications have permission to know and to do.
+% TODO: talk about market place
 
   \subsection{Distributed Components Model}
 %   [implementation of RA and services]
   
+  [initialization]
+%   O SmartAndroid é um aplicativo que inicializa o SGAR, repositório e serviços de comunicação. Este aplicativo deve ser executado em uma única unidade do ambiente, deixando o Deamon de Comunicação em estado de espera até receber requisições de outras aplicações. Em outras unidades (clientes) constam os aplicativos instalados com a biblioteca do SmartAndroid, a qual é necessária para executar o serviço de comunicação e \textit{proxys} dos serviços do SGAR. Assim cada unidade pode consultar sobre IARs, através do SDR, obtendo seus ODARs, cada um com o respectivo RANS, o qual é utilizado pelo \textit{proxy} como referência de acesso. 
 
-  \subsection{Context Rules Parsing} \label{subsec:rules}
-  [implementation of context rules]
+  
+  [annotation]
+
+  \subsection{Context Rules} \label{subsec:rules}
+%   [implementation of context rules]
+  The SmartAndroid supports the context interpretation by providing mechanisms to create context rules. The context rules life cycle has two major phases: composition and running. The composition phase corresponds to the instantiation of a CI and of an actuator and the binding of both through subscription. The running phase is when the CI and the actuator(s) are already instantiated as the other RAs that feed the IE with context information, and they are able to exchange messages and perform their job.
   %   Support the interpretation of the context framework enables a separation of concerns, where developers abstract implementation of contextual rules and focus on the application logic.
   
-  \subsection{Context Rules Running}
+  At the implementation level, a context rule can be described in a JSON structured file (or byte stream) following a specific format. In the first part an expression must be defined setting the logical operat
+  To separate the context rules creation from the 
+  
+%   O IC é encapsulado em um AR, estendendo, assim, suas funcionalidades. Sua criação ocorre quando é definida uma expressão lógica no objeto do IC recém instanciado, segundo um padrão próprio adotado em arquivos tipo JSON, e um \textit{parser} constrói uma estrutura lógica interna, como mostrado na Figura~\ref{fig:inpt_arq}. A estrutura lógica abrigada pelo IC, contém uma estrutura em árvore que representa a expressão e contém não só a lógica entre as VCs das condições, como também os valores atualizados das mesmas. Enquanto em funcionamento, o IC recebe atualizações das VCs, tratando-as em seguida para atualizar sua estrutura lógica. O módulo de avaliação é notificado de mudanças da estrutura lógica e avalia se a expressão se tornou verdadeira ou falsa. Se a expressão alcançou um estado verdadeiro, considerando as possíveis temporizações, notifica os atuadores. 
+
   
   [context rules conflicts is an ongoing study that aims at discover a conflict in runtime,]
   
@@ -812,31 +828,80 @@ The conceptual framework proposed at this work was tested through a reference im
   % PAMPI
   % management and prototyping interface MPI
   [description]\\
-  %[David]
-The main purpose of the [IPGAP] is provide to developers a hybrid environment where simulated and real resources can interact to each other transparently, enabling their users to construct UbiApps as well as test and evaluate them through a wide variety of scenarios. Thus RAs from sensors, actuators and household appliances can be graphically represented at our tool, along with a schematic map from the intelligent environment so that some of the resources aspects as its context and location can be easily visualized on the map, helping in application debugging.
-
-Besides, [IPGAP] operate with two different interfaces: the \textit{developer interface}, already mentioned, and the \textit{end-user interface}. In the end-user interface, users in general, i.e. non-technical users, are able to use [IPGAP] to manage their intelligent environment remotely using a mobile device, such as a tablet. Through an intuitive GUI, end-users can not only visualize the state of their home devices but control them. For instance, it's possible turning off a stove burner, change the air-conditioner temperature, and so on. By touching the device icon in the screen, an interface that presents the device's main functions is shown, where the user can operate it as the tool were a remote control.
-
-  [main figure]
   
+  %[David]
+  The main purpose of the [IPGAP] is provide to developers a hybrid environment where simulated and real resources can interact to each other transparently, enabling their users to construct UbiApps as well as test and evaluate them through a wide variety of scenarios. Thus RAs from sensors, actuators and household appliances can be graphically represented at our tool, along with a schematic map from the intelligent environment so that some of the resources aspects as its context and location can be easily visualized on the map, helping in application debugging.
 
+  Besides, [IPGAP] operate with two different interfaces: the \textit{developer interface}, already mentioned, and the \textit{end-user interface}. In the end-user interface, users in general, i.e. non-technical users, are able to use [IPGAP] to manage their intelligent environment remotely using a mobile device, such as a tablet. Through an intuitive GUI, end-users can not only visualize the state of their home devices but control them. For instance, it's possible turning off a stove burner, change the air-conditioner temperature, and so on. By touching the device icon in the screen, an interface that presents the device's main functions is shown, where the user can operate it as the tool were a remote control.
+
+  % [main figure]
+  \begin{figure}[!t]
+  \centering
+  \includegraphics[width=3.5in]{figures/map-forniture-cv-menu-big.pdf}
+  \caption{Management and Prototyping Interface} %[IPGAP]
+  \label{fig:ipgap}
+  \end{figure}
+  %FIXME: convert portuguese text to english
+  
   [rules composer]
-%TODO Think about a better rule example!!
-In addition, end-users can compose context rules in a hi-level way by graphically combining the CVs from any RA and logical connectives, forming logical expressions as \textit{``if the TV from living room \textbf{is on}, \textbf{and} nobody has been present at the living room for 15 minutes, \textbf{then} turn off that TV''}. To compose this rule the user have to, first of all, select the rule composer mode in the [IPGAP]. Then, he must touch the TV icon at the living room representation on the map, and choose the desired CV -- in that case, the CV that refers if the TV is turned on or not. After that, a dialog box showing all possible logical operators is shown, so that the user can select one of them as the \textbf{AND} operator. The user can repeat this process, adding others CVs and operators until the expression is complete. Finally, the rule can be associated to one or more actions, provided by actuators.
+  %TODO Think about a better rule example!!
+  In addition, end-users can compose context rules in a hi-level way by graphically combining the CVs from any RA and logical connectives, forming logical expressions as \textit{``if the TV from living room \textbf{is on}, \textbf{and} nobody has been present at the living room for 15 minutes, \textbf{then} turn off that TV''}. To compose this rule the user have to, first of all, select the rule composer mode in the [IPGAP]. Then, he must touch the TV icon at the living room representation on the map, and choose the desired CV -- in that case, the CV that refers if the TV is turned on or not. After that, a dialog box showing all possible logical operators is shown, so that the user can select one of them as the \textbf{AND} operator. The user can repeat this process, adding others CVs and operators until the expression is complete. Finally, the rule can be associated to one or more actions, provided by actuators.
 
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Application Examples} \label{sec:evaluation}
+\section{Example Applications} \label{sec:evaluation}
+Some applications have been built to explore the potential of the framework for building UbiApps. Although the example applications are simple, and alone does not justify the deploy of the SmartAndroid in the environment, they have allowed us to validate the features provided by the framework and achived by the SmartAndroid.
 
-[smartlic]
+% Among these applications we will 
 
-[media follow me]
+% the SmartLiC, the MediaFollowMe, remote control type applications where resources are controlled remotely by another resource (in this case, a smartphone ), among other applications. A future work is to install a system in Ambi home care health, as in ~ \ cite {} carvalho2010sciads.
 
-[prenda]
 
-[review of capabilities]
+  
+  \subsection{Tic-Tac-Toe}
+  After the implementations of the basic features of the framework, including the communication mechanisms, we have implemented a distributed Tic-Tac-Too game, where a player can defy another player (or AI player) placed anywhere in the IE. 
+  % FIXME: rewrite
+  
+%   Nesta seção serão exploradas as questões 1 e 2, relacionadas ao suporte (SGAR) e a aquisição de contexto, através do desenvolvimento de um jogo da velha ubíquo. Esta aplicação é uma adaptação de uma versão simples na plataforma Android, que executa em apenas uma tela, para uma versão \textit{multiplayer}, onde para uma mesma partida cada jogador possui um dispositivo individual para indicar os movimentos efetuados. O objetivo desta adaptação demonstra também a capacidade do \textit{framework} em facilitar a programação de sistemas distribuídos para aplicações inteligentes.
+
+  
+  \subsection{SmartLiC}
+  % [smartlic]
+  The Smart Light Control (SmartLic) application aims at the clever use of lighting in homes in order to save power consumption, since it is responsible for the largest range of consumption in residential environments. The application uses presence sensors to identify the location of people inside the each room and decide which lamps should be turned on and off. Hence preventing the forgetting of lamps turned on. It also 
+  
+  % ref to the 'largest range of consumption in residential environments'?
+
+  
+  a control application for residential lighting - that makes the lights of a room being erased as users are absent this
+
+  \subsection{Remote Controls}
+  Considering that the users would want to have some control over the resources within the IE, we have implemented the remote controls to interact with them specifically. 
+  
+  \begin{figure}[!t]
+  \centering
+  \includegraphics[width=3.5in]{figures/beagle-lamp.pdf}
+  \caption{Remote Control} %[IPGAP]
+  \label{fig:remotecontrol}
+  \end{figure}
+  
+  \subsection{Prenda Game}
+%   um agente pode saber quais recursos mais próximo de um ponto de referência específico
+  The Prenda is a ubiquitous game implemented for the SmartAndroid where the goal is to find a gift hidden somewhere in the house. The player moves inside the house and gets tips on where to find the gift while competing with others, the one who finds the gift first is the winner. This game has a different concept of other common digital games, since it explores elements in the IE and thus offers a different experience for kids. 
+  
+  This game was implemented with simulated resources and using the [IPGAP]. The players were represented with avatars and their location were updated with the drag and drop of the avatars over the map. 
+  
+  The player has a layout map of the house where you can find the move to attach the extent that the movement occurs, the game informs the person's subjective closeness with the gift (by the number of points in the message text) to that is found. The game allows the participation of multiple players for the environment, to get a winner the gift is repositioned to the new game. The game takes place in a simulated environment, using IPGAP to simulate the movement of avatars of people participating.
+  
+  \subsection{MediaFollowMe}
+  [media follow me]
+  MediaFollowMe, which causes a multimedia stream (eg, video, audio, images) is transferred to the device (capable of displaying flow) closest to the user, as the media follow him
+
+  
+  [prenda]
+
+  [review of capabilities]
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %              SECTION
@@ -855,7 +920,7 @@ In addition, end-users can compose context rules in a hi-level way by graphicall
 
 
 
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % use section* for acknowledgement
