@@ -857,8 +857,6 @@ Some applications have been built to explore the potential of the framework for 
 % Among these applications we will 
 
 % the SmartLiC, the MediaFollowMe, remote control type applications where resources are controlled remotely by another resource (in this case, a smartphone ), among other applications. A future work is to install a system in Ambi home care health, as in ~ \ cite {} carvalho2010sciads.
-
-
   
   \subsection{Tic-Tac-Toe}
   After the implementations of the basic features of the framework, including the communication mechanisms, we have implemented a distributed Tic-Tac-Too game, where a player can defy another player (or AI player) placed anywhere in the IE. 
@@ -895,11 +893,10 @@ Some applications have been built to explore the potential of the framework for 
   The player has a layout map of the house where you can find the move to attach the extent that the movement occurs, the game informs the person's subjective closeness with the gift (by the number of points in the message text) to that is found. The game allows the participation of multiple players for the environment, to get a winner the gift is repositioned to the new game. The game takes place in a simulated environment, using IPGAP to simulate the movement of avatars of people participating.
   
   \subsection{MediaFollowMe}
-  [media follow me]
-  MediaFollowMe, which causes a multimedia stream (eg, video, audio, images) is transferred to the device (capable of displaying flow) closest to the user, as the media follow him
-
   
-  [prenda]
+  The \mbox{\textbf{MediaFollowMe}} application enables the user to be followed by any kind of media stream (e.g. video, audio, images) while he/she walks inside the intelligent environment. By the time the user launch the \mbox{MediaFollowMe} app and choose the device which the media stream he wants to be followed, the app will take care of the user's location changes and automatically play, pause or migrate the media to the closest device capable of displaying it.
+  
+  To illustrate that, consider a user watching a movie on TV through a bluray player in his bedroom. When the user leaves his bedroom, the system identifies this action by an Rfid tag and fires an event, as well as when he arrives in any room. As the app is interested in these events, it receives a notification informing that the user left/arrived some room (and which room) and can migrate the media to the proper device, preferable inside that room.
 
   [review of capabilities]
 
