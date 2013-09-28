@@ -743,7 +743,7 @@ This section approaches the main features provided by the framework, which inclu
   The framework uses a generic approach for creating context rules, which are composed by two parts: the interpretation and the actuation. The interpretation part, as already stated before, concerns on binding the CI itself with CVs from different RAs, evaluating the expression that interrelates those CVs, and notifying whoever is interested. The actuation part is a RA that is subscribed to the CI, and develop some job, that may change the context of the IE or change some state in a software level.
 %   in which developers are able to define the logic of the rule in the application using the framework support for context acquisition, as well as to perform actions on the environment. 
   
-  An example of context rules has been presented on Figure~\ref{fig:arch}. At the Applications Layer a set of two components implements the interpretation-actuation pattern: the ``Forgotten Stove Interpreter'' and the ``Reminder Actuator'' repectivelly, where the goal of the rule is to remind the elderly that he has forgotten the oven on while he went to sleep. The former component, which is a CI, is subscribed to two RAs, namely the ``Bed RA'' and the ``Stove RA'' (the dashed arrow means notify subscriptors). The latter is subscribed to the CI and calls the RAs, namely the ``TV RA'' and the ``Clock RA'', directly using RPC (represented by the straight arrow). Internally to the CI a rule expression relates the RAs as  ``bed is occupied and oven is turned on for 30 min'', which means that the CI only will be valid if this condition remains true during ``30 min''. When the CI changes its state from invalid to valid (what includes the timing), the subscriptors are notified, the ``Reminder Actuator'' in case. This actuator, in its turn, calls the OPs ``fire alarm'' from ``Clock RA'' and ``set message'' from ``TV RA'', with the parameter ``You forgot the oven on!''. Then it is expected that an accident is prevented.
+  An example of context rules has been presented on Figure~\ref{fig:arch}. At the Applications Layer a set of two components implements the interpretation-actuation pattern: the ``Forgotten Stove Interpreter'' and the ``Reminder Actuator'' respectively, where the goal of the rule is to remind the elderly that he has forgotten the oven on while he went to sleep. The former component, which is a CI, is subscribed to two RAs, namely the ``Bed RA'' and the ``Stove RA'' (the dashed arrow means notify subscriptors). The latter is subscribed to the CI and calls the RAs, namely the ``TV RA'' and the ``Clock RA'', directly using RPC (represented by the straight arrow). Internally to the CI a rule expression relates the RAs as  ``bed is occupied and oven is turned on for 30 min'', which means that the CI only will be valid if this condition remains true during ``30 min''. When the CI changes its state from invalid to valid (what includes the timing), the subscriptors are notified, the ``Reminder Actuator'' in case. This actuator, in its turn, calls the OPs ``fire alarm'' from ``Clock RA'' and ``set message'' from ``TV RA'', with the parameter ``You forgot the oven on!''. Then it is expected that an accident is prevented.
   
 %   In this simple example, the CI is subscribed to the RAs ``Bed RA'' and ``Stove RA'', and internally it contains the following rule expression: ``bed is occupied and stove is on for T min''. The actuator, awaits for when the condition of the CI met for triggering its action that, in case, is to play the clock's alarm sound and to show on TV a message saying that ``the stove has been forgotten''.
 %   The Figure~\ref{fig:arch} shows on Applications Layer an example of a context rule with two components: the CI (``Forgotten Stove Interpreter'') and the actuator (``Reminder Actuator''). 
@@ -796,8 +796,10 @@ The conceptual framework proposed at this work was tested through a reference im
 
 %proposta de uso de marketplace
 % A exposição de dados por meio de \textit{Content Provider} permite a integração de aplicativos externos ao servidor. Estes aplicativos podem ser dispostos em um \textit{marketplace} (http://developer.android.com/distribute/open.html) permitindo que tanto usuários comuns quanto programadores incrementem o ambiente com novas aplicações ubíquas. 
-The SmartAndroid middleware contemplates the possility of running multiple applications in the same IE. Thus, focusing on the user and inspired by the Google Play -- which is a application market for Android devices --, we have as a future work the creation of a SmartAndroid Market~\cite{google2013}, where users will be able to easily download and start different applications. Also similar to the Google Play, a Manifest file will require permission for acessing the domains, what will allow users to maintain control over what off-the-shelf applications have permission to know and to do.
+The SmartAndroid middleware contemplates the possility of running multiple applications in the same IE. Thus, focusing on the user and inspired by the Google Play -- which is a application market for Android devices --, we have as a future work the creation of a SmartAndroid Market~\cite{google2013}, where users will be able to easily download and start different applications. Also similar to the Google Play, a Manifest file will require permission for accessing the domains, what will allow users to maintain control over what off-the-shelf applications have permission to know and to do.
 % TODO: talk about market place
+[security concern on store: helps the discovery of malware before the user download]
+
 
   \subsection{Distributed Components Model}
 %   [implementation of RA and services]
@@ -843,16 +845,16 @@ The SmartAndroid middleware contemplates the possility of running multiple appli
   \end{figure}
   %FIXME: convert portuguese text to english
   
-  [rules composer]
+%   [rules composer]
   %TODO Think about a better rule example!!
   In addition, end-users can compose context rules in a hi-level way by graphically combining the CVs from any RA and logical connectives, forming logical expressions as \textit{``if the TV from living room \textbf{is on}, \textbf{and} nobody has been present at the living room for 15 minutes, \textbf{then} turn off that TV''}. To compose this rule the user have to, first of all, select the rule composer mode in the [IPGAP]. Then, he must touch the TV icon at the living room representation on the map, and choose the desired CV -- in that case, the CV that refers if the TV is turned on or not. After that, a dialog box showing all possible logical operators is shown, so that the user can select one of them as the \textbf{AND} operator. The user can repeat this process, adding others CVs and operators until the expression is complete. Finally, the rule can be associated to one or more actions, provided by actuators.
-
+  %FIXME: here ``AND'' is bold, but before it was just between quotation marks
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Example Applications} \label{sec:evaluation}
-Some applications have been built to explore the potential of the framework for building UbiApps. Although the example applications are simple, and alone does not justify the deploy of the SmartAndroid in the environment, they have allowed us to validate the features provided by the framework and achived by the SmartAndroid.
+Some applications have been built to explore the potential of the framework for building UbiApps. Although the example applications are simple, and alone does not justify the deploy of the SmartAndroid in the environment, they have allowed us to validate the features provided by the framework and achieved by the SmartAndroid.
 
 % Among these applications we will 
 
@@ -896,7 +898,7 @@ Some applications have been built to explore the potential of the framework for 
   
   The \mbox{\textbf{MediaFollowMe}} application enables the user to be followed by any kind of media stream (e.g. video, audio, images) while he/she walks inside the intelligent environment. By the time the user launch the \mbox{MediaFollowMe} app and choose the device which the media stream he wants to be followed, the app will take care of the user's location changes and automatically play, pause or migrate the media to the closest device capable of displaying it.
   
-  To illustrate that, consider a user watching a movie on TV through a bluray player in his bedroom. When the user leaves his bedroom, the system identifies this action by an Rfid tag and fires an event, as well as when he arrives in any room. As the app is interested in these events, it receives a notification informing that the user left/arrived some room (and which room) and can migrate the media to the proper device, preferable inside that room.
+  To illustrate that, consider a user watching a movie on TV through a blu-ray player in his bedroom. When the user leaves his bedroom, the system identifies this action by an RFID tag and fires an event, as well as when he arrives in any room. As the app is interested in these events, it receives a notification informing that the user left/arrived some room (and which room) and can migrate the media to the proper device, preferable inside that room.
 
   [review of capabilities]
 
@@ -904,17 +906,18 @@ Some applications have been built to explore the potential of the framework for 
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion} \label{sec:conclusion}
+% [framework main features]
+In the present paper we have proposed a framework that address some major issues that are found in the construction of ubiquitous applications, both for developers as for end users. We have focused on three challenges, that have guided the development of the framework. For dealing the the heterogeneity of devices present in the intelligent environment we have created the Resource Agent abstraction that encapsulates the mechanisms to interact with physical and also virtual resources, and includes a synchronous and asynchronous communication mechanism. The variety of context information and services is achieved by the definition of Context Interpreters that are responsible for aggregating context information, providing it in a higher level. And for the resource availability issue we have created the [IPGAP], which is a software that helps the prototyping and testing of ubiquitous applications through a easy to use interface, and allows the visualizations of applications running in a environment populated with real and simulated devices.
 
-[framework main features]
+% [smartandroid]
+The concepts of the framework were implemented as a middleware called SmartAndroid. The SmartAndroid provides a API for developers and a set of basic services, that enables the construction of the intelligent environment. The core management services are the resource register service, that includes a naming service; the resource discovery service, that performs searches on registered resources based on different criteria; and a resource location service, that also performs searches but based on the location and proximity of resources and/or users. 
 
-[smartandroid]
-
-[future work]
-[more complex resource discovery]
-[aggregate other security concerns]
-[machine learning and data mining]
-[internet of things - expand to internet]
-
+% [future work]
+% [more complex resource discovery]
+% [aggregate other security concerns]
+% [machine learning and data mining]
+% [internet of things - expand to internet]
+As future work we plan to extend the framework to allow more complex queries in the resource discovery service, what nowadays is still strict; adapt the communication mechanism for using web services, and get our approach closer to the concept of the internet of things; further research on other security concerns; provide mechanisms to avoid/solve potential conflicts on context rules; aggregate machine learning techniques that will enable a better understanding of user preferences, and will make possible the offering of context rules and other helping services; improve the [IPGAP] and evaluate its usability, using methodologies of human-machine interface; and son on.
 
 
    % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
