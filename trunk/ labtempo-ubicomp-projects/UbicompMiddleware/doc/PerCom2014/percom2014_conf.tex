@@ -195,7 +195,11 @@
 
 % *** SPECIALIZED LIST PACKAGES ***
 %
-%\usepackage{algorithmic}
+\usepackage{algorithmic}
+% \renewcommand{\algorithmicrequire}{\textbf{Input:}}
+\newcommand{\algorithmicforeach}{\textbf{for each}}
+\newcommand{\algorithmiconevent}{\textbf{on event received}}
+\newcommand{\algorithmicendevent}{\algorithmicend\ \algorithmionevent}
 % algorithmic.sty was written by Peter Williams and Rogerio Brito.
 % This package provides an algorithmic environment fo describing algorithms.
 % You can use the algorithmic environment in-text or within a figure
@@ -467,7 +471,6 @@ Due to recent advances in mobile computing and wireless communication technologi
 %  (with a touch screen interface)
 % The abstractions provided, and the management services conceived, allow developers to handle resources spread within the intelligent environment in a simple and homogeneous way, and enhances the capability of implementing context sensible applications, while still keep the flexibility on developing such applications. 
 % Above the platform we implemented a management and prototyping interface that uses a tablet device to allow the testing of applications running on different configurations of the environment, which may be loaded with simulators or the representation of the resources. The interface also allows the composition of context rules either by developers or non trained users.
-%FIXME: ``while still keep the flexibility ON developing such applications'' <- este on está certo?
 
 % This work proposes a framework that aims at building those applications, providing a set of concepts and implementation tools. We propose abstractions that allow developers to handle the resources spread in the environment in a simple and homogeneous way, and to interpret context information. In order to demonstrate the feasibility of the proposal, the concepts were implemented in a platform named \textit{SmartAndroid}. A ubiquitous applications prototyping interface was implemented over this platform to allow testing of different environment configurations before purchasing all devices; and also a context rules composition interface, where end users can define their preferences in the environment.
 
@@ -625,7 +628,7 @@ The decentralization of components of the framework (the RAs) follow the princip
 The general architecture of the framework includes a Distributed Components Model, which defines the RA structure and the Resource Management Support Services (RMSS). The Figure~\ref{fig:arch} presents a layer architecture that highlights main aspects of the framework. The layers are described in the following items.
 
 % [architecture picture]
-\begin{figure}[!t]
+\begin{figure}[ht]
 \centering
 \includegraphics[width=3.5in]{figures/architecture-refactored-v2.pdf}
 \caption{Framework Layer Architecture}
@@ -680,7 +683,9 @@ This section approaches the main features provided by the framework, which inclu
     Consider the simple example of a smart stove where the instantiation of its RA exposes services to get its current context (e.g., oven is turned on, oven temperature in $\,^{\circ}\mathrm{C}$) and services that may change its context (e.g., turn oven off, set temperature as $150\,^{\circ}\mathrm{C}$). Hence, the RA concept meets the first challenge (i), which is the \textit{devices heterogeneity}, since decoupling sensor and actuator from the sensor platforms favors the flexibility. %FIXME: is it right?
 
     % The RA are distributed components that can be used to 
-
+    
+    \subsubsection{RA Structure}
+    In analogy to object-oriented programming we define classes of RAs to represent the type of the resource with specific interfaces. Besides other informations present in the AR's structure (such as name, location, subscribed RAs, among others) it has its type hierarchy. The type hierarchy is composed by a sequence of classes that classify the entity and has been inspired by the ontology described by Ranganathan~\cite{ranganathan2005olympus}. In the Subsection~\ref{subsec:sgar} we will present how this feature can be used to find a RA and to define its functionalities.
 
     \subsubsection{Communication}
 
@@ -690,10 +695,47 @@ This section approaches the main features provided by the framework, which inclu
     In order to meet requirements typical of distributed environments, two communications mechanisms have been included in the framework: the Remote Procedure Call (RPC), that implements synchronous communication; and a publish-subscribe mechanism (pub-sub)~\cite{eugster2003many}, that implements asynchronous communication. The RPC is used to access directly the RA, querying for its context by accessing its CVs, or calling its OPs. On the other hand, through the pub-sub a RA can subscribe to a CV of another one (consumer) and further receive a notification, when the first RA publishes its CV state change (provider).
 
     The RA has a domain name, the RA Name System (RANS), that allows its unique identification in the IE. This identification is similar to the DNS, where the name remains the same even if the network address (IP) changes, the only change is the updating of the addressing table. 
+    
+    %[talk about stub intantiation calls]
+    %TODO: example of CV and OP? Maybe it is worth add some on the text
+    To perform any interaction with a RA that is not locally instantiated, the UbiApp must use a stub (also called proxy) that is bound to the referred RA. This stub implements the same interface as the RA, i.e. the same CVs and OPs, which are methods, from a Object-Oriented Programming perspective. With the stub on hands, the application can invoke remote methods, as if they were locally invoked. These remote methods may be to retrieve a CV or to trigger an OP. The Figure~\ref{fig:rpc} represents this direct, or synchronous, communication. The steps to achieve a direct communication, as represented by the figure, are as follows:
+    \begin{enumerate}
+     \item The UbiApp calls a method from the stub 
+     \item The call is forwarded to the RA instance through the network in the second step
+     \item This instance can interact with the device (the lamp, in case)
+     \item The result or the acknowledge is then returned to the caller
+    \end{enumerate}
+    
+%     In the first step the UbiApp calls a method from the stub whose call is forwarded to the RA instance throught the network in the sencond step, this instance can interact with the device (the lamp, in case) and return an answer or an aknowledge. In this example, the communication could be used to retrieve come CV status from the lamp such as ``is on'' or ``light intensity''
+    
+    \begin{figure}[ht]
+    \centering
+    \includegraphics[width=1.8in]{figures/comm-rpc.pdf}
+    \caption{Direct communication} 
+    \label{fig:rpc}
+    \end{figure}
+    
+    It is possible to acquire the status of a CV directly, however it can also be done indirectly via the pub-sub mechanism, what makes it easier for developers being aware of CV change right away. This indirect, or asynchronous, communication is performed in two stages: the subscription (Figure~\ref{fig:pubsub}.a) and the notification (Figure~\ref{fig:pubsub}.b). During the first stage, represented by the Figure~\ref{fig:pubsub}.a, we have the following steps:
+    \begin{enumerate}
+     \item The UbiApp sets some RA (``RA X'') to subscribe to another, referred by its RANS (``Lamp RA'') and in a specific CV (``Is on'')
+     \item Then the first RA requires to be subscribed to the second, through the network
+     \item The second RA accepts the subscription and is bound to the device
+    \end{enumerate}
 
-    \subsubsection{RA Structure}
-    In analogy to object-oriented programming we define classes of RAs to represent the type of the resource with specific interfaces. Besides other informations present in the AR's structure (such as name, location, subscribed RAs, among others) it has its type hierarchy. The type hierarchy is composed by a sequence of classes that classify the entity and has been inspired by the ontology described by Ranganathan~\cite{ranganathan2005olympus}. In the Subsection~\ref{subsec:sgar} we will present how this feature can be used to find a RA and to define its functionalities.
-
+    The second stage happens when the first RA is already subscribed to the second and a notification routine is triggered, what was represented by the Figure~\ref{fig:pubsub}.b and works as follows:
+    \begin{enumerate}
+     \item The device has its context changed, what may be caused directly (e.g., a user turning the lamp on) or through the RA (i.e. an application, another RA, or rule, calling some RA's OP which caused the change of context)
+     \item Then the RA that represents the device notifies all subscriptors to that CV (e.g., ``Is on'' from this Lamp RA)
+     \item The subscriptor may call some callback method of the UbiApp
+    \end{enumerate}
+    
+    \begin{figure}[ht]
+    \centering
+    \includegraphics[width=3.4in]{figures/comm-pubsub.pdf}
+    \caption{Indirect communication} 
+    \label{fig:pubsub}
+    \end{figure}
+    
 
   \subsection{Resource Management Support Service} \label{subsec:sgar}
   A set of services is responsible for providing basic functionalities to manage the RAs. The four main services are the RA Register Service (RRS), the RA Discovery Service (RDS), the RA Location service (RLS) and the Security Management Service (SecMS). All these services access the RA Repository (RR) that maintains informations about the RAs (addresses and descriptions) and the map data structure (map of the environment). The Figure~\ref{fig:arch} represents, in the Middleware layer, the RR and above it the management services.
@@ -791,7 +833,6 @@ This section approaches the main features provided by the framework, which inclu
 
 %[David]
 The conceptual framework proposed at this work was tested through a reference implementation called \mbox{SmartAndroid} Project\footnote{For more information visit www.tempo.uff.br/smartandroid}. The project includes a programming API to help the developers in constructing UbiApps as well as offers basic management services to provide resource registration, discovery and localization. The SmartAndroid has been developed over Google Android platform as we believe that in a near future it will be widely used in sensors and devices embedded in furnitures and home appliances.
-%FIXME: in a near future it will be 
 % [we have implemented most of the framework features, thought much more remain to be done]
 
 %proposta de uso de marketplace
@@ -807,9 +848,14 @@ The SmartAndroid middleware contemplates the possility of running multiple appli
   [initialization]
 %   O SmartAndroid é um aplicativo que inicializa o SGAR, repositório e serviços de comunicação. Este aplicativo deve ser executado em uma única unidade do ambiente, deixando o Deamon de Comunicação em estado de espera até receber requisições de outras aplicações. Em outras unidades (clientes) constam os aplicativos instalados com a biblioteca do SmartAndroid, a qual é necessária para executar o serviço de comunicação e \textit{proxys} dos serviços do SGAR. Assim cada unidade pode consultar sobre IARs, através do SDR, obtendo seus ODARs, cada um com o respectivo RANS, o qual é utilizado pelo \textit{proxy} como referência de acesso. 
 
+
+  with the RANS 
+  RPC search 
+
   
   [annotation]
 
+  
   \subsection{Context Rules} \label{subsec:rules}
 %   [implementation of context rules]
   The SmartAndroid supports the context interpretation by providing mechanisms to create context rules. The context rules life cycle has two major phases: composition and running. The composition phase corresponds to the instantiation of a CI and of an actuator and the binding of both through subscription. The running phase is when the CI and the actuator(s) are already instantiated as the other RAs that feed the IE with context information, and they are able to exchange messages and perform their job.
@@ -861,21 +907,79 @@ Some applications have been built to explore the potential of the framework for 
 % the SmartLiC, the MediaFollowMe, remote control type applications where resources are controlled remotely by another resource (in this case, a smartphone ), among other applications. A future work is to install a system in Ambi home care health, as in ~ \ cite {} carvalho2010sciads.
   
   \subsection{Tic-Tac-Toe}
-  After the implementations of the basic features of the framework, including the communication mechanisms, we have implemented a distributed Tic-Tac-Too game, where a player can defy another player (or AI player) placed anywhere in the IE. 
-  % FIXME: rewrite
+  After the implementations of the basic features of the framework, including the communication mechanisms, we have implemented a distributed Tic-Tac-Too game, where a player can defy another player (or AI player) placed anywhere in the IE. We have used as devices two smartphones.
   
-%   Nesta seção serão exploradas as questões 1 e 2, relacionadas ao suporte (SGAR) e a aquisição de contexto, através do desenvolvimento de um jogo da velha ubíquo. Esta aplicação é uma adaptação de uma versão simples na plataforma Android, que executa em apenas uma tela, para uma versão \textit{multiplayer}, onde para uma mesma partida cada jogador possui um dispositivo individual para indicar os movimentos efetuados. O objetivo desta adaptação demonstra também a capacidade do \textit{framework} em facilitar a programação de sistemas distribuídos para aplicações inteligentes.
-
+  In this implementation we have created RAs for both the players and the board. The players subscribe to the board and vice-versa, thus each movement performed by the player is set on the board through RPC, commands from this player are locked and the movement is communicated to the other player, the same happens to the second player, and so on. One of the goals of this implementation was to verify the capability of the framework to make the construction of distributed systems easier.
   
   \subsection{SmartLiC}
   % [smartlic]
-  The Smart Light Control (SmartLic) application aims at the clever use of lighting in homes in order to save power consumption, since it is responsible for the largest range of consumption in residential environments. The application uses presence sensors to identify the location of people inside the each room and decide which lamps should be turned on and off. Hence preventing the forgetting of lamps turned on. It also 
-  
+  The Smart Light Control (SmartLic) application aims at the clever use of lighting in homes in order to save power consumption, since it is responsible for the largest range of consumption in residential environments. The application uses presence sensors to identify the location of people inside each room, and decide which lamps should be turned on and off. Hence it prevents the forgetting of lamps turned on, and may lit some lamp if a user enters a room at night and if nobody is at sleep in that room. 
   % ref to the 'largest range of consumption in residential environments'?
-
   
-  a control application for residential lighting - that makes the lights of a room being erased as users are absent this
+  The [IPGAP] has allowed us to test this applications. We instantiated lamps simulators for each room and an avatar for a user, and also a simulator for day light sensor. Next context rules were created by filling a skeleton of a rule written in json, what caused the instantiation of a CI and actuator for each room.  If the avatar is dragged, in the [IPGAP], from a room and dropped in another, it ma
+%   O Código 2 ilustra uma possível implementação da interpretação de contexto pela aplicação \mbox{SmartLiC}. Na etapa de inicialização, a aplicação utiliza o SLR para localizar os cômodos (Linha 2), e obter a lâmpada e o sensor de presença (``lampAR'' e ``presAR'') de cada um, utilizando a busca do SDR (Linhas 4 e 5). Para evitar a repetição do código da regra, suas referências e a respectiva ação a ser desempenhada (desligar a lâmpada referenciada -- ``lampAR.turnOff'') são adicionadas na lista de configurações (``configList'') (Linha 6). A regra é criada em ``rule'' como: ``\mbox{\emph{lâmpada ligada E o cômodo desocupado POR T$_{max}$ unidades de tempo}}'', e desempenha uma relação lógica entre as diferentes VCs e a temporização da regra (Linha 7). Em seguida, subscreve-se às VCs dos ARs de interesse, começando o processamento da regra (Linha 8).
 
+%   Na etapa de avaliação, também descrita no Código 2, é definido um bloco de comando para o tratamento das notificações recebidas dos ARs de interesse (lâmpadas e sensores de presença subscritos). Uma vez recebido um evento com a atualização de uma VC de um dos ARs (``ar\_ref'') (Linha 11), é selecionada a configuração de ``configList'' respectiva (Linha 12). Segue-se a avaliação da regra (\textit{``evaluate}''), utilizando a configuração obtida, e considerando os temporizadores (Linha 13). A etapa de avaliação é bloqueante no caso da existência de temporizadores associados, e a invocação das ações (OPs) ocorre na mesma \textit{thread} que a avaliação. A temporização ocorre enquanto a expressão da regra é válida, se eventos chegarem antes do fim da temporização e isto fizer com que a expressão da regra seja invalidada, então o temporizador é finalizado e as ações não são disparadas.
+
+%   \begin{lstlisting}[caption=Context Interpretation by the SmartLiC, mathescape] 
+%   $\textit{//Initialization}$
+%   placeList = SLR.getPlaces() $\textit{//Get rooms}$
+%   for each place from placeList: $\textit{//Selects a room from the list}$
+%       lampAR = SDR.search(Lamp, place) $\textit{//Get lamps from the room}$
+%       presAR = SDR.search(Presence, place) $\textit{//Get presence sensor from the room}$
+%       configList.add(lampAR, presAR, lampAR.turnOff) $\textit{//Stores configuration}$
+%   rule = Lamp.on $\land$ $\lnot$(Presence.occupied) $\land$ T > T$_{max}$ $\textit{//Rule function}$
+%   subscribeTo(configList) $\textit{//Subscribes to lamps and presence sensors}$
+% 
+%   $\textit{//Context rule evaluation}$
+%   on event received (ar_ref, vc, value): $\textit{//Notification received}$
+%       config = configList(ar_ref, vc) $\textit{//RA configuration selection}$
+%       if (evaluate(rule, config)) then: $\textit{//Evaluates rule with configuration}$
+% 	  invoke(config.getActions()) $\textit{//Calls action}$
+%   \end{lstlisting}
+
+%   \begin{algorithmic}
+%   \STATE $asdf$
+%   \FORALL{$asdf$ in $asdf$}
+%     \STATE $asdf$
+%   \ENDFOR
+%   
+%   \ONEVENT{$(ra, cv, value)$}
+%     \STATE $asdf$
+%   \ENDEVENT
+%   \end{algorithmic}
+
+%   \begin{algorithmic}
+%   \STATE $rule \leftarrow Lamp.on \land \lnot(Presence.occupied) \land T > T_{max}$
+%   \STATE $placeList \leftarrow RLS.getPlaces()$
+%   \FORALL{$place$ in $placeList$}
+%     \STATE $lampRA \leftarrow RDS.search(Lamp, place)$
+%     \STATE $presRA \leftarrow RDS.search(Presence, place)$
+%     \STATE $rule$
+%     \STATE $RAs.add(presRA)$
+%     \STATE $new ContextInterpreter()$
+%   \ENDFOR
+%   \STATE $rule \leftarrow Lamp.on \land \lnot(Presence.occupied) \land T > T_{max}$
+%   \STATE $subscribeTo(RAs)$
+%   \end{algorithmic}
+%   
+%   
+%   \begin{algorithmic}
+%   \STATE $placeList \leftarrow RLS.getPlaces()$
+%   \FORALL{$place$ in $placeList$}
+%     \STATE $lampRA \leftarrow RDS.search(Lamp, place)$
+%     \STATE $presRA \leftarrow RDS.search(Presence, place)$
+%     \STATE $configList.add(lampRA, presRA, lampRA.turnOff)$
+%   \ENDFOR
+%   \STATE $rule \leftarrow Lamp.on \land \lnot(Presence.occupied) \land T > T_{max}$
+%   \STATE $subscribeTo(configList)$
+%   \end{algorithmic}
+
+
+
+
+  Another feature that we will implement is a house security mode, that users may activate if they are travelling or just have left the house alone. The basic operation is to turn lamps on and off as if users were at home, thus deceiving potential thieves. The choices of which lamps to turn on and off will follow the pattern contained in a log file, to mimic a realistic scenario.
+  
   \subsection{Remote Controls}
   Considering that the users would want to have some control over the resources within the IE, we have implemented the remote controls to interact with them specifically. 
   
@@ -937,3 +1041,13 @@ The authors would like to thank CNPq and FAPERJ for partial funding of this work
 
 % that's all folks
 \end{document}
+
+% REMAIN TODO TASKS
+% write about Gaia, Gator Tech and Context Toolkit
+% remove SoA references
+% security concerns on marketstore
+% evaluate examples spread in text
+% araujo is a paper in PT... find another one better
+% fix figure that contains PT text
+% finish related work
+% finish example applications
