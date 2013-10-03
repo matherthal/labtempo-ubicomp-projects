@@ -615,7 +615,7 @@ Context aware (or context sensible) applications is a designation to those appli
 % [framework description] 
 The framework provides facilities and programming standards typically required in context-aware applications focused on IE. Among the features is the ability to abstract details that involve communication, context acquisition and resource location, by the applications. For the sake of abstracting resource details we have used components called \textit{Resource Agents} (RA). The RA is the basic modularization unit of the framework being used in the modeling, implementation and management of applications (Subsection~\ref{subsec:ra}). %Example?
 
-The decentralization of components of the framework (the RAs) follow the principles of the Service-oriented Architecture (SoA), where the more decentralization the more flexibility on connectivity, since the dependence of centralized services is lowered.
+% The decentralization of components of the framework (the RAs) follow the principles of the Service-oriented Architecture (SoA), where the more decentralization the more flexibility on connectivity, since the dependence of centralized services is lowered.
 %TODO: write it better
 
 % Resolution of the issue is achieved through the decentralization of services, using service-oriented architecture (SoA). The use of SOA enables the relationship between different entities, where the greater decentralization connectivity is more flexible, since the dependence of a service center is minimized. Therefore, problems in a system component are softened and can be absorbed by mechanisms of fault tolerance and persistence.
@@ -696,46 +696,6 @@ This section approaches the main features provided by the framework, which inclu
 
     The RA has a domain name, the RA Name System (RANS), that allows its unique identification in the IE. This identification is similar to the DNS, where the name remains the same even if the network address (IP) changes, the only change is the updating of the addressing table. 
     
-    %[talk about stub intantiation calls]
-    %TODO: example of CV and OP? Maybe it is worth add some on the text
-    To perform any interaction with a RA that is not locally instantiated, the UbiApp must use a stub (also called proxy) that is bound to the referred RA. This stub implements the same interface as the RA, i.e. the same CVs and OPs, which are methods, from a Object-Oriented Programming perspective. With the stub on hands, the application can invoke remote methods, as if they were locally invoked. These remote methods may be to retrieve a CV or to trigger an OP. The Figure~\ref{fig:rpc} represents this direct, or synchronous, communication. The steps to achieve a direct communication, as represented by the figure, are as follows:
-    \begin{enumerate}
-     \item The UbiApp calls a method from the stub 
-     \item The call is forwarded to the RA instance through the network in the second step
-     \item This instance can interact with the device (the lamp, in case)
-     \item The result or the acknowledge is then returned to the caller
-    \end{enumerate}
-    
-%     In the first step the UbiApp calls a method from the stub whose call is forwarded to the RA instance throught the network in the sencond step, this instance can interact with the device (the lamp, in case) and return an answer or an aknowledge. In this example, the communication could be used to retrieve come CV status from the lamp such as ``is on'' or ``light intensity''
-    
-    \begin{figure}[ht]
-    \centering
-    \includegraphics[width=1.8in]{figures/comm-rpc.pdf}
-    \caption{Direct communication} 
-    \label{fig:rpc}
-    \end{figure}
-    
-    It is possible to acquire the status of a CV directly, however it can also be done indirectly via the pub-sub mechanism, what makes it easier for developers being aware of CV change right away. This indirect, or asynchronous, communication is performed in two stages: the subscription (Figure~\ref{fig:pubsub}.a) and the notification (Figure~\ref{fig:pubsub}.b). During the first stage, represented by the Figure~\ref{fig:pubsub}.a, we have the following steps:
-    \begin{enumerate}
-     \item The UbiApp sets some RA (``RA X'') to subscribe to another, referred by its RANS (``Lamp RA'') and in a specific CV (``Is on'')
-     \item Then the first RA requires to be subscribed to the second, through the network
-     \item The second RA accepts the subscription and is bound to the device
-    \end{enumerate}
-
-    The second stage happens when the first RA is already subscribed to the second and a notification routine is triggered, what was represented by the Figure~\ref{fig:pubsub}.b and works as follows:
-    \begin{enumerate}
-     \item The device has its context changed, what may be caused directly (e.g., a user turning the lamp on) or through the RA (i.e. an application, another RA, or rule, calling some RA's OP which caused the change of context)
-     \item Then the RA that represents the device notifies all subscriptors to that CV (e.g., ``Is on'' from this Lamp RA)
-     \item The subscriptor may call some callback method of the UbiApp
-    \end{enumerate}
-    
-    \begin{figure}[ht]
-    \centering
-    \includegraphics[width=3.4in]{figures/comm-pubsub.pdf}
-    \caption{Indirect communication} 
-    \label{fig:pubsub}
-    \end{figure}
-    
 
   \subsection{Resource Management Support Service} \label{subsec:sgar}
   A set of services is responsible for providing basic functionalities to manage the RAs. The four main services are the RA Register Service (RRS), the RA Discovery Service (RDS), the RA Location service (RLS) and the Security Management Service (SecMS). All these services access the RA Repository (RR) that maintains informations about the RAs (addresses and descriptions) and the map data structure (map of the environment). The Figure~\ref{fig:arch} represents, in the Middleware layer, the RR and above it the management services.
@@ -764,17 +724,26 @@ This section approaches the main features provided by the framework, which inclu
     % already established technology of location
 
     \subsubsection{Security Management Service}
-    The security concern is always a central topic on UbiComp systems, moreover because of diverse aspects of security required. Some aspects are already inherited depending on the technology adopted, e.t., the Wi-Fi already ensures against the registration of outside devices and the exchange of informations.
-
-    [credentials]
-
-    [domains]
+    The security concern is always a central topic on UbiComp systems, due to the diverse aspects of security required. Some aspects are already inherited, depending on the technology adopted, e.g., the \mbox{Wi-Fi} already ensures against the registration of outside devices and the exchange of informations. Thus our proposal for the the SecMS discusses requirements at a higher level, and issues at a lower level are defined according to the platform used.
+    
+    % [credentials]
+    In UbiComp, any human-machine interaction should be as inconspicuous as possible. However, on what matters to the users there is a need for authentication what may happens through explicit interaction, such as entering a password, fingerprint, eye retina recognition, and so on. Other less intrusive ways are progressing, such as the facial recognition, but this raises privacy issues. The users fit in user groups that restricts their access to domains in the IE. For instance, in a smart home the father and the mother may have administrative permissions, below them there are the other occupants (such as elderly and older children) that have some level of permissions, next the younger children, and lastly the guests.
+    
+%     The domains are responsible for grouping UbiApps with the same caracte
+%     A domain may represent a set of UbiApps with
+    A domain can represent a set of applications that share a common characteristic (e.g., home health care, home surveillance, multimedia), or a set of resource within the same constraints (e.g., adult, children, guest). The SecMS allows modifications on security take effect on the level of middleware. Neither a user can manipulate resources or UbiApps that she has not permission to, nor an application can manipulate resources from outside its domain. The specification of domains complies with the theory of sets, thus an entity may be contained in more than one domain, and so on.
+    
+%     On what matters to the users, there is a need to specify roles (or user groups) within the IE~\cite{brush2011home}. These roles would determine  For instance, in a smart home the father and the mother may have more permissions than the others (the administrators), below them there are the other occupants (such as elderly and older children), next the younger children, and lastly the guests.
+    
+%     In what concerns to the privacy of the UbiApps, we 
+    % [domains]
     % The SecMS manages both the user's credentials and the application's domains.
     % 
     % On the 
 
   \subsection{Context Interpretation} \label{subsec:ci}
-  [motivation]
+%   [motivation]
+  Considering the multitude of resources present in the IE, the context interpretation aims at providing a higher level context information hence allowing the reuse of the logic and a separation of concerns. This feature helps to solve the challenge related to the \textit{variety of context information and services}, what is possible via the RA's interfaces, the CVs and OPs. 
   
   % [directly programmed]
   The context interpretation serves to aggregate context information from different sources in accordance with some specific logic and considering the passage of time. This logic is defined by the developer and the interpretation is implemented with the framework's support. %The CI concept was inspired by the Aggregator in Dey and Abowd~\cite{dey2001conceptual} whose objective was to gather logically related context and provides them in a single component.
@@ -785,7 +754,7 @@ This section approaches the main features provided by the framework, which inclu
   The framework uses a generic approach for creating context rules, which are composed by two parts: the interpretation and the actuation. The interpretation part, as already stated before, concerns on binding the CI itself with CVs from different RAs, evaluating the expression that interrelates those CVs, and notifying whoever is interested. The actuation part is a RA that is subscribed to the CI, and develop some job, that may change the context of the IE or change some state in a software level.
 %   in which developers are able to define the logic of the rule in the application using the framework support for context acquisition, as well as to perform actions on the environment. 
   
-  An example of context rules has been presented on Figure~\ref{fig:arch}. At the Applications Layer a set of two components implements the interpretation-actuation pattern: the ``Forgotten Stove Interpreter'' and the ``Reminder Actuator'' respectively, where the goal of the rule is to remind the elderly that he has forgotten the oven on while he went to sleep. The former component, which is a CI, is subscribed to two RAs, namely the ``Bed RA'' and the ``Stove RA'' (the dashed arrow means notify subscriptors). The latter is subscribed to the CI and calls the RAs, namely the ``TV RA'' and the ``Clock RA'', directly using RPC (represented by the straight arrow). Internally to the CI a rule expression relates the RAs as  ``bed is occupied and oven is turned on for 30 min'', which means that the CI only will be valid if this condition remains true during ``30 min''. When the CI changes its state from invalid to valid (what includes the timing), the subscriptors are notified, the ``Reminder Actuator'' in case. This actuator, in its turn, calls the OPs ``fire alarm'' from ``Clock RA'' and ``set message'' from ``TV RA'', with the parameter ``You forgot the oven on!''. Then it is expected that an accident is prevented.
+  An example of context rules has been presented on Figure~\ref{fig:arch}. At the Applications Layer a set of two components implements the interpretation-actuation pattern: the ``Forgotten Stove Interpreter'' and the ``Reminder Actuator'' respectively, where the goal of the rule is to remind the elderly that he has forgotten the oven on while he went to sleep. The former component, which is a CI, is subscribed to two RAs, namely the ``Bed RA'' and the ``Stove RA'' (the dashed arrow means notify subscribers). The latter is subscribed to the CI and calls the RAs, namely the ``TV RA'' and the ``Clock RA'', directly using RPC (represented by the straight arrow). Internally to the CI a rule expression relates the RAs as  ``bed is occupied and oven is turned on for 30 min'', which means that the CI only will be valid if this condition remains true during ``30 min''. When the CI changes its state from invalid to valid (what includes the timing), the subscribers are notified, the ``Reminder Actuator'' in case. This actuator, in its turn, calls the OPs ``fire alarm'' from ``Clock RA'' and ``set message'' from ``TV RA'', with the parameter ``You forgot the oven on!''. Then it is expected that an accident is prevented.
   
 %   In this simple example, the CI is subscribed to the RAs ``Bed RA'' and ``Stove RA'', and internally it contains the following rule expression: ``bed is occupied and stove is on for T min''. The actuator, awaits for when the condition of the CI met for triggering its action that, in case, is to play the clock's alarm sound and to show on TV a message saying that ``the stove has been forgotten''.
 %   The Figure~\ref{fig:arch} shows on Applications Layer an example of a context rule with two components: the CI (``Forgotten Stove Interpreter'') and the actuator (``Reminder Actuator''). 
@@ -837,23 +806,67 @@ The conceptual framework proposed at this work was tested through a reference im
 
 %proposta de uso de marketplace
 % A exposição de dados por meio de \textit{Content Provider} permite a integração de aplicativos externos ao servidor. Estes aplicativos podem ser dispostos em um \textit{marketplace} (http://developer.android.com/distribute/open.html) permitindo que tanto usuários comuns quanto programadores incrementem o ambiente com novas aplicações ubíquas. 
-The SmartAndroid middleware contemplates the possility of running multiple applications in the same IE. Thus, focusing on the user and inspired by the Google Play -- which is a application market for Android devices --, we have as a future work the creation of a SmartAndroid Market~\cite{google2013}, where users will be able to easily download and start different applications. Also similar to the Google Play, a Manifest file will require permission for accessing the domains, what will allow users to maintain control over what off-the-shelf applications have permission to know and to do.
+The SmartAndroid middleware contemplates the possility of running multiple applications in the same IE. Thus, focusing on the user and inspired by the Google Play -- which is a application market for Android devices --, we have as a future work the creation of a SmartAndroid Market~\cite{google2013}, where users will be able to easily download and start different applications. Also similar to the Google Play, a Manifest file will require permission for accessing the domains, what will allow users to maintain control over what off-the-shelf applications have permission to know and to do. Within the market, the UbiApp could be tested towards discovering any possible harm that the application could do and any possible inefficiency that could consume too much the energy resources of the host device.
 % TODO: talk about market place
-[security concern on store: helps the discovery of malware before the user download]
+% [security concern on store: helps the discovery of malware before the user download]
 
-
-  \subsection{Distributed Components Model}
-%   [implementation of RA and services]
+  \subsection{Location}
+  [talk about location]
   
-  [initialization]
-%   O SmartAndroid é um aplicativo que inicializa o SGAR, repositório e serviços de comunicação. Este aplicativo deve ser executado em uma única unidade do ambiente, deixando o Deamon de Comunicação em estado de espera até receber requisições de outras aplicações. Em outras unidades (clientes) constam os aplicativos instalados com a biblioteca do SmartAndroid, a qual é necessária para executar o serviço de comunicação e \textit{proxys} dos serviços do SGAR. Assim cada unidade pode consultar sobre IARs, através do SDR, obtendo seus ODARs, cada um com o respectivo RANS, o qual é utilizado pelo \textit{proxy} como referência de acesso. 
-
-
-  with the RANS 
-  RPC search 
-
+  \subsection{Communication Support}
+  %[talk about stub intantiation calls]
+  %TODO: example of CV and OP? Maybe it is worth add some on the text
+  To perform any interaction with a RA that is not locally instantiated, the UbiApp must use a stub (also called proxy) that is bound to the referred RA. This stub implements the same interface as the RA, i.e. the same CVs and OPs, which are methods, from a Object-Oriented Programming perspective. With the stub on hands, the application can invoke remote methods, as if they were locally invoked. These remote methods may be to retrieve a CV or to trigger an OP. The Figure~\ref{fig:rpc} represents this direct, or synchronous, communication. The steps to achieve a direct communication, as represented by the figure, are as follows:
+  \begin{enumerate}
+    \item The UbiApp calls a method from the stub 
+    \item The call is forwarded to the RA instance through the network in the second step
+    \item This instance can interact with the device (the lamp, in case)
+    \item The result or the acknowledge is then returned to the caller
+  \end{enumerate}
   
-  [annotation]
+%     In the first step the UbiApp calls a method from the stub whose call is forwarded to the RA instance throught the network in the sencond step, this instance can interact with the device (the lamp, in case) and return an answer or an aknowledge. In this example, the communication could be used to retrieve come CV status from the lamp such as ``is on'' or ``light intensity''
+  
+  \begin{figure}[ht]
+  \centering
+  \includegraphics[width=1.8in]{figures/comm-rpc.pdf}
+  \caption{Direct communication} 
+  \label{fig:rpc}
+  \end{figure}
+  
+  It is possible to acquire the status of a CV directly, however it can also be done indirectly via the pub-sub mechanism, what makes it easier for developers being aware of CV change right away. This indirect, or asynchronous, communication is performed in two stages: the subscription (Figure~\ref{fig:pubsub}.a) and the notification (Figure~\ref{fig:pubsub}.b). During the first stage, represented by the Figure~\ref{fig:pubsub}.a, we have the following steps:
+  \begin{enumerate}
+    \item The UbiApp sets some RA (``RA X'') to subscribe to another, referred by its RANS (``Lamp RA'') and in a specific CV (``Is on'')
+    \item Then the first RA requires to be subscribed to the second, through the network
+    \item The second RA accepts the subscription and is bound to the device
+  \end{enumerate}
+
+  The second stage happens when the first RA is already subscribed to the second and a notification routine is triggered, what was represented by the Figure~\ref{fig:pubsub}.b and works as follows:
+  \begin{enumerate}
+    \item The device has its context changed, what may be caused directly (e.g., a user turning the lamp on) or through the RA (i.e. an application, another RA, or rule, calling some RA's OP which caused the change of context)
+    \item Then the RA that represents the device notifies all subscribers to that CV (e.g., ``Is on'' from this Lamp RA)
+    \item The subscriber may call some callback method of the UbiApp
+  \end{enumerate}
+  
+  \begin{figure}[ht]
+  \centering
+  \includegraphics[width=3.4in]{figures/comm-pubsub.pdf}
+  \caption{Indirect communication} 
+  \label{fig:pubsub}
+  \end{figure}
+    
+% 
+%   \subsection{Distributed Components Model}
+% %   [implementation of RA and services]
+%   
+%   [initialization]
+% %   O SmartAndroid é um aplicativo que inicializa o SGAR, repositório e serviços de comunicação. Este aplicativo deve ser executado em uma única unidade do ambiente, deixando o Deamon de Comunicação em estado de espera até receber requisições de outras aplicações. Em outras unidades (clientes) constam os aplicativos instalados com a biblioteca do SmartAndroid, a qual é necessária para executar o serviço de comunicação e \textit{proxys} dos serviços do SGAR. Assim cada unidade pode consultar sobre IARs, através do SDR, obtendo seus ODARs, cada um com o respectivo RANS, o qual é utilizado pelo \textit{proxy} como referência de acesso. 
+% 
+% 
+%   with the RANS 
+%   RPC search 
+% 
+%   
+%   [annotation]
 
   
   \subsection{Context Rules} \label{subsec:rules}
@@ -866,6 +879,7 @@ The SmartAndroid middleware contemplates the possility of running multiple appli
   
 %   O IC é encapsulado em um AR, estendendo, assim, suas funcionalidades. Sua criação ocorre quando é definida uma expressão lógica no objeto do IC recém instanciado, segundo um padrão próprio adotado em arquivos tipo JSON, e um \textit{parser} constrói uma estrutura lógica interna, como mostrado na Figura~\ref{fig:inpt_arq}. A estrutura lógica abrigada pelo IC, contém uma estrutura em árvore que representa a expressão e contém não só a lógica entre as VCs das condições, como também os valores atualizados das mesmas. Enquanto em funcionamento, o IC recebe atualizações das VCs, tratando-as em seguida para atualizar sua estrutura lógica. O módulo de avaliação é notificado de mudanças da estrutura lógica e avalia se a expressão se tornou verdadeira ou falsa. Se a expressão alcançou um estado verdadeiro, considerando as possíveis temporizações, notifica os atuadores. 
 
+  [explain that both the rule expression and the actuator are written in the JSON]
   
   [context rules conflicts is an ongoing study that aims at discover a conflict in runtime,]
   
@@ -883,7 +897,7 @@ The SmartAndroid middleware contemplates the possility of running multiple appli
   Besides, [IPGAP] operate with two different interfaces: the \textit{developer interface}, already mentioned, and the \textit{end-user interface}. In the end-user interface, users in general, i.e. non-technical users, are able to use [IPGAP] to manage their intelligent environment remotely using a mobile device, such as a tablet. Through an intuitive GUI, end-users can not only visualize the state of their home devices but control them. For instance, it's possible turning off a stove burner, change the air-conditioner temperature, and so on. By touching the device icon in the screen, an interface that presents the device's main functions is shown, where the user can operate it as the tool were a remote control.
 
   % [main figure]
-  \begin{figure}[!t]
+  \begin{figure}[ht]
   \centering
   \includegraphics[width=3.5in]{figures/map-forniture-cv-menu-big-v2.pdf}
   \caption{Management and Prototyping Interface} %[IPGAP]
@@ -900,10 +914,10 @@ The SmartAndroid middleware contemplates the possility of running multiple appli
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Example Applications} \label{sec:evaluation}
-Some applications have been built to explore the potential of the framework for building UbiApps. Although the example applications are simple, and alone does not justify the deploy of the SmartAndroid in the environment, they have allowed us to validate the features provided by the framework and achieved by the SmartAndroid.
+Some applications have been built to explore the potential of the framework for building UbiApps. Although the example applications are simple, and alone does not justify the deploy of the SmartAndroid in the environment, they have allowed us to validate the features provided by the framework and achieved by the SmartAndroid. It also demonstrated the possibility of concomitant running of UbiApps, what similar to an operation system where different processes run separately but in the same system. Withing the SmartAndroid, UbiApps run separately but in the IE.% and can share resources, 
 
-% Among these applications we will 
-
+% In this section we will elaborate over the SmartLiC application, and next we will briefly talk about the others.
+In the subsections that follows we will elaborate over some UbiApps that have been developed, or are still in development, in the course of the project.
 % the SmartLiC, the MediaFollowMe, remote control type applications where resources are controlled remotely by another resource (in this case, a smartphone ), among other applications. A future work is to install a system in Ambi home care health, as in ~ \ cite {} carvalho2010sciads.
   
   \subsection{Tic-Tac-Toe}
@@ -912,11 +926,44 @@ Some applications have been built to explore the potential of the framework for 
   In this implementation we have created RAs for both the players and the board. The players subscribe to the board and vice-versa, thus each movement performed by the player is set on the board through RPC, commands from this player are locked and the movement is communicated to the other player, the same happens to the second player, and so on. One of the goals of this implementation was to verify the capability of the framework to make the construction of distributed systems easier.
   
   \subsection{SmartLiC}
+%   primeiramente vc cria um skeleton para a regra
+% 
+% depois vc pega cada cômodo e de cada um deles faz
+  % pega a lampada 
+%   pega o sensor de presença
+%   cria um CI com a regra e as devidas referencias
+%   instancia atuador desligador de lampadas
+%   subscreve atuador no ic
+
+
   % [smartlic]
   The Smart Light Control (SmartLic) application aims at the clever use of lighting in homes in order to save power consumption, since it is responsible for the largest range of consumption in residential environments. The application uses presence sensors to identify the location of people inside each room, and decide which lamps should be turned on and off. Hence it prevents the forgetting of lamps turned on, and may lit some lamp if a user enters a room at night and if nobody is at sleep in that room. 
   % ref to the 'largest range of consumption in residential environments'?
   
-  The [IPGAP] has allowed us to test this applications. We instantiated lamps simulators for each room and an avatar for a user, and also a simulator for day light sensor. Next context rules were created by filling a skeleton of a rule written in json, what caused the instantiation of a CI and actuator for each room.  If the avatar is dragged, in the [IPGAP], from a room and dropped in another, it ma
+  The [IPGAP] has allowed us to test this application. We instantiated lamp simulators for each room and an avatar for a user, and also a simulator for day light sensor. Next context rules were created for each room of the house. %Next context rules were created by filling a skeleton of a rule written in json, what caused the instantiation of a CI and actuator for each room.  If the avatar is dragged, in the [IPGAP], from a room and dropped in another, and the specified time passes, the the lamp is turned off.
+  \begin{enumerate}
+   \item Create a context rule skeleton in JSON
+   \item Get the rooms from the house
+   \item Get the lamp and presence sensor of each room and fill the rule expression skeleton
+   \item Instantiate a CI with the rule expression
+   \item Instantiate a actuator to perform the actions declared in the context rule skeleton
+   \item Bind the CI and the actuator
+   \item Repeat this for each room
+  \end{enumerate}
+  
+  The event of a user entering some room is triggered when the avatar is dragged from one room and dropped on another. The CI has a timer associated with the expression so, when the rule is valid, the timer is fired. If the context change and the rule is invalidated the timer is stopped, otherwise the evaluation is completed with a valid rule and the subscribers must be notified. Then the actuator turns off the light of the first room.
+  
+  There were also rules composed for turning on the light of the room that the user enters if it is day (based on a day light sensor simulator) and if nobody is at sleep in the room (based on another CI). 
+  
+  Another feature that we will implement is a house security mode, that users may activate if they are travelling or just have left the house alone. The basic operation is to turn lamps on and off as if users were at home, thus deceiving potential thieves. The choices of which lamps to turn on and off will follow the pattern contained in a log file, to mimic a realistic scenario.
+  
+  The SmartLiC allowed us to validate two features of the RLS, which are the discovery of the rooms and the RAs of some specific type are within the room (i.e. the lamps and presence sensors). In this UbiApp we also have created a set of context rules with timers using the context rules parser (including CI and actuators). And the [IPGAP] were well explored in this implementation, since we has shown the triggering of many events in parallel and multiple users cohabiting the same IE.
+% 
+%   After the start of the context rules, 
+%   \begin{enumerate}
+%    \item On event received, get the sender, the 
+%   \end{enumerate}
+
 %   O Código 2 ilustra uma possível implementação da interpretação de contexto pela aplicação \mbox{SmartLiC}. Na etapa de inicialização, a aplicação utiliza o SLR para localizar os cômodos (Linha 2), e obter a lâmpada e o sensor de presença (``lampAR'' e ``presAR'') de cada um, utilizando a busca do SDR (Linhas 4 e 5). Para evitar a repetição do código da regra, suas referências e a respectiva ação a ser desempenhada (desligar a lâmpada referenciada -- ``lampAR.turnOff'') são adicionadas na lista de configurações (``configList'') (Linha 6). A regra é criada em ``rule'' como: ``\mbox{\emph{lâmpada ligada E o cômodo desocupado POR T$_{max}$ unidades de tempo}}'', e desempenha uma relação lógica entre as diferentes VCs e a temporização da regra (Linha 7). Em seguida, subscreve-se às VCs dos ARs de interesse, começando o processamento da regra (Linha 8).
 
 %   Na etapa de avaliação, também descrita no Código 2, é definido um bloco de comando para o tratamento das notificações recebidas dos ARs de interesse (lâmpadas e sensores de presença subscritos). Uma vez recebido um evento com a atualização de uma VC de um dos ARs (``ar\_ref'') (Linha 11), é selecionada a configuração de ``configList'' respectiva (Linha 12). Segue-se a avaliação da regra (\textit{``evaluate}''), utilizando a configuração obtida, e considerando os temporizadores (Linha 13). A etapa de avaliação é bloqueante no caso da existência de temporizadores associados, e a invocação das ações (OPs) ocorre na mesma \textit{thread} que a avaliação. A temporização ocorre enquanto a expressão da regra é válida, se eventos chegarem antes do fim da temporização e isto fizer com que a expressão da regra seja invalidada, então o temporizador é finalizado e as ações não são disparadas.
@@ -975,15 +1022,13 @@ Some applications have been built to explore the potential of the framework for 
 %   \STATE $subscribeTo(configList)$
 %   \end{algorithmic}
 
-
-
-
-  Another feature that we will implement is a house security mode, that users may activate if they are travelling or just have left the house alone. The basic operation is to turn lamps on and off as if users were at home, thus deceiving potential thieves. The choices of which lamps to turn on and off will follow the pattern contained in a log file, to mimic a realistic scenario.
   
   \subsection{Remote Controls}
-  Considering that the users would want to have some control over the resources within the IE, we have implemented the remote controls to interact with them specifically. 
+  Considering that the users would want to have some control over the resources within the IE, we have implemented the remote controls to interact with them specifically. The same way that users nowadays have a TV control that enable them to have full control over the device with little effort, using the framework that task will be easily extended to the diverse range of devices present in the IE.
   
-  \begin{figure}[!t]
+  For implementing a lamp remote control, as shown on the Figure~\ref{fig:remotecontrol}, we are using a prototyping board called BeagleBone~\cite{Beagle2012}. The board, on one side, is capable of turning a lamp on and off and, on the other side, it implements a RA for the lamp which is registered in the IE. A graphical interface of a lamp can remotely call these OPs of the lamp, and it is also subscribed to the Lamp RA, what allows the remote control being aware of the lamp status.
+  
+  \begin{figure}[ht]
   \centering
   \includegraphics[width=3.5in]{figures/beagle-lamp.pdf}
   \caption{Remote Control} %[IPGAP]
@@ -1000,9 +1045,9 @@ Some applications have been built to explore the potential of the framework for 
   
   \subsection{MediaFollowMe}
   
-  The \mbox{\textbf{MediaFollowMe}} application enables the user to be followed by any kind of media stream (e.g. video, audio, images) while he/she walks inside the intelligent environment. By the time the user launch the \mbox{MediaFollowMe} app and choose the device which the media stream he wants to be followed, the app will take care of the user's location changes and automatically play, pause or migrate the media to the closest device capable of displaying it.
+  The \mbox{MediaFollowMe} application enables the user to be followed by any kind of media stream (e.g. video, audio, images) while he walks inside the IE. By the time the user launches the \mbox{MediaFollowMe} application and choose the device in which the media stream he wants to be followed, the application will take care of the user's location changes and automatically play, pause or migrate the media to the closest device capable of displaying it.
   
-  To illustrate that, consider a user watching a movie on TV through a blu-ray player in his bedroom. When the user leaves his bedroom, the system identifies this action by an RFID tag and fires an event, as well as when he arrives in any room. As the app is interested in these events, it receives a notification informing that the user left/arrived some room (and which room) and can migrate the media to the proper device, preferable inside that room.
+  To illustrate that, consider a user watching a movie on a TV through a blu-ray player in his bedroom. When the user leaves his bedroom, the system identifies this action by an RFID tag and fires an event, as well as when he arrives in any room. As the UbiApp is interested in these events, it receives a notification informing that the user has left/arrived some room (and which room) and can migrate the media to the proper device, preferably inside that room.
 
   [review of capabilities]
 
