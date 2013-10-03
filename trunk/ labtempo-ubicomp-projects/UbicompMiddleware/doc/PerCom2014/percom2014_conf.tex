@@ -811,7 +811,11 @@ The SmartAndroid middleware contemplates the possility of running multiple appli
 % [security concern on store: helps the discovery of malware before the user download]
 
   \subsection{Location}
+  
   [talk about location]
+  
+  The devices' location may be acquired through many different approaches as radio frequency signals such as RFID tags \cite{?}, GSM, Bluetooth and Wifi or even a smart floor which can locate people and objects by a pressure-sensing floor. However, the SmartAndroid doesn't implement a specific technique to locate resources, in order to keep the framework generic. The SmartAndroid API deal with location in a hi-level way making the data acquirement transparent to it. This aspect is important to keep the system flexible to any approach, allowing the developer to use different implementations.
+
   
   \subsection{Communication Support}
   %[talk about stub intantiation calls]
