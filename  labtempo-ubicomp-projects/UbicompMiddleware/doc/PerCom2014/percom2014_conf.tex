@@ -868,6 +868,19 @@ The SmartAndroid middleware contemplates the possility of running multiple appli
 %   
 %   [annotation]
 
+%   \subsection{Resource Agent [?????]}
+  
+%   Inside the RA, 
+  
+  We have provided a simple implementation for the pub-sub mechanism, which was effective to evaluate our approach. The Figure~\ref{fig:ra-intercept} shows how we have implemented this mechanism using the RPC. In the example, two RAs (TV and Alarm Clock) subscribe to the Stove RA (step 1). Every RA keeps track of its stakeholders, where the stakeholder list keeps the RANS and the CV of interest. When a remote control (or another actuator) calls a OP that changes the state of the Stove RA (step 2), this is intercepted (step 3) and causes the selection of the stakeholders (step 4) followed by the notification (step 5) that also uses the RPC. 
+  
+  \begin{figure}[ht]
+  \centering
+  \includegraphics[width=3.4in]{figures/publish-subscribe-ar.pdf}
+  \caption{Resource Agent} 
+  \label{fig:ra-intercept}
+  \end{figure}
+  
   
   \subsection{Context Rules} \label{subsec:rules}
 %   [implementation of context rules]
