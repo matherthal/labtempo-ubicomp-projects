@@ -366,26 +366,27 @@
 % author names and affiliations
 % use a multiple column layout for up to three different
 % affiliations
-\author{\IEEEauthorblockN{Matheus Erthal}
-\IEEEauthorblockA{Institute of Computing\\
-Federal Fluminense University\\
-Rio de Janeiro, Brazil\\
-Email: merthal@ic.uff.br}
-\and
-\IEEEauthorblockN{David Barreto}
-\IEEEauthorblockA{Institute of Computing\\
-Federal Fluminense University\\
-Email: dbarreto@ic.uff.br}
-\and
-\IEEEauthorblockN{Douglas Mareli}
-\IEEEauthorblockA{Institute of Computing\\
-Federal Fluminense University\\
-Email: dmareli@ic.uff.br}
-\and
-\IEEEauthorblockN{Orlando Loques}
-\IEEEauthorblockA{Institute of Computing\\
-Federal Fluminense University\\
-Email: loques@ic.uff.br}}
+% \author{\IEEEauthorblockN{Matheus Erthal}
+% \IEEEauthorblockA{Institute of Computing\\
+% Federal Fluminense University\\
+% Rio de Janeiro, Brazil\\
+% Email: merthal@ic.uff.br}
+% \and
+% \IEEEauthorblockN{David Barreto}
+% \IEEEauthorblockA{Institute of Computing\\
+% Federal Fluminense University\\
+% Email: dbarreto@ic.uff.br}
+% \and
+% \IEEEauthorblockN{Douglas Mareli}
+% \IEEEauthorblockA{Institute of Computing\\
+% Federal Fluminense University\\
+% Email: dmareli@ic.uff.br}
+% \and
+% \IEEEauthorblockN{Orlando Loques}
+% \IEEEauthorblockA{Institute of Computing\\
+% Federal Fluminense University\\
+% Email: loques@ic.uff.br}}
+
 % \author{\IEEEauthorblockN{Michael Shell}
 % \IEEEauthorblockA{School of Electrical and\\Computer Engineering\\
 % Georgia Institute of Technology\\
@@ -424,6 +425,16 @@ Email: loques@ic.uff.br}}
 %\IEEEauthorblockA{\IEEEauthorrefmark{3}Starfleet Academy, San Francisco, California 96678-2391\\
 %Telephone: (800) 555--1212, Fax: (888) 555--1212}
 %\IEEEauthorblockA{\IEEEauthorrefmark{4}Tyrell Inc., 123 Replicant Street, Los Angeles, California 90210--4321}}
+
+
+\author{\IEEEauthorblockN{Matheus Erthal\IEEEauthorrefmark{1},
+David Barreto\IEEEauthorrefmark{1},
+Douglas Mareli\IEEEauthorrefmark{1} and
+Orlando Loques\IEEEauthorrefmark{1}}
+\IEEEauthorblockA{\IEEEauthorrefmark{1}Institute of Computing\\
+Federal Fluminense University\\
+Rio de Janeiro, Brazil\\ 
+\{merthal, dbarreto, dmareli, loques\}@ic.uff.br}}
 
 
 
@@ -539,7 +550,7 @@ The remainder of this paper is organized as follows. First we compare our approa
 
 
 %The remainder of this paper is organized as follows. First we present in Section~\ref{sec:overview} an overview of the main concepts used as a basis for the framework's development. In Section~\ref{sec:framework}, we present the framework's overall architecture and main features. We then, in Section~\ref{sec:evaluation}, present a proof of concept demonstrating the feasibility of building UbiApps using the framework and we show examples of applications that explores the key features of the IE. Finally, in Section~\ref{sec:related} we compare our approach with related work and in Section~\ref{sec:conclusion} we conclude this paper with the main remarks.
-[refactor this paragraph]
+% [refactor this paragraph]
 
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -551,52 +562,31 @@ The benefits to users and developers that UbiComp foresees reach beyond the hori
 
 %ubicomp implies dealing with limited and dynamically varying computational resources [kindberg2002ieee]
 
-Most approaches focus on one aspect of UbiComp, such as security~\cite{}, location~\cite{}, context representation~\cite{}, SmartHome specific~\cite{dixon2012operating}, among others. [+++]
 % The works that focus on context interpretation/context rules
 % Some works focus on composing and managing context rules  %About the adaptability 
 %Challenges in Access Right Assignment for Secure Home Networks - 17
 
-[best classical references]
-\cite{satyanarayanan2001pervasive}
-\cite{Park2007simulation}
-\cite{ranganathan2003middleware}
-\cite{dey2001conceptual}
-\cite{helal2005gator}
+% [best classical references]
+% \cite{satyanarayanan2001pervasive}
+% \cite{Park2007simulation}
+% 
+% \cite{dey2001conceptual}
+% \cite{helal2005gator}
+% 
+% [others]
+% \cite{brush2011home}
+% \cite{edwards2001home}
+% \cite{garcia2010towards}
+% \cite{baldauf2007survey}
+% \cite{gu2005service}
+% \cite{kindberg2002system}
+% 
+% [only old references]
+% 
+% [get references from this conference]
 
-[others]
-\cite{brush2011home}
-\cite{edwards2001home}
-\cite{garcia2010towards}
-\cite{baldauf2007survey}
-\cite{gu2005service}
-\cite{kindberg2002system}
-
-[only old references]
-
-[get references from this conference]
-
-%TODO: Gaia
-Being one pioneer in the field, the Gaia middleware was designed to facilitate the construction of applications for IE.It consists of a set of core services and a framework for building distributed context aware applications. The Gaia embraces many goals that include the acquisition of context, the maintenance of hardware and software descriptions, mechanisms to find resources and to compose context rules, among others.
-% FIXME: it really permits to compose context rules or just proposes?
-
-%uses operating systems abstractions to define its architecture
-%have many goals that include the provision of mechanisms of acquisition of context; composition of rules (using first logic order), 
-%%maintenance of hardwares and softwares description and about applications; 
-%search mechanism to find resources
-%presence and execution status of resources
-%interpretation mechanism that gathers and interprets information, as defined by programmers
-%mvc
-%The main goals of Gaia's approach are the acquisition of context by applications, the monitoring of entities location, the maintenance of hardwares and softwares descriptions, and 
-%Active Spaces
-%FIXME: second phrase was copied
-
-%TODO: Context Toolkit - Dey
-%also a famous approach
-%we use these abstractions, the aggregation, interpretation, the widget
-The Context Toolkit provides a set of abstractions for the composition of reusable components that focus on context acquisition and interpretation. [+++]
 
 %TODO: Gator Tech
-[Gator Tech]
 %generic reference architecture applicable to any IE 
 %middleware layers:
 %physical, sensor platform (OSGi , service, knowledge, context management, application
@@ -609,9 +599,46 @@ The Context Toolkit provides a set of abstractions for the composition of reusab
 
 % [compare based on punctual solution]
 
+% [explain that our solution strives to accommodate several problems of UbiComp and to be flexible enough to accommodate the others]
+
+%%%%%%%%%%%%%%% HETEROGENEITY
+
+%%%%%%%%%%%%%%% CONTEXT AWARENESS
+%TODO: Context Toolkit - Dey
+%also a famous approach
+%we use these abstractions, the aggregation, interpretation, the widget
+%This approach provides a starting point
+% The Context Toolkit~\cite{dey2001conceptual} is a seminal work that provides a set of abstractions for the composition of reusable components that focus on context acquisition and interpretation to support rapid prototyping of context aware applications. 
+The Dey and Abowd framework~\cite{dey2001conceptual}, implemented by the Context Toolkit, is a seminal work for the supporting of rapid prototyping of context aware applications and provides a set of abstractions for the composition of reusable components that focus on context acquisition and interpretation. Another pioneer in the field, the Gaia middleware~\cite{ranganathan2003middleware} was designed to facilitate the construction of applications for IE. It consists of a set of core services and a framework for building distributed context aware applications. The Gaia embraces many goals that include the acquisition of context, the maintenance of hardware and software descriptions, mechanisms to find resources and to compose context rules, among others. However, these two approaches do not have concerns on the user side and their preferences, including the prototyping and management of UbiApps at user level.
+% Being one pioneer in the field, 
+%uses operating systems abstractions to define its architecture
+%have many goals that include the provision of mechanisms of acquisition of context; composition of rules (using first logic order), 
+%%maintenance of hardwares and softwares description and about applications; 
+%search mechanism to find resources
+%presence and execution status of resources
+%interpretation mechanism that gathers and interprets information, as defined by programmers
+%mvc
+%The main goals of Gaia's approach are the acquisition of context by applications, the monitoring of entities location, the maintenance of hardwares and softwares descriptions, and 
+%Active Spaces
+%FIXME: second phrase was copied
+
+% DIOS++
+The framework proposed in DIOS++~\cite{liu2003dios++} offers abstractions to manipulate sensors and actuators, a communication layer to manage distributed sensors and actuators, and a distributed rule engine. But concerns on temporization of context rules and creation of rules at end user level were not touched upon.
+
+% CASS
+The CASS~\cite{Park2007simulation} is a simulation rule environment that have a simple mechanism to discover possible conflicts between rules that are composed only using ``AND'' clause. However, it does not deploy the rules in a running environment.
+
+%%%%%%%%%%%%%%%%%% PROTOTYPING
+The DiaSim~\cite{bruneau2012} presents a simulator for pervasive applications, but does not support dynamic configuration of  entities in the system. Furthermore the work is not clear about the transparency between real and simulated devices. Other works on simulation of pervasive systems~\cite{barton2002ubiwise, nishikawa2006ubireal} provide a 3D visualization of the environment as in a game. It is possible to configure devices within the system and interact with them. However these works focus on interaction tests of devices and simulation of the physical environment, not worrying about context awareness.
+
+The BASE~\cite{becker2003base} provides a minimal middleware for handling the resources by means of simple abstractions to access remote services and device-specific capabilities, but it focus only on the communication concern.
+%%%%%%%%%%%%%%%%%% Specific purpose approaches
+% Most approaches focus on one aspect of UbiComp, such as security~\cite{kim2010challenges}, location~\cite{}, context representation~\cite{}, SmartHome specific~\cite{dixon2012operating}, among others. [+++]
+% There are works that focus on one aspect of UbiComp, such as security~\cite{kim2010challenges}, location~\cite{}
+
+%%%%%%%%%%%%%%%%%% FOR SELLING
 % [talk about market, which approach are already in use?] Google IS, onX
 
-% [explain that our solution strives to accommodate several problems of UbiComp and to be flexible enough to accommodate the others]
 
 The solution presented in this paper strives to accommodate central issues in the development of UbiApps, as identified by the challenges (i), (ii) and (iii), and the cited related works. The conceptual framework we propose facilitates the construction of those applications but don't restrict its design and development options, being flexible enough to accommodate other concerns that are application or support system specific.
 % We propose a framework that 
@@ -627,7 +654,8 @@ It is easy to notice that the context information is a first concern topic in ub
 %Many authors have proposed definitions to this concept, though most use examples to explain it or adopt a restrictive definition, that may not contemplate a set of systems. <- wrong. Most are wide or use synonyms
 %Synthetizing previous definitions, Dey and Abowd have proposed that context is any relevant information used to characterize the situation of entities, specifically: people, places and things.
 
-Context aware (or context sensitive) applications is a designation to those applications that not only are capable of knowing the context of the environment, but also react to it either by means of changing the environment or in a software level. []
+Context aware (or context sensitive) applications is a designation to those applications that not only are capable of knowing the context of the environment, but also react to it either by means of changing the environment or in a software level. 
+% TODO: citation
 
 % [distributed systems]
 Ubiquitous systems are a class of distributed systems. So, our approach incorporates well established distributed system concepts that are essential to disseminate and manage context information. Besides this, a distributed component model is adopted to implement the entities that live and interact in the ubiquitous environment.
@@ -699,7 +727,7 @@ This section describes details of the main features provided by the framework, w
   %From gator tech:
   %decoupling sensors and actuators from sensor platforms ensures openness and makes it possible to introduce new technology as it becomes available
 
-  [wrapper]
+%  TODO: [wrapper]
 
     \subsubsection{RA Interfaces}
 
@@ -749,7 +777,7 @@ This section describes details of the main features provided by the framework, w
     % already established technology of location
 
     \subsubsection{Security Management Service}
-    The security concern is always a central topic on UbiComp systems, due to the diverse aspects of security required. Some aspects are already inherited, depending on the technology adopted, e.g., the \mbox{Wi-Fi} already ensures against the registration of outside devices and the exchange of information. Thus our proposal for the the SecMS discusses requirements at a higher level, and issues at a lower level are defined according to the platform used.
+    The security concern is always a central topic on UbiComp systems, due to the diverse aspects of security required~\cite{kim2010challenges}. Some aspects are already inherited, depending on the technology adopted, e.g., the \mbox{Wi-Fi} already ensures against the registration of outside devices and the exchange of information. Thus our proposal for the the SecMS discusses requirements at a higher level, and issues at a lower level are defined according to the platform used.
     
     % [credentials]
     In UbiComp, any human-machine interaction should be as inconspicuous as possible. However, on what matters to the users there is a need for authentication what may happens through explicit interaction, such as entering a password, fingerprint, eye retina recognition, and so on. Other less intrusive ways are progressing, such as the facial recognition, but this raises privacy issues. The users fit in user groups that restricts their access to domains in the IE. For instance, in a smart home the father and the mother may have administrative permissions, below them there are the other occupants (such as elderly and older children) that have some level of permissions, next the younger children, and lastly the guests.
@@ -794,7 +822,7 @@ This section describes details of the main features provided by the framework, w
   The independence of the actuator allows its binding and unbinding with some CI in a easily manner, what is make possible because of the RA communication mechanism. Based on the same principle, more than one actuator can be bound to the same CI, for example, we may bind the forgotten stove CI with a ``family warning actuator'', that contacts a relative by phone and put her in touch with the elderly.
 
 %   [timer can be CV]
-  Another aspect of context rules is the time dimension. The definition of timers inside a rule expression can be done by subscribing the CI to a Timer RA, hence enabling the direct reference in the expression. The timer can also be relative or absolute. An absolute timer is objective: if the timer has reached some timestamp, or if it is within a window of time, then it is valid. [+++]
+  Another aspect of context rules is the time dimension. The definition of timers inside a rule expression can be done by subscribing the CI to a Timer RA, hence enabling the direct reference in the expression. The timer can also be relative or absolute. An absolute timer is objective: if the timer has reached some timestamp, or if it is within a window of time, then it is valid. %TODO: [+++]
   
   % [ COMO É A TEMPORIZAÇÃO NO IC ]
 % A temporização em um IC é definida ao se associar um ou mais temporizadores a uma subexpressão da regra (ou a expressão completa). Os temporizadores podem ser tanto relativos (e.g., fogão ligado e pessoa deitada na cama por 15min) quanto absolutos (e.g., ar-condicionado ligado às 18:00).
@@ -836,11 +864,13 @@ The SmartAndroid middleware contemplates the possibility of running multiple app
 % TODO: talk about market place
 % [security concern on store: helps the discovery of malware before the user download]
 
-  \subsection{Location}
+%   \subsection{Location}
+%   
+% %   [talk about location]
+%   
+%   The devices' indoor localization may be acquired through many different approaches, as an example, using radio frequency devices such as RFID tags and Wifi devices~\cite{Talukder2007Tracker} or even a smart floor~\cite{Branzel2013SmartFloor} which can locate people and objects by a pressure-sensing floor. However, the SmartAndroid doesn't implement a specific technique to locate resources, in order to keep the framework generic. The SmartAndroid API deal with location in a hi-level way, making the data acquirement transparent to it. This aspect is important to keep the system flexible to any approach, allowing the developer to use different implementations.
   
-  [talk about location]
-  
-  The devices' indoor localization may be acquired through many different approaches, as an example, using radio frequency devices such as RFID tags and Wifi devices~\cite{Talukder2007Tracker} or even a smart floor~\cite{Branzel2013SmartFloor} which can locate people and objects by a pressure-sensing floor. However, the SmartAndroid doesn't implement a specific technique to locate resources, in order to keep the framework generic. The SmartAndroid API deal with location in a hi-level way, making the data acquirement transparent to it. This aspect is important to keep the system flexible to any approach, allowing the developer to use different implementations.
+  %FIXME: talk about location internally or remove this subsection
   
   \subsection{Communication Support}
   %[talk about stub intantiation calls]
@@ -906,7 +936,7 @@ The SmartAndroid middleware contemplates the possibility of running multiple app
   
   \begin{figure}[ht]
   \centering
-  \includegraphics[width=3.4in]{figures/publish-subscribe-ar.pdf}
+  \includegraphics[width=3.5in]{figures/publish-subscribe-ar-en-v2.pdf}
   \caption{Resource Agent} 
   \label{fig:ra-intercept}
   \end{figure}
@@ -1136,7 +1166,7 @@ In the present paper we have proposed a framework that address some major issues
 % The context variable feature allows the creation of customized context rules, that define Context Interpreters, which allows the creation of customized rules.
 
 % [smartandroid]
-The concepts of the framework were implemented as a middleware called SmartAndroid. The SmartAndroid provides a API for developers and a set of basic services, that enables the construction of the intelligent environment. The core management services are the resource register service, that includes a naming service; the resource discovery service, that performs searches on registered resources based on different criteria; and a resource location service, that also performs searches but based on the location and proximity of resources and/or users. 
+The concepts of the framework were implemented as a middleware called SmartAndroid. The SmartAndroid provides a API for developers and a set of basic services, that enables the construction of the intelligent environment. The core management services are the resource register service, that includes a naming service; the resource discovery service, that performs searches on registered resources based on different criteria; the resource location service, that also performs searches but based on the location and proximity of resources and/or users; and the security management service, that allows the customization and ensures the limits of users and applications within the environment. 
 
 % [future work]
 % [more complex resource discovery]
