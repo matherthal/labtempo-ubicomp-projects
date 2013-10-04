@@ -629,9 +629,8 @@ It is easy to notice that the context information is a first concern topic in ub
 
 Context aware (or context sensitive) applications is a designation to those applications that not only are capable of knowing the context of the environment, but also react to it either by means of changing the environment or in a software level. []
 
-[distributed systems]
-
-Ubiquitous systems are a class of distributed systems. So, our approach incorporates well proovem distributed system concepts that are essential to disseminate and manage context information. Besides this, a distributed component model is adopted to implement the entities that live and interact in the ubiquitous environment.
+% [distributed systems]
+Ubiquitous systems are a class of distributed systems. So, our approach incorporates well established distributed system concepts that are essential to disseminate and manage context information. Besides this, a distributed component model is adopted to implement the entities that live and interact in the ubiquitous environment.
 % FIXME: prooven?
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -827,7 +826,8 @@ This section describes details of the main features provided by the framework, w
 %We consolidated the concepts elaborated in the course of this project as the platform \mbox{\textit{SmartAndroid}}\footnote{For more information visit www.tempo.uff.br/smartandroid}. The project includes the implementation of APIs to , as well as prototyping and management interface on the Android platform.
 
 %[David]
-The conceptual framework proposed at this work was tested through a reference implementation called \mbox{SmartAndroid}~\footnote{For more information visit www.tempo.uff.br/smartandroid}. The project includes a programming API to help the developers in constructing UbiApps as well as offers basic management services to provide resource registration, discovery and localization. The SmartAndroid has been developed over Google Android platform as we believe that in a near future it will be widely used in sensors and devices embedded in furnitures and home appliances.
+The conceptual framework proposed at this work was tested through a reference implementation called \mbox{SmartAndroid}~\footnote{For more information visit www.tempo.uff.br/smartandroid}. The project includes a programming API to help the developers in constructing UbiApps as well as offers basic management services to provide resource registration, discovery and localization. The SmartAndroid has been developed over Google Android platform as we believe that in a near future it can be widely used in sensors and devices embedded in furnitures and home appliances. In addition, this option helped us to implement emulators of several devices using cheap Android cellphones an tablets.
+
 % [we have implemented most of the framework features, thought much more remain to be done]
 
 %proposta de uso de marketplace
@@ -914,12 +914,12 @@ The SmartAndroid middleware contemplates the possibility of running multiple app
   
   \subsection{Context Rules Composition} \label{subsec:rules}
 %   [implementation of context rules]
-  The SmartAndroid supports the context interpretation by providing mechanisms to create context rules. The context rules life cycle has two major phases: composition and running. The composition phase corresponds to the instantiation of a CI and of an actuator and the binding of both through subscription. The running phase is when the CI and the actuator(s) are already instantiated as the other RAs that feed the IE with context information, and they are able to exchange messages and perform their job.
+  The SmartAndroid supports the context interpretation by providing mechanisms to create context rules. The composition of context rules can be done basically in two ways. The former is at the implementation level, where developers are able define their context rules in a description file or using a programming language. The latter is at end user level, where non trained people are able to define their context rules supported by the PIPA (Subsection~\ref{subsec:ipgap}).
+  
+  The context rule life cycle has two major phases: composition and running. The composition phase corresponds to the instantiation of a CI and of an actuator and the binding of both through subscription. The running phase is when the CI and the actuator(s) are already instantiated as the other RAs that feed the IE with context information, and they are able to exchange messages and perform their job.
   %   Support the interpretation of the context framework enables a separation of concerns, where developers abstract implementation of contextual rules and focus on the application logic.
   
-  The composition of context rules can be done basically in two ways. The former is at the implementation level, where developers are able define their context rules in a description file or using a programming language. The latter is at end user level, where non trained people are able to define their context rules supported by the PIPA (Subsection~\ref{subsec:ipgap}).
-  
-  At the implementation level, a context rule can be described in a JSON structured file (or byte stream) following a specific format. In the first part an expression must be defined and in the second part the actuators can be defined. This expression contains conditions that are the comparison of RA's CVs with constant values (e.g., Stove.OvenTemperature = $180\,^{\circ}\mathrm{C}$), of two different CVs from the same or from different RAs (e.g., ArConditioning.Temperature $>$ OutsideSensor.Temperature), or the RA's CV alone if it is has a boolean value (e.g., Stove.IsOn). The conditions are bound to each other through the logical operators ``AND'' and ``OR'', it is also allowed the use of ``NOT'' and of parenthesis, what makes possible to compose more complex expressions by using subexpressions. The expression or subexpression may also contain a timer. 
+  At the implementation level, a context rule can be described in a JSON structured file (or byte stream) following a specific format, thus the CI code and the binding with the actuators can be automatically generated. The file must contain the IC definition with the rule expression, and may contain the definition of actuators too. This expression contains conditions that are the comparison of RA's CVs with constant values (e.g., Stove.OvenTemperature = $180\,^{\circ}\mathrm{C}$), of two different CVs from the same or from different RAs (e.g., ArConditioning.Temperature $>$ OutsideSensor.Temperature), or the RA's CV alone if it is has a boolean value (e.g., Stove.IsOn). The conditions are bound to each other through the logical operators ``AND'' and ``OR'', it is also allowed the use of ``NOT'' and of parenthesis, what makes possible to compose more complex expressions by using subexpressions. The expression or subexpression may also contain a timer. 
   
   The definition of actuators is simpler than the definition of the CI and is not mandatory, since other actuators can be bound to the IC later. A actuator is composed by a list of actions, where each action have a RANS, a OP reference and the parameters (e.g., Stove.SetOvenTemperature to $100\,^{\circ}\mathrm{C}$). Both the actuator and the CI have a name, that makes easier to search for them.
   
@@ -956,12 +956,12 @@ The SmartAndroid middleware contemplates the possibility of running multiple app
   % pervasive applications' management and prototyping interface
   % PAMPI
   % management and prototyping interface MPI
-  [description]\\
+%   [description]\\
   
   %[David]
-  The main purpose of the PIPA is provide to developers a hybrid environment where simulated and real resources can interact to each other transparently, enabling their users to construct UbiApps as well as test and evaluate them through a wide variety of scenarios. Thus RAs from sensors, actuators and household appliances can be graphically represented at our tool, along with a schematic map from the intelligent environment so that some of the resources aspects as its context and location can be easily visualized on the map, helping in application debugging.
+  The main purpose of the PIPA is provide to developers a hybrid environment where simulated and real resources can interact to each other transparently, enabling their users to construct UbiApps as well as test and evaluate them through a wide variety of scenarios. Thus RAs from sensors, actuators and household appliances can be graphically represented at our tool, along with a schematic map of the IE so that some of the resources aspects, as its context and location, can be easily visualized on the map, helping in application debugging. The resource are represented as icons that can be moved around the map in order to simulate the intended application behaviour. For example, an alarm message can be displayed on the tv screen placed were the person is seated watching the TV.
 
-  Besides, PIPA operate with two different interfaces: the \textit{developer interface}, already mentioned, and the \textit{end-user interface}. In the end-user interface, users in general, i.e. non-technical users, are able to use PIPA to manage their intelligent environment remotely using a mobile device, such as a tablet. Through an intuitive GUI, end-users can not only visualize the state of their home devices but control them. For instance, it's possible turning off a stove burner, change the air-conditioner temperature, and so on. By touching the device icon in the screen, an interface that presents the device's main functions is shown, where the user can operate it as the tool were a remote control.
+  Besides, PIPA operate with two different interfaces: the \textit{developer interface}, already mentioned, and the \textit{end-user interface}. In the end-user interface, users in general, i.e. non-technical users, are able to use PIPA to manage their IE remotely using a mobile device, such as a tablet. Through an intuitive GUI, end-users can not only visualize the state of their home devices but control them. For instance, it's possible turning off a stove burner, change the air-conditioner temperature, and so on. By touching the device icon in the screen, an interface that presents the device's main functions is shown, where the user can operate it as the tool were a remote control.
 
   % [main figure]
   \begin{figure}[ht]
@@ -973,7 +973,7 @@ The SmartAndroid middleware contemplates the possibility of running multiple app
   
 %   [rules composer]
   %TODO Think about a better rule example!!
-  In addition, end-users can compose context rules in a hi-level way by graphically combining the CVs from any RA and logical connectives, forming logical expressions as \textit{``IF the TV from living room is on, AND nobody has been present at the living room for 15 minutes, THEN turn off that TV''}. To compose this rule the user have to, first of all, select the rule composer mode in the PIPA. Then, he must touch the TV icon at the living room representation on the map, and choose the desired CV -- in that case, the CV that refers if the TV is turned on or not. After that, a dialog box showing all possible logical operators is shown, so that the user can select one of them as the ``AND'' operator. The user can repeat this process, adding others CVs and operators until the expression is complete. Finally, the rule can be associated to one or more actions, provided by actuators. When the context rule is finished, the SmartAndroid writes down this rule in a JSON file respecting the standard, thus if the system crashes or terminates, all the composed rules can be afterwards re-started.
+  In addition, end-users can compose context rules in a high level way by graphically combining the CVs from any RA and logical connectives, forming logical expressions as \textit{``IF the TV from living room is on, AND nobody has been present at the living room for 15 minutes, THEN turn off that TV''}. To compose this rule the user have to, first of all, select the rule composer mode in the PIPA. Then, he must touch the TV icon at the living room representation on the map, and choose the desired CV -- in that case, the CV that refers if the TV is turned on or not. After that, a dialog box showing all possible logical operators is shown, so that the user can select one of them as the ``AND'' operator. The user can repeat this process, adding others CVs and operators until the expression is complete. Finally, the rule can be associated to one or more actions, provided by actuators. When the context rule is finished, the SmartAndroid writes down this rule in a JSON file respecting the standard, thus if the system crashes or terminates, all the composed rules can be afterwards re-started.
   
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1022,7 +1022,7 @@ In the subsections that follows we will elaborate over some UbiApps that have be
   
   There were also rules composed for turning on the light of the room that the user enters if it is day (based on a day light sensor simulator) and if nobody is at sleep in the room (based on another CI). 
   
-  Another feature that we will implement is a house security mode, that users may activate if they are travelling or just have left the house alone. The basic operation is to turn lamps on and off as if users were at home, thus deceiving potential thieves. The choices of which lamps to turn on and off will follow the pattern contained in a log file, to mimic a realistic scenario.
+  Another feature that we will implement is a house security mode, that users may activate if they are travelling or just have left the house alone. The basic operation is to turn lamps on and off as if users were at home, thus deceiving potential thieves. The choices of which lamps to turn on and off can follow real sampled patterns, stored in a log file, to mimic realistic living scenarios.
   
   The SmartLiC allowed us to validate two features of the RLS, which are the discovery of the rooms and the RAs of some specific type are within the room (i.e. the lamps and presence sensors). In this UbiApp we also have created a set of context rules with timers using the context rules parser (including CI and actuators). And the PIPA were well explored in this implementation, since we has shown the triggering of many events in parallel and multiple users cohabiting the same IE.
 % 
@@ -1092,7 +1092,7 @@ In the subsections that follows we will elaborate over some UbiApps that have be
   
   \subsection{Remote Controls}
   Considering that the users would want to have some control over the resources within the IE, we have implemented the remote controls to interact with them specifically. The same way that users nowadays have a TV control that enable them to have full control over the device with little effort, using the framework that task will be easily extended to the diverse range of devices present in the IE.
-  
+    
   For implementing a lamp remote control, as shown on the Figure~\ref{fig:remotecontrol}, we are using a prototyping board called BeagleBone~\cite{Beagle2012}. The board, on one side, is capable of turning a lamp on and off and, on the other side, it implements a RA for the lamp which is registered in the IE. A graphical interface of a lamp can remotely call these OPs of the lamp, and it is also subscribed to the Lamp RA, what allows the remote control being aware of the lamp status.
   
   \begin{figure}[ht]
@@ -1116,14 +1116,24 @@ In the subsections that follows we will elaborate over some UbiApps that have be
   
   To illustrate that, consider a user watching a movie on a TV through a blu-ray player in his bedroom. When the user leaves his bedroom, the system identifies this action by an RFID tag and fires an event, as well as when he arrives in any room. As the UbiApp is interested in these events, it receives a notification informing that the user has left/arrived some room (and which room) and can migrate the media to the proper device, preferably inside that room.
 
-  [review of capabilities]
+%   TODO: [review of capabilities]
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Conclusion} \label{sec:conclusion}
 % [framework main features]
-In the present paper we have proposed a framework that address some major issues that are found in the construction of ubiquitous applications, both for developers as for end users. We have focused on three challenges, that have guided the development of the framework. For dealing the the heterogeneity of devices present in the intelligent environment we have created the Resource Agent abstraction that encapsulates the mechanisms to interact with physical and also virtual resources, and includes a synchronous and asynchronous communication mechanism. The variety of context information and services is achieved by the definition of Context Interpreters that are responsible for aggregating context information, providing it in a higher level. And for the resource availability issue we have created the PIPA, which is a software that helps the prototyping and testing of ubiquitous applications through a easy to use interface, and allows the visualizations of applications running in a environment populated with real and simulated devices.
+In the present paper we have proposed a framework that address some major issues that are found in the construction of ubiquitous applications, both for developers as for end users. We have focused on three challenges, that have guided the development of the framework. For dealing with the heterogeneity of devices present in the intelligent environment we have created the Resource Agent abstraction that encapsulates the mechanisms to interact with physical and also virtual resources, and includes synchronous and asynchronous communication mechanisms. The variety of context information and services is achieved by the context variable feature, which allows the creation of customized rules. These rules define Context Interpreters, that are responsible for aggregating context information, providing it in a higher level. And for the resource availability issue we have created the PIPA, which is a software that helps the prototyping and testing of ubiquitous applications through a easy to use interface, and allows the visualizations of applications running in a environment populated with real and simulated devices.
+
+
+
+% The variety of context information and services is achieved by the definition of Context Interpreters that are responsible for aggregating context information, providing it in a higher level. 
+
+% The variety of context information and services is achieved by the context variable feature, thus allowing the creation of customized context rules that define Context Interpreters that are responsible for aggregating context information, providing it in a higher level. 
+% 
+% The variety of context information and services is achieved by the context variable feature. 
+% 
+% The context variable feature allows the creation of customized context rules, that define Context Interpreters, which allows the creation of customized rules.
 
 % [smartandroid]
 The concepts of the framework were implemented as a middleware called SmartAndroid. The SmartAndroid provides a API for developers and a set of basic services, that enables the construction of the intelligent environment. The core management services are the resource register service, that includes a naming service; the resource discovery service, that performs searches on registered resources based on different criteria; and a resource location service, that also performs searches but based on the location and proximity of resources and/or users. 
@@ -1141,7 +1151,7 @@ As future work we plan to extend the framework to allow more complex queries in 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % use section* for acknowledgement
 \section*{Acknowledgment}
-The authors would like to thank CNPq and FAPERJ for partial funding of this work.
+The authors would like to thank CNPq (Federal Research Funding Agency) and FAPERJ (Rio de Janeiro State Research Funding Agency) for partial funding of this work.
 
 
 % references section
