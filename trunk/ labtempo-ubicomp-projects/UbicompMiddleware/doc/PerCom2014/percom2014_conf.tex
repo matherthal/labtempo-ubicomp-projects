@@ -551,7 +551,24 @@ Most approaches focus on one aspect of UbiComp, such as security~\cite{}, locati
 % Some works focus on composing and managing context rules  %About the adaptability 
 %Challenges in Access Right Assignment for Secure Home Networks - 17
 
+[best classical references]
+\cite{satyanarayanan2001pervasive}
+\cite{Park2007simulation}
+\cite{ranganathan2003middleware}
+\cite{dey2001conceptual}
+\cite{helal2005gator}
 
+[others]
+\cite{brush2011home}
+\cite{edwards2001home}
+\cite{garcia2010towards}
+\cite{baldauf2007survey}
+\cite{gu2005service}
+\cite{kindberg2002system}
+
+[only old references]
+
+[get references from this conference]
 
 %TODO: Gaia
 As one of the most famous, the Gaia middleware is designed to facilitate the construction of applications for IE. It consists of a set of core services and a framework for building distributed context aware applications. The Gaia embraces many goals that include the acquisition of context, the maintenance of hardware and software descriptions, mechanisms to find resources and to compose context rules, among others.
@@ -680,7 +697,7 @@ This section approaches the main features provided by the framework, which inclu
     The RA architecture includes two interfaces for input and output. The former is called Context Variable (CV) and is responsible for exposing the RA's context information. The latter is called Operation (OP) and is responsible for exposing features (or actuation services) belonging to RAs, enabling applications to actively interact in the environment.
     % In the previous example, the ``oven is turned on'' and the ``oven temperature in ºC'' are the some of the RA's CVs. 
 
-    Consider the simple example of a smart stove where the instantiation of its RA exposes services to get its current context (e.g., oven is turned on, oven temperature in $\,^{\circ}\mathrm{C}$) and services that may change its context (e.g., turn oven off, set temperature as $150\,^{\circ}\mathrm{C}$). Hence, the RA concept meets the first challenge (i), which is the \textit{devices heterogeneity}, since decoupling sensor and actuator from the sensor platforms favors the flexibility. %FIXME: is it right?
+    Consider the simple example of a smart stove where the instantiation of its RA exposes services to get its current context (e.g., oven is turned on, oven temperature in $\,^{\circ}\mathrm{C}$) and services that may change its context (e.g., turn oven off, set temperature as $100\,^{\circ}\mathrm{C}$). Hence, the RA concept meets the first challenge (i), which is the \textit{devices heterogeneity}, since decoupling sensor and actuator from the sensor platforms favors the flexibility. %FIXME: is it right?
 
     % The RA are distributed components that can be used to 
     
@@ -886,19 +903,43 @@ The SmartAndroid middleware contemplates the possility of running multiple appli
   \end{figure}
   
   
-  \subsection{Context Rules} \label{subsec:rules}
+  \subsection{Context Rules Composition} \label{subsec:rules}
 %   [implementation of context rules]
   The SmartAndroid supports the context interpretation by providing mechanisms to create context rules. The context rules life cycle has two major phases: composition and running. The composition phase corresponds to the instantiation of a CI and of an actuator and the binding of both through subscription. The running phase is when the CI and the actuator(s) are already instantiated as the other RAs that feed the IE with context information, and they are able to exchange messages and perform their job.
   %   Support the interpretation of the context framework enables a separation of concerns, where developers abstract implementation of contextual rules and focus on the application logic.
   
-  At the implementation level, a context rule can be described in a JSON structured file (or byte stream) following a specific format. In the first part an expression must be defined setting the logical operat
-  To separate the context rules creation from the 
+  The composition of context rules can be done basically in two ways. The former is at the implementation level, where developers are able define their context rules in a description file or using a programming language. The latter is at end user level, where non trained people are able to define their context rules supported by the [IPGAP] (Subsection~\ref{subsec:ipgap}).
   
-%   O IC é encapsulado em um AR, estendendo, assim, suas funcionalidades. Sua criação ocorre quando é definida uma expressão lógica no objeto do IC recém instanciado, segundo um padrão próprio adotado em arquivos tipo JSON, e um \textit{parser} constrói uma estrutura lógica interna, como mostrado na Figura~\ref{fig:inpt_arq}. A estrutura lógica abrigada pelo IC, contém uma estrutura em árvore que representa a expressão e contém não só a lógica entre as VCs das condições, como também os valores atualizados das mesmas. Enquanto em funcionamento, o IC recebe atualizações das VCs, tratando-as em seguida para atualizar sua estrutura lógica. O módulo de avaliação é notificado de mudanças da estrutura lógica e avalia se a expressão se tornou verdadeira ou falsa. Se a expressão alcançou um estado verdadeiro, considerando as possíveis temporizações, notifica os atuadores. 
+  At the implementation level, a context rule can be described in a JSON structured file (or byte stream) following a specific format. In the first part an expression must be defined and in the second part the actuators can be defined. This expression contains conditions that are the comparison of RA's CVs with constant values (e.g., Stove.OvenTemperature = $180\,^{\circ}\mathrm{C}$), of two different CVs from the same or from different RAs (e.g., ArConditioning.Temperature $>$ OutsideSensor.Temperature), or the RA's CV alone if it is has a boolean value (e.g., Stove.IsOn). The conditions are bound to each other through the logical operators ``AND'' and ``OR'', it is also allowed the use of ``NOT'' and of parenthesis, what makes possible to compose more complex expressions by using subexpressions. The expression or subexpression may also contain a timer. 
+  
+  The definition of actuators is simpler than the definition of the CI and is not mandatory, since other actuators can be bound to the IC later. A actuator is composed by a list of actions, where each action have a RANS, a OP reference and the parameters (e.g., Stove.SetOvenTemperature to $100\,^{\circ}\mathrm{C}$). Both the actuator and the CI have a name, that makes easier to search for them.
+  
+  The SmartAndroid has a parser that can read the JSON file and create the instances of the CI and actuators. After reading the rule expression the parser creates a tree data structure that corresponds to that expression in memory, and the timers are also referenced within the structure. The CI created queries all the CVs that appear on the expression to keep a cache of the context informations and to start the evaluation, next the CI subscribes to all these CVs and sets itself as ``running''. After the creation of the CI, the parser creates instances for the actuators, which are subscribed to the CI previously instantiated. 
+  
+  % [context rules conflicts is an ongoing study that aims at discover a conflict in runtime,]
+  A common concern when having multiple context rules running in parallel is the occurrence of conflicts. The conflict happens when two CIs may be validated at the same time and the actuators associated with them have opposite actions. The conflict has also happen when a context rule causes the triggering of another that may cause the triggering of the first one, leading to a circular deadlock. We have as a future work to focus on this concern and to provide a solution for the detection and resolution of conflicts.
+%   , for instance:
+%   % \vspace{-2mm} 
+%   \begin{itemize}
+%   % \begin{compactitem}[$\circ$]
+%   \item IF stove is on and oven temperature $>$ 100 for 15min, then lower the temperatura;
+%   \item IF stove is on and oven temperature $<$ 180 for 15min, then raises the temperature.
+%   % \begin{compactitem}
+%   \end{itemize}
+%   % \vspace{-1.5mm}
+  
+  
+%   The detection and resolution of conflicts aims at identifying the creation of contradictory rules and at providing a solution. The solution to this type of conflict involves the comparison of the expressions of a new IC with the existing (at the time of connection to the actuator) and, if found expressions that intercede, check the actions of the actuators to see if they are the same type but with different inputs.
+  
+%   A multiplicação de regras de contexto no AmbI, inclusive por diferentes usuários e aplicações, pode facilmente levar a casos de conflito. O conflito ocorre quando dois ICs possuem expressões que se intercedem enquanto os respectivos atuadores possuem ações opostas. Por exemplo, considere as seguintes regras:
+%   % Neste caso, o fogão não foi ligado e esquecido, mas sim ligado para assar um bolo. 
+%   O usuário criou uma regra para controlar a temperatura do fogão, quando já havia outra cadastrada que tinha ação oposta mas que poderia ocorrer ao mesmo tempo. As regras estão, portanto, em conflito, pois não está claro como o sistema deve agir.
+%   %FIXME: compactar itemize
+% 
+%   % [ SOLUÇÃO PARA RESOLUÇÃO DE CONFLITOS ]
+%   A detecção e a resolução de conflitos visam identificar a criação de regras contraditórias e prover uma solução, atendendo ao requisito de confiabilidade. A solução para este tipo de conflito envolve a comparação das expressões de um novo IC com as já existentes (no momento da ligação com o atuador); e, caso encontradas expressões que se intercedam, conferir as ações dos atuadores para ver se são do mesmo tipo mas com diferentes entradas. 
 
-  [explain that both the rule expression and the actuator are written in the JSON]
-  
-  [context rules conflicts is an ongoing study that aims at discover a conflict in runtime,]
+
   
   \subsection{Interface for Management and Prototyping} \label{subsec:ipgap}
   % interface de prototipagem e gerenciamento de aplicações pervasivas
@@ -920,21 +961,20 @@ The SmartAndroid middleware contemplates the possility of running multiple appli
   \caption{Management and Prototyping Interface} %[IPGAP]
   \label{fig:ipgap}
   \end{figure}
-  %FIXME: convert portuguese text to english
   
 %   [rules composer]
   %TODO Think about a better rule example!!
-  In addition, end-users can compose context rules in a hi-level way by graphically combining the CVs from any RA and logical connectives, forming logical expressions as \textit{``if the TV from living room \textbf{is on}, \textbf{and} nobody has been present at the living room for 15 minutes, \textbf{then} turn off that TV''}. To compose this rule the user have to, first of all, select the rule composer mode in the [IPGAP]. Then, he must touch the TV icon at the living room representation on the map, and choose the desired CV -- in that case, the CV that refers if the TV is turned on or not. After that, a dialog box showing all possible logical operators is shown, so that the user can select one of them as the \textbf{AND} operator. The user can repeat this process, adding others CVs and operators until the expression is complete. Finally, the rule can be associated to one or more actions, provided by actuators.
-  %FIXME: here ``AND'' is bold, but before it was just between quotation marks
+  In addition, end-users can compose context rules in a hi-level way by graphically combining the CVs from any RA and logical connectives, forming logical expressions as \textit{``IF the TV from living room is on, AND nobody has been present at the living room for 15 minutes, THEN turn off that TV''}. To compose this rule the user have to, first of all, select the rule composer mode in the [IPGAP]. Then, he must touch the TV icon at the living room representation on the map, and choose the desired CV -- in that case, the CV that refers if the TV is turned on or not. After that, a dialog box showing all possible logical operators is shown, so that the user can select one of them as the ``AND'' operator. The user can repeat this process, adding others CVs and operators until the expression is complete. Finally, the rule can be associated to one or more actions, provided by actuators. When the context rule is finished, the SmartAndroid writes down this rule in a JSON file respecting the standard, thus if the system crashes or terminates, all the composed rules can be afterwards re-started.
+  
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Example Applications} \label{sec:evaluation}
-Some applications have been built to explore the potential of the framework for building UbiApps. Although the example applications are simple, and alone does not justify the deploy of the SmartAndroid in the environment, they have allowed us to validate the features provided by the framework and achieved by the SmartAndroid. It also demonstrated the possibility of concomitant running of UbiApps, what similar to an operation system where different processes run separately but in the same system. Withing the SmartAndroid, UbiApps run separately but in the IE.% and can share resources, 
+Some applications have been built to explore the potential of the framework for building UbiApps. Although the example applications are simple, and alone does not justify the deploy of the SmartAndroid in the environment, they have allowed us to validate the features provided by the framework and achieved by the SmartAndroid. It also demonstrated the possibility of concomitant running of UbiApps, what similar to an operation system where different processes run separately but in the same system. Within the SmartAndroid, UbiApps run separately but in the IE.% and can share resources, 
 
 % In this section we will elaborate over the SmartLiC application, and next we will briefly talk about the others.
-In the subsections that follows we will elaborate over some UbiApps that have been developed, or are still in development, in the course of the project.
+In the subsections that follows we will elaborate over some UbiApps that have been developed, or are still in development, in the course of the project. Besides these applications we have also implemented some context rules, such as the `Forgotten Stove'' that have appeared throughout the text.
 % the SmartLiC, the MediaFollowMe, remote control type applications where resources are controlled remotely by another resource (in this case, a smartphone ), among other applications. A future work is to install a system in Ambi home care health, as in ~ \ cite {} carvalho2010sciads.
   
   \subsection{Tic-Tac-Toe}
@@ -957,7 +997,8 @@ In the subsections that follows we will elaborate over some UbiApps that have be
   The Smart Light Control (SmartLic) application aims at the clever use of lighting in homes in order to save power consumption, since it is responsible for the largest range of consumption in residential environments. The application uses presence sensors to identify the location of people inside each room, and decide which lamps should be turned on and off. Hence it prevents the forgetting of lamps turned on, and may lit some lamp if a user enters a room at night and if nobody is at sleep in that room. 
   % ref to the 'largest range of consumption in residential environments'?
   
-  The [IPGAP] has allowed us to test this application. We instantiated lamp simulators for each room and an avatar for a user, and also a simulator for day light sensor. Next context rules were created for each room of the house. %Next context rules were created by filling a skeleton of a rule written in json, what caused the instantiation of a CI and actuator for each room.  If the avatar is dragged, in the [IPGAP], from a room and dropped in another, and the specified time passes, the the lamp is turned off.
+  The [IPGAP] has allowed us to test this application. We instantiated lamp simulators for each room and an avatar for a user, and also a simulator for day light sensor. Next context rules were created for each room of the house. The following enumeration shows the initialization routine of the SmartLiC UbiApp.
+  %Next context rules were created by filling a skeleton of a rule written in json, what caused the instantiation of a CI and actuator for each room.  If the avatar is dragged, in the [IPGAP], from a room and dropped in another, and the specified time passes, the the lamp is turned off.
   \begin{enumerate}
    \item Create a context rule skeleton in JSON
    \item Get the rooms from the house
@@ -1106,10 +1147,6 @@ The authors would like to thank CNPq and FAPERJ for partial funding of this work
 
 % REMAIN TODO TASKS
 % write about Gaia, Gator Tech and Context Toolkit
-% remove SoA references
-% security concerns on marketstore
 % evaluate examples spread in text
 % araujo is a paper in PT... find another one better
-% fix figure that contains PT text
 % finish related work
-% finish example applications
