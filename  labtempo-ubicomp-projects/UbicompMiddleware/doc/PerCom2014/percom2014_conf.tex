@@ -535,8 +535,10 @@ The concepts of the framework were materialized on a platform called \textit{Sma
 
 % The concepts of the framework have been implemented on a platform called \textit{SmartAndroid}\footnote{www.tempo.uff.br/smartandroid} developed in the context of the project. The implementation of this project has enabled appraisal in order to prove that the conceptual framework facilitates the process of building UbiApps.  One of the evaluations occurred during the processing of an application running on a purely local UbiApp. In another assessment, an application was built to verify the feasibility of implementation of Context Model, through the exploitation of communication mechanisms used in the Distributed Component Model.
 
+The remainder of this paper is organized as follows. First we compare our approach with related works in Section~\ref{sec:related}, then in Section~\ref{sec:overview} we present an overview of the main concepts used as a basis for the framework's development. In Section~\ref{sec:framework}, we describe the framework's overall architecture as well as, in Section~\ref{sec:features}, its most important features. Our framework reference implementation as the assumptions, techniques and features related are discussed in Section~\ref{sec:smartandroid}. A proof of concept demonstrating the feasibility of building UbiApps using the framework is presented in Section~\ref{sec:evaluation}, showing examples of applications that explores the key features of the IE. Finally, in Section~\ref{sec:conclusion} we conclude this paper with the main remarks and future works.
 
-The remainder of this paper is organized as follows. First we present in Section~\ref{sec:overview} an overview of the main concepts used as a basis for the framework's development. In Section~\ref{sec:framework}, we present the framework's overall architecture and main features. We then, in Section~\ref{sec:evaluation}, present a proof of concept demonstrating the feasibility of building UbiApps using the framework and we show examples of applications that explores the key features of the IE. Finally, in Section~\ref{sec:related} we compare our approach with related work and in Section~\ref{sec:conclusion} we conclude this paper with the main remarks.
+
+%The remainder of this paper is organized as follows. First we present in Section~\ref{sec:overview} an overview of the main concepts used as a basis for the framework's development. In Section~\ref{sec:framework}, we present the framework's overall architecture and main features. We then, in Section~\ref{sec:evaluation}, present a proof of concept demonstrating the feasibility of building UbiApps using the framework and we show examples of applications that explores the key features of the IE. Finally, in Section~\ref{sec:related} we compare our approach with related work and in Section~\ref{sec:conclusion} we conclude this paper with the main remarks.
 [refactor this paragraph]
 
 
@@ -677,7 +679,7 @@ The higher layer includes all UbiApps that are enjoying the middleware features 
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FIXME: Framework Details????????????????????
-\section{Framework Features}
+\section{Framework Features} \label{sec:features}
 This section describes details of the main features provided by the framework, which includes the definition of the RA (Subsection~\ref{subsec:ra}), the management services (Subsection~\ref{subsec:sgar}) and the context interpretation (Subsection~\ref{subsec:ci}). In the next section we will present the current status of the implementation.
 % This section approaches the main features provided by the framework, which includes the definition of the RA (Subsection~\ref{subsec:ra}), the management services (Subsection~\ref{subsec:sgar}) and the context interpretation (Subsection~\ref{subsec:ci}). Also, based on the reference implementation, an application was built to provide a tool for the prototyping, management and visualization of applications and resources running on the IE.
 
@@ -820,7 +822,7 @@ This section describes details of the main features provided by the framework, w
   
 %. This concept allows dealing with context in a higher level so that developers are free to focus on their business logic
   
-\section{SmartAndroid}
+\section{SmartAndroid} \label{sec:smartandroid}
 % [android and other techs]
 %We consolidated the concepts elaborated in the course of this project as the platform \mbox{\textit{SmartAndroid}}\footnote{For more information visit www.tempo.uff.br/smartandroid}. The project includes the implementation of APIs to , as well as prototyping and management interface on the Android platform.
 
