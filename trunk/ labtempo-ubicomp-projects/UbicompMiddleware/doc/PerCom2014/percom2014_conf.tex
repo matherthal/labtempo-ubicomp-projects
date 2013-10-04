@@ -823,7 +823,7 @@ The conceptual framework proposed at this work was tested through a reference im
 
 %proposta de uso de marketplace
 % A exposição de dados por meio de \textit{Content Provider} permite a integração de aplicativos externos ao servidor. Estes aplicativos podem ser dispostos em um \textit{marketplace} (http://developer.android.com/distribute/open.html) permitindo que tanto usuários comuns quanto programadores incrementem o ambiente com novas aplicações ubíquas. 
-The SmartAndroid middleware contemplates the possility of running multiple applications in the same IE. Thus, focusing on the user and inspired by the Google Play -- which is a application market for Android devices --, we have as a future work the creation of a SmartAndroid Market~\cite{google2013}, where users will be able to easily download and start different applications. Also similar to the Google Play, a Manifest file will require permission for accessing the domains, what will allow users to maintain control over what off-the-shelf applications have permission to know and to do. Within the market, the UbiApp could be tested towards discovering any possible harm that the application could do and any possible inefficiency that could consume too much the energy resources of the host device.
+The SmartAndroid middleware contemplates the possibility of running multiple applications in the same IE. Thus, focusing on the user and inspired by the Google Play -- which is a application market for Android devices --, we have as a future work the creation of a SmartAndroid Market~\cite{google2013}, where users will be able to easily download and start different applications. Also similar to the Google Play, a Manifest file will require permission for accessing the domains, what will allow users to maintain control over what off-the-shelf applications have permission to know and to do. Within the market, the UbiApp could be tested towards discovering any possible harm that the application could do and any possible inefficiency that could consume too much the energy resources of the host device.
 % TODO: talk about market place
 % [security concern on store: helps the discovery of malware before the user download]
 
@@ -831,8 +831,7 @@ The SmartAndroid middleware contemplates the possility of running multiple appli
   
   [talk about location]
   
-  The devices' location may be acquired through many different approaches as radio frequency signals such as RFID tags \cite{?}, GSM, Bluetooth and Wifi or even a smart floor which can locate people and objects by a pressure-sensing floor. However, the SmartAndroid doesn't implement a specific technique to locate resources, in order to keep the framework generic. The SmartAndroid API deal with location in a hi-level way making the data acquirement transparent to it. This aspect is important to keep the system flexible to any approach, allowing the developer to use different implementations.
-
+  The devices' indoor localization may be acquired through many different approaches, as an example, using radio frequency devices such as RFID tags and Wifi devices~\cite{Talukder2007Tracker} or even a smart floor~\cite{Branzel2013SmartFloor} which can locate people and objects by a pressure-sensing floor. However, the SmartAndroid doesn't implement a specific technique to locate resources, in order to keep the framework generic. The SmartAndroid API deal with location in a hi-level way, making the data acquirement transparent to it. This aspect is important to keep the system flexible to any approach, allowing the developer to use different implementations.
   
   \subsection{Communication Support}
   %[talk about stub intantiation calls]
