@@ -602,7 +602,7 @@ The benefits to users and developers that UbiComp foresees reach beyond the hori
 %%%%%%%%%%%%%%% HETEROGENEITY
 
 %%%%%%%%%%%%%%% CONTEXT AWARENESS
-%TODO: Context Toolkit - Dey
+%Context Toolkit - Dey
 %also a famous approach
 %we use these abstractions, the aggregation, interpretation, the widget
 %This approach provides a starting point
@@ -667,7 +667,6 @@ Ubiquitous systems are a class of distributed systems. So, our approach incorpor
 The framework provides mechanisms typically required in context-aware applications focused on IE. Among the features is the ability to abstract details that involve communication, context acquisition and resource location, by the applications. For the sake of abstracting resource details we have used components called \textit{Resource Agents} (RA). The RA is the basic modularization unit of the framework being used in the modeling, implementation and management of applications (Subsection~\ref{subsec:ra}). %Example?
 
 % The decentralization of components of the framework (the RAs) follow the principles of the Service-oriented Architecture (SoA), where the more decentralization the more flexibility on connectivity, since the dependence of centralized services is lowered.
-%TODO: write it better
 
 % Resolution of the issue is achieved through the decentralization of services, using service-oriented architecture (SoA). The use of SOA enables the relationship between different entities, where the greater decentralization connectivity is more flexible, since the dependence of a service center is minimized. Therefore, problems in a system component are softened and can be absorbed by mechanisms of fault tolerance and persistence.
 
@@ -725,14 +724,14 @@ This section describes details of the main features provided by the framework, w
   %From gator tech:
   %decoupling sensors and actuators from sensor platforms ensures openness and makes it possible to introduce new technology as it becomes available
 
-%  TODO: [wrapper]
+%  [wrapper]
 
     \subsubsection{RA Interfaces}
 
     The RA architecture includes two options of interface used for different purposes. The former provides access to Context Variables (CV) and is responsible for exposing the context information from the RA. The latter is called Operation (OP) and is responsible for exposing internal attributes (reading) or activating internal attributes (writing) belonging to RAs, enabling applications to manage RA's internal state and explicitly interact with the environment.    
     % In the previous example, the ``oven is turned on'' and the ``oven temperature in ºC'' are the some of the RA's CVs. 
 
-    Consider the simple example of a smart stove where the instantiation of its RA exposes services to get its current context (e.g., oven is turned on, oven temperature in $\,^{\circ}\mathrm{C}$) and services that may change its context (e.g., turn oven off, set temperature to $100\,^{\circ}\mathrm{C}$). Hence, the RA concept meets the first challenge, which is the \textit{heterogeneity of devices} (i), since decoupling sensor and actuator from the sensor platforms favors the flexibility. %FIXME: is it right?
+    Consider the simple example of a smart stove where the instantiation of its RA exposes services to get its current context (e.g., oven is turned on, oven temperature in $\,^{\circ}\mathrm{C}$) and services that may change its context (e.g., turn oven off, set temperature to $100\,^{\circ}\mathrm{C}$). Hence, the RA concept meets the first challenge, which is the \textit{heterogeneity of devices} (i), since decoupling sensor and actuator from the sensor platforms favors the flexibility. 
 
     % The RA are distributed components that can be used to 
     
@@ -800,7 +799,6 @@ This section describes details of the main features provided by the framework, w
   The context interpretation serves to aggregate context information from different sources in accordance with some specific logic and considering the passage of time. This logic is defined by the developer and the interpretation is implemented with the framework's support. %The CI concept was inspired by the Aggregator in Dey and Abowd~\cite{dey2001conceptual} whose objective was to gather logically related context and provides them in a single component.
   
   The entity that performs the context interpretation may be encapsulated by a RA, thus allowing the subscription to other RAs, what is called Context Interpreter (CI). This concept allows dealing with context in a higher level and also provides a separation on concerns, since a context interpreter decouples the steps for context acquisition, evaluation, timing and notification, that are repeatedly performed by the UbiApps. Therefore, using the CIs also promotes the reuse, either by the creator application or by other ones. 
-  %FIXME: Doubt: ``a RA'' or ``an RA''?
   
   The framework uses a generic approach for creating context rules, which are composed by two parts: the interpretation and the actuation. The interpretation part, as already stated before, concerns on binding the CI itself with CVs from different RAs, evaluating the expression that interrelates those CVs, and notifying whoever is interested. The actuation part is a RA that is subscribed to the CI, and develop some job, that may change the context of the IE or change some state in a software level.
 %   in which developers are able to define the logic of the rule in the application using the framework support for context acquisition, as well as to perform actions on the environment. 
@@ -1002,24 +1000,17 @@ The \textit{SmartAndroid} middleware contemplates the possibility of running mul
   
   From the end-user point of view, the interface is a toolbox too, used to configure the IE and evaluate it without the need of buying all the resources. New off-the-shelf resources can also be tested if the manufacturer provides the simulator. Besides, the PIPA can be used to manage the real resources present within the IE. If an icon is double-tapped and it corresponds to a real resource, a remote control will open for the user (see Subsection~\ref{subsec:remote}).
   
-%   [rules composer]
-  %TODO Think about a better rule example!!
-  %In addition, end-users can compose context rules in a high level way by graphically combining the CVs from any RA and logical connectives, forming logical expressions as \textit{``IF the TV from living room is on, AND nobody has been present at the living room for 15 minutes, THEN turn off that TV''}. To compose this rule the user have to, first of all, select the rule composer mode in the PIPA. Then, he must touch the TV icon at the living room representation on the map, and choose the desired CV -- in that case, the CV that refers if the TV is turned on or not. After that, a dialog box that presents all possible logical operators is shown, so that the user can select one of them, for example the ``AND'' operator. The user can repeat this process, adding others CVs and operators until the expression is complete. Finally, the rule can be associated to one or more actions, provided by actuators. When the context rule is finished, the \textit{SmartAndroid} writes down this rule in a JSON file respecting the standard, thus if the system crashes or terminates, all the composed rules can be afterwards re-started.
-  
+  % [rules composer]
   Towards the composition of context rules at a high level either by end-user or developers, the PIPA offers a use mode where the users are able to define the rule expression, what automatically generates the CI, and the actions to be performed, what automatically generates an actuator the the binding with the CI. When the context rule is finished, the \textit{SmartAndroid} writes down this rule in a JSON file respecting the standard, thus if the system crashes or terminates, all the composed rules can be afterwards re-started by the context rules factory. 
-%   to combine CVs from different RAs and set the connectives, forming 
-%   choose the CV by clicking on the resource representation at the PIPA
-  
+
   A rule such as the ``Forgotten stove'' can be easily composed in the PIPA. The procedure has the following steps:
   \begin{enumerate}
    \item Set the ``Compose a Context Rule'' mode (in the bottom of the Figure~\ref{fig:ipgap})
    \item Define the rule expression by touching the resources on the screen, selecting the CVs (Figure~\ref{fig:ipgap} shows the CV belonging to the stove) and choosing comparison operators, logical connectives and timers on a menu that appears at the center of the screen -- a side menu shows the rule being composed
    \item Define the actions after the finalization of the rule expression, the PIPA changes its mode to allows the selection of OPs instead of CVs while clicking on the resources and to ask for the parameters -- a side menu shows the list of actions
   \end{enumerate}
-  
-%   ; ; defin
-%   First of all the user must select Compose a Context Rule in the configuration menu presented below on the Figure~\ref{fig:ipgap}. 
 
+  
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %              SECTION
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -1149,7 +1140,6 @@ In the subsections that follows we will elaborate over some UbiApps that have be
   This game was implemented with simulated resources and using the PIPA. The players were represented with avatars and their location were updated with the drag and drop of the avatars over the map. 
   
 %   The player has a layout map of the house where you can find the move to attach the extent that the movement occurs, the game informs the person's subjective closeness with the gift (by the number of points in the message text) to that is found. The game allows the participation of multiple players for the environment, to get a winner the gift is repositioned to the new game. The game takes place in a simulated environment, using PIPA to simulate the movement of avatars of people participating.
-  %FIXME!!! remove this last paragraph!!!!  
   
   \subsection{MediaFollowMe}
   
@@ -1205,9 +1195,3 @@ The authors would like to thank CNPq (Federal Research Funding Agency) and FAPER
 
 % that's all folks
 \end{document}
-
-% REMAIN TODO TASKS
-% write about Gaia, Gator Tech and Context Toolkit
-% evaluate examples spread in text
-% araujo is a paper in PT... find another one better
-% finish related work
