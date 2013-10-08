@@ -35,7 +35,7 @@ public class SmartAndroid {
 	private static String myIp = defaultMyIp;
 	private static int myLocalPrefix = 0;
 
-	public static String resourceDiscoveryIP = "192.168.0.70";//getLocalIpAddressForRds();
+	public static String resourceDiscoveryIP = "192.168.1.105";//getLocalIpAddressForRds();
 
 	public static Integer resourceDiscoveryPREFIX = 0;
 	public static boolean interestAPIEnable = false;
@@ -133,7 +133,7 @@ public class SmartAndroid {
 				
 				try {
 					ia.registerInterest("fetch-resource-discovery-prefix");
-					String fetchPrefixResult = ia.sendMessage(myLocalPrefix, -1, "fetch-resource-discovery-prefix" , "fetch-prefix");
+					String fetchPrefixResult = ia.sendMessage("fetch-resource-discovery-prefix" , "fetch-prefix");
 					if (fetchPrefixResult != null) {
 						resourceDiscoveryPREFIX = Integer.valueOf(fetchPrefixResult); 
 					} else {
@@ -193,7 +193,7 @@ public class SmartAndroid {
 	 */
 	public static void fillLocalPrefixAddress() {
 		if (interestAPIEnable) {
-			myLocalPrefix = InterestAPIImpl.getInstance().getPrefix();
+			myLocalPrefix = InterestAPIImpl.getInstance().getMyPrefix();
 		}
 	}
 

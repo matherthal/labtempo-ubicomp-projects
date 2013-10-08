@@ -32,7 +32,7 @@ public class Caller implements Serializable {
 				Log.d("SmartAndroid", "   ");
 				Log.d("SmartAndroid", String.format("SENDING to %s \"REMOTE\" %s", raNS.getRans(), jsonString));
 				String message = raNS.getRans() + SocketService.BUFFER_END + jsonString + SocketService.BUFFER_END;
-				String resultTemp = InterestAPIImpl.getInstance().sendMessage(SmartAndroid.getLocalPrefix(), raNS, "jsonrpc", message);
+				String resultTemp = InterestAPIImpl.getInstance().sendMessage(raNS, "jsonrpc", message);
 				result = resultTemp.substring(0, resultTemp.lastIndexOf(SocketService.BUFFER_END));
 				Log.d("SmartAndroid", String.format("RECEIVE from %s \"REMOTE\" %s", raNS.getRans(), result));
 				Log.d("SmartAndroid", "   ");

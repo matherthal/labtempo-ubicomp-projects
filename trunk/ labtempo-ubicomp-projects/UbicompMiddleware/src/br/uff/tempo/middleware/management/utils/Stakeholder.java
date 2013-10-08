@@ -20,7 +20,7 @@ public class Stakeholder implements Serializable {
 		this(method, rA.getRANS());
 	}
 
-	public String getMethod() {
+	public String getContextVariable() {
 		return method;
 	}
 

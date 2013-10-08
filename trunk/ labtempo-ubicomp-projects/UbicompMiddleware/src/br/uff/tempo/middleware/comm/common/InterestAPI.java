@@ -1,5 +1,7 @@
 package br.uff.tempo.middleware.comm.common;
 
+import java.util.List;
+
 import br.uff.tempo.middleware.management.ResourceAgentNS;
 
 
@@ -17,10 +19,8 @@ public interface InterestAPI {
 	// COISA recebe msg de COISA com REPAMESSAGE
 	public void registerInterest(String interest, Callable callback) throws Exception;
 	
+
 	// Begin of Sync
-	
-	// AGENTE manda msg pra AGENTE com JSONRPC
-//	public String sendJSONRPC(ResourceAgentNS raNSfrom, ResourceAgentNS raNSto, String jsonRPC) throws Exception;
 	
 	// AGENTE manda msg pra AGENTE com REPAMESSAGE
 	public String sendMessage(ResourceAgentNS raNSFrom, ResourceAgentNS raNSTo, String interest, String message) throws Exception;
@@ -29,39 +29,54 @@ public interface InterestAPI {
 	public String sendMessage(ResourceAgentNS raNSFrom, Integer prefixTo, String interest, String message) throws Exception;	
 	
 	// COISA manda msg pra AGENTE com REPAMESSAGE
-	public String sendMessage(Integer prefixFrom, ResourceAgentNS raNSTo, String interest, String message) throws Exception;	
+	public String sendMessage(ResourceAgentNS raNSTo, String interest, String message) throws Exception;	
 	
 	// COISA manda msg pra COISA com REPAMESSAGE
-	public String sendMessage(Integer prefixFrom, Integer prefixTo, String interest, String message) throws Exception;	
+	public String sendMessage(Integer prefixTo, String interest, String message) throws Exception;
+	
+	// COISA manda msg pra COISA com REPAMESSAGE
+	public String sendMessage(String interest, String message) throws Exception;
 	
 	// End of Sync
 	
 	
+	// Begin of Async
+
+	// AGENTE manda msg Async pra AGENTE com REPAMESSAGE
+	public void sendAsyncMessage(ResourceAgentNS raNSfrom, ResourceAgentNS raNSto, String interest, String message, Callable callback) throws Exception;
 	
-//	// Begin of Async
-//
-//	// AGENTE manda msg Async pra AGENTE com REPAMESSAGE
-//	public void sendAsyncMessage(ResourceAgentNS raNSfrom, ResourceAgentNS raNSto, String interest, String message, Callable callback) throws Exception;
-//	
-//	// AGENTE manda msg Async pra COISA com REPAMESSAGE
-//	public void sendAsyncMessage(ResourceAgentNS raNSfrom, int prefixTo, String interest, String message, Callable callback) throws Exception;	
-//	
-//	// COISA manda msg Async pra AGENTE com REPAMESSAGE
-//	public void sendAsyncMessage(int prefixFrom, ResourceAgentNS raNSto, String interest, String message, Callable callback) throws Exception;	
-//	
-//	// COISA manda msg Async pra COISA com REPAMESSAGE
-//	public void sendAsyncMessage(int prefixFrom, int prefixTo, String interest, String message, Callable callback) throws Exception;
-//	
-//	// End of Async	
+	// AGENTE manda msg Async pra COISA com REPAMESSAGE
+	public void sendAsyncMessage(ResourceAgentNS raNSfrom, int prefixTo, String interest, String message, Callable callback) throws Exception;	
+	
+	// COISA manda msg Async pra AGENTE com REPAMESSAGE
+	public void sendAsyncMessage(ResourceAgentNS raNSto, String interest, String message, Callable callback) throws Exception;	
+	
+	// COISA manda msg Async pra COISA com REPAMESSAGE
+	public void sendAsyncMessage(int prefixTo, String interest, String message, Callable callback) throws Exception;
+	
+	// End of Async	
+
+	
+	// Begin of Listing
+	public List<ResourceAgentNS> getListOfResourceAgents() throws Exception;
+
+	public List<ResourceAgentNS> getListOfResourceAgentsInterestedIn(String interest) throws Exception;
+	
+	public List<String> getListOfInterestedIn(String interest) throws Exception;
+
+	// End of Listing	
+	
+	
+	
 	
 	
 	
 	// 1st step
 	
 	
-	public Object fetchContextVariable(String contextVariable, String rai) throws Exception;
+//	public Object fetchContextVariable(String contextVariable, String rai) throws Exception;
 	
-	public Object callService(String serviceName, String rai) throws Exception;
+//	public Object callService(String serviceName, String rai) throws Exception;
 	
 	// registerStakeholders
 //	public void registerInterest(String contextVariable, String rai, Callable callback) throws Exception;
@@ -71,28 +86,28 @@ public interface InterestAPI {
 //	public String sendMessage(int prefixfrom, ResourceAgentNS raNSto, String interest, String message) throws Exception;
 	
 	// notifyStakeholders
-	public void sendMessageTo(String rai, String contextVariable, String value) throws Exception;
+//	public void sendMessageTo(String rai, String contextVariable, String value) throws Exception;
 
 	// removeStakeholders
-	public void removeInterest(String contextVariable, String rai) throws Exception;
+//	public void removeInterest(String contextVariable, String rai) throws Exception;
 	
 	
 	// 2nd step
 
 	
-	public Object fetchContextVariable(String contextVariable) throws Exception;
+//	public Object fetchContextVariable(String contextVariable) throws Exception;
 	
-	public void sendMessage(String contextVariable, String value) throws Exception;
+//	public void sendMessage(String contextVariable, String value) throws Exception;
 	
 	// registerStakeholders, callback = notificationHandler
 	// (1 contextVariable could have N callbacks)
 //	public void registerInterest(String contextVariable, Callable callback) throws Exception;
 
 	// removeStakeholders
-	public void removeInterest(String contextVariable) throws Exception;
+//	public void removeInterest(String contextVariable) throws Exception;
 
 	// removeNotificationHandlers
-	public void removeInterestCallback(String contextVariable, Callable callback) throws Exception;
+//	public void removeInterestCallback(String contextVariable, Callable callback) throws Exception;
 
 	
 	

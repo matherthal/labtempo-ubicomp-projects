@@ -1,13 +1,13 @@
 package br.uff.tempo.middleware.comm.interest.api;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.LinkedBlockingQueue;
 
-import ufrj.coppe.lcp.repa.RepaMessage;
 import android.util.Log;
 import br.uff.tempo.middleware.comm.common.Callable;
 import br.uff.tempo.middleware.comm.common.InterestAPI;
@@ -21,7 +21,7 @@ public class InterestAPIImpl implements InterestAPI {
 	
 	private static ConcurrentHashMap<String, BlockingQueue<Callable>> agentsInterestsIndex = new ConcurrentHashMap<String, BlockingQueue<Callable>>();
 	
-	private static ConcurrentHashMap<String, REPAComm> repaCommMap = new ConcurrentHashMap<String, InterestAPIImpl.REPAComm>();
+	private static ConcurrentHashMap<String, REPAComm> repaCommMap = new ConcurrentHashMap<String, REPAComm>();
 	
 	private static InterestAPIImpl api;
 	
@@ -39,6 +39,11 @@ public class InterestAPIImpl implements InterestAPI {
 			@Override
 			public String serve(RepaMessageContent repaMessageContent) {
 				return dispatchRepaMessage(repaMessageContent);
+			}
+			
+			@Override
+			public ConcurrentHashMap<String, BlockingQueue<Callable>> getMyInterests() {
+				return myInterests;
 			}
 		};
 	}
@@ -68,8 +73,10 @@ public class InterestAPIImpl implements InterestAPI {
 	}
 	
 	@Override
-	public void registerInterest(String rans) throws Exception {
-		this.commREPAD.registerInterest(rans);
+	public void registerInterest(String interest) throws Exception {
+		myInterests.put(interest, new LinkedBlockingQueue<Callable>());
+		
+		this.commREPAD.registerInterest(interest);
 	}
 	
 	@Override
@@ -112,19 +119,69 @@ public class InterestAPIImpl implements InterestAPI {
 	}
 	
 	@Override
-	public String sendMessage(Integer prefixFrom, ResourceAgentNS raNSTo, String interest, String message) throws Exception {
+	public String sendMessage(ResourceAgentNS raNSTo, String interest, String message) throws Exception {
 		String commId = UUID.randomUUID().toString();
-		RepaMessageContent repaMessageContent = new RepaMessageContent(commId, prefixFrom, raNSTo, interest, message);
+		RepaMessageContent repaMessageContent = new RepaMessageContent(commId, getMyPrefix(), raNSTo, interest, message);
 		
 		return send(commId, repaMessageContent);
 	}
 	
 	@Override
-	public String sendMessage(Integer prefixFrom, Integer prefixTo, String interest, String message) throws Exception {
+	public String sendMessage(Integer prefixTo, String interest, String message) throws Exception {
 		String commId = UUID.randomUUID().toString();
-		RepaMessageContent repaMessageContent = new RepaMessageContent(commId, prefixFrom, prefixTo, interest, message);
+		RepaMessageContent repaMessageContent = new RepaMessageContent(commId, getMyPrefix(), prefixTo, interest, message);
 		
 		return send(commId, repaMessageContent);
+	}
+	
+	@Override
+	public String sendMessage(String interest, String message) throws Exception {
+		return sendMessage(-1, interest, message);
+	}
+
+	@Override
+	public void sendAsyncMessage(ResourceAgentNS raNSfrom, ResourceAgentNS raNSto, String interest, String message, Callable callback) throws Exception {
+	}
+
+	@Override
+	public void sendAsyncMessage(ResourceAgentNS raNSfrom, int prefixTo, String interest, String message, Callable callback) throws Exception {
+	}
+
+	@Override
+	public void sendAsyncMessage(ResourceAgentNS raNSto, String interest, String message, Callable callback) throws Exception {
+	}
+
+	@Override
+	public void sendAsyncMessage(int prefixTo, String interest, String message, Callable callback) throws Exception {
+	}	
+
+	
+	@Override
+	public List<ResourceAgentNS> getListOfResourceAgents() throws Exception {
+		return null;
+	}
+
+	@Override
+	public List<ResourceAgentNS> getListOfResourceAgentsInterestedIn(String interest) throws Exception {
+		return null;
+	}
+
+	@Override
+	public List<String> getListOfInterestedIn(String interest) throws Exception {
+		return null;
+	}
+	
+	
+
+	
+//	@Override
+//	public void sendMessage(String interest, String value) throws Exception {
+//		this.commREPAD.repaSendAsync(new RepaMessage(interest, value));
+//	}
+	
+	
+	public int getMyPrefix() {
+		return this.commREPAD.getRepaNodeAdress().getPrefix();
 	}
 	
 	private void addInterest(String interest, Callable callback) throws Exception {
@@ -156,90 +213,12 @@ public class InterestAPIImpl implements InterestAPI {
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	public void removeInterestCallback(String interest, Callable callback) throws Exception {
-		for (Callable c : myInterests.get(interest)) {
-			if (c.equals(callback)) {
-				myInterests.remove(c);
-				break;
-			}
-		}
-	}
-	
-	@Override
-	public void sendMessage(String contextVariable, String value) throws Exception {
-		this.commREPAD.repaSendAsync(new RepaMessage(contextVariable, value));
-	}
-	
-	@Override
-	public Object fetchContextVariable(String contextVariable, String rai) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object callService(String serviceName, String rai) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-//	@Override
-//	public void registerInterest(String interest, String rai, Callable callback) throws Exception {
-//		// TODO Auto-generated method stub
-//		
+//	public void removeInterestCallback(String interest, Callable callback) throws Exception {
+//		for (Callable c : myInterests.get(interest)) {
+//			if (c.equals(callback)) {
+//				myInterests.remove(c);
+//				break;
+//			}
+//		}
 //	}
-
-	@Override
-	public void sendMessageTo(String rai, String contextVariable, String value) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void removeInterest(String contextVariable, String rai) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Object fetchContextVariable(String contextVariable) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void removeInterest(String contextVariable) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	public int getPrefix() {
-		return this.commREPAD.getRepaNodeAdress().getPrefix();
-	}
-	
-	public class REPAComm {
-		
-		private CountDownLatch countDownLatch;
-		
-		private String response;
-		
-		public REPAComm(CountDownLatch countDownLatch) {
-			this.countDownLatch = countDownLatch;
-		}
-
-		public void notifyResponseReceived(String response) {
-			this.response = response;
-			this.countDownLatch.countDown();
-		}
-
-		public String getResponse() {
-			return response;
-		}
-	}
 }
