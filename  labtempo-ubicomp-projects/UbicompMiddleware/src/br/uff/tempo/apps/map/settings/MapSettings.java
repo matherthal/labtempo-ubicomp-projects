@@ -108,10 +108,10 @@ public class MapSettings extends PreferenceActivity implements IListGetter, ICho
 			
 			for (Stakeholder s : stakeholders) {
 				ResourceData d = resData.search(ResourceData.RANS, s.getRANS()).get(0);
-				d.setTag(d.getName() + " wants " + s.getMethod());
+				d.setTag(d.getName() + " wants " + s.getContextVariable());
 				
 				shData.add(d);
-				stakeholderNames.put(d.getName(), s.getMethod());
+				stakeholderNames.put(d.getName(), s.getContextVariable());
 			}
 			
 			op = OP_STAKEHOLDER;

@@ -4,7 +4,7 @@ import java.util.List;
 
 import br.uff.tempo.middleware.comm.common.Callable;
 
-public interface InterestAPI {
+public interface InterestAPIFromInterest {
 	
 	public int getMyAddress() throws Exception;
 	

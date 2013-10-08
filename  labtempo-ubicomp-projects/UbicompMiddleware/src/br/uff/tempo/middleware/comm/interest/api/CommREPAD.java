@@ -1,11 +1,14 @@
 package br.uff.tempo.middleware.comm.interest.api;
 
 import java.net.SocketException;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import ufrj.coppe.lcp.repa.PrefixAddress;
 import ufrj.coppe.lcp.repa.RepaMessage;
 import ufrj.coppe.lcp.repa.RepaSocket;
 import br.uff.tempo.middleware.SmartAndroid;
+import br.uff.tempo.middleware.comm.common.Callable;
 import br.uff.tempo.middleware.comm.current.api.JSONHelper;
 import br.uff.tempo.middleware.comm.current.api.SocketService;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
@@ -121,8 +124,15 @@ public class CommREPAD {
 		
 		// Loopback
 		if (repaMessage.getPrefix().getPrefix() == SmartAndroid.getLocalPrefix()) {
-			new REPASession(repaMessage, 30);
+			if (this.getMyInterests().get(repaMessage.getInterest()) != null) {
+				new REPASession(repaMessage, 30);				
+			}
 		} else {
+			if (prefix == -1) {
+				if (this.getMyInterests().get(repaMessage.getInterest()) != null) {
+					new REPASession(repaMessage, 30);				
+				}
+			}
 			this.repaSocket.repaSend(repaMessage);			
 		}
 	}
@@ -136,6 +146,7 @@ public class CommREPAD {
 	}
 	
 	public void repaSendAsync(RepaMessage repaMessage) throws Exception {
+		// tratar loopback etc... ver regras repaSend acima, talvez ter/usar RepaMessageContent 
 		this.repaSocket.repaSend(repaMessage);
 	}
 
@@ -151,5 +162,9 @@ public class CommREPAD {
 		String repaMessageContentJSON = JSONHelper.toJson(messageContent);
 		byte[] messageData = SocketService.compress(repaMessageContentJSON);
 		return messageData;
+	}
+
+	public ConcurrentHashMap<String, BlockingQueue<Callable>> getMyInterests() {
+		return null;
 	}
 }

@@ -363,14 +363,14 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 	
 	/**
 	 * notify Stakeholders about an event related to a execution of a method 
-	 * @param method identification of event source
+	 * @param contextVariable identification of event source
 	 * @param value interest target value
 	 */
-	public void notifyStakeholders(String method, Object value) {
+	public void notifyStakeholders(String contextVariable, Object value) {
 		for (Stakeholder stakeholder : stakeholders) {
-			if (stakeholder.getMethod().equals(method) || stakeholder.getMethod().equalsIgnoreCase("all")) {
-				new ResourceAgentStub(stakeholder.getRANS()).notificationHandler(this.getRANS(), method, value);
-				Log.d("SmartAndroid", String.format("notifying stakeholder: %s method: %s value: %s", stakeholder.getRANS(), method, value));
+			if (stakeholder.getContextVariable().equals(contextVariable) || stakeholder.getContextVariable().equalsIgnoreCase("all")) {
+				new ResourceAgentStub(stakeholder.getRANS()).notificationHandler(this.getRANS(), contextVariable, value);
+				Log.d("SmartAndroid", String.format("notifying stakeholder: %s contextVariable: %s value: %s", stakeholder.getRANS(), contextVariable, value));
 			}
 		}
 	}
