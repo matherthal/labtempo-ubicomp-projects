@@ -30,7 +30,7 @@ public class MiddlewareOperation extends AsyncTask<String, Void, List<ResourceDa
 	}
 	
 	public MiddlewareOperation(Activity act, String query) {
-		this(act, (IListGetter) act, IResourceDiscovery.rans);
+		this(act, (IListGetter) act, query, IResourceDiscovery.rans);
 	}
 
 	public MiddlewareOperation(Activity act, IListGetter listGetter, String query, String address) {
