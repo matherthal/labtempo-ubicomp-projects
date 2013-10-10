@@ -190,10 +190,15 @@ public class SmartAndroid {
 	
 	/**
 	 * Set local Prefix in order to verify if itself is as SmartServer
+	 * @throws Exception 
 	 */
 	public static void fillLocalPrefixAddress() {
 		if (interestAPIEnable) {
-			myLocalPrefix = InterestAPIImpl.getInstance().getMyPrefix();
+			try {
+				myLocalPrefix = InterestAPIImpl.getInstance().getMyPrefix();
+			} catch (Exception e) {
+				throw new SmartAndroidRuntimeException("Exception getting PrefixAddress. Impossible to initialize communication in others devices.", e);
+			}
 		}
 	}
 

@@ -18,11 +18,13 @@ public class CommREPAD {
 	private Thread myThread;
 
 	private RepaSocket repaSocket;
-
+	
 	public CommREPAD() {
 		try {
-			repaSocket = RepaSocket.getRepaSocket();
+			repaSocket = new RepaSocket();
 			repaSocket.repaOpen();
+		} catch (ClassNotFoundException e) {
+			throw new SmartAndroidRuntimeException("Error creating CommREPAD. Problem getting or opening RepaSocket", e);
 		} catch (SocketException e) {
 			throw new SmartAndroidRuntimeException("Error creating CommREPAD. Problem getting or opening RepaSocket", e);
 		}
@@ -60,6 +62,10 @@ public class CommREPAD {
 			t.start();
 		}
 		
+		/**
+		 * @param repaMessage
+		 * @param timeToStart wait some milliseconds on loopback case
+		 */
 		public REPASession(RepaMessage repaMessage, long timeToStart) {
 			this.repaMessage = repaMessage;
 			this.timeToStart = timeToStart;
@@ -70,7 +76,7 @@ public class CommREPAD {
 		}
 
 		public void run() {
-			if (this.timeToStart > 0) {
+			if (this.timeToStart > 0) { // wait some milliseconds on loopback case
 				try {
 					Thread.sleep(this.timeToStart);
 				} catch (InterruptedException e) {
@@ -118,31 +124,33 @@ public class CommREPAD {
 			prefix = messageContent.getRaNSTo().getPrefix();
 			interest = messageContent.getRaNSTo().getRans();
 		}
-		repaMessage.setPrefix(prefix == -1 ? new PrefixAddress() : new PrefixAddress(prefix));
+		
+		repaMessage.setDstPrefix(prefix == -1 ? new PrefixAddress() : new PrefixAddress(prefix));
 		repaMessage.setInterest(interest);
 		repaMessage.setData(messageContentToMessageData(messageContent));
 		
 		// Loopback
-		if (repaMessage.getPrefix().getPrefix() == SmartAndroid.getLocalPrefix()) {
+		if (repaMessage.getDstPrefix().getPrefix() == SmartAndroid.getLocalPrefix()) {
 			if (this.getMyInterests().get(repaMessage.getInterest()) != null) {
 				new REPASession(repaMessage, 30);				
 			}
-		} else {
-			if (prefix == -1) {
-				if (this.getMyInterests().get(repaMessage.getInterest()) != null) {
-					new REPASession(repaMessage, 30);				
-				}
+			return;
+		} 
+		
+		if (prefix == -1) {
+			if (this.getMyInterests().get(repaMessage.getInterest()) != null) {
+				new REPASession(repaMessage, 30);				
 			}
-			this.repaSocket.repaSend(repaMessage);			
 		}
+		this.repaSocket.repaSend(repaMessage);
 	}
 	
 	
 	
 	
 	
-	public PrefixAddress getRepaNodeAdress() {
-		return this.repaSocket.getRepaNodeAdress();
+	public PrefixAddress getRepaNodeAddress() throws Exception {
+		return this.repaSocket.getRepaNodeAddress();
 	}
 	
 	public void repaSendAsync(RepaMessage repaMessage) throws Exception {
