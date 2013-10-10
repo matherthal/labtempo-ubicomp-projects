@@ -19,7 +19,7 @@ public class DealRepaMessage implements Runnable {
 	public void run() {
 		Log.d("SmartAndroid", "Vou chamar os callbacks");
 		for (Callable callback : this.callbacks) {
-			callback.call(this.message.getInterest(), new String(this.message.getData()), this.message.getPrefix().getPrefix());
+			callback.call(this.message.getInterest(), new String(this.message.getData()), this.message.getSrcPrefix().getPrefix());
 		}
 		Log.d("SmartAndroid", "Fim das chamadas aos callbacks");
 	}

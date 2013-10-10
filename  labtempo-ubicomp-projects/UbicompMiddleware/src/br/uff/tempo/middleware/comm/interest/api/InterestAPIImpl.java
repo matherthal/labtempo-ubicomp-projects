@@ -180,8 +180,8 @@ public class InterestAPIImpl implements InterestAPI {
 //	}
 	
 	
-	public int getMyPrefix() {
-		return this.commREPAD.getRepaNodeAdress().getPrefix();
+	public int getMyPrefix() throws Exception {
+		return this.commREPAD.getRepaNodeAddress().getPrefix();
 	}
 	
 	private void addInterest(String interest, Callable callback) throws Exception {
