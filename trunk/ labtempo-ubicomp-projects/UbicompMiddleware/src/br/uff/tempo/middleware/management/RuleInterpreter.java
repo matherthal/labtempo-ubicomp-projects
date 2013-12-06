@@ -326,8 +326,10 @@ public class RuleInterpreter extends ResourceAgent implements IRuleInterpreter {
 				// Updating valid and getting the evaluation
 				valid = evaluate(root);
 				// If rule has been validated, notify...
-				if (valid && !preEval)
+				if (valid && !preEval) {
+					log("RULE " + this.getRANS() + " evaluated as true");
 					notifyActionPerformers();
+				}
 			} catch (EvaluationException e) {
 				Log.e("Error in evaluation", e.toString());
 				e.printStackTrace();
@@ -337,13 +339,16 @@ public class RuleInterpreter extends ResourceAgent implements IRuleInterpreter {
 	@Override
 	public void start() {
 		stopped = false;
-		if (!isRegistered())
+		if (!isRegistered()) {
+			log("START " + this.getRANS());
 			identify();
+		}
 	}
 	
 	@Override
 	public void stop() {
 		stopped = true;
+		log("STOP " + this.getRANS());
 	}
 	
 	@Override

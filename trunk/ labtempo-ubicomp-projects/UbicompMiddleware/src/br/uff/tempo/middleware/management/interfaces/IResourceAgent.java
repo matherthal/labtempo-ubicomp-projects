@@ -6,9 +6,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.LogOpenHelper.LogObject;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
 
@@ -149,6 +151,8 @@ public interface IResourceAgent extends Serializable {
 	 */
 	public boolean identifyPosition(Position position);
 	
+	public void setPosition(Position pos);
+	
 	/**
 	 * Identify with known place reference
 	 * @param placeName place reference
@@ -180,5 +184,8 @@ public interface IResourceAgent extends Serializable {
 	 * @param position new position
 	 */
 	public void updateLocation(Position position);
+
+	public LogObject getLog(Date date);
 	
+	public void log(String record);
 }

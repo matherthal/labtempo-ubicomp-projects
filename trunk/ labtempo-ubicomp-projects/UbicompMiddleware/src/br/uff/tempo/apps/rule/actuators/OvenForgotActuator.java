@@ -32,14 +32,17 @@ public class OvenForgotActuator extends Generic {
 		if (stove != null) {
 			stove.turnOffOven();
 			Log.i(TAG, "Stove turned off");
+			this.log("Fogão ligado");
 		} else {
 			Log.e(TAG, "Stove not found");
 		}
 		if (tv != null) {
 			tv.showMessage("Forno esquecido ligado!");
 			Log.i(TAG, "Show message on TV");
+			this.log("Fogão esquecido ligado");
 		} else {
 			Log.e(TAG, "TV not found");
+			this.log("TV não encontrada");
 		}
 	}
 	

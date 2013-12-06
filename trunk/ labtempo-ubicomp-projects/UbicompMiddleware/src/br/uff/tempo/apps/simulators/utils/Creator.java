@@ -27,6 +27,7 @@ import br.uff.tempo.middleware.management.utils.Position;
  * @author dbarreto
  */
 public class Creator implements IChooser, IListGetter, IDialogFinishHandler {
+	private static final String TAG = "Creator";
 
 	public static final boolean NOT_AUTOMATICALLY_OPEN = false;
 	public static final boolean AUTOMATICALLY_OPEN = true;
@@ -42,6 +43,8 @@ public class Creator implements IChooser, IListGetter, IDialogFinishHandler {
 	private String[] simulators;
 	private ChosenData current;
 	private boolean canOpen;
+	private Boolean loadSprites = true;
+	
 
 	private int op = -1;
 
@@ -109,6 +112,11 @@ public class Creator implements IChooser, IListGetter, IDialogFinishHandler {
 		op = CREATE;
 		chooseResDialog.showDialog(simulators);
 	}
+	
+	public void createAllResources() {
+		loadSprites = true;
+		new MiddlewareOperation(activity, this, "").execute(null);		
+	}
 
 	/**
 	 * Create a new resource agent and call its simulator UI. This simulator
@@ -118,10 +126,23 @@ public class Creator implements IChooser, IListGetter, IDialogFinishHandler {
 	public void createResource() {
 		createResource(AUTOMATICALLY_OPEN);
 	}
-
+	
 	@Override
 	public void onGetList(List<ResourceData> result) {
-		chooseResDialog.showDialog(result);
+		if (loadSprites) {
+			//Loads all sprites on screen
+			for (ResourceData rd : result) {
+				try {
+					ResourceWrapper wrapper = ResourceChoice.choiceResource(rd); 
+					this.creationFinisher.onResourceCreationFinished(wrapper);
+				} catch (SmartAndroidRuntimeException e) {
+					Log.i(TAG, e.getMessage());
+				}
+			}
+		} else
+			//Loads list of resource agents to be chosen
+			chooseResDialog.showDialog(result);
+		loadSprites = false;
 	}
 
 	@Override

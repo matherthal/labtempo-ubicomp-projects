@@ -19,6 +19,8 @@ import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent.ContextVariable;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent.Service;
+import br.uff.tempo.middleware.management.utils.Position;
+import br.uff.tempo.middleware.management.utils.Space;
 
 public class SmartSprite extends Sprite implements TouchEvents.ITouchEvents {
 
@@ -160,6 +162,9 @@ public class SmartSprite extends Sprite implements TouchEvents.ITouchEvents {
 	
 	public void setPosition(float pX, float pY) {
 		super.setPosition(pX, pY);
+		pX = Space.pixelToMeters((int)pX, Space.PIXEL_PER_METER);
+		pY = Space.pixelToMeters((int)pY, Space.PIXEL_PER_METER);
+		wrapper.getStub().setPosition(new Position(pX, pY));
 	}
 
 	// ===========================================================

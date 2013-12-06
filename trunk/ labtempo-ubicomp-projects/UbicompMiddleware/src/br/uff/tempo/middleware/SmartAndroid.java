@@ -14,6 +14,7 @@ import br.uff.tempo.middleware.comm.common.InterestAPI;
 import br.uff.tempo.middleware.comm.current.api.SocketService;
 import br.uff.tempo.middleware.comm.interest.api.InterestAPIImpl;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
+import br.uff.tempo.middleware.management.LogOpenHelper;
 import br.uff.tempo.middleware.management.ResourceAgentNS;
 import br.uff.tempo.middleware.management.ResourceDiscovery;
 import br.uff.tempo.middleware.management.ResourceLocation;
@@ -35,7 +36,7 @@ public class SmartAndroid {
 	private static String myIp = defaultMyIp;
 	private static int myLocalPrefix = 0;
 
-	public static String resourceDiscoveryIP = "192.168.1.105";//getLocalIpAddressForRds();
+	public static String resourceDiscoveryIP = "192.168.1.4";//getLocalIpAddressForRds();
 
 	public static Integer resourceDiscoveryPREFIX = 0;
 	public static boolean interestAPIEnable = false;
@@ -74,7 +75,7 @@ public class SmartAndroid {
 		
 		initializeIpAndPrefixDaemon();
 		initializeMiddlewareResources();
-		initializeCommunicationDaemon();			
+		initializeCommunicationDaemon();
 	}
 
 	private void initializeIpAndPrefixDaemon() {

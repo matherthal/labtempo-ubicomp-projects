@@ -128,6 +128,8 @@ public class Actuator extends ResourceAgent implements IActuator {
 		public void exec() {
 			Stub s = new Stub(rai);
 			s.makeCall(serv, params, void.class);
+			log("CALL " + rai + ": " + serv + params.get(0).value);
+			getBaseContext();
 		}
 		
 		public String getRai() {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.SmartObject;
 import br.uff.tempo.middleware.management.interfaces.IRuleInterpreter;
 

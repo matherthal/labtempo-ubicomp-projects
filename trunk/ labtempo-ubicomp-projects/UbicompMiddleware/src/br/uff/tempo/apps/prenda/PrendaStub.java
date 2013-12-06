@@ -1,9 +1,11 @@
 package br.uff.tempo.apps.prenda;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
+import br.uff.tempo.middleware.management.LogOpenHelper.LogObject;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.stubs.Stub;
@@ -141,6 +143,24 @@ public class PrendaStub extends Stub implements IPrenda {
 	public boolean identifyInPlace(String placeName, Position position) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public LogObject getLog(Date date) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void log(String record) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void setPosition(Position pos) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
