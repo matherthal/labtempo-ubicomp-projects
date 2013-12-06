@@ -285,6 +285,7 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 		// Scene must listen to touch events!
 		this.mScene.setOnSceneTouchListener(this);
 		this.mScene.setTouchAreaBindingOnActionDownEnabled(true);
+		
 
 		return this.mScene;
 	}
@@ -298,6 +299,9 @@ public abstract class SmartAndroidMap extends SimpleBaseGameActivity implements 
 	public synchronized void onResumeGame() {
 		super.onResumeGame();
 		pushMap();
+
+		//Loading sprites of all resource agents on screen
+		resCreator.createAllResources();
 	}
 
 	// The main menu, accessed by Android menu button (in the Android device)

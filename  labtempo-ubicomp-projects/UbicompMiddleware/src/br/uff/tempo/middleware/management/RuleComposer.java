@@ -1,5 +1,6 @@
 package br.uff.tempo.middleware.management;
 
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.LinkedList;
@@ -73,6 +74,14 @@ public class RuleComposer { //extends Service {
 		cond = cvBundle.getAgentRans() + ": " + cvBundle.getCvName();
 		cond += "\n" + op.getSymbol() + "\n";
 		cond += val.toString();
+		
+		notifyRuleChanged(cond);
+	}
+	
+	public void addCondition(ContextVariableBundle cvBundle, long timeout) throws Exception {
+		addCondition(cvBundle.getAgentRans(), cvBundle.getContextVariable(), cvBundle.getParameters(), timeout);
+		
+		String cond = cvBundle.getAgentRans() + ": " + cvBundle.getCvName();
 		
 		notifyRuleChanged(cond);
 	}
@@ -170,6 +179,37 @@ public class RuleComposer { //extends Service {
 		// Clean
 		this.exprRoot = null;
 	}
+	
+	/*public void start() {
+		FileInputStream stream = null;
+		try {
+			stream = openFileInput(fname);
+			RuleInterpreter ri = new RuleInterpreter(name + num, name + num);
+			ri.setExpression(stream);
+			ri.identify();
+			
+			try {
+				stream = openFileInput(fname);
+				Actuator act = new Actuator(nameAct + num, nameAct + num);
+				act.setExpression(stream);
+				act.identify();
+				
+				// Bind actuator to rule
+				ri.registerStakeholder(RuleInterpreter.RULE_TRIGGERED, act.getRANS());
+			} catch (Exception e) {
+				Log.i(TAG, "Actuator not found in rule");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				if (stream != null)
+					stream.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}*/
 
 	/*
 	 * Recursive method that builds a JSON for the entire formula

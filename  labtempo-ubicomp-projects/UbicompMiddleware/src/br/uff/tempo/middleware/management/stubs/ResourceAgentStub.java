@@ -1,10 +1,13 @@
 package br.uff.tempo.middleware.management.stubs;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
+import br.uff.tempo.middleware.management.LogOpenHelper.LogObject;
 import br.uff.tempo.middleware.management.ResourceAgent;
+import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.utils.Position;
 import br.uff.tempo.middleware.management.utils.Stakeholder;
@@ -139,6 +142,13 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		return false;
 	}
 	
+	public void setPosition(Position pos) {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+		params.add(new Tuple<String, Object>(Position.class.getName(), pos));
+
+		makeCall("setPosition", params, void.class);		
+	}
+	
 	public boolean unregister() {
 		return false;
 	}
@@ -178,4 +188,19 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		makeCall("updateLocation", params, void.class);
 	}
 
+	@Override
+	public LogObject getLog(Date date) {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+		params.add(new Tuple<String, Object>(Date.class.getName(), date));
+
+		return (LogObject) makeCall("getLog", params, LogObject.class);
+	}
+
+	@Override
+	public void log(String record) {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+		params.add(new Tuple<String, Object>(String.class.getName(), record));
+		
+		makeCall("log", params, void.class);
+	}
 }

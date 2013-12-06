@@ -18,15 +18,16 @@ public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 
 	public static final int CONTEXT_VARIABLE = 0;
 	public static final int CONSTANT_VALUE = CONTEXT_VARIABLE + 1;
+	public static final int CONTEXT_VARIABLE_ONLY = CONSTANT_VALUE + 1;
 	
 	private IDialogFinishHandler handler;
 	private RuleComposer ruleComposer;
 	private boolean comparisonOperatorChoosed = false;
 	
 	//Rule condition items
-	private ContextVariableBundle contextVariable;
-	private Operator operator;
-	private Object cte;
+	private ContextVariableBundle contextVariable = null;
+	private Operator operator = null;
+	private Object cte = null;
 
 	public RuleToolbar(final Activity act, final IDialogFinishHandler handler, RuleComposer ruleComposer) {
 		super(act);
@@ -55,12 +56,20 @@ public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 
 	@Override
 	public void onAndClick(View v) {
+		// case CV has been chosen, but and operator and value are not, then write it down
+		if (this.contextVariable != null)
+			comparableClicked(CONTEXT_VARIABLE_ONLY);
+		
 		this.ruleComposer.addAndClause();
 		comparisonOperatorChoosed = false;
 	}
 
 	@Override
 	public void onOrClick(View v) {
+		// case CV has been chosen, but and operator and value are not, then write it down
+		if (this.contextVariable != null)
+			comparableClicked(CONTEXT_VARIABLE_ONLY);
+		
 		this.ruleComposer.addOrClause();
 		comparisonOperatorChoosed = false;
 	}
@@ -79,6 +88,10 @@ public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 
 	@Override
 	public void onCloseBracketClick(View v) {
+		// case CV has been chosen, but and operator and value are not, then write it down
+		if (this.contextVariable != null)
+			comparableClicked(CONTEXT_VARIABLE_ONLY);
+		
 		this.ruleComposer.addCloseBracket();
 		comparisonOperatorChoosed = false;
 	}
@@ -127,6 +140,10 @@ public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 
 	@Override
 	public void onTimerClick(View v) {
+		// case CV has been chosen, but and operator and value are not, then write it down
+		if (this.contextVariable != null)
+			comparableClicked(CONTEXT_VARIABLE_ONLY);
+		
 		// TODO Get a timer value from user
 		comparisonOperatorChoosed = false;
 	}
@@ -159,6 +176,9 @@ public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 	
 	@Override
 	void onFinishContextVariableClick(View v) {
+		// case CV has been chosen, but and operator and value are not, then write it down
+		if (this.contextVariable != null)
+			comparableClicked(CONTEXT_VARIABLE_ONLY);
 		
 //		try {
 //			this.ruleComposer.finish(activity);
@@ -192,13 +212,28 @@ public class RuleToolbar extends BaseRuleToolbar implements InputTextGetter {
 				try {
 					// TODO Get correct value
 					this.ruleComposer.addConditionComp(contextVariable, operator, cte, 0);
+					contextVariable = null;
+					operator = null;
+					cte = null;
+					comparisonOperatorChoosed = false;
 				} catch (Exception e) {
 					throw new SmartAndroidRuntimeException("Error by finilizing current condition", e);
 				}
-			}
+			} 
 			
 			showMessage("You can either choose a logical operator to add another condition or finish this Rule Expression");
 			
+		} else if (type == CONTEXT_VARIABLE_ONLY) {
+			try {
+				// TODO Get correct value
+				this.ruleComposer.addCondition(contextVariable, 0);
+				contextVariable = null;
+				operator = null;
+				cte = null;
+				comparisonOperatorChoosed = false;
+			} catch (Exception e) {
+				throw new SmartAndroidRuntimeException("Error by finilizing current condition", e);
+			}
 		} else {
 			showMessage("Please, choose an comparison operator to continue...");
 		}

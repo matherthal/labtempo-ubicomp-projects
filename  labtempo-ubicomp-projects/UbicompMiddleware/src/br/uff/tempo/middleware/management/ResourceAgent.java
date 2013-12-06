@@ -1,13 +1,22 @@
 package br.uff.tempo.middleware.management;
 
+import static br.uff.tempo.middleware.management.interfaces.IResourceRegister.rans;
+
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONException;
 
 import android.app.Service;
+import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
@@ -16,6 +25,7 @@ import br.uff.tempo.middleware.comm.common.InterestAPI;
 import br.uff.tempo.middleware.comm.interest.api.InterestAPIImpl;
 import br.uff.tempo.middleware.comm.interest.api.JSONRPCCallback;
 import br.uff.tempo.middleware.e.SmartAndroidRuntimeException;
+import br.uff.tempo.middleware.management.LogOpenHelper.LogObject;
 import br.uff.tempo.middleware.management.interfaces.IPlace;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
 import br.uff.tempo.middleware.management.interfaces.IResourceLocation;
@@ -305,6 +315,12 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		return commonIdentify(placeName,position);
 	}	
 	
+	public void setPosition(Position pos) {
+		this.position = pos;
+		
+		ResourceLocation.getInstance().registerInPlace(rans, pos);
+	}
+	
 //	public boolean identifyInPlace(String placeName, Position position) {
 //
 //		if (!registered) {
@@ -432,5 +448,43 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			rls.updateLocation(raData);
 			notifyStakeholders("updateLocation", position);
 		}
+	}
+	
+	@Override
+	public LogObject getLog(Date date){
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		String dt = dateFormat.format(date);
+		
+		LogOpenHelper logService = new LogOpenHelper(this.getApplicationContext());
+		SQLiteDatabase db = logService.getReadableDatabase();
+		Cursor c = db.rawQuery("SELECT * FROM " + LogOpenHelper.LOG_TABLE_NAME + 
+				" WHERE " + LogOpenHelper.LOG_COL_DT + "=" + dt, null);
+		c.moveToFirst();
+		
+		LogObject l = logService.new LogObject();
+		l.AutorName = c.getString(c.getColumnIndex(LogOpenHelper.LOG_COL_AUTOR)); 
+		l.AutorRANS = c.getString(c.getColumnIndex(LogOpenHelper.LOG_COL_AUTOR_ID));
+		l.Action = c.getString(c.getColumnIndex(LogOpenHelper.LOG_COL_ACTION));
+		l.datetime = date;
+		
+		return l;
+	}
+	
+	@Override
+	public void log(String record) {
+		//LogOpenHelper logService = new LogOpenHelper(this.getBaseContext());
+		/*LogOpenHelper logService = new LogOpenHelper(this.getApplicationContext());
+		SQLiteDatabase db = logService.getWritableDatabase();
+		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"); 
+		Date date = new Date();
+
+		ContentValues values = new ContentValues(); 
+		values.put(LogOpenHelper.LOG_COL_DT, dateFormat.format(date));
+		values.put(LogOpenHelper.LOG_COL_AUTOR_ID, this.getRANS());
+		values.put(LogOpenHelper.LOG_COL_AUTOR, this.getName());
+		values.put(LogOpenHelper.LOG_COL_ACTION, record);
+		
+		db.insert(LogOpenHelper.LOG_TABLE_NAME, null, values);*/
 	}
 }

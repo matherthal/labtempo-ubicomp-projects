@@ -91,7 +91,7 @@ public class RuleFactory extends Service {
 			expr = expr.replace("_STOVE_", stv1.getRANS()).replace("_BED_", bed1.getRANS());
 			ri.setExpression(expr);
 			ri.identify();
-			ruleOvenForgotName = ri.getName();
+			ruleOvenForgotName = ri.getRANS();
 			Log.i(TAG, "Created rule: " + ruleOvenForgotName);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -105,7 +105,7 @@ public class RuleFactory extends Service {
 			expr = expr.replace("_STOVE_", stv1.getRANS()).replace("_BED_SOLT_", bed1.getRANS()).replace("_BED_CASAL_", bed2.getRANS());
 			ri.setExpression(expr);
 			ri.identify();
-			ruleOvenForgot2Name = ri.getName();
+			ruleOvenForgot2Name = ri.getRANS();
 			Log.i(TAG, "Created rule: " + ruleOvenForgot2Name);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -119,7 +119,7 @@ public class RuleFactory extends Service {
 			expr = expr.replace("_STOVE_", stv1.getRANS()).replace("_BED_", bed1.getRANS()).replace("_TV_", tv1.getRANS());
 			ri.setExpression(expr);
 			ri.identify();
-			ruleOvenForgot3Name = ri.getName();
+			ruleOvenForgot3Name = ri.getRANS();
 			Log.i(TAG, "Created rule: " + ruleOvenForgot3Name);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -133,7 +133,7 @@ public class RuleFactory extends Service {
 			expr = expr.replace("_STOVE_", stv1.getRANS());
 			ri.setExpression(expr);
 			ri.identify();
-			ruleSomebodyAtDoorName = ri.getName();
+			ruleSomebodyAtDoorName = ri.getRANS();
 			Log.i(TAG, "Created rule: " + ruleSomebodyAtDoorName);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -148,7 +148,7 @@ public class RuleFactory extends Service {
 			ri.setExpression(expr);
 			ri.getName();
 			ri.identify();
-			ruleWatchSoccerName = ri.getName();
+			ruleWatchSoccerName = ri.getRANS();
 			Log.i(TAG, "Created rule: " + ruleWatchSoccerName);
 		} catch (Exception e) {
 			e.printStackTrace();
