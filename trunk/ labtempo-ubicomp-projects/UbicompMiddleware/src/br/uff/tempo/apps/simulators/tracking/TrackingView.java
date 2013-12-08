@@ -15,7 +15,7 @@ public class TrackingView extends Activity {
 	public static final int PLAY = APPLY + 1;
 	public static final int STEP = PLAY + 1;
 	
-	private TrackingPanel panel;
+	protected TrackingPanel panel;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {

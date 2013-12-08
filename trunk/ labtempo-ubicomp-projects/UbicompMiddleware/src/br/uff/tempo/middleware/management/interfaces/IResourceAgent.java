@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.LogOpenHelper.LogObject;
 import br.uff.tempo.middleware.management.utils.Position;
@@ -185,6 +186,12 @@ public interface IResourceAgent extends Serializable {
 	 */
 	public void updateLocation(Position position);
 
+	/**
+	 * Get place where RA is positioned
+	 * @return Place
+	 */
+	public Place getPlace();
+	
 	public LogObject getLog(Date date);
 	
 	public void log(String record);

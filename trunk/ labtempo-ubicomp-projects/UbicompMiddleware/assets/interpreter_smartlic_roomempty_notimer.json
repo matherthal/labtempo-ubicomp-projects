@@ -1,0 +1,22 @@
+{
+"interpreter": {
+	"name": "Detecta Sala Vazia",
+	"priority": 3,
+	"formula": [
+		{"formula": [
+			{"not":
+				{"predicate": [
+					{"context_elem": {
+						"rai": "_RLS_",
+						"elem": "exit(Person)"
+					}},
+					{"op": "="},
+					{"val": _PLACE_}
+				]}
+			},
+
+			{"timer": "10sec"}
+		]}
+	]
+}
+}

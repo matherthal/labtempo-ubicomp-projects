@@ -319,6 +319,7 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 		this.position = pos;
 		
 		ResourceLocation.getInstance().registerInPlace(rans, pos);
+		notifyStakeholders("updateLocation", pos);
 	}
 	
 //	public boolean identifyInPlace(String placeName, Position position) {
@@ -448,6 +449,15 @@ public abstract class ResourceAgent extends Service implements IResourceAgent, S
 			rls.updateLocation(raData);
 			notifyStakeholders("updateLocation", position);
 		}
+	}
+
+	/**
+	 * Get RA place
+	 * @return Place
+	 */
+	@Override
+	public Place getPlace() {
+		return rls.getLocal(position);
 	}
 	
 	@Override

@@ -160,6 +160,12 @@
         </activity>
         
         <activity
+            android:name=".apps.AppLampControlSystemTracking"
+            android:label="@string/title_activity_app_lamp_control_system" 
+            android:screenOrientation="landscape" >
+        </activity>
+        
+        <activity
             android:name=".apps.AppLampControlSystemRLS"
             android:label="@string/title_activity_app_lamp_control_system" >
         </activity>

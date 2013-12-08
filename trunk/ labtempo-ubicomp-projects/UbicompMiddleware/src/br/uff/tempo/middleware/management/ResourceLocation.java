@@ -154,17 +154,18 @@ public class ResourceLocation extends ResourceAgent implements IResourceLocation
 	 * @return Place instance from indexed position
 	 */
 	public Place getLocal(Position position) {
-
-		for (Place local : currentSpace.getAllPlaces()) {
-			if (local.contains(position)) {
-				return local;
+		if (position != null) {
+			for (Place local : currentSpace.getAllPlaces()) {
+				if (local.contains(position)) {
+					return local;
+				}
 			}
 		}
 		
 		String msg = "Position [" + position + "] doesn't fit in any place!";
 		Log.e("SmartAndroid", msg);
-		
-		throw new SmartAndroidRuntimeException(msg);
+		//throw new SmartAndroidRuntimeException(msg);
+		return null;
 	}
 	
 	/**
