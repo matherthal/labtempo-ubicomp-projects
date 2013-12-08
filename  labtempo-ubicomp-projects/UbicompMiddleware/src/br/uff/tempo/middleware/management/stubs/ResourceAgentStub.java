@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.LogOpenHelper.LogObject;
+import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.interfaces.IResourceAgent;
@@ -202,5 +203,12 @@ public class ResourceAgentStub extends Stub implements IResourceAgent {
 		params.add(new Tuple<String, Object>(String.class.getName(), record));
 		
 		makeCall("log", params, void.class);
+	}
+
+	@Override
+	public Place getPlace() {
+		List<Tuple<String, Object>> params = new ArrayList<Tuple<String, Object>>();
+
+		return (Place) makeCall("getPlace", params, Place.class);
 	}
 }

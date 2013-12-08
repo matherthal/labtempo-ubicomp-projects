@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.LogOpenHelper.LogObject;
+import br.uff.tempo.middleware.management.Place;
 import br.uff.tempo.middleware.management.ResourceAgent;
 import br.uff.tempo.middleware.management.ResourceData;
 import br.uff.tempo.middleware.management.stubs.Stub;
@@ -161,6 +162,12 @@ public class PrendaStub extends Stub implements IPrenda {
 	public void setPosition(Position pos) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public Place getPlace() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

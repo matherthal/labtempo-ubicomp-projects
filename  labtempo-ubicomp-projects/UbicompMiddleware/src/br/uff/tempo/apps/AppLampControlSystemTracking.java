@@ -23,6 +23,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import br.uff.tempo.R;
+import br.uff.tempo.apps.simulators.tracking.TrackingView;
 import br.uff.tempo.middleware.comm.current.api.Tuple;
 import br.uff.tempo.middleware.management.Operator;
 import br.uff.tempo.middleware.management.Person;
@@ -49,40 +50,29 @@ import br.uff.tempo.middleware.resources.stubs.DayLightSensorStub;
 import br.uff.tempo.middleware.resources.stubs.LampStub;
 import br.uff.tempo.middleware.resources.stubs.PresenceSensorStub;
 
-public class AppLampControlSystem extends Activity {
+public class AppLampControlSystemTracking extends TrackingView {
 	private static final String TAG = "AppLampController";
 	private IResourceDiscovery discovery;
 	private IResourceLocation location;
 	private Map<String, String> psDictionary = new HashMap<String, String>();
 	private Map<String, Tuple<String, Object>> lampDictionary = new HashMap<String, Tuple<String, Object>>();
 	private IPresenceSensor currPS = null;
-	Handler handler = new Handler() {
-		@Override
-		public void handleMessage(Message msg) {
-			Bundle b = msg.getData();
-			String strMsg = b.getString("toastMessage");
-			Toast.makeText(AppLampControlSystem.this, strMsg, Toast.LENGTH_LONG).show();
-			// EditText et = (EditText) findViewById(R.id.editTextAboutLamps);
-			// et.setText(et.getText() + "\n" + strMsg);
-		}
-	};
-
-	// private Set<Lamp> lampSet = new HashSet<Lamp>();
-	// private Set<PresenceSensor> psSet = new HashSet<PresenceSensor>();
-	// private Set<Generic> actionSet = new HashSet<Generic>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_app_lamp_control_system);
-
+		//setContentView(R.layout.activity_app_lamp_control_system);
+		
+		// Add first person
+		super.panel.addPerson();
+		
 		if (savedInstanceState == null) {
 			discovery = new ResourceDiscoveryStub(IResourceDiscovery.rans);
 			location = new ResourceLocationStub(IResourceLocation.rans);
 
 			createEnvironment();
-			populateSpinnerPresence();
-			populateSpinnerBlockLamp();
+			//populateSpinnerPresence();
+			//populateSpinnerBlockLamp();
 		}
 	}
 
@@ -91,11 +81,8 @@ public class AppLampControlSystem extends Activity {
 		DayLightSensor dl = new DayLightSensor("Sensor de Luminosidade", "Sensor de Luminosidade");
 		dl.identify();
 		Log.i("DayLightSensor", "New DayLightSensor: " + dl.getRANS());
-		TextView tv = (TextView) this.findViewById(R.id.textViewStatus);
-		if (dl.isDay())
-			tv.setText("É dia");
-		else
-			tv.setText("É noite");
+		// Set night
+		dl.setDay(false);
 		
 		// For each place, create a Lamp and a Presence Sensor
 		Set<String> places = location.getPlacesNames();
@@ -108,7 +95,7 @@ public class AppLampControlSystem extends Activity {
 		if (itperson.hasNext())
 			person = new PersonStub(itperson.next().getRans());
 		else {
-			toastMessage("Nenhuma pessoa registrada no ambiente");
+			Log.i(TAG, "Nenhuma pessoa registrada no ambiente");
 			return;
 		}
 		
@@ -176,9 +163,6 @@ public class AppLampControlSystem extends Activity {
 				final String roomEmptyRAI = riRoomEmpty.getRANS();
 
 				// Create action to subscribe to the rule interpreter
-				//LampControllerAction action = new LampControllerAction("Iluminador de caminho " + place, 
-				//		"Iluminador de caminho " + place, roomFullRAI, roomEmptyRAI);
-				//action.setLamp(lRAI);
 				Generic action = new Generic("Iluminador de caminho " + place, "Iluminador de caminho " + place) {
 
 					private static final long serialVersionUID = 1L;
@@ -196,7 +180,6 @@ public class AppLampControlSystem extends Activity {
 						Tuple tp = lampDictionary.get(lName);
 						if ((Boolean) tp.value) {
 							Log.i(TAG, "Lamp " + lName + " is blocked");
-							toastMessage("Lamp " + lName + " is blocked");
 							return;
 						}
 						// Test rule's identification
@@ -207,10 +190,6 @@ public class AppLampControlSystem extends Activity {
 						else
 							return;
 						Log.i("Lamp", "RAI: " + lRAI + " / Is on: " + lamp.isOn());
-						if (lamp.isOn())
-							toastMessage("Lâmpada " + lamp.getName() + " ligada");
-						else
-							toastMessage("Lâmpada " + lamp.getName() + " desligada");
 					}
 					
 				};
@@ -248,105 +227,5 @@ public class AppLampControlSystem extends Activity {
 			}
 		}
 		return fileStr;
-	}
-	
-	private void populateSpinnerPresence() {
-		Spinner s = (Spinner) findViewById(R.id.spinnerPresenceSensors);
-		String[] array_spinner = new String[psDictionary.size()];
-		int counter = 0;
-		for (String ps : psDictionary.keySet()) {
-			array_spinner[counter] = ps;
-			counter++;
-		}
-		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, array_spinner);
-		s.setAdapter(adapter);
-
-		s.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-				String psRAI = psDictionary.get(parentView.getItemAtPosition(position).toString());
-
-				if (currPS != null) {
-					currPS.setPresence(false);
-					Log.i("Spinner", "Set presence sensor " + currPS.getName() + " to false. Presence = " + currPS.getPresence());
-				}
-				currPS = new PresenceSensorStub(psRAI);
-				currPS.setPresence(true);
-				Log.i("Spinner", "Set presence sensor " + currPS.getName() + " to true. Presence = " + currPS.getPresence());
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parentView) {
-			}
-		});
-	}
-
-	private void populateSpinnerBlockLamp() {
-		Spinner s = (Spinner) findViewById(R.id.spinnerBlockLamp);
-		String[] array_spinner = new String[lampDictionary.size()];
-		int counter = 0;
-		for (String ps : lampDictionary.keySet()) {
-			array_spinner[counter] = ps;
-			counter++;
-		}
-		ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_spinner_item, array_spinner);
-		s.setAdapter(adapter);
-
-		s.setOnItemSelectedListener(new OnItemSelectedListener() {
-			@Override
-			public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-				String lName = parentView.getItemAtPosition(position).toString();
-				Tuple tp = lampDictionary.get(lName);
-				String lRAI = tp.key;
-				boolean blocked = (Boolean) tp.value;
-
-				String msg = "";
-				if (!blocked) {
-					lampDictionary.remove(lName);
-					tp.value = true;
-					lampDictionary.put(lName, tp);
-					msg = "Lamp " + lName + " is blocked";
-					Log.i("Spinner", msg);
-					toastMessage(msg);
-				} else {
-					lampDictionary.remove(lName);
-					tp.value = false;
-					lampDictionary.put(lName, tp);
-					msg = "Lamp " + lName + " is NOT blocked";
-					Log.i("Spinner", msg);
-					toastMessage(msg);
-				}
-			}
-
-			@Override
-			public void onNothingSelected(AdapterView<?> parentView) {
-			}
-		});
-	}
-
-	/*
-	 * Button toggle between day and night
-	 */
-	public void buttonToggleDayNight_Clicked(View view) {
-		String rai = discovery.search(ResourceData.TYPE, ResourceAgent.type(DayLightSensor.class)).get(0).getRans();
-		IDayLightSensor dl = new DayLightSensorStub(rai);
-		if (dl.isDay())
-			dl.setDay(false);
-		else
-			dl.setDay(true);
-		TextView tv = (TextView) this.findViewById(R.id.textViewStatus);
-		if (dl.isDay())
-			tv.setText("É dia");
-		else
-			tv.setText("É noite");
-	}
-
-	private void toastMessage(String strMsg) {
-		Message msg = new Message();
-		Bundle b = new Bundle();
-		b.putString("toastMessage", strMsg);
-		msg.setData(b);
-		// send message to the handler with the current message handler
-		handler.sendMessage(msg);
 	}
 }

@@ -103,6 +103,9 @@ public class MainListView extends ListActivity {
 				} else if (item.equals("Sistema de Controle de Lâmpadas")) {
 					Intent intent = new Intent(MainListView.this, AppLampControlSystem.class);
 					startActivity(intent);
+				} else if (item.equals("Sistema de Controle de Lâmpadas com Tracking")) {
+					Intent intent = new Intent(MainListView.this, AppLampControlSystemTracking.class);
+					startActivity(intent);
 				} else if (item.equals("Sistema de Controle de Lâmpadas RLS")) {
 					Intent intent = new Intent(MainListView.this, AppLampControlSystemRLS.class);
 					startActivity(intent);
